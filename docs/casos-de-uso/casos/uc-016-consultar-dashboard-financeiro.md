@@ -19,7 +19,7 @@ O usuário acessa o Dashboard.
 **Fluxo principal**
 
 1. O sistema identifica o mês e ano correntes ou o período previamente selecionado.
-2. O sistema calcula o saldo inicial do período.
+2. O sistema calcula o saldo de abertura do período a partir do saldo final do período anterior.
 3. O sistema calcula as entradas previstas.
 4. O sistema calcula as saídas previstas.
 5. O sistema calcula o saldo final previsto.
@@ -37,7 +37,7 @@ Nenhum dado financeiro próprio do Dashboard será criado ou alterado.
 
 **Requisitos relacionados**
 
-RF-021, RF-022.
+RF-017, RF-018.
 
 **Regras de negócio relacionadas**
 

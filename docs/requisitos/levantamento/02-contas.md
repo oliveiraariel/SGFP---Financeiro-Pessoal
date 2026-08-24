@@ -24,13 +24,13 @@ Todas as movimentações financeiras serão registradas manualmente pelo usuári
 
 ### RN-005
 
-Ao criar uma conta, ela será criada sem saldo.
+Ao criar uma conta, ela será criada sem saldo armazenado.
 
-Caso o usuário deseje informar um valor inicial, deverá registrar um lançamento de entrada representando o saldo inicial da conta.
+Quando for necessário representar o valor financeiro existente no início da utilização, a conta principal receberá um lançamento de Entrada correspondente. Uma conta secundária não receberá Entrada direta para composição inicial; seu valor deverá chegar por transferência entre a conta principal e a conta secundária.
 
 ### RN-006
 
-O saldo de uma conta será sempre calculado a partir dos lançamentos registrados nela.
+O saldo de uma conta será sempre calculado a partir dos movimentos financeiros registrados nela.
 
 O sistema não armazenará saldo inicial como atributo da conta.
 
@@ -64,7 +64,8 @@ As informações cadastrais da instituição financeira não serão obrigatória
 - Registrar movimentações em cada conta.
 - Calcular automaticamente o saldo de cada conta.
 - Calcular automaticamente o patrimônio total do usuário.
-- Registrar o saldo inicial por meio de um lançamento de entrada.
+- Registrar o valor inicial da conta principal por meio de um lançamento de Entrada.
+- Receber valor em conta secundária por transferência com a conta principal, sem Entrada direta para composição inicial.
 
 ## Funcionalidades Previstas para Versões Futuras
 
@@ -76,7 +77,8 @@ As informações cadastrais da instituição financeira não serão obrigatória
 
 - O sistema iniciará sem contas financeiras cadastradas.
 - O usuário criará manualmente todas as suas contas.
-- O saldo inicial será registrado como um lançamento de entrada.
+- O valor inicial da conta principal será registrado como um lançamento de Entrada.
+- O valor inicial de uma conta secundária será representado por transferência com a conta principal.
 - O saldo de cada conta será sempre calculado automaticamente a partir dos lançamentos registrados.
 - O usuário poderá criar quantas contas desejar.
 - O nome das contas poderá ser alterado sem comprometer o histórico financeiro.

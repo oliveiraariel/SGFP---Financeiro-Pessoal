@@ -1,23 +1,25 @@
 id,titulo,arquivo,status
-RF01,Gerenciar contas financeiras,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF02,Gerenciar o saldo das contas,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF03,Gerenciar o saldo inicial da conta principal,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF04,Gerenciar compromissos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF05,Gerenciar a efetivação de compromissos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF06,Gerenciar compromissos recorrentes,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF07,Gerenciar categorias financeiras,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF08,Registrar lançamentos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF09,Atualizar os saldos a partir dos lançamentos,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF10,Gerenciar transferências entre contas,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF11,Registrar os efeitos das transferências,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF12,Gerenciar transferências recorrentes,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF13,Gerenciar compromissos de cartão de crédito,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF14,Gerenciar compromissos parcelados,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF15,Consultar o Dashboard financeiro,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF16,Navegar entre períodos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF17,Gerenciar proteção por PIN,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF18,Gerenciar o tema da aplicação,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
-RF19,Gerenciar cópias de segurança,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF-001,Cadastrar usuário,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-002,Autenticar usuário,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-003,Gerenciar senha,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-004,Gerenciar contas financeiras,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-005,Consultar saldos das contas e patrimônio total,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-006,Gerenciar compromissos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-007,Efetivar e desfazer compromissos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-008,Gerenciar compromissos recorrentes,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-009,Gerenciar categorias financeiras,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-010,Registrar lançamentos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-011,Consultar movimentações financeiras,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-012,Gerenciar transferências entre contas,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-013,Efetivar e desfazer transferências,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-014,Gerenciar transferências recorrentes,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-015,Gerenciar compromissos de cartão de crédito,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-016,Gerenciar compromissos parcelados,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-017,Consultar o Dashboard financeiro,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-018,Navegar entre períodos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-019,Gerenciar proteção por PIN,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-020,Gerenciar tema da aplicação,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
+RF-021,Gerenciar cópias de segurança e restauração,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
 RNF01,Segurança,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
 RNF02,Proteção das Credenciais,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
 RNF03,Isolamento dos Dados dos Usuários,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente

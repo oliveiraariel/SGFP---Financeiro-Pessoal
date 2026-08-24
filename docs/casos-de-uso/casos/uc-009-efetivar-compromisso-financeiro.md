@@ -40,7 +40,7 @@ O compromisso estará efetivado e a movimentação correspondente estará regist
 
 **Requisitos relacionados**
 
-RF-005, RF-009, RF-013.
+RF-007, RF-010.
 
 **Regras de negócio relacionadas**
 

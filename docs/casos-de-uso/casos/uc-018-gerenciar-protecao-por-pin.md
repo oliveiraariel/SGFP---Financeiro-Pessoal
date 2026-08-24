@@ -43,7 +43,7 @@ A proteção por PIN estará configurada ou o acesso terá sido liberado conform
 
 **Requisitos relacionados**
 
-RF-023.
+RF-019.
 
 **Regras de negócio relacionadas**
 

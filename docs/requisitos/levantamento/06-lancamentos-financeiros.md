@@ -116,7 +116,7 @@ O saldo informado será registrado pelo sistema por meio de um lançamento de en
 
 **RN-025**
 
-O lançamento de entrada correspondente ao saldo inicial será utilizado como ponto de partida para os cálculos das movimentações financeiras posteriores.
+O lançamento de Entrada que representa o valor inicial da conta principal será utilizado como ponto de partida para os cálculos das movimentações financeiras posteriores.
 
 **RN-026**
 
@@ -124,7 +124,7 @@ O saldo da conta principal poderá assumir valores positivos, zero ou negativos.
 
 **RN-027**
 
-As entradas e saídas efetivadas serão aplicadas ao saldo a partir do lançamento correspondente ao saldo inicial, quando este existir.
+As entradas e saídas efetivadas serão aplicadas ao saldo a partir do lançamento de Entrada que representa o valor inicial da conta principal, quando este existir.
 
 **RN-028**
 

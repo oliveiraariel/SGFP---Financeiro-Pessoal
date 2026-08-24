@@ -24,3 +24,4 @@ docs/requisitos/srs/07-criterios-de-aceitacao.md,Tarefas — S G F P/Tarefa @Cri
 docs/requisitos/srs/08-rastreabilidade.md,Tarefas — S G F P/Tarefa @Rastreabilidade dos Requisitos 3c60c1676cbc8023a377f675a6abe607.md,cleaned task content
 docs/requisitos/srs/02-descricao-geral.md,Tarefas — S G F P/Tarefa @Descrição Geral do Sistema 3bf0c1676cbc8037bcfce3706541d3e3.md,draft finalized using existing project documents
 docs/casos-de-uso/,Tarefas — S G F P/@Etapa 4 — Casos de Uso/SGFP_Casos_de_Uso_v1.0.md,single large file split by UC
+docs/requisitos/srs/03-requisitos-funcionais.md + docs/requisitos/srs/07-criterios-de-aceitacao.md + docs/requisitos/srs/08-rastreabilidade.md + docs/casos-de-uso/,Catálogo formal anterior de 19 RFs e artefatos derivados de 25 RFs,baseline funcional V1 reconciliada em 21 RFs RF-001 a RF-021; migração detalhada em relatorio-de-consolidacao.md §5

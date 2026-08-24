@@ -37,7 +37,7 @@ A efetivação deixará de produzir efeito financeiro.
 
 **Requisitos relacionados**
 
-RF-005, RF-009.
+RF-007, RF-010.
 
 **Regras de negócio relacionadas**
 

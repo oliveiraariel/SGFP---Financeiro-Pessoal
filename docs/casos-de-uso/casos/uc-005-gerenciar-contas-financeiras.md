@@ -31,6 +31,7 @@ O usuário acessa a área de contas.
 * O usuário poderá possuir múltiplas contas.
 * Deverá existir apenas uma conta principal.
 * As contas secundárias obedecerão às regras específicas de movimentação definidas no levantamento.
+* O valor inicial de uma conta secundária deverá chegar por transferência com a conta principal, sem Entrada direta para composição inicial.
 
 **Pós-condições**
 

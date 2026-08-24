@@ -36,7 +36,7 @@ O parcelamento estará representado pelo compromisso recorrente.
 
 **Requisitos relacionados**
 
-RF-020, RF-012.
+RF-016, RF-008.
 
 **Regras de negócio relacionadas**
 

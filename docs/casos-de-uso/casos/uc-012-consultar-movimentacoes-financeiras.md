@@ -34,7 +34,7 @@ Nenhum dado será alterado pela consulta.
 
 **Requisitos relacionados**
 
-RF-014, RF-015, RF-022.
+RF-010, RF-011, RF-018.
 
 **Regras de negócio relacionadas**
 

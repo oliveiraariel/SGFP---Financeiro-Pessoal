@@ -39,7 +39,7 @@ Os dados atuais estarão substituídos pelos dados da cópia selecionada.
 
 **Requisitos relacionados**
 
-RF-025.
+RF-021.
 
 **Regras de negócio relacionadas**
 
