@@ -50,7 +50,7 @@ A próxima etapa planejada é:
 Entretanto, a entrada na Etapa 5 está **bloqueada por pendências documentais conhecidas**, registradas em:
 
 - `project-manifest.yaml`;
-- `90-governanca/relatorio-de-consolidacao.md`.
+- `docs/governanca/relatorio-de-consolidacao.md`.
 
 Enquanto os bloqueadores permanecerem abertos, agentes podem trabalhar na reconciliação e correção documental das Etapas 2, 3 e 4, mas não devem iniciar modelagem do domínio, modelagem de dados ou implementação como se a baseline estivesse aprovada.
 
@@ -59,15 +59,15 @@ Enquanto os bloqueadores permanecerem abertos, agentes podem trabalhar na reconc
 Antes de executar qualquer tarefa, o agente coordenador deverá ler:
 
 1. `project-manifest.yaml`
-2. `90-governanca/relatorio-de-consolidacao.md`
-3. `01-projeto/plano-de-desenvolvimento.md`
-4. `01-projeto/documento-de-visao.md`
+2. `docs/governanca/relatorio-de-consolidacao.md`
+3. `docs/projeto/plano-de-desenvolvimento.md`
+4. `docs/projeto/documento-de-visao.md`
 
 Depois, deverá carregar somente os documentos necessários à tarefa:
 
-5. `02-requisitos/levantamento/README.md` e módulos de negócio envolvidos;
-6. `02-requisitos/srs/README.md` e seções do SRS envolvidas;
-7. `03-casos-de-uso/README.md` e Casos de Uso relacionados;
+5. `docs/requisitos/levantamento/README.md` e módulos de negócio envolvidos;
+6. `docs/requisitos/srs/README.md` e seções do SRS envolvidas;
+7. `docs/casos-de-uso/README.md` e Casos de Uso relacionados;
 8. artefatos das etapas posteriores, quando já existirem e forem relevantes.
 
 Não é necessário carregar todo o repositório para cada tarefa. O contexto deve ser suficiente para garantir correção, sem leitura indiscriminada.
@@ -78,18 +78,18 @@ A autoridade de cada documento depende do tipo de informação.
 
 | Assunto | Fonte principal |
 |---|---|
-| Processo, sequência de etapas e gates | `01-projeto/plano-de-desenvolvimento.md` |
-| Visão, propósito e escopo geral do produto | `01-projeto/documento-de-visao.md` |
-| Regras de negócio e decisões do domínio | `02-requisitos/levantamento/` |
-| Requisitos funcionais e não funcionais | `02-requisitos/srs/` |
-| Interações ator–sistema | `03-casos-de-uso/` |
-| Conceitos do domínio | `04-dominio/` |
-| Modelagem conceitual, DER e modelo físico | `05-modelagem-dados/` |
-| Decisões de arquitetura | `06-arquitetura/` |
-| Implementação da API | `07-api/` |
-| Implementação da interface Web | `08-interface-web/` |
-| Estratégia, casos e resultados de teste | `09-testes/` |
-| Proveniência, inventário e consolidação | `90-governanca/` |
+| Processo, sequência de etapas e gates | `docs/projeto/plano-de-desenvolvimento.md` |
+| Visão, propósito e escopo geral do produto | `docs/projeto/documento-de-visao.md` |
+| Regras de negócio e decisões do domínio | `docs/requisitos/levantamento/` |
+| Requisitos funcionais e não funcionais | `docs/requisitos/srs/` |
+| Interações ator–sistema | `docs/casos-de-uso/` |
+| Conceitos do domínio | `docs/dominio/` |
+| Modelagem conceitual, DER e modelo físico | `docs/modelagem-dados/` |
+| Decisões de arquitetura | `docs/arquitetura/` |
+| Implementação da API | `docs/api/` |
+| Implementação da interface Web | `docs/interface-web/` |
+| Estratégia, casos e resultados de teste | `docs/testes/` |
+| Proveniência, inventário e consolidação | `docs/governanca/` |
 
 `project-manifest.yaml` e `ORCHESTRATOR.md` são fontes de **governança e roteamento**, não fontes de regras de negócio.
 
@@ -133,18 +133,18 @@ O Plano de Desenvolvimento define 12 etapas. A árvore do repositório agrupa al
 
 | Etapa | Conteúdo | Diretório principal |
 |---|---|---|
-| 1 | Documento de Visão | `01-projeto/` |
-| 2 | Levantamento de Requisitos | `02-requisitos/levantamento/` |
-| 3 | SRS | `02-requisitos/srs/` |
-| 4 | Casos de Uso | `03-casos-de-uso/` |
-| 5 | Mapa do Domínio | `04-dominio/` |
-| 6 | Modelagem Conceitual | `05-modelagem-dados/` |
-| 7 | DER | `05-modelagem-dados/` |
-| 8 | Modelo Físico | `05-modelagem-dados/` |
-| 9 | Arquitetura | `06-arquitetura/` |
-| 10 | API | `07-api/` |
-| 11 | Interface Web | `08-interface-web/` |
-| 12 | Testes | `09-testes/` |
+| 1 | Documento de Visão | `docs/projeto/` |
+| 2 | Levantamento de Requisitos | `docs/requisitos/levantamento/` |
+| 3 | SRS | `docs/requisitos/srs/` |
+| 4 | Casos de Uso | `docs/casos-de-uso/` |
+| 5 | Mapa do Domínio | `docs/dominio/` |
+| 6 | Modelagem Conceitual | `docs/modelagem-dados/` |
+| 7 | DER | `docs/modelagem-dados/` |
+| 8 | Modelo Físico | `docs/modelagem-dados/` |
+| 9 | Arquitetura | `docs/arquitetura/` |
+| 10 | API | `docs/api/` |
+| 11 | Interface Web | `docs/interface-web/` |
+| 12 | Testes | `docs/testes/` |
 
 A existência de um diretório reservado para uma etapa futura não significa que a etapa esteja iniciada.
 
@@ -283,7 +283,7 @@ As regras de negócio possuem identificadores locais repetidos entre módulos, c
 
 Para referências globais automatizadas, utilizar:
 
-`02-requisitos/levantamento/regras-de-negocio-index.csv`
+`docs/requisitos/levantamento/regras-de-negocio-index.csv`
 
 e seu campo:
 
@@ -404,9 +404,9 @@ O export bruto do Notion e versões históricas não fazem parte desta árvore C
 
 A proveniência disponível no repositório deve ser consultada em:
 
-- `90-governanca/inventario-fonte.csv`
-- `90-governanca/proveniencia.csv`
-- `90-governanca/relatorio-de-consolidacao.md`
+- `docs/governanca/inventario-fonte.csv`
+- `docs/governanca/proveniencia.csv`
+- `docs/governanca/relatorio-de-consolidacao.md`
 
 Caso seja necessária auditoria sobre o material bruto original, deve-se utilizar o pacote de preservação completo mantido separadamente.
 

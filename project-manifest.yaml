@@ -12,6 +12,7 @@ project:
 
 repository:
   edition: "core"
+  documentation_root: "docs"
   purpose:
     - "canonical_working_repository"
     - "human_documentation"
@@ -32,9 +33,9 @@ documentation:
     preservation_note: "O export bruto e versões históricas são mantidos no pacote completo de preservação, fora da edição Core."
   governance:
     orchestrator_contract: "ORCHESTRATOR.md"
-    consolidation_report: "90-governanca/relatorio-de-consolidacao.md"
-    provenance_index: "90-governanca/proveniencia.csv"
-    source_inventory: "90-governanca/inventario-fonte.csv"
+    consolidation_report: "docs/governanca/relatorio-de-consolidacao.md"
+    provenance_index: "docs/governanca/proveniencia.csv"
+    source_inventory: "docs/governanca/inventario-fonte.csv"
 
 product_constraints:
   v1:
@@ -68,114 +69,114 @@ stages:
   - id: 1
     name: "Documento de Visão"
     status: "completed"
-    path: "01-projeto/documento-de-visao.md"
+    path: "docs/projeto/documento-de-visao.md"
 
   - id: 2
     name: "Levantamento de Requisitos"
     status: "completed"
-    path: "02-requisitos/levantamento/"
+    path: "docs/requisitos/levantamento/"
 
   - id: 3
     name: "Especificação de Requisitos de Software (SRS)"
     status: "completed_with_open_reconciliation_issues"
-    path: "02-requisitos/srs/"
+    path: "docs/requisitos/srs/"
 
   - id: 4
     name: "Casos de Uso"
     status: "completed_with_open_reconciliation_issues"
-    path: "03-casos-de-uso/"
+    path: "docs/casos-de-uso/"
 
   - id: 5
     name: "Mapa do Domínio"
     status: "blocked"
-    path: "04-dominio/"
+    path: "docs/dominio/"
 
   - id: 6
     name: "Modelagem Conceitual (MER)"
     status: "not_started"
-    path: "05-modelagem-dados/01-modelagem-conceitual-mer.md"
+    path: "docs/modelagem-dados/01-modelagem-conceitual-mer.md"
 
   - id: 7
     name: "Modelo Entidade-Relacionamento (DER)"
     status: "not_started"
-    path: "05-modelagem-dados/02-modelo-entidade-relacionamento-der.md"
+    path: "docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md"
 
   - id: 8
     name: "Modelo Físico"
     status: "not_started"
-    path: "05-modelagem-dados/03-modelo-fisico.md"
+    path: "docs/modelagem-dados/03-modelo-fisico.md"
 
   - id: 9
     name: "Arquitetura da Aplicação"
     status: "not_started"
-    path: "06-arquitetura/"
+    path: "docs/arquitetura/"
 
   - id: 10
     name: "Desenvolvimento da API"
     status: "not_started"
-    path: "07-api/"
+    path: "docs/api/"
 
   - id: 11
     name: "Desenvolvimento da Interface Web"
     status: "not_started"
-    path: "08-interface-web/"
+    path: "docs/interface-web/"
 
   - id: 12
     name: "Testes"
     status: "not_started"
-    path: "09-testes/"
+    path: "docs/testes/"
 
 canonical_sources:
   process_and_stage_gates:
-    path: "01-projeto/plano-de-desenvolvimento.md"
+    path: "docs/projeto/plano-de-desenvolvimento.md"
     authority: "canonical"
 
   product_vision_and_scope:
-    path: "01-projeto/documento-de-visao.md"
+    path: "docs/projeto/documento-de-visao.md"
     authority: "canonical"
 
   business_rules:
-    path: "02-requisitos/levantamento/"
+    path: "docs/requisitos/levantamento/"
     authority: "canonical"
-    global_index: "02-requisitos/levantamento/regras-de-negocio-index.csv"
+    global_index: "docs/requisitos/levantamento/regras-de-negocio-index.csv"
 
   functional_requirements:
-    path: "02-requisitos/srs/03-requisitos-funcionais.md"
+    path: "docs/requisitos/srs/03-requisitos-funcionais.md"
     authority: "canonical_but_reconciliation_required"
     current_catalog_size: 19
 
   nonfunctional_requirements:
-    path: "02-requisitos/srs/04-requisitos-nao-funcionais.md"
+    path: "docs/requisitos/srs/04-requisitos-nao-funcionais.md"
     authority: "canonical"
 
   restrictions_and_dependencies:
-    path: "02-requisitos/srs/06-restricoes-e-dependencias.md"
+    path: "docs/requisitos/srs/06-restricoes-e-dependencias.md"
     authority: "canonical"
 
   acceptance_criteria:
-    path: "02-requisitos/srs/07-criterios-de-aceitacao.md"
+    path: "docs/requisitos/srs/07-criterios-de-aceitacao.md"
     authority: "derived_needs_reconciliation"
 
   requirements_traceability:
-    path: "02-requisitos/srs/08-rastreabilidade.md"
+    path: "docs/requisitos/srs/08-rastreabilidade.md"
     authority: "derived_needs_reconciliation"
 
   use_cases:
-    path: "03-casos-de-uso/"
+    path: "docs/casos-de-uso/"
     authority: "derived_needs_reconciliation"
 
   governance_report:
-    path: "90-governanca/relatorio-de-consolidacao.md"
+    path: "docs/governanca/relatorio-de-consolidacao.md"
     authority: "governance_only"
 
 derived_indexes:
   business_rules:
-    path: "02-requisitos/levantamento/regras-de-negocio-index.csv"
+    path: "docs/requisitos/levantamento/regras-de-negocio-index.csv"
     identifier_field: "rule_uid"
   requirements:
-    path: "02-requisitos/srs/requisitos-index.csv"
+    path: "docs/requisitos/srs/requisitos-index.csv"
   use_cases:
-    path: "03-casos-de-uso/catalogo.csv"
+    path: "docs/casos-de-uso/catalogo.csv"
 
 authority_policy:
   human_decision_required_for:
@@ -256,10 +257,10 @@ known_issues:
     blocks_stage_5: true
     summary: "O catálogo formal atual possui 19 RFs, enquanto Casos de Uso, Critérios de Aceitação e Rastreabilidade utilizam um catálogo alternativo de 25 RFs."
     affected_paths:
-      - "02-requisitos/srs/03-requisitos-funcionais.md"
-      - "02-requisitos/srs/07-criterios-de-aceitacao.md"
-      - "02-requisitos/srs/08-rastreabilidade.md"
-      - "03-casos-de-uso/"
+      - "docs/requisitos/srs/03-requisitos-funcionais.md"
+      - "docs/requisitos/srs/07-criterios-de-aceitacao.md"
+      - "docs/requisitos/srs/08-rastreabilidade.md"
+      - "docs/casos-de-uso/"
 
   - id: "ISSUE-002"
     status: "open"
@@ -269,10 +270,10 @@ known_issues:
     blocks_stage_5: true
     summary: "Cadastro, autenticação e senha pertencem ao escopo da V1, mas não possuem RF explícito no catálogo formal atual de 19 RFs."
     affected_paths:
-      - "01-projeto/documento-de-visao.md"
-      - "02-requisitos/levantamento/01-usuarios.md"
-      - "02-requisitos/srs/03-requisitos-funcionais.md"
-      - "03-casos-de-uso/"
+      - "docs/projeto/documento-de-visao.md"
+      - "docs/requisitos/levantamento/01-usuarios.md"
+      - "docs/requisitos/srs/03-requisitos-funcionais.md"
+      - "docs/casos-de-uso/"
 
   - id: "ISSUE-003"
     status: "open"
@@ -282,9 +283,9 @@ known_issues:
     blocks_stage_5: true
     summary: "RF01 prevê exclusão de contas financeiras, mas o módulo de Contas não define regra de negócio para essa operação."
     affected_paths:
-      - "02-requisitos/levantamento/02-contas.md"
-      - "02-requisitos/srs/03-requisitos-funcionais.md"
-      - "03-casos-de-uso/casos/uc-005-gerenciar-contas-financeiras.md"
+      - "docs/requisitos/levantamento/02-contas.md"
+      - "docs/requisitos/srs/03-requisitos-funcionais.md"
+      - "docs/casos-de-uso/casos/uc-005-gerenciar-contas-financeiras.md"
 
   - id: "ISSUE-004"
     status: "open"
@@ -294,9 +295,9 @@ known_issues:
     blocks_stage_5: true
     summary: "O escopo do registro de saldo inicial entre conta principal e contas secundárias precisa de confirmação."
     affected_paths:
-      - "02-requisitos/levantamento/02-contas.md"
-      - "02-requisitos/srs/03-requisitos-funcionais.md"
-      - "03-casos-de-uso/casos/uc-006-informar-saldo-inicial.md"
+      - "docs/requisitos/levantamento/02-contas.md"
+      - "docs/requisitos/srs/03-requisitos-funcionais.md"
+      - "docs/casos-de-uso/casos/uc-006-informar-saldo-inicial.md"
 
 resolved_consolidation_notes:
   - topic: "use_cases_location"
@@ -307,4 +308,4 @@ resolved_consolidation_notes:
     resolution: "A árvore canônica segue a decisão mais recente consolidada para a utilização obrigatória de categoria."
   - topic: "raw_source_location"
     status: "resolved"
-    resolution: "A edição Core não contém o export bruto; proveniência e inventário permanecem em 90-governanca/."
+    resolution: "A edição Core não contém o export bruto; proveniência e inventário permanecem em docs/governanca/."

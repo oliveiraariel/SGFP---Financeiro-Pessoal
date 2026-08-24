@@ -1,0 +1,26 @@
+destino_canonico,fonte_principal,tratamento
+docs/projeto/documento-de-visao.md,Etapas do Projeto — S G F P/Documento de Visão 2e491e84998e456085cac0ea9ad27bb5.md,latest stage document; formatting/status cleaned
+docs/projeto/plano-de-desenvolvimento.md,Tarefas — S G F P/@Plano de Desenvolvimento do Projeto SGFP 3ba0c1676cbc8063be27e85900441429.md,"task contains v1.4, newer than stage page v1.3"
+docs/requisitos/levantamento/01-usuarios.md,Tarefas — S G F P/Tarefa @Login e Usuários 3b70c1676cbc8086adebc7d4ee98d5ca.md,canonicalized
+docs/requisitos/levantamento/02-contas.md,Tarefas — S G F P/Tarefa @Contas 3b70c1676cbc808da620e4c2255d45e3.md,canonicalized
+docs/requisitos/levantamento/03-compromissos.md,Tarefas — S G F P/Tarefa @Compromissos 3b70c1676cbc80009810d1dd39af79c3.md,canonicalized
+docs/requisitos/levantamento/04-categorias.md,Tarefas — S G F P/Tarefa @Categorias 3b70c1676cbc80b2ab52c9aba712f7f3.md,canonicalized; category rule updated from Plan v1.4
+docs/requisitos/levantamento/05-recorrencias.md,Tarefas — S G F P/Tarefa @Recorrências 3b70c1676cbc80fb85b3d0d771e1d839.md,canonicalized
+docs/requisitos/levantamento/06-lancamentos-financeiros.md,Tarefas — S G F P/Tarefa @Lançamentos Financeiros 3b70c1676cbc80288da6fa30d1249818.md,canonicalized
+docs/requisitos/levantamento/07-transferencias.md,Tarefas — S G F P/Tarefa @Transferências 3b70c1676cbc80038551eed7b7f2a1b6.md,canonicalized
+docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md,Tarefas — S G F P/Tarefa @Casos específicos de Compromissos Financei 3b70c1676cbc80938ec2fd66b32ba096.md,canonicalized
+docs/requisitos/levantamento/09-dashboard.md,Tarefas — S G F P/Tarefa @Dashboards 3b70c1676cbc80fdbe37e561ce05c4a5.md,canonicalized
+docs/requisitos/levantamento/10-configuracoes.md,Tarefas — S G F P/Tarefa @Arquivos 3b80c1676cbc80a3932fdf465e7a6a84.md,canonicalized; content was misplaced under Arquivos task
+docs/requisitos/levantamento/11-relatorios.md,Tarefas — S G F P/Tarefa @Relatórios 3b70c1676cbc802aa689f30294e9131c.md,canonicalized
+docs/requisitos/levantamento/13-seguranca.md,Tarefas — S G F P/Tarefa @Segurança 3b80c1676cbc80baa82cd771cc694f9b.md,canonicalized
+docs/requisitos/levantamento/14-integracoes.md,Tarefas — S G F P/Tarefa @Integrações 3b80c1676cbc8050a17bc66ddb7b34ca.md,canonicalized
+docs/requisitos/levantamento/12-arquivos.md,Plano de Desenvolvimento v1.4 §12 Arquivos,reconstructed because exported Arquivos task contains Configurações
+docs/requisitos/srs/01-introducao.md,Tarefas — S G F P/Tarefa @Introdução 3bf0c1676cbc806aa3fdcf642d550b1f.md,cleaned task content
+docs/requisitos/srs/03-requisitos-funcionais.md,Tarefas — S G F P/Tarefa @Requisitos Funcionais 3bf0c1676cbc805e8aebfd48fa5e7d20.md,cleaned task content
+docs/requisitos/srs/04-requisitos-nao-funcionais.md,Tarefas — S G F P/Tarefa @Requisitos Não Funcionais 3bf0c1676cbc8059915af0c43a947aec.md,cleaned task content
+docs/requisitos/srs/05-regras-de-negocio-referencia.md,Tarefas — S G F P/Tarefa @Regras de Negócio 3bf0c1676cbc80479456da17ea46172b.md,cleaned task content
+docs/requisitos/srs/06-restricoes-e-dependencias.md,Tarefas — S G F P/Tarefa @Restrições e Dependências 3c60c1676cbc8041bbdde39a70ed6df9.md,cleaned task content
+docs/requisitos/srs/07-criterios-de-aceitacao.md,Tarefas — S G F P/Tarefa @Critérios de Aceitação 3c60c1676cbc80628e13f18fc7e982b7.md,cleaned task content
+docs/requisitos/srs/08-rastreabilidade.md,Tarefas — S G F P/Tarefa @Rastreabilidade dos Requisitos 3c60c1676cbc8023a377f675a6abe607.md,cleaned task content
+docs/requisitos/srs/02-descricao-geral.md,Tarefas — S G F P/Tarefa @Descrição Geral do Sistema 3bf0c1676cbc8037bcfce3706541d3e3.md,draft finalized using existing project documents
+docs/casos-de-uso/,Tarefas — S G F P/@Etapa 4 — Casos de Uso/SGFP_Casos_de_Uso_v1.0.md,single large file split by UC

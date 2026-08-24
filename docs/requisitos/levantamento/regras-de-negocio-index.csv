@@ -1,0 +1,183 @@
+rule_uid,modulo,id_original,titulo,arquivo
+USR-RN-001,Usuários,RN-001,Usuário Individual,docs/requisitos/levantamento/01-usuarios.md
+USR-RN-002,Usuários,RN-002,Autenticação,docs/requisitos/levantamento/01-usuarios.md
+USR-RN-003,Usuários,RN-003,Histórico do Usuário,docs/requisitos/levantamento/01-usuarios.md
+USR-RN-004,Usuários,RN-004,Segurança das Senhas,docs/requisitos/levantamento/01-usuarios.md
+USR-RN-005,Usuários,RN-005,Isolamento dos Dados,docs/requisitos/levantamento/01-usuarios.md
+USR-RN-006,Usuários,RN-006,Cadastro Inicial,docs/requisitos/levantamento/01-usuarios.md
+USR-RN-007,Usuários,RN-007,Recuperação de Senha e PIN,docs/requisitos/levantamento/01-usuarios.md
+USR-RN-008,Usuários,RN-008,PIN,docs/requisitos/levantamento/01-usuarios.md
+USR-RN-009,Usuários,RN-009,Alteração de Senha e PIN,docs/requisitos/levantamento/01-usuarios.md
+CTA-RN-001,Contas,RN-001,,docs/requisitos/levantamento/02-contas.md
+CTA-RN-002,Contas,RN-002,,docs/requisitos/levantamento/02-contas.md
+CTA-RN-003,Contas,RN-003,,docs/requisitos/levantamento/02-contas.md
+CTA-RN-004,Contas,RN-004,,docs/requisitos/levantamento/02-contas.md
+CTA-RN-005,Contas,RN-005,,docs/requisitos/levantamento/02-contas.md
+CTA-RN-006,Contas,RN-006,,docs/requisitos/levantamento/02-contas.md
+CTA-RN-007,Contas,RN-007,,docs/requisitos/levantamento/02-contas.md
+CTA-RN-008,Contas,RN-008,,docs/requisitos/levantamento/02-contas.md
+CTA-RN-009,Contas,RN-009,,docs/requisitos/levantamento/02-contas.md
+CTA-RN-010,Contas,RN-010,,docs/requisitos/levantamento/02-contas.md
+CMP-RN-001,Compromissos Financeiros,RN-001,,docs/requisitos/levantamento/03-compromissos.md
+CMP-RN-002,Compromissos Financeiros,RN-002,,docs/requisitos/levantamento/03-compromissos.md
+CMP-RN-003,Compromissos Financeiros,RN-003,,docs/requisitos/levantamento/03-compromissos.md
+CMP-RN-004,Compromissos Financeiros,RN-004,,docs/requisitos/levantamento/03-compromissos.md
+CMP-RN-005,Compromissos Financeiros,RN-005,,docs/requisitos/levantamento/03-compromissos.md
+CMP-RN-006,Compromissos Financeiros,RN-006,,docs/requisitos/levantamento/03-compromissos.md
+CMP-RN-007,Compromissos Financeiros,RN-007,,docs/requisitos/levantamento/03-compromissos.md
+CMP-RN-008,Compromissos Financeiros,RN-008,,docs/requisitos/levantamento/03-compromissos.md
+CMP-RN-009,Compromissos Financeiros,RN-009,,docs/requisitos/levantamento/03-compromissos.md
+CMP-RN-010,Compromissos Financeiros,RN-010,,docs/requisitos/levantamento/03-compromissos.md
+CAT-RN-001,Categorias,RN-001,,docs/requisitos/levantamento/04-categorias.md
+CAT-RN-002,Categorias,RN-002,,docs/requisitos/levantamento/04-categorias.md
+CAT-RN-003,Categorias,RN-003,,docs/requisitos/levantamento/04-categorias.md
+CAT-RN-004,Categorias,RN-004,,docs/requisitos/levantamento/04-categorias.md
+CAT-RN-005,Categorias,RN-005,,docs/requisitos/levantamento/04-categorias.md
+CAT-RN-006,Categorias,RN-006,,docs/requisitos/levantamento/04-categorias.md
+CAT-RN-007,Categorias,RN-007,,docs/requisitos/levantamento/04-categorias.md
+CAT-RN-008,Categorias,RN-008,,docs/requisitos/levantamento/04-categorias.md
+CAT-RN-009,Categorias,RN-009,,docs/requisitos/levantamento/04-categorias.md
+REC-RN-001,Recorrência,RN-001,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-002,Recorrência,RN-002,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-003,Recorrência,RN-003,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-004,Recorrência,RN-004,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-005,Recorrência,RN-005,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-006,Recorrência,RN-006,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-007,Recorrência,RN-007,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-008,Recorrência,RN-008,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-009,Recorrência,RN-009,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-010,Recorrência,RN-010,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-011,Recorrência,RN-011,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-012,Recorrência,RN-012,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-013,Recorrência,RN-013,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-014,Recorrência,RN-014,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-015,Recorrência,RN-015,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-016,Recorrência,RN-016,,docs/requisitos/levantamento/05-recorrencias.md
+REC-RN-017,Recorrência,RN-017,,docs/requisitos/levantamento/05-recorrencias.md
+LAN-RN-001,Lançamentos Financeiros,RN-001,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-002,Lançamentos Financeiros,RN-002,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-003,Lançamentos Financeiros,RN-003,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-004,Lançamentos Financeiros,RN-004,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-005,Lançamentos Financeiros,RN-005,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-006,Lançamentos Financeiros,RN-006,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-007,Lançamentos Financeiros,RN-007,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-008,Lançamentos Financeiros,RN-008,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-009,Lançamentos Financeiros,RN-009,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-010,Lançamentos Financeiros,RN-010,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-011,Lançamentos Financeiros,RN-011,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-012,Lançamentos Financeiros,RN-012,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-013,Lançamentos Financeiros,RN-013,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-014,Lançamentos Financeiros,RN-014,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-015,Lançamentos Financeiros,RN-015,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-016,Lançamentos Financeiros,RN-016,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-017,Lançamentos Financeiros,RN-017,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-018,Lançamentos Financeiros,RN-018,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-019,Lançamentos Financeiros,RN-019,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-020,Lançamentos Financeiros,RN-020,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-021,Lançamentos Financeiros,RN-021,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-022,Lançamentos Financeiros,RN-022,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-023,Lançamentos Financeiros,RN-023,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-024,Lançamentos Financeiros,RN-024,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-025,Lançamentos Financeiros,RN-025,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-026,Lançamentos Financeiros,RN-026,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-027,Lançamentos Financeiros,RN-027,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-028,Lançamentos Financeiros,RN-028,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-029,Lançamentos Financeiros,RN-029,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-030,Lançamentos Financeiros,RN-030,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-031,Lançamentos Financeiros,RN-031,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-032,Lançamentos Financeiros,RN-032,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-033,Lançamentos Financeiros,RN-033,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-034,Lançamentos Financeiros,RN-034,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-035,Lançamentos Financeiros,RN-035,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-036,Lançamentos Financeiros,RN-036,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-037,Lançamentos Financeiros,RN-037,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-038,Lançamentos Financeiros,RN-038,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-039,Lançamentos Financeiros,RN-039,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+LAN-RN-040,Lançamentos Financeiros,RN-040,,docs/requisitos/levantamento/06-lancamentos-financeiros.md
+TRF-RN-001,Transferências,RN-001,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-002,Transferências,RN-002,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-003,Transferências,RN-003,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-004,Transferências,RN-004,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-005,Transferências,RN-005,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-006,Transferências,RN-006,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-007,Transferências,RN-007,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-008,Transferências,RN-008,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-009,Transferências,RN-009,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-010,Transferências,RN-010,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-011,Transferências,RN-011,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-012,Transferências,RN-012,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-013,Transferências,RN-013,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-014,Transferências,RN-014,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-015,Transferências,RN-015,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-016,Transferências,RN-016,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-017,Transferências,RN-017,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-018,Transferências,RN-018,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-019,Transferências,RN-019,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-020,Transferências,RN-020,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-021,Transferências,RN-021,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-022,Transferências,RN-022,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-023,Transferências,RN-023,,docs/requisitos/levantamento/07-transferencias.md
+TRF-RN-024,Transferências,RN-024,,docs/requisitos/levantamento/07-transferencias.md
+ESP-RN-001,Casos Específicos de Compromissos Financeiros,RN-001,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-002,Casos Específicos de Compromissos Financeiros,RN-002,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-003,Casos Específicos de Compromissos Financeiros,RN-003,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-004,Casos Específicos de Compromissos Financeiros,RN-004,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-005,Casos Específicos de Compromissos Financeiros,RN-005,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-006,Casos Específicos de Compromissos Financeiros,RN-006,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-007,Casos Específicos de Compromissos Financeiros,RN-007,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-008,Casos Específicos de Compromissos Financeiros,RN-008,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-009,Casos Específicos de Compromissos Financeiros,RN-009,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-010,Casos Específicos de Compromissos Financeiros,RN-010,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-011,Casos Específicos de Compromissos Financeiros,RN-011,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-012,Casos Específicos de Compromissos Financeiros,RN-012,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-013,Casos Específicos de Compromissos Financeiros,RN-013,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-014,Casos Específicos de Compromissos Financeiros,RN-014,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-015,Casos Específicos de Compromissos Financeiros,RN-015,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-016,Casos Específicos de Compromissos Financeiros,RN-016,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-017,Casos Específicos de Compromissos Financeiros,RN-017,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-018,Casos Específicos de Compromissos Financeiros,RN-018,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-019,Casos Específicos de Compromissos Financeiros,RN-019,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-020,Casos Específicos de Compromissos Financeiros,RN-020,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-021,Casos Específicos de Compromissos Financeiros,RN-021,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-022,Casos Específicos de Compromissos Financeiros,RN-022,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-023,Casos Específicos de Compromissos Financeiros,RN-023,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+ESP-RN-024,Casos Específicos de Compromissos Financeiros,RN-024,,docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
+DSH-RN-001,Dashboard,RN-001,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-002,Dashboard,RN-002,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-003,Dashboard,RN-003,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-004,Dashboard,RN-004,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-005,Dashboard,RN-005,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-006,Dashboard,RN-006,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-007,Dashboard,RN-007,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-008,Dashboard,RN-008,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-009,Dashboard,RN-009,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-010,Dashboard,RN-010,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-011,Dashboard,RN-011,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-012,Dashboard,RN-012,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-013,Dashboard,RN-013,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-014,Dashboard,RN-014,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-015,Dashboard,RN-015,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-016,Dashboard,RN-016,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-017,Dashboard,RN-017,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-018,Dashboard,RN-018,,docs/requisitos/levantamento/09-dashboard.md
+DSH-RN-019,Dashboard,RN-019,,docs/requisitos/levantamento/09-dashboard.md
+CFG-RN-001,Configurações,RN-001,PIN Opcional,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-002,Configurações,RN-002,Solicitação do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-003,Configurações,RN-003,Alteração do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-004,Configurações,RN-004,Desativação do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-005,Configurações,RN-005,Limite de Tentativas do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-006,Configurações,RN-006,Recuperação do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-007,Configurações,RN-007,Aviso sobre Recuperação do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-008,Configurações,RN-008,Tema da Aplicação,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-009,Configurações,RN-009,Criação de Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-010,Configurações,RN-010,Armazenamento ou Entrega da Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-011,Configurações,RN-011,Restauração de Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-012,Configurações,RN-012,Restauração Integral,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-013,Configurações,RN-013,Confirmação da Restauração,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-014,Configurações,RN-014,Proteção da Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
+REL-RN-001,Relatórios,RN-001,,docs/requisitos/levantamento/11-relatorios.md
+REL-RN-002,Relatórios,RN-002,,docs/requisitos/levantamento/11-relatorios.md
+REL-RN-003,Relatórios,RN-003,,docs/requisitos/levantamento/11-relatorios.md
+REL-RN-004,Relatórios,RN-004,,docs/requisitos/levantamento/11-relatorios.md
+REL-RN-005,Relatórios,RN-005,,docs/requisitos/levantamento/11-relatorios.md
+INT-RN-001,Integrações,RN-001,Integrações Externas,docs/requisitos/levantamento/14-integracoes.md

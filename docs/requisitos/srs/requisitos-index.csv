@@ -1,0 +1,40 @@
+id,titulo,arquivo,status
+RF01,Gerenciar contas financeiras,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF02,Gerenciar o saldo das contas,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF03,Gerenciar o saldo inicial da conta principal,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF04,Gerenciar compromissos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF05,Gerenciar a efetivação de compromissos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF06,Gerenciar compromissos recorrentes,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF07,Gerenciar categorias financeiras,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF08,Registrar lançamentos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF09,Atualizar os saldos a partir dos lançamentos,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF10,Gerenciar transferências entre contas,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF11,Registrar os efeitos das transferências,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF12,Gerenciar transferências recorrentes,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF13,Gerenciar compromissos de cartão de crédito,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF14,Gerenciar compromissos parcelados,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF15,Consultar o Dashboard financeiro,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF16,Navegar entre períodos financeiros,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF17,Gerenciar proteção por PIN,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF18,Gerenciar o tema da aplicação,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RF19,Gerenciar cópias de segurança,docs/requisitos/srs/03-requisitos-funcionais.md,vigente
+RNF01,Segurança,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF02,Proteção das Credenciais,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF03,Isolamento dos Dados dos Usuários,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF04,Proteção dos Dados,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF05,Integridade dos Dados Financeiros,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF06,Consistência das Operações,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF07,Preservação do Histórico Financeiro,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF08,Confiabilidade dos Cálculos Financeiros,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF09,Integridade dos Valores Monetários,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF10,Desempenho,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF11,Disponibilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF12,Usabilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF13,Responsividade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF14,Compatibilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF15,Manutenibilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF16,Escalabilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF17,Recuperação de Dados,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF18,Proteção das Cópias de Segurança,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF19,Privacidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF20,Evolutividade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente

@@ -19,4 +19,4 @@ O catálogo `03-requisitos-funcionais.md` contém **19 requisitos funcionais (RF
 
 ## Pendência de consistência
 
-Os arquivos de Critérios de Aceitação e Rastreabilidade, assim como a Especificação de Casos de Uso existente, foram produzidos posteriormente com um catálogo alternativo de 25 RFs. Essa divergência está registrada em `../../90-governanca/relatorio-de-consolidacao.md` e precisa ser realinhada antes de a rastreabilidade ser considerada definitiva.
+Os arquivos de Critérios de Aceitação e Rastreabilidade, assim como a Especificação de Casos de Uso existente, foram produzidos posteriormente com um catálogo alternativo de 25 RFs. Essa divergência está registrada em `../../docs/governanca/relatorio-de-consolidacao.md` e precisa ser realinhada antes de a rastreabilidade ser considerada definitiva.

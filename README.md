@@ -72,26 +72,26 @@ A próxima etapa de evolução do projeto é o **Mapa do Domínio**, após a res
 ## Estrutura do Repositório
 
 ```text
-01-projeto/
-02-requisitos/
-03-casos-de-uso/
-04-dominio/
-05-modelagem-dados/
-06-arquitetura/
-07-api/
-08-interface-web/
-09-testes/
-90-governanca/
+docs/projeto/
+docs/requisitos/
+docs/casos-de-uso/
+docs/dominio/
+docs/modelagem-dados/
+docs/arquitetura/
+docs/api/
+docs/interface-web/
+docs/testes/
+docs/governanca/
 ```
 
-### `01-projeto/`
+### `docs/projeto/`
 
 Contém os documentos de orientação geral do projeto:
 
 * Documento de Visão;
 * Plano de Desenvolvimento.
 
-### `02-requisitos/`
+### `docs/requisitos/`
 
 Contém:
 
@@ -104,7 +104,7 @@ Contém:
 * critérios de aceitação;
 * rastreabilidade.
 
-### `03-casos-de-uso/`
+### `docs/casos-de-uso/`
 
 Contém:
 
@@ -113,11 +113,11 @@ Contém:
 * Casos de Uso individualizados;
 * referências de rastreabilidade.
 
-### `04-dominio/`
+### `docs/dominio/`
 
 Reservado ao Mapa do Domínio.
 
-### `05-modelagem-dados/`
+### `docs/modelagem-dados/`
 
 Reservado para:
 
@@ -126,23 +126,23 @@ Reservado para:
 * DER;
 * Modelo Físico.
 
-### `06-arquitetura/`
+### `docs/arquitetura/`
 
 Reservado para a documentação da arquitetura da aplicação.
 
-### `07-api/`
+### `docs/api/`
 
 Reservado para desenvolvimento e documentação da API.
 
-### `08-interface-web/`
+### `docs/interface-web/`
 
 Reservado para desenvolvimento da interface Web.
 
-### `09-testes/`
+### `docs/testes/`
 
 Reservado para estratégia, casos e resultados de testes.
 
-### `90-governanca/`
+### `docs/governanca/`
 
 Contém os documentos relacionados à reorganização, proveniência e controle documental do projeto.
 
@@ -150,12 +150,12 @@ Contém os documentos relacionados à reorganização, proveniência e controle 
 
 Os principais pontos de entrada para compreender o SGFP são:
 
-* `01-projeto/documento-de-visao.md`
-* `01-projeto/plano-de-desenvolvimento.md`
-* `02-requisitos/levantamento/README.md`
-* `02-requisitos/srs/README.md`
-* `03-casos-de-uso/README.md`
-* `90-governanca/relatorio-de-consolidacao.md`
+* `docs/projeto/documento-de-visao.md`
+* `docs/projeto/plano-de-desenvolvimento.md`
+* `docs/requisitos/levantamento/README.md`
+* `docs/requisitos/srs/README.md`
+* `docs/casos-de-uso/README.md`
+* `docs/governanca/relatorio-de-consolidacao.md`
 
 ## Fonte de Verdade
 
@@ -182,7 +182,7 @@ Agentes não devem resolver silenciosamente conflitos de requisitos, regras de n
 Antes de avançar para as próximas etapas, deve ser consultado:
 
 ```text
-90-governanca/relatorio-de-consolidacao.md
+docs/governanca/relatorio-de-consolidacao.md
 ```
 
 Entre os principais pontos ainda sujeitos a validação está a divergência entre o catálogo vigente de requisitos funcionais e artefatos derivados que utilizam outra numeração.
