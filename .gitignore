@@ -56,3 +56,13 @@ credentials/
 # Backups locais
 *.bak
 *.backup
+# OpenClaw — estado e configuração local do agente
+/openclaw-workspace-state.json
+/SOUL.md
+/IDENTITY.md
+/USER.md
+/TOOLS.md
+/HEARTBEAT.md
+/BOOTSTRAP.md
+/MEMORY.md
+/memory/
