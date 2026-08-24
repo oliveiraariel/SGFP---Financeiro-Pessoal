@@ -8,29 +8,25 @@ A relação inicial entre requisitos funcionais e casos de uso será mantida com
 | RF-002 | UC-002 |
 | RF-003 | UC-003, UC-004 |
 | RF-004 | UC-005 |
-| RF-005 | UC-005, UC-009, UC-010, UC-013 |
-| RF-006 | UC-006 |
-| RF-007 | UC-022 |
-| RF-008 | UC-007 |
-| RF-009 | UC-009, UC-010 |
-| RF-010 | UC-011 |
-| RF-011 | UC-007, UC-011 |
-| RF-012 | UC-008, UC-007 |
-| RF-013 | UC-009 |
-| RF-014 | UC-012, UC-016 |
-| RF-015 | UC-012, UC-017 |
-| RF-016 | UC-013 |
-| RF-017 | UC-013 |
-| RF-018 | UC-008, UC-013 |
-| RF-019 | UC-014 |
-| RF-020 | UC-015 |
-| RF-021 | UC-016 |
-| RF-022 | UC-016, UC-017 |
-| RF-023 | UC-018 |
-| RF-024 | UC-019 |
-| RF-025 | UC-020, UC-021 |
+| RF-005 | UC-005, UC-006, UC-022 |
+| RF-006 | UC-007, UC-011 |
+| RF-007 | UC-009, UC-010 |
+| RF-008 | UC-008, UC-015 |
+| RF-009 | UC-007, UC-011 |
+| RF-010 | UC-006, UC-009, UC-010, UC-012, UC-017 |
+| RF-011 | UC-012, UC-017 |
+| RF-012 | UC-013 |
+| RF-013 | UC-013 |
+| RF-014 | UC-008 |
+| RF-015 | UC-014 |
+| RF-016 | UC-008, UC-015 |
+| RF-017 | UC-016 |
+| RF-018 | UC-012, UC-016, UC-017 |
+| RF-019 | UC-018 |
+| RF-020 | UC-019 |
+| RF-021 | UC-020, UC-021 |
 
-Os vínculos deverão ser revisados e refinados quando os casos de uso forem validados individualmente.
+Os vínculos foram realinhados à baseline funcional RF-001 a RF-021. A existência histórica do catálogo alternativo de 25 RFs permanece registrada no relatório de consolidação e na proveniência da governança.
 
 ## 8. Critérios para a Próxima Etapa
 

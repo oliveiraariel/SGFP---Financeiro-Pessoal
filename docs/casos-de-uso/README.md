@@ -11,6 +11,6 @@ A Etapa 4 foi reorganizada para evitar um único arquivo Markdown excessivamente
 
 ## Status de consolidação
 
-**Revisão necessária antes de tratar a rastreabilidade como normativa.**
+**Baseline funcional reconciliada.**
 
-A especificação original de Casos de Uso utiliza um catálogo alternativo de 25 requisitos funcionais. O SRS atualmente consolidado possui 19 RFs. Os fluxos e objetivos dos casos foram preservados, mas os campos `Requisitos relacionados` devem ser realinhados após a decisão sobre o catálogo definitivo de RFs.
+Os campos `Requisitos relacionados` foram realinhados à baseline oficial RF-001 a RF-021. A proveniência histórica do catálogo anterior de 25 RFs permanece registrada em `docs/governanca/proveniencia.csv` e no relatório de consolidação.

@@ -38,7 +38,7 @@ A fatura estará representada como compromisso financeiro.
 
 **Requisitos relacionados**
 
-RF-019.
+RF-015.
 
 **Regras de negócio relacionadas**
 

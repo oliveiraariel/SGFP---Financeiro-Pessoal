@@ -14,7 +14,9 @@ Nenhum arquivo original foi apagado; o export completo foi preservado em `99-fon
 - UUIDs e nomes técnicos do export do Notion não são usados nos arquivos canônicos.
 - O export bruto permanece disponível apenas como fonte histórica.
 
-## 3. Inconsistências detectadas
+## 3. Inconsistências detectadas no inventário inicial
+
+Esta seção preserva o diagnóstico histórico realizado antes da reconciliação. Os itens abaixo não representam pendências atuais; o estado e a resolução vigentes estão registrados na seção 5 e no manifesto do projeto.
 
 ### 3.1 Catálogo de RFs divergente — alta prioridade
 
@@ -34,9 +36,9 @@ O Levantamento de Requisitos e o Documento de Visão incluem cadastro de usuári
 
 O catálogo alternativo de 25 RFs usado nos Casos de Uso introduziu RFs para usuário, autenticação e senha, mas essa alteração não foi incorporada ao catálogo oficial.
 
-### 3.3 Exclusão de conta — decisão de negócio pendente
+### 3.3 Exclusão de conta — pendência registrada no inventário inicial
 
-RF01 declara criação, edição, visualização **e exclusão** de contas financeiras. O módulo de Contas não define regra de exclusão, e o Caso de Uso de contas foi posteriormente limitado a criação, consulta e renomeação. A regra de exclusão de contas precisa ser confirmada antes da implementação.
+RF01 declara criação, edição, visualização **e exclusão** de contas financeiras. O módulo de Contas não define regra de exclusão, e o Caso de Uso de contas foi posteriormente limitado a criação, consulta e renomeação. A regra de exclusão de contas precisava ser confirmada antes da implementação; a decisão aplicada na reconciliação foi registrar essa operação como fora do escopo da V1.
 
 ### 3.4 Categoria opcional versus obrigatória — consolidado pela fonte mais recente
 
@@ -50,9 +52,9 @@ A tarefa `Arquivos` do export contém uma versão revisada do Módulo Configura�
 
 A subetapa `12-arquivos.md` foi reconstruída apenas a partir do Plano de Desenvolvimento v1.4, que registra que anexos de imagem não pertencem à V1.
 
-### 3.6 Saldo inicial — escopo a revisar
+### 3.6 Saldo inicial — escopo registrado no inventário inicial
 
-O módulo de Contas registra o saldo inicial por lançamento de entrada de uma conta; o SRS atual possui RF03 especificamente para o saldo inicial da **conta principal**. Recomenda-se confirmar se contas secundárias também podem receber saldo inicial por lançamento ou se essa ação fica restrita à conta principal.
+O módulo de Contas registra o valor inicial por lançamento de Entrada da **conta principal**; o SRS anterior possuía RF03 especificamente para esse conceito. A reconciliação confirmou que contas secundárias não recebem Entrada direta para composição inicial: seu valor chega por transferência com a conta principal.
 
 ### 3.7 Descrição Geral do SRS estava em formato de rascunho — corrigido
 
@@ -62,10 +64,58 @@ A página exportada continha frases de orientação e comentários conversaciona
 
 A seção de situação atual ainda indicava fase anterior do projeto. Foi atualizada para refletir o controle exportado: Etapas 2, 3 e 4 concluídas e próxima etapa prevista como Mapa do Domínio.
 
-## 4. Ordem recomendada antes de submissão a um orchestrator
+## 4. Ordem histórica recomendada antes da reconciliação
+
+Esta seção preserva a sequência de ações recomendada no diagnóstico inicial. As ações abaixo já foram executadas pela reconciliação registrada na seção 5 e não representam pendências atuais.
 
 1. Resolver o catálogo definitivo de RFs.
 2. Realinhar Casos de Uso, Critérios de Aceitação e Rastreabilidade ao catálogo escolhido.
-3. Confirmar a regra de exclusão de contas.
-4. Confirmar o escopo do saldo inicial em contas secundárias.
-5. Depois disso, congelar a Etapa 3/SRS como baseline e iniciar o Mapa do Domínio.
+3. Registrar a decisão sobre exclusão de contas e saldo inicial na baseline reconciliada.
+4. Depois disso, submeter a baseline à reavaliação/liberação do gate da Etapa 5.
+
+## 5. Reconciliação da baseline funcional V1
+
+### 5.1 Decisão aplicada
+
+A baseline funcional definitiva da V1 foi estabelecida com **21 Requisitos Funcionais**, identificados de `RF-001` a `RF-021`. Esses identificadores são oficiais e não devem ser renumerados sem decisão formal posterior.
+
+Cadastro, autenticação e senha foram formalizados como RF-001, RF-002 e RF-003 porque já pertenciam ao escopo documentado da V1. Saldos e patrimônio foram consolidados em RF-005; atualização de saldos não permaneceu como RF independente; criação de categoria durante o cadastro e registro de informações de períodos anteriores foram mantidos como fluxos/capacidades relacionadas; consulta de movimentações permaneceu independente em RF-011. Backup e restauração foram consolidados em RF-021.
+
+Exclusão de contas financeiras foi registrada como fora do escopo da V1. Não há saldo inicial armazenado como atributo: o valor inicial da conta principal é representado por lançamento de Entrada, enquanto o valor de uma conta secundária chega por transferência com a conta principal. Saldos e patrimônio são derivados dos movimentos.
+
+### 5.2 Tabela de migração e proveniência
+
+| Identificador anterior | Identificador definitivo | Tipo de mudança | Justificativa |
+|---|---|---|---|
+| RF-001 derivado | RF-001 | preservação | Cadastro de usuário já pertencia à V1. |
+| RF-002 derivado | RF-002 | preservação | Autenticação já pertencia à V1. |
+| RF-003 derivado | RF-003 | preservação | Alteração e recuperação de senha já pertenciam à V1. |
+| RF-004 derivado / RF01 formal | RF-004 | renumeração e correção de escopo | Gerenciamento de contas permanece; exclusão foi retirada da V1. |
+| RF-005 e RF-007 derivados / RF02 formal | RF-005 | consolidação | Saldos e patrimônio total são consultados a partir dos movimentos. |
+| RF-006 derivado / RF03 formal | RF-010 e regras de contas | absorção | Valor inicial não é RF autônomo nem atributo; principal usa Entrada. |
+| RF-008 derivado / RF04 formal | RF-006 | renumeração | Gerenciamento de compromissos permanece. |
+| RF-009 derivado / RF05 formal | RF-007 | consolidação funcional | Efetivação e desfazimento passam a formar um único RF. |
+| RF-012 derivado / RF06 formal | RF-008 | renumeração | Recorrência de compromissos permanece. |
+| RF-010 e RF-011 derivados / RF07 formal | RF-009 | consolidação e absorção de fluxo | Categoria durante o cadastro é fluxo relacionado, não RF autônomo. |
+| RF-013 derivado / RF08 formal | RF-010 | renumeração | Registro de lançamentos permanece e absorve valor histórico aplicável. |
+| RF-014 derivado | RF-011 | formalização | Consulta de movimentações permanece independente. |
+| RF-015 derivado | RF-010 e RF-018 | absorção | Registro histórico depende de lançamentos e navegação entre períodos. |
+| RF-016 derivado / RF10 formal | RF-012 | renumeração | Gerenciamento de transferências permanece. |
+| RF-017 derivado / RF11 formal | RF-013 | consolidação funcional | Efetivação e desfazimento dos efeitos da transferência formam um RF. |
+| RF-018 derivado / RF12 formal | RF-014 | renumeração | Recorrência de transferências permanece. |
+| RF-019 derivado / RF13 formal | RF-015 | renumeração | Compromissos de cartão permanecem. |
+| RF-020 derivado / RF14 formal | RF-016 | renumeração | Parcelamentos permanecem. |
+| RF-021 derivado / RF15 formal | RF-017 | renumeração | Dashboard permanece. |
+| RF-022 derivado / RF16 formal | RF-018 | renumeração e absorção | Navegação absorve o acesso aos períodos aplicáveis. |
+| RF-023 derivado / RF17 formal | RF-019 | renumeração | Proteção por PIN permanece. |
+| RF-024 derivado / RF18 formal | RF-020 | renumeração | Tema permanece. |
+| RF-025 derivado / RF19 formal | RF-021 | consolidação | Cópias de segurança e restauração ficam em um único RF. |
+
+### 5.3 Resolução dos issues
+
+- **ISSUE-001 — resolvido:** baseline adotada com 21 RFs e derivados realinhados.
+- **ISSUE-002 — resolvido:** RF-001, RF-002 e RF-003 formalizam capacidades de usuário já presentes na V1.
+- **ISSUE-003 — resolvido:** exclusão de contas financeiras foi excluída da V1 sem criação de regra de arquivamento ou inativação.
+- **ISSUE-004 — resolvido:** valor inicial da principal usa Entrada; secundária recebe por transferência; não há saldo inicial armazenado; saldos e patrimônio são derivados.
+
+Os documentos históricos não foram alterados para apagar a divergência original. O gate da Etapa 5 está apto para reavaliação/liberação posterior, mas a etapa não foi iniciada por esta reconciliação.

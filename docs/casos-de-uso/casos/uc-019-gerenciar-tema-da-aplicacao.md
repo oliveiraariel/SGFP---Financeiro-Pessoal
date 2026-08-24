@@ -33,7 +33,7 @@ A aplicação será apresentada conforme o tema selecionado.
 
 **Requisitos relacionados**
 
-RF-024.
+RF-020.
 
 **Regras de negócio relacionadas**
 

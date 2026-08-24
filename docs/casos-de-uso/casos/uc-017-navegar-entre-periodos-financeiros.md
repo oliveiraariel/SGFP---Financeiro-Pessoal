@@ -35,7 +35,7 @@ O período selecionado estará disponível para consulta e operação.
 
 **Requisitos relacionados**
 
-RF-015, RF-016, RF-022.
+RF-010, RF-011, RF-018.
 
 **Regras de negócio relacionadas**
 

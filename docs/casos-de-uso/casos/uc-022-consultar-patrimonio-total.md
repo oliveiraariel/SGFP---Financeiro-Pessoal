@@ -34,7 +34,7 @@ Nenhum dado financeiro independente será criado pela consulta.
 
 **Requisitos relacionados**
 
-RF-007, RF-021.
+RF-005.
 
 **Regras de negócio relacionadas**
 

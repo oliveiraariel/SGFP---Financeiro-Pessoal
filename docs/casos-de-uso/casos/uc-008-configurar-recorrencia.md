@@ -37,7 +37,7 @@ A operação estará configurada segundo a recorrência definida.
 
 **Requisitos relacionados**
 
-RF-006, RF-012, RF-018, RF-020.
+RF-008, RF-014, RF-016.
 
 **Regras de negócio relacionadas**
 

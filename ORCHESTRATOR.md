@@ -41,18 +41,18 @@ A autoridade final sobre:
 
 ## 3. Estado atual do projeto
 
-O projeto possui artefatos produzidos até a **Etapa 4 — Casos de Uso**.
+O projeto possui artefatos produzidos até a **Etapa 4 — Casos de Uso**. A baseline funcional da V1 foi reconciliada em 21 requisitos funcionais identificados de `RF-001` a `RF-021`.
 
 A próxima etapa planejada é:
 
 **Etapa 5 — Mapa do Domínio**
 
-Entretanto, a entrada na Etapa 5 está **bloqueada por pendências documentais conhecidas**, registradas em:
+A entrada efetiva na Etapa 5 ainda não foi iniciada. O gate está **apto para reavaliação/liberação posterior**, após a reconciliação documental registrada em:
 
 - `project-manifest.yaml`;
 - `docs/governanca/relatorio-de-consolidacao.md`.
 
-Enquanto os bloqueadores permanecerem abertos, agentes podem trabalhar na reconciliação e correção documental das Etapas 2, 3 e 4, mas não devem iniciar modelagem do domínio, modelagem de dados ou implementação como se a baseline estivesse aprovada.
+Os bloqueadores `ISSUE-001` a `ISSUE-004` foram resolvidos documentalmente nesta baseline. A abertura efetiva da Etapa 5 continua sendo uma ação posterior; até ela ocorrer, agentes não devem iniciar modelagem do domínio, modelagem de dados ou implementação como se essa etapa estivesse em execução.
 
 ## 4. Ordem mínima de leitura
 
@@ -116,16 +116,16 @@ Quando duas fontes canônicas divergirem:
 
 É proibido “resolver” conflito apenas porque uma alternativa parece mais comum, elegante ou tecnicamente conveniente.
 
-## 7. Bloqueadores atuais
+## 7. Estado dos bloqueadores documentais
 
-Antes de iniciar formalmente a Etapa 5, devem ser tratados os itens abertos no manifesto, especialmente:
+Os quatro bloqueadores registrados foram resolvidos na baseline funcional V1:
 
-- divergência entre o catálogo oficial de 19 RFs e artefatos derivados baseados em 25 RFs;
-- ausência de RFs explícitos para cadastro, autenticação e senha no catálogo oficial;
-- exclusão de contas prevista no SRS sem regra de negócio correspondente;
-- escopo do saldo inicial entre conta principal e contas secundárias.
+- `ISSUE-001`: adotado catálogo definitivo de 21 RFs (`RF-001` a `RF-021`) e realinhados os derivados;
+- `ISSUE-002`: formalizados cadastro, autenticação e senha como `RF-001`, `RF-002` e `RF-003`;
+- `ISSUE-003`: exclusão de contas registrada como fora do escopo da V1;
+- `ISSUE-004`: valor inicial da principal representado por Entrada, valor de secundária por transferência, sem saldo inicial armazenado.
 
-O agente deverá considerar os IDs registrados em `project-manifest.yaml` como referência operacional dos bloqueadores.
+Os status, resoluções e evidências permanecem registrados em `project-manifest.yaml` e `docs/governanca/relatorio-de-consolidacao.md`. O gate da Etapa 5 está tecnicamente apto para reavaliação, mas a etapa não foi iniciada.
 
 ## 8. Etapas e diretórios
 
@@ -275,7 +275,7 @@ Exemplos:
 - alteração de UC pode afetar critérios, interface e testes;
 - alteração de contrato da API pode afetar interface e testes.
 
-A inconsistência atual entre 19 e 25 RFs deve ser resolvida antes de tratar a matriz como baseline confiável.
+A divergência histórica entre os catálogos de 19 e 25 RFs foi reconciliada na baseline definitiva de 21 RFs. A matriz atual somente deve utilizar `RF-001` a `RF-021`; o histórico da migração permanece na governança.
 
 ## 13. Identificadores
 

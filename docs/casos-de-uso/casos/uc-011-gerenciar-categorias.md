@@ -36,7 +36,7 @@ As categorias estarão atualizadas e os compromissos permanecerão preservados.
 
 **Requisitos relacionados**
 
-RF-007, RF-010, RF-011.
+RF-006, RF-009.
 
 **Regras de negócio relacionadas**
 

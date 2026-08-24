@@ -42,7 +42,7 @@ O compromisso estará registrado no período correspondente.
 
 **Requisitos relacionados**
 
-RF-008.
+RF-006, RF-009.
 
 **Regras de negócio relacionadas**
 

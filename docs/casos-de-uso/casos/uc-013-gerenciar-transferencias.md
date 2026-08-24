@@ -42,7 +42,7 @@ A transferência estará registrada com seus efeitos financeiros consistentes qu
 
 **Requisitos relacionados**
 
-RF-016, RF-017.
+RF-012, RF-013.
 
 **Regras de negócio relacionadas**
 

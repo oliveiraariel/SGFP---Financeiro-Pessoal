@@ -49,7 +49,7 @@ product_constraints:
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "governance_reconciliation"
+  current_state: "baseline_reconciled_pending_stage_5_reassessment"
   last_documented_stage:
     id: 4
     name: "Casos de Uso"
@@ -57,13 +57,9 @@ workflow:
     id: 5
     name: "Mapa do Domínio"
   next_stage_gate:
-    status: "blocked"
-    reason: "Pendências de requisitos e rastreabilidade precisam ser resolvidas antes da baseline para modelagem."
-    blockers:
-      - "ISSUE-001"
-      - "ISSUE-002"
-      - "ISSUE-003"
-      - "ISSUE-004"
+    status: "ready_for_reassessment"
+    reason: "A baseline funcional V1 foi reconciliada em 21 RFs. A abertura efetiva da Etapa 5 depende de reavaliação/liberação posterior e não foi iniciada por esta alteração."
+    blockers: []
 
 stages:
   - id: 1
@@ -78,17 +74,17 @@ stages:
 
   - id: 3
     name: "Especificação de Requisitos de Software (SRS)"
-    status: "completed_with_open_reconciliation_issues"
+    status: "completed_reconciled"
     path: "docs/requisitos/srs/"
 
   - id: 4
     name: "Casos de Uso"
-    status: "completed_with_open_reconciliation_issues"
+    status: "completed_reconciled"
     path: "docs/casos-de-uso/"
 
   - id: 5
     name: "Mapa do Domínio"
-    status: "blocked"
+    status: "ready_for_reassessment"
     path: "docs/dominio/"
 
   - id: 6
@@ -142,8 +138,8 @@ canonical_sources:
 
   functional_requirements:
     path: "docs/requisitos/srs/03-requisitos-funcionais.md"
-    authority: "canonical_but_reconciliation_required"
-    current_catalog_size: 19
+    authority: "canonical"
+    current_catalog_size: 21
 
   nonfunctional_requirements:
     path: "docs/requisitos/srs/04-requisitos-nao-funcionais.md"
@@ -155,15 +151,15 @@ canonical_sources:
 
   acceptance_criteria:
     path: "docs/requisitos/srs/07-criterios-de-aceitacao.md"
-    authority: "derived_needs_reconciliation"
+    authority: "derived_reconciled"
 
   requirements_traceability:
     path: "docs/requisitos/srs/08-rastreabilidade.md"
-    authority: "derived_needs_reconciliation"
+    authority: "derived_reconciled"
 
   use_cases:
     path: "docs/casos-de-uso/"
-    authority: "derived_needs_reconciliation"
+    authority: "derived_reconciled"
 
   governance_report:
     path: "docs/governanca/relatorio-de-consolidacao.md"
@@ -201,8 +197,8 @@ traceability:
     - "implementation"
     - "test_case"
     - "test_result"
-  current_status: "partial_and_inconsistent"
-  blocking_issue: "ISSUE-001"
+  current_status: "consistent_for_functional_baseline"
+  blocking_issue: null
   update_policy: "When a traceable source changes, inspect and update directly affected downstream references in the same change set."
 
 agent_execution:
@@ -250,54 +246,58 @@ quality_policy:
 
 known_issues:
   - id: "ISSUE-001"
-    status: "open"
+    status: "resolved"
     severity: "high"
     category: "requirements_traceability"
-    decision_required: true
-    blocks_stage_5: true
+    decision_required: false
+    blocks_stage_5: false
     summary: "O catálogo formal atual possui 19 RFs, enquanto Casos de Uso, Critérios de Aceitação e Rastreabilidade utilizam um catálogo alternativo de 25 RFs."
     affected_paths:
       - "docs/requisitos/srs/03-requisitos-funcionais.md"
       - "docs/requisitos/srs/07-criterios-de-aceitacao.md"
       - "docs/requisitos/srs/08-rastreabilidade.md"
       - "docs/casos-de-uso/"
+    resolution: "Adotada a baseline funcional V1 com 21 RFs, identificados de RF-001 a RF-021, com Critérios de Aceitação, Rastreabilidade, índices e Casos de Uso realinhados."
 
   - id: "ISSUE-002"
-    status: "open"
+    status: "resolved"
     severity: "high"
     category: "requirements_completeness"
-    decision_required: true
-    blocks_stage_5: true
+    decision_required: false
+    blocks_stage_5: false
     summary: "Cadastro, autenticação e senha pertencem ao escopo da V1, mas não possuem RF explícito no catálogo formal atual de 19 RFs."
     affected_paths:
       - "docs/projeto/documento-de-visao.md"
       - "docs/requisitos/levantamento/01-usuarios.md"
       - "docs/requisitos/srs/03-requisitos-funcionais.md"
       - "docs/casos-de-uso/"
+    resolution: "Cadastro, autenticação e gerenciamento de senha foram formalizados respectivamente como RF-001, RF-002 e RF-003, sem ampliação do escopo V1 já documentado."
 
   - id: "ISSUE-003"
-    status: "open"
+    status: "resolved"
     severity: "medium"
     category: "business_rule_gap"
-    decision_required: true
-    blocks_stage_5: true
+    decision_required: false
+    blocks_stage_5: false
     summary: "RF01 prevê exclusão de contas financeiras, mas o módulo de Contas não define regra de negócio para essa operação."
     affected_paths:
       - "docs/requisitos/levantamento/02-contas.md"
       - "docs/requisitos/srs/03-requisitos-funcionais.md"
       - "docs/casos-de-uso/casos/uc-005-gerenciar-contas-financeiras.md"
+    resolution: "Exclusão de contas financeiras foi registrada como fora do escopo da V1; RF-004 e os artefatos derivados não a tratam como operação disponível."
 
   - id: "ISSUE-004"
-    status: "open"
+    status: "resolved"
     severity: "medium"
     category: "business_scope"
-    decision_required: true
-    blocks_stage_5: true
+    decision_required: false
+    blocks_stage_5: false
     summary: "O escopo do registro de saldo inicial entre conta principal e contas secundárias precisa de confirmação."
     affected_paths:
       - "docs/requisitos/levantamento/02-contas.md"
       - "docs/requisitos/srs/03-requisitos-funcionais.md"
       - "docs/casos-de-uso/casos/uc-006-informar-saldo-inicial.md"
+    resolution: "Não há saldo inicial armazenado. O valor inicial da conta principal é representado por Entrada; o valor de conta secundária chega por transferência com a principal; saldos e patrimônio são derivados dos movimentos."
 
 resolved_consolidation_notes:
   - topic: "use_cases_location"

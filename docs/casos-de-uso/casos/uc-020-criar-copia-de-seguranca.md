@@ -35,7 +35,7 @@ Uma cópia representando o estado dos dados no momento da operação estará dis
 
 **Requisitos relacionados**
 
-RF-025.
+RF-021.
 
 **Regras de negócio relacionadas**
 

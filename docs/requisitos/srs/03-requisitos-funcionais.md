@@ -2,120 +2,132 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 1.0
+**Versão:** 2.0
 
-## 1. Contas Financeiras
+**Baseline funcional:** V1 reconciliada
 
-### **RF01 — Gerenciar contas financeiras**
+## 1. Usuários e credenciais
 
-O sistema deverá permitir ao usuário gerenciar suas contas financeiras, incluindo sua criação, edição, visualização e exclusão, respeitando as regras definidas para a conta principal e as contas secundárias.
+### **RF-001 — Cadastrar usuário**
 
-### **RF02 — Gerenciar o saldo das contas**
+O sistema deverá permitir o cadastro inicial do usuário, conforme as regras do módulo Usuários.
 
-O sistema deverá calcular e apresentar o saldo das contas com base nas movimentações financeiras efetivadas, considerando as regras aplicáveis a entradas, saídas e transferências.
+### **RF-002 — Autenticar usuário**
 
-### **RF03 — Gerenciar o saldo inicial da conta principal**
+O sistema deverá permitir a autenticação do usuário por e-mail e senha, respeitando o isolamento dos seus dados.
 
-O sistema deverá permitir ao usuário informar o saldo existente na conta principal no início da utilização do sistema, utilizando esse valor como ponto de partida para os cálculos financeiros posteriores.
+### **RF-003 — Gerenciar senha**
 
-## 2. Compromissos Financeiros
+O sistema deverá permitir a alteração e a recuperação da senha conforme as regras do módulo Usuários.
 
-### **RF04 — Gerenciar compromissos financeiros**
+## 2. Contas, saldos e patrimônio
 
-O sistema deverá permitir ao usuário cadastrar, visualizar, alterar e excluir compromissos financeiros, respeitando as regras aplicáveis ao seu estado e às demais características do compromisso.
+### **RF-004 — Gerenciar contas financeiras**
 
-### **RF05 — Gerenciar a efetivação de compromissos financeiros**
+O sistema deverá permitir criar, visualizar e renomear contas financeiras, respeitando as regras da conta principal e das contas secundárias. A exclusão de contas financeiras não pertence à V1.
 
-O sistema deverá permitir ao usuário efetivar e desfazer a efetivação de compromissos financeiros, registrando a movimentação correspondente e aplicando ou retirando seu efeito sobre o saldo da conta envolvida.
+### **RF-005 — Consultar saldos das contas e patrimônio total**
 
-### **RF06 — Gerenciar compromissos recorrentes**
+O sistema deverá calcular e apresentar os saldos das contas e o patrimônio total a partir dos movimentos financeiros registrados, sem manter saldo inicial como atributo independente. Transferências entre contas próprias não deverão alterar o patrimônio total.
 
-O sistema deverá permitir ao usuário configurar e administrar compromissos financeiros recorrentes, respeitando as regras definidas para início, duração, alteração, exclusão e encerramento das recorrências.
+## 3. Compromissos financeiros
 
-## 3. Categorias
+### **RF-006 — Gerenciar compromissos financeiros**
 
-### **RF07 — Gerenciar categorias financeiras**
+O sistema deverá permitir cadastrar, consultar, alterar e excluir compromissos financeiros conforme seu estado e as regras de negócio aplicáveis. A criação de categoria durante o cadastro é um fluxo relacionado a este requisito e a RF-009.
 
-O sistema deverá permitir ao usuário criar, visualizar, alterar e excluir categorias, bem como associá-las aos compromissos financeiros para fins de organização e agrupamento.
+### **RF-007 — Efetivar e desfazer compromissos financeiros**
 
-## 4. Lançamentos Financeiros
+O sistema deverá permitir efetivar e desfazer a efetivação de compromissos financeiros, registrando ou revertendo o lançamento e seus efeitos sobre o saldo da conta envolvida.
 
-### **RF08 — Registrar lançamentos financeiros**
+### **RF-008 — Gerenciar compromissos recorrentes**
 
-O sistema deverá registrar os lançamentos financeiros resultantes da efetivação dos compromissos, mantendo as informações necessárias para identificar e controlar a movimentação realizada.
+O sistema deverá permitir configurar e administrar compromissos financeiros recorrentes, respeitando as regras definidas para início, duração, alteração, exclusão e encerramento das recorrências.
 
-### **RF09 — Atualizar os saldos a partir dos lançamentos**
+## 4. Categorias e lançamentos
 
-O sistema deverá atualizar automaticamente os saldos das contas de acordo com os lançamentos financeiros efetivados e com o desfazimento de suas respectivas efetivações.
+### **RF-009 — Gerenciar categorias financeiras**
+
+O sistema deverá permitir criar, visualizar, alterar e excluir categorias, bem como associá-las aos compromissos financeiros. A criação de categoria durante o cadastro de um compromisso deverá permanecer disponível como fluxo relacionado.
+
+### **RF-010 — Registrar lançamentos financeiros**
+
+O sistema deverá registrar os lançamentos financeiros resultantes das movimentações efetivadas, incluindo o registro do valor inicial da conta principal por meio de um lançamento de Entrada quando aplicável. Informações financeiras de períodos anteriores deverão ser registradas por este mecanismo, conforme as regras existentes.
+
+### **RF-011 — Consultar movimentações financeiras**
+
+O sistema deverá permitir consultar os lançamentos e demais movimentações financeiras registradas, respeitando o usuário e o período selecionado.
 
 ## 5. Transferências
 
-### **RF10 — Gerenciar transferências entre contas**
+### **RF-012 — Gerenciar transferências entre contas**
 
-O sistema deverá permitir ao usuário criar, visualizar, alterar, efetivar, desfazer e excluir transferências entre suas contas, respeitando as regras aplicáveis às contas de origem e destino.
+O sistema deverá permitir criar, visualizar e alterar transferências entre contas pertencentes ao usuário, bem como excluir transferências não efetivadas, respeitando as regras aplicáveis.
 
-### **RF11 — Registrar os efeitos das transferências**
+### **RF-013 — Efetivar e desfazer transferências**
 
-O sistema deverá registrar os efeitos de uma transferência nas contas de origem e destino, mantendo os respectivos históricos consistentes e sem alterar o patrimônio total do usuário.
+O sistema deverá permitir efetivar e desfazer transferências, aplicando ou revertendo os efeitos nos saldos das contas de origem e destino e mantendo seus históricos consistentes, sem alterar o patrimônio total.
 
-### **RF12 — Gerenciar transferências recorrentes**
+### **RF-014 — Gerenciar transferências recorrentes**
 
-O sistema deverá permitir ao usuário configurar e administrar transferências recorrentes, utilizando as regras definidas para recorrência.
+O sistema deverá permitir configurar e administrar transferências recorrentes conforme as regras de recorrência.
 
-## 6. Casos Específicos de Compromissos Financeiros
+## 6. Casos específicos de compromissos
 
-### **RF13 — Gerenciar compromissos de cartão de crédito**
+### **RF-015 — Gerenciar compromissos de cartão de crédito**
 
-O sistema deverá permitir ao usuário representar o pagamento de faturas de cartão de crédito por meio de compromissos financeiros de Saída, respeitando as regras definidas para esses compromissos.
+O sistema deverá permitir representar o pagamento de faturas de cartão de crédito por meio de compromissos de Saída, respeitando as regras definidas para esses compromissos.
 
-### **RF14 — Gerenciar compromissos parcelados**
+### **RF-016 — Gerenciar compromissos parcelados**
 
-O sistema deverá permitir ao usuário representar parcelamentos por meio de compromissos financeiros recorrentes, respeitando as regras gerais de recorrência e efetivação.
+O sistema deverá permitir representar parcelamentos por meio de compromissos recorrentes, respeitando as regras gerais de recorrência e efetivação.
 
-## 7. Dashboard
+## 7. Consulta financeira
 
-### **RF15 — Consultar o Dashboard financeiro**
+### **RF-017 — Consultar o Dashboard financeiro**
 
-O sistema deverá apresentar ao usuário uma visão consolidada da situação financeira do mês selecionado, incluindo os valores previstos e os compromissos que os compõem.
+O sistema deverá apresentar uma visão consolidada da situação financeira do período selecionado, incluindo valores previstos e os compromissos que os compõem.
 
-### **RF16 — Navegar entre períodos financeiros**
+### **RF-018 — Navegar entre períodos financeiros**
 
-O sistema deverá permitir ao usuário navegar entre diferentes meses para consultar os respectivos dados e situações financeiras.
+O sistema deverá permitir navegar entre diferentes meses e consultar ou registrar informações nos períodos aplicáveis, inclusive períodos anteriores, conforme as regras existentes.
 
-## 8. Configurações
+## 8. Configurações e segurança
 
-### **RF17 — Gerenciar proteção por PIN**
+### **RF-019 — Gerenciar proteção por PIN**
 
-O sistema deverá permitir ao usuário configurar e administrar a proteção de acesso por PIN, incluindo sua ativação, alteração, desativação e recuperação conforme as regras estabelecidas.
+O sistema deverá permitir configurar e administrar a proteção por PIN, incluindo ativação, alteração, desativação e recuperação conforme as regras estabelecidas.
 
-### **RF18 — Gerenciar o tema da aplicação**
+### **RF-020 — Gerenciar tema da aplicação**
 
-O sistema deverá permitir ao usuário selecionar e aplicar o tema de apresentação da aplicação.
+O sistema deverá permitir selecionar e aplicar o tema de apresentação da aplicação.
 
-### **RF19 — Gerenciar cópias de segurança**
+### **RF-021 — Gerenciar cópias de segurança e restauração**
 
-O sistema deverá permitir ao usuário criar e restaurar cópias de segurança dos dados do sistema, respeitando as regras definidas para preservação, proteção e restauração dos dados.
+O sistema deverá permitir criar e restaurar cópias de segurança dos dados, respeitando as regras de preservação, proteção e restauração. Não ficam definidos neste requisito tecnologia, formato físico, armazenamento externo ou infraestrutura.
 
 ## Lista Consolidada
 
 | Código | Requisito Funcional |
 | --- | --- |
-| **RF01** | Gerenciar contas financeiras |
-| **RF02** | Gerenciar o saldo das contas |
-| **RF03** | Gerenciar o saldo inicial da conta principal |
-| **RF04** | Gerenciar compromissos financeiros |
-| **RF05** | Gerenciar a efetivação de compromissos financeiros |
-| **RF06** | Gerenciar compromissos recorrentes |
-| **RF07** | Gerenciar categorias financeiras |
-| **RF08** | Registrar lançamentos financeiros |
-| **RF09** | Atualizar os saldos a partir dos lançamentos |
-| **RF10** | Gerenciar transferências entre contas |
-| **RF11** | Registrar os efeitos das transferências |
-| **RF12** | Gerenciar transferências recorrentes |
-| **RF13** | Gerenciar compromissos de cartão de crédito |
-| **RF14** | Gerenciar compromissos parcelados |
-| **RF15** | Consultar o Dashboard financeiro |
-| **RF16** | Navegar entre períodos financeiros |
-| **RF17** | Gerenciar proteção por PIN |
-| **RF18** | Gerenciar o tema da aplicação |
-| **RF19** | Gerenciar cópias de segurança |
+| **RF-001** | Cadastrar usuário |
+| **RF-002** | Autenticar usuário |
+| **RF-003** | Gerenciar senha |
+| **RF-004** | Gerenciar contas financeiras |
+| **RF-005** | Consultar saldos das contas e patrimônio total |
+| **RF-006** | Gerenciar compromissos financeiros |
+| **RF-007** | Efetivar e desfazer compromissos financeiros |
+| **RF-008** | Gerenciar compromissos recorrentes |
+| **RF-009** | Gerenciar categorias financeiras |
+| **RF-010** | Registrar lançamentos financeiros |
+| **RF-011** | Consultar movimentações financeiras |
+| **RF-012** | Gerenciar transferências entre contas |
+| **RF-013** | Efetivar e desfazer transferências |
+| **RF-014** | Gerenciar transferências recorrentes |
+| **RF-015** | Gerenciar compromissos de cartão de crédito |
+| **RF-016** | Gerenciar compromissos parcelados |
+| **RF-017** | Consultar o Dashboard financeiro |
+| **RF-018** | Navegar entre períodos financeiros |
+| **RF-019** | Gerenciar proteção por PIN |
+| **RF-020** | Gerenciar tema da aplicação |
+| **RF-021** | Gerenciar cópias de segurança e restauração |
