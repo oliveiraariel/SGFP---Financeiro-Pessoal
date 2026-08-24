@@ -1,27 +1,227 @@
-# SGFP — Projeto Reorganizado
+# SGFP — Sistema de Gestão Financeira Pessoal
 
-Esta árvore é a versão documental reorganizada do **Sistema de Gestão Financeira Pessoal (SGFP)**, preparada para navegação humana e futura utilização por agentes/orchestrators.
+O **SGFP — Sistema de Gestão Financeira Pessoal** é um projeto acadêmico voltado ao planejamento, organização e acompanhamento das finanças pessoais.
 
-## Navegação
+O sistema está sendo desenvolvido de forma incremental, com documentação prévia das regras de negócio, requisitos, casos de uso, domínio, modelagem de dados, arquitetura, implementação e testes.
 
-- `01-projeto/` — visão e plano de desenvolvimento.
-- `02-requisitos/levantamento/` — regras de negócio e decisões por módulo.
-- `02-requisitos/srs/` — Especificação de Requisitos de Software.
-- `03-casos-de-uso/` — Casos de Uso divididos em arquivos individuais.
-- `04-dominio/` — próxima etapa: Mapa do Domínio.
-- `05-modelagem-dados/` — MER, DER e modelo físico.
-- `06-arquitetura/` — arquitetura da aplicação.
-- `07-api/` — desenvolvimento/documentação da API.
-- `08-interface-web/` — interface Web.
-- `09-testes/` — testes.
-- `90-governanca/` — inventário, relatório de consolidação e inconsistências.
-- `98-historico/` — versões antigas explicitamente identificadas.
-- `99-fonte-original/` — export bruto do Notion, preservado sem alterações.
+Esta árvore representa a versão documental reorganizada do projeto, preparada tanto para navegação humana quanto para futura utilização por agentes e orchestrators.
 
-## Antes de avançar para a Etapa 5
+## Objetivo do Projeto
 
-Leia `90-governanca/relatorio-de-consolidacao.md`. Há divergências de rastreabilidade que precisam ser resolvidas, especialmente a diferença entre o catálogo vigente de **19 RFs** e os artefatos derivados que utilizam **25 RFs**.
+O SGFP tem como objetivo permitir que o usuário organize sua vida financeira por meio do controle de:
 
-## Fonte de verdade
+* contas financeiras;
+* compromissos de entrada e saída;
+* categorias;
+* recorrências;
+* lançamentos financeiros;
+* transferências;
+* patrimônio;
+* planejamento mensal;
+* configurações pessoais.
 
-O arquivo `project-manifest.yaml` identifica as fontes canônicas atuais e os problemas conhecidos.
+A primeira versão será uma aplicação Web baseada em API REST.
+
+## Características da Versão 1
+
+Entre as principais características previstas para a V1 estão:
+
+* cadastro e autenticação de usuário;
+* gerenciamento de contas financeiras;
+* registro manual das informações financeiras;
+* controle de compromissos financeiros;
+* categorização;
+* recorrências mensais;
+* efetivação de compromissos em lançamentos;
+* transferências entre contas;
+* tratamento básico de cartão de crédito e parcelamentos;
+* Dashboard financeiro;
+* proteção por PIN;
+* tema claro e escuro;
+* criação e restauração manual de cópias de segurança.
+
+Não haverá integração bancária automática na Versão 1.
+
+## Metodologia de Desenvolvimento
+
+O projeto segue uma sequência incremental de desenvolvimento:
+
+1. Documento de Visão
+2. Levantamento de Requisitos
+3. Especificação de Requisitos
+4. Casos de Uso
+5. Mapa do Domínio
+6. Modelagem Conceitual
+7. Modelo Entidade-Relacionamento
+8. Modelo Físico
+9. Arquitetura da Aplicação
+10. Desenvolvimento da API
+11. Desenvolvimento da Interface Web
+12. Testes
+
+Cada etapa deve utilizar como entrada os artefatos já validados nas etapas anteriores.
+
+## Status Atual
+
+As etapas de levantamento e especificação de requisitos já possuem documentação consolidada.
+
+Os Casos de Uso também foram organizados individualmente para facilitar manutenção, rastreabilidade e consumo por agentes.
+
+A próxima etapa de evolução do projeto é o **Mapa do Domínio**, após a resolução das divergências documentais ainda registradas na governança do projeto.
+
+## Estrutura do Repositório
+
+```text
+01-projeto/
+02-requisitos/
+03-casos-de-uso/
+04-dominio/
+05-modelagem-dados/
+06-arquitetura/
+07-api/
+08-interface-web/
+09-testes/
+90-governanca/
+```
+
+### `01-projeto/`
+
+Contém os documentos de orientação geral do projeto:
+
+* Documento de Visão;
+* Plano de Desenvolvimento.
+
+### `02-requisitos/`
+
+Contém:
+
+* levantamento de requisitos por módulo;
+* regras de negócio;
+* Especificação de Requisitos de Software;
+* requisitos funcionais;
+* requisitos não funcionais;
+* restrições;
+* critérios de aceitação;
+* rastreabilidade.
+
+### `03-casos-de-uso/`
+
+Contém:
+
+* contexto e atores;
+* catálogo de Casos de Uso;
+* Casos de Uso individualizados;
+* referências de rastreabilidade.
+
+### `04-dominio/`
+
+Reservado ao Mapa do Domínio.
+
+### `05-modelagem-dados/`
+
+Reservado para:
+
+* Modelagem Conceitual;
+* MER;
+* DER;
+* Modelo Físico.
+
+### `06-arquitetura/`
+
+Reservado para a documentação da arquitetura da aplicação.
+
+### `07-api/`
+
+Reservado para desenvolvimento e documentação da API.
+
+### `08-interface-web/`
+
+Reservado para desenvolvimento da interface Web.
+
+### `09-testes/`
+
+Reservado para estratégia, casos e resultados de testes.
+
+### `90-governanca/`
+
+Contém os documentos relacionados à reorganização, proveniência e controle documental do projeto.
+
+## Documentação Principal
+
+Os principais pontos de entrada para compreender o SGFP são:
+
+* `01-projeto/documento-de-visao.md`
+* `01-projeto/plano-de-desenvolvimento.md`
+* `02-requisitos/levantamento/README.md`
+* `02-requisitos/srs/README.md`
+* `03-casos-de-uso/README.md`
+* `90-governanca/relatorio-de-consolidacao.md`
+
+## Fonte de Verdade
+
+O arquivo:
+
+```text
+project-manifest.yaml
+```
+
+identifica as fontes canônicas do projeto e os problemas documentais conhecidos.
+
+O arquivo:
+
+```text
+ORCHESTRATOR.md
+```
+
+define orientações para utilização do repositório por agentes e sistemas de orquestração.
+
+Agentes não devem resolver silenciosamente conflitos de requisitos, regras de negócio ou escopo.
+
+## Divergências Conhecidas
+
+Antes de avançar para as próximas etapas, deve ser consultado:
+
+```text
+90-governanca/relatorio-de-consolidacao.md
+```
+
+Entre os principais pontos ainda sujeitos a validação está a divergência entre o catálogo vigente de requisitos funcionais e artefatos derivados que utilizam outra numeração.
+
+Essas divergências devem ser resolvidas antes que a documentação seja considerada uma baseline normativa definitiva.
+
+## Tecnologias
+
+A arquitetura técnica será consolidada na etapa correspondente.
+
+Já estão definidos como direcionamentos da Versão 1:
+
+* aplicação Web;
+* API REST;
+* PHP;
+* banco de dados relacional.
+
+Decisões adicionais de infraestrutura, persistência, autenticação técnica e organização interna deverão ser documentadas posteriormente.
+
+## Contexto Acadêmico
+
+Projeto desenvolvido no contexto do curso de **Banco de Dados da FATEC**, envolvendo conhecimentos de:
+
+* Engenharia de Software;
+* Análise de Sistemas;
+* Modelagem de Dados;
+* Banco de Dados;
+* Arquitetura de Software;
+* Desenvolvimento de APIs;
+* Desenvolvimento Web;
+* Testes de Software.
+
+## Evolução
+
+O repositório deverá evoluir mantendo:
+
+* rastreabilidade entre requisitos, casos de uso, implementação e testes;
+* preservação das decisões de negócio;
+* separação entre documentação normativa, histórica e técnica;
+* simplicidade arquitetural;
+* controle de mudanças por Git.
+
