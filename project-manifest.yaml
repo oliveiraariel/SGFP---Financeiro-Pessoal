@@ -1,34 +1,310 @@
+schema_version: "1.0"
+manifest_version: "2.0"
+updated_at: "2026-08-24"
+
 project:
-  name: Sistema de Gestão Financeira Pessoal
-  acronym: SGFP
-  language: pt-BR
+  name: "Sistema de Gestão Financeira Pessoal"
+  acronym: "SGFP"
+  language: "pt-BR"
+  project_type: "academic_software_project"
+  product_type: "personal_finance_web_application"
+  version_scope: "V1"
+
+repository:
+  edition: "core"
+  purpose:
+    - "canonical_working_repository"
+    - "human_documentation"
+    - "agent_orchestrator_context"
+  default_branch: "main"
+  text_encoding: "UTF-8"
+  line_endings: "LF"
+  raw_notion_export_included: false
+  historical_versions_included: false
+
 documentation:
-  format: Markdown UTF-8
-  source: Notion export reorganizado em 2026-08-24
-  source_preserved: 99-fonte-original/notion-export
+  primary_format: "Markdown"
+  tabular_format: "CSV"
+  source_origin:
+    type: "Notion export"
+    reorganized_at: "2026-08-24"
+    raw_source_in_core: false
+    preservation_note: "O export bruto e versões históricas são mantidos no pacote completo de preservação, fora da edição Core."
+  governance:
+    orchestrator_contract: "ORCHESTRATOR.md"
+    consolidation_report: "90-governanca/relatorio-de-consolidacao.md"
+    provenance_index: "90-governanca/proveniencia.csv"
+    source_inventory: "90-governanca/inventario-fonte.csv"
+
+product_constraints:
+  v1:
+    platform: "web"
+    backend_language: "PHP"
+    architecture_direction: "REST API"
+    database_family: "relational"
+    financial_data_entry: "manual"
+    automatic_bank_integration: false
+  future_capabilities_are_not_v1_requirements: true
+
 workflow:
-  last_completed_stage: 4
-  last_completed_stage_name: Casos de Uso
-  next_stage: 5
-  next_stage_name: Mapa do Domínio
+  lifecycle_model: "stage_gated_incremental"
+  current_state: "governance_reconciliation"
+  last_documented_stage:
+    id: 4
+    name: "Casos de Uso"
+  next_planned_stage:
+    id: 5
+    name: "Mapa do Domínio"
+  next_stage_gate:
+    status: "blocked"
+    reason: "Pendências de requisitos e rastreabilidade precisam ser resolvidas antes da baseline para modelagem."
+    blockers:
+      - "ISSUE-001"
+      - "ISSUE-002"
+      - "ISSUE-003"
+      - "ISSUE-004"
+
+stages:
+  - id: 1
+    name: "Documento de Visão"
+    status: "completed"
+    path: "01-projeto/documento-de-visao.md"
+
+  - id: 2
+    name: "Levantamento de Requisitos"
+    status: "completed"
+    path: "02-requisitos/levantamento/"
+
+  - id: 3
+    name: "Especificação de Requisitos de Software (SRS)"
+    status: "completed_with_open_reconciliation_issues"
+    path: "02-requisitos/srs/"
+
+  - id: 4
+    name: "Casos de Uso"
+    status: "completed_with_open_reconciliation_issues"
+    path: "03-casos-de-uso/"
+
+  - id: 5
+    name: "Mapa do Domínio"
+    status: "blocked"
+    path: "04-dominio/"
+
+  - id: 6
+    name: "Modelagem Conceitual (MER)"
+    status: "not_started"
+    path: "05-modelagem-dados/01-modelagem-conceitual-mer.md"
+
+  - id: 7
+    name: "Modelo Entidade-Relacionamento (DER)"
+    status: "not_started"
+    path: "05-modelagem-dados/02-modelo-entidade-relacionamento-der.md"
+
+  - id: 8
+    name: "Modelo Físico"
+    status: "not_started"
+    path: "05-modelagem-dados/03-modelo-fisico.md"
+
+  - id: 9
+    name: "Arquitetura da Aplicação"
+    status: "not_started"
+    path: "06-arquitetura/"
+
+  - id: 10
+    name: "Desenvolvimento da API"
+    status: "not_started"
+    path: "07-api/"
+
+  - id: 11
+    name: "Desenvolvimento da Interface Web"
+    status: "not_started"
+    path: "08-interface-web/"
+
+  - id: 12
+    name: "Testes"
+    status: "not_started"
+    path: "09-testes/"
+
 canonical_sources:
-  vision: 01-projeto/documento-de-visao.md
-  development_plan: 01-projeto/plano-de-desenvolvimento.md
-  business_requirements: 02-requisitos/levantamento/
-  srs: 02-requisitos/srs/
-  use_cases: 03-casos-de-uso/
+  process_and_stage_gates:
+    path: "01-projeto/plano-de-desenvolvimento.md"
+    authority: "canonical"
+
+  product_vision_and_scope:
+    path: "01-projeto/documento-de-visao.md"
+    authority: "canonical"
+
+  business_rules:
+    path: "02-requisitos/levantamento/"
+    authority: "canonical"
+    global_index: "02-requisitos/levantamento/regras-de-negocio-index.csv"
+
+  functional_requirements:
+    path: "02-requisitos/srs/03-requisitos-funcionais.md"
+    authority: "canonical_but_reconciliation_required"
+    current_catalog_size: 19
+
+  nonfunctional_requirements:
+    path: "02-requisitos/srs/04-requisitos-nao-funcionais.md"
+    authority: "canonical"
+
+  restrictions_and_dependencies:
+    path: "02-requisitos/srs/06-restricoes-e-dependencias.md"
+    authority: "canonical"
+
+  acceptance_criteria:
+    path: "02-requisitos/srs/07-criterios-de-aceitacao.md"
+    authority: "derived_needs_reconciliation"
+
+  requirements_traceability:
+    path: "02-requisitos/srs/08-rastreabilidade.md"
+    authority: "derived_needs_reconciliation"
+
+  use_cases:
+    path: "03-casos-de-uso/"
+    authority: "derived_needs_reconciliation"
+
+  governance_report:
+    path: "90-governanca/relatorio-de-consolidacao.md"
+    authority: "governance_only"
+
+derived_indexes:
+  business_rules:
+    path: "02-requisitos/levantamento/regras-de-negocio-index.csv"
+    identifier_field: "rule_uid"
+  requirements:
+    path: "02-requisitos/srs/requisitos-index.csv"
+  use_cases:
+    path: "03-casos-de-uso/catalogo.csv"
+
+authority_policy:
+  human_decision_required_for:
+    - "business_rule_ambiguity"
+    - "scope_change"
+    - "conflict_between_canonical_sources"
+    - "addition_or_removal_of_v1_functionality"
+    - "high_impact_architecture_decision"
+  agents_must_not:
+    - "silently_resolve_business_conflicts"
+    - "promote_assumptions_to_requirements"
+    - "start_future_stage_as_completed_work_before_gate"
+    - "renumber_stable_identifiers_without_explicit_decision"
+    - "treat_governance_reports_as_business_rule_sources"
+
+traceability:
+  target_chain:
+    - "business_rule"
+    - "requirement"
+    - "use_case"
+    - "acceptance_criterion"
+    - "implementation"
+    - "test_case"
+    - "test_result"
+  current_status: "partial_and_inconsistent"
+  blocking_issue: "ISSUE-001"
+  update_policy: "When a traceable source changes, inspect and update directly affected downstream references in the same change set."
+
+agent_execution:
+  entrypoint: "ORCHESTRATOR.md"
+  context_strategy: "read_governance_first_then_load_task_relevant_sources"
+  change_strategy: "minimum_sufficient_change"
+  conflict_strategy: "stop_affected_work_and_request_human_decision"
+  parallelism:
+    isolated_branch_or_worktree: true
+    explicit_file_ownership: true
+    independent_review_preferred: true
+  completion_report_fields:
+    - "result"
+    - "changed_files"
+    - "sources_used"
+    - "validation"
+    - "decisions_or_assumptions"
+    - "blockers"
+    - "recommended_next_action"
+
+git_policy:
+  default_branch: "main"
+  multi_agent_direct_writes_to_main: false
+  isolated_work_for_parallel_tasks: true
+  commit_style: "Conventional Commits"
+  recommended_commit_types:
+    - "docs"
+    - "feat"
+    - "fix"
+    - "refactor"
+    - "test"
+    - "chore"
+    - "build"
+    - "ci"
+  destructive_history_rewrite_requires_explicit_authorization: true
+  secrets_must_not_be_committed: true
+
+quality_policy:
+  preserve_business_history: true
+  preserve_traceability: true
+  avoid_premature_complexity: true
+  avoid_unnecessary_entities: true
+  separate_business_domain_architecture_and_implementation: true
+  do_not_claim_completion_with_unresolved_blocker: true
+
 known_issues:
-- id: ISSUE-001
-  severity: high
-  summary: Catálogo oficial possui 19 RFs, mas Casos de Uso, Critérios de Aceitação
-    e Rastreabilidade usam 25 RFs.
-- id: ISSUE-002
-  severity: high
-  summary: Cadastro, autenticação e senha estão no escopo da V1, mas não possuem RF
-    explícito no catálogo oficial de 19 RFs.
-- id: ISSUE-003
-  severity: medium
-  summary: RF01 prevê exclusão de contas sem regra de negócio correspondente.
-- id: ISSUE-004
-  severity: medium
-  summary: Escopo do saldo inicial entre conta principal e secundárias requer confirmação.
+  - id: "ISSUE-001"
+    status: "open"
+    severity: "high"
+    category: "requirements_traceability"
+    decision_required: true
+    blocks_stage_5: true
+    summary: "O catálogo formal atual possui 19 RFs, enquanto Casos de Uso, Critérios de Aceitação e Rastreabilidade utilizam um catálogo alternativo de 25 RFs."
+    affected_paths:
+      - "02-requisitos/srs/03-requisitos-funcionais.md"
+      - "02-requisitos/srs/07-criterios-de-aceitacao.md"
+      - "02-requisitos/srs/08-rastreabilidade.md"
+      - "03-casos-de-uso/"
+
+  - id: "ISSUE-002"
+    status: "open"
+    severity: "high"
+    category: "requirements_completeness"
+    decision_required: true
+    blocks_stage_5: true
+    summary: "Cadastro, autenticação e senha pertencem ao escopo da V1, mas não possuem RF explícito no catálogo formal atual de 19 RFs."
+    affected_paths:
+      - "01-projeto/documento-de-visao.md"
+      - "02-requisitos/levantamento/01-usuarios.md"
+      - "02-requisitos/srs/03-requisitos-funcionais.md"
+      - "03-casos-de-uso/"
+
+  - id: "ISSUE-003"
+    status: "open"
+    severity: "medium"
+    category: "business_rule_gap"
+    decision_required: true
+    blocks_stage_5: true
+    summary: "RF01 prevê exclusão de contas financeiras, mas o módulo de Contas não define regra de negócio para essa operação."
+    affected_paths:
+      - "02-requisitos/levantamento/02-contas.md"
+      - "02-requisitos/srs/03-requisitos-funcionais.md"
+      - "03-casos-de-uso/casos/uc-005-gerenciar-contas-financeiras.md"
+
+  - id: "ISSUE-004"
+    status: "open"
+    severity: "medium"
+    category: "business_scope"
+    decision_required: true
+    blocks_stage_5: true
+    summary: "O escopo do registro de saldo inicial entre conta principal e contas secundárias precisa de confirmação."
+    affected_paths:
+      - "02-requisitos/levantamento/02-contas.md"
+      - "02-requisitos/srs/03-requisitos-funcionais.md"
+      - "03-casos-de-uso/casos/uc-006-informar-saldo-inicial.md"
+
+resolved_consolidation_notes:
+  - topic: "use_cases_location"
+    status: "resolved"
+    resolution: "Casos de Uso pertencem à Etapa 4 e não são subetapa do SRS."
+  - topic: "category_association"
+    status: "resolved_in_canonical_reorganization"
+    resolution: "A árvore canônica segue a decisão mais recente consolidada para a utilização obrigatória de categoria."
+  - topic: "raw_source_location"
+    status: "resolved"
+    resolution: "A edição Core não contém o export bruto; proveniência e inventário permanecem em 90-governanca/."
