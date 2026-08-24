@@ -1,0 +1,34 @@
+project:
+  name: Sistema de Gestão Financeira Pessoal
+  acronym: SGFP
+  language: pt-BR
+documentation:
+  format: Markdown UTF-8
+  source: Notion export reorganizado em 2026-08-24
+  source_preserved: 99-fonte-original/notion-export
+workflow:
+  last_completed_stage: 4
+  last_completed_stage_name: Casos de Uso
+  next_stage: 5
+  next_stage_name: Mapa do Domínio
+canonical_sources:
+  vision: 01-projeto/documento-de-visao.md
+  development_plan: 01-projeto/plano-de-desenvolvimento.md
+  business_requirements: 02-requisitos/levantamento/
+  srs: 02-requisitos/srs/
+  use_cases: 03-casos-de-uso/
+known_issues:
+- id: ISSUE-001
+  severity: high
+  summary: Catálogo oficial possui 19 RFs, mas Casos de Uso, Critérios de Aceitação
+    e Rastreabilidade usam 25 RFs.
+- id: ISSUE-002
+  severity: high
+  summary: Cadastro, autenticação e senha estão no escopo da V1, mas não possuem RF
+    explícito no catálogo oficial de 19 RFs.
+- id: ISSUE-003
+  severity: medium
+  summary: RF01 prevê exclusão de contas sem regra de negócio correspondente.
+- id: ISSUE-004
+  severity: medium
+  summary: Escopo do saldo inicial entre conta principal e secundárias requer confirmação.

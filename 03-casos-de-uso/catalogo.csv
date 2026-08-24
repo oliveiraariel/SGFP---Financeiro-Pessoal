@@ -1,0 +1,23 @@
+id,titulo,arquivo,requisitos_referenciados_no_documento_original
+UC-001,Cadastrar usuário,casos/uc-001-cadastrar-usuario.md,RF-001
+UC-002,Autenticar usuário,casos/uc-002-autenticar-usuario.md,RF-002
+UC-003,Alterar senha,casos/uc-003-alterar-senha.md,RF-003
+UC-004,Recuperar senha,casos/uc-004-recuperar-senha.md,RF-003
+UC-005,Gerenciar contas financeiras,casos/uc-005-gerenciar-contas-financeiras.md,"RF-004, RF-005"
+UC-006,Informar saldo inicial,casos/uc-006-informar-saldo-inicial.md,RF-006
+UC-007,Gerenciar compromissos financeiros,casos/uc-007-gerenciar-compromissos-financeiros.md,RF-008
+UC-008,Configurar recorrência,casos/uc-008-configurar-recorrencia.md,"RF-006, RF-012, RF-018, RF-020"
+UC-009,Efetivar compromisso financeiro,casos/uc-009-efetivar-compromisso-financeiro.md,"RF-005, RF-009, RF-013"
+UC-010,Desfazer efetivação,casos/uc-010-desfazer-efetivacao.md,"RF-005, RF-009"
+UC-011,Gerenciar categorias,casos/uc-011-gerenciar-categorias.md,"RF-007, RF-010, RF-011"
+UC-012,Consultar movimentações financeiras,casos/uc-012-consultar-movimentacoes-financeiras.md,"RF-014, RF-015, RF-022"
+UC-013,Gerenciar transferências,casos/uc-013-gerenciar-transferencias.md,"RF-016, RF-017"
+UC-014,Gerenciar cartão de crédito,casos/uc-014-gerenciar-cartao-de-credito.md,RF-019
+UC-015,Gerenciar parcelamentos,casos/uc-015-gerenciar-parcelamentos.md,"RF-020, RF-012"
+UC-016,Consultar Dashboard financeiro,casos/uc-016-consultar-dashboard-financeiro.md,"RF-021, RF-022"
+UC-017,Navegar entre períodos financeiros,casos/uc-017-navegar-entre-periodos-financeiros.md,"RF-015, RF-016, RF-022"
+UC-018,Gerenciar proteção por PIN,casos/uc-018-gerenciar-protecao-por-pin.md,RF-023
+UC-019,Gerenciar tema da aplicação,casos/uc-019-gerenciar-tema-da-aplicacao.md,RF-024
+UC-020,Criar cópia de segurança,casos/uc-020-criar-copia-de-seguranca.md,RF-025
+UC-021,Restaurar cópia de segurança,casos/uc-021-restaurar-copia-de-seguranca.md,RF-025
+UC-022,Consultar patrimônio total,casos/uc-022-consultar-patrimonio-total.md,"RF-007, RF-021"
