@@ -1,9 +1,9 @@
 # ORCHESTRATOR.md — Contrato Operacional para Agentes
 
 **Projeto:** SGFP — Sistema de Gestão Financeira Pessoal  
-**Versão deste documento:** 2.0  
+**Versão deste documento:** 2.1  
 **Status:** Governança operacional vigente  
-**Última atualização:** 24/08/2026
+**Última atualização:** 26/08/2026
 
 ## 1. Finalidade
 
@@ -41,34 +41,47 @@ A autoridade final sobre:
 
 ## 3. Estado atual do projeto
 
-O projeto possui artefatos produzidos até a **Etapa 4 — Casos de Uso**. A baseline funcional da V1 foi reconciliada em 21 requisitos funcionais identificados de `RF-001` a `RF-021`.
+A baseline funcional da V1 está reconciliada em 21 requisitos funcionais identificados de `RF-001` a `RF-021`.
+
+A **Etapa 5 — Mapa do Domínio** foi concluída e validada no artefato:
+
+- `docs/dominio/01-mapa-de-dominio.md`
+
+O Mapa do Domínio organiza os conceitos, responsabilidades e relações conceituais do SGFP sem antecipar cardinalidades, entidades definitivas, estruturas lógicas, estruturas físicas, arquitetura ou implementação.
 
 A próxima etapa planejada é:
 
-**Etapa 5 — Mapa do Domínio**
+**Etapa 6 — Modelagem Conceitual (MER)**
 
-A entrada efetiva na Etapa 5 ainda não foi iniciada. O gate está **apto para reavaliação/liberação posterior**, após a reconciliação documental registrada em:
+A Etapa 6 está apta para início após a confirmação de que a versão validada do Mapa do Domínio está corretamente versionada no repositório e não existe divergência documental bloqueante.
 
-- `project-manifest.yaml`;
-- `docs/governanca/relatorio-de-consolidacao.md`.
+Os bloqueadores `ISSUE-001` a `ISSUE-004` permanecem resolvidos documentalmente na baseline atual.
 
-Os bloqueadores `ISSUE-001` a `ISSUE-004` foram resolvidos documentalmente nesta baseline. A abertura efetiva da Etapa 5 continua sendo uma ação posterior; até ela ocorrer, agentes não devem iniciar modelagem do domínio, modelagem de dados ou implementação como se essa etapa estivesse em execução.
+Até a validação do MER:
+
+- não iniciar DER;
+- não iniciar Modelo Físico;
+- não promover decisões de persistência;
+- não definir arquitetura final;
+- não iniciar implementação.
 
 ## 4. Ordem mínima de leitura
 
 Antes de executar qualquer tarefa, o agente coordenador deverá ler:
 
 1. `project-manifest.yaml`
-2. `docs/governanca/relatorio-de-consolidacao.md`
-3. `docs/projeto/plano-de-desenvolvimento.md`
-4. `docs/projeto/documento-de-visao.md`
+2. `docs/governanca/continuidade-de-contexto.md`
+3. `docs/governanca/relatorio-de-consolidacao.md`
+4. `docs/projeto/plano-de-desenvolvimento.md`
+5. `docs/projeto/documento-de-visao.md`
 
 Depois, deverá carregar somente os documentos necessários à tarefa:
 
-5. `docs/requisitos/levantamento/README.md` e módulos de negócio envolvidos;
-6. `docs/requisitos/srs/README.md` e seções do SRS envolvidas;
-7. `docs/casos-de-uso/README.md` e Casos de Uso relacionados;
-8. artefatos das etapas posteriores, quando já existirem e forem relevantes.
+6. `docs/requisitos/levantamento/README.md` e módulos de negócio envolvidos;
+7. `docs/requisitos/srs/README.md` e seções do SRS envolvidas;
+8. `docs/casos-de-uso/README.md` e Casos de Uso relacionados;
+9. `docs/dominio/01-mapa-de-dominio.md` para qualquer tarefa da Etapa 6 em diante;
+10. artefatos das etapas posteriores somente quando a etapa correspondente já tiver sido iniciada e forem relevantes.
 
 Não é necessário carregar todo o repositório para cada tarefa. O contexto deve ser suficiente para garantir correção, sem leitura indiscriminada.
 
@@ -92,6 +105,8 @@ A autoridade de cada documento depende do tipo de informação.
 | Proveniência, inventário e consolidação | `docs/governanca/` |
 
 `project-manifest.yaml` e `ORCHESTRATOR.md` são fontes de **governança e roteamento**, não fontes de regras de negócio.
+
+`docs/dominio/01-mapa-de-dominio.md` é a fonte consolidada dos **conceitos do domínio aprovados na Etapa 5**. Ele orienta a Modelagem Conceitual, mas não substitui regras de negócio, requisitos ou Casos de Uso e não autoriza antecipar decisões próprias de MER, DER, Modelo Físico ou Arquitetura.
 
 O relatório de consolidação registra problemas e decisões de reorganização, mas não deve ser utilizado para substituir silenciosamente conteúdo normativo.
 
@@ -125,7 +140,7 @@ Os quatro bloqueadores registrados foram resolvidos na baseline funcional V1:
 - `ISSUE-003`: exclusão de contas registrada como fora do escopo da V1;
 - `ISSUE-004`: valor inicial da principal representado por Entrada, valor de secundária por transferência, sem saldo inicial armazenado.
 
-Os status, resoluções e evidências permanecem registrados em `project-manifest.yaml` e `docs/governanca/relatorio-de-consolidacao.md`. O gate da Etapa 5 está tecnicamente apto para reavaliação, mas a etapa não foi iniciada.
+Os status, resoluções e evidências permanecem registrados em `project-manifest.yaml` e `docs/governanca/relatorio-de-consolidacao.md`. A Etapa 5 foi concluída e validada; esses bloqueadores não impedem a abertura da Etapa 6.
 
 ## 8. Etapas e diretórios
 
@@ -154,12 +169,14 @@ Os agentes devem respeitar a sequência estabelecida no Plano de Desenvolvimento
 
 Regras essenciais:
 
-- não iniciar o Mapa do Domínio enquanto os bloqueadores de requisitos que afetem a modelagem não forem resolvidos;
-- não criar MER, DER ou modelo físico antes da validação do Mapa do Domínio;
-- não definir a arquitetura final antes da compreensão e modelagem do domínio;
+- a Etapa 5 somente é considerada concluída com `docs/dominio/01-mapa-de-dominio.md` validado;
+- a Modelagem Conceitual (MER) pode iniciar somente após a validação do Mapa do Domínio;
+- não criar DER antes da validação do MER;
+- não criar Modelo Físico antes da validação do DER;
+- não definir a arquitetura final antes da conclusão e validação da modelagem de dados aplicável;
 - não iniciar implementação da API antes da arquitetura correspondente estar definida;
 - não duplicar regras de negócio na interface Web;
-- não considerar uma funcionalidade concluída sem validação compatível com a etapa.
+- não considerar uma funcionalidade ou etapa concluída sem validação compatível com seu gate.
 
 Uma pendência que não bloqueie a etapa pode permanecer registrada. Uma pendência que altere o significado do domínio, requisito ou comportamento necessário deve impedir o avanço da parte afetada.
 

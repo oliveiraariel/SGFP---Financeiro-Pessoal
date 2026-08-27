@@ -14,7 +14,9 @@ Antes de qualquer alteração, leia obrigatoriamente:
 3. project-manifest.yaml
 4. docs/governanca/continuidade-de-contexto.md
 
-Se a Skill $project-orchestrator estiver disponível, use-a para coordenar a retomada e qualquer trabalho subsequente que exija decomposição, validação, integração ou replanejamento.
+Se a tarefa envolver a Etapa 6 ou qualquer modelagem posterior, leia também:
+
+5. docs/dominio/01-mapa-de-dominio.md
 
 Não faça alterações ainda.
 
@@ -26,34 +28,49 @@ Primeiro confirme o estado real do Git com, no mínimo:
 - git diff --name-status;
 - git diff --check.
 
-Depois compare o estado real do repositório com docs/governanca/continuidade-de-contexto.md.
+Depois compare o estado real do repositório com project-manifest.yaml e docs/governanca/continuidade-de-contexto.md.
 
-Informe:
+Confirme explicitamente:
 
-1. onde o projeto está;
-2. qual trabalho está em andamento;
-3. qual é a próxima ação obrigatória;
-4. quais blockers ou validações ainda estão pendentes;
-5. se existe qualquer divergência entre o estado do Git, o manifesto e o documento de continuidade.
+1. se a baseline funcional oficial continua sendo RF-001 a RF-021;
+2. se docs/dominio/01-mapa-de-dominio.md existe e corresponde à Etapa 5 validada;
+3. se a Etapa 5 está concluída;
+4. se a próxima etapa é Etapa 6 — Modelagem Conceitual (MER);
+5. quais arquivos ou validações estão pendentes no working tree;
+6. se existe qualquer divergência entre Git, manifesto, continuidade e fontes canônicas.
 
 Não invente decisões de negócio.
-Não altere arquivos.
-Não execute git add, commit, push, merge ou troca de branch até apresentar esse diagnóstico.
+Não altere arquivos no primeiro turno.
+Não execute git add, commit, push, merge ou troca de branch antes de apresentar o diagnóstico.
 
-Se houver divergência entre o documento de continuidade e as fontes oficiais, preserve o estado real do Git e aplique a autoridade definida em ORCHESTRATOR.md e project-manifest.yaml. Não resolva a divergência silenciosamente.
+Para a Etapa 6:
+- use o Mapa do Domínio como entrada conceitual;
+- consulte regras de negócio, requisitos e Casos de Uso quando necessário;
+- não trate os candidatos do Mapa do Domínio como entidades já decididas;
+- defina no MER apenas o que pertence à Modelagem Conceitual;
+- não antecipe DER, Modelo Físico, Arquitetura ou Implementação.
+
+Se houver divergência entre documentos, aplique a autoridade definida em ORCHESTRATOR.md e project-manifest.yaml e não resolva conflitos de negócio silenciosamente.
 ```
 
 ## Uso recomendado
 
-### OpenClaw
+### Agente com acesso direto ao repositório
 
-Na raiz do repositório, copie apenas o bloco `Prompt` acima para a nova sessão do agente `sgfp`.
+Execute o prompt na raiz do repositório e permita somente leitura e diagnóstico no primeiro turno.
 
 ### ChatGPT ou outro assistente sem acesso direto ao diretório local
 
-Se o novo chat não tiver acesso ao repositório local, forneça os arquivos necessários ou conecte-o ao repositório antes de pedir a retomada.
+Forneça, no mínimo:
 
-O prompt não substitui acesso às fontes.
+- `AGENTS.md`;
+- `ORCHESTRATOR.md`;
+- `project-manifest.yaml`;
+- `docs/governanca/continuidade-de-contexto.md`;
+- `docs/dominio/01-mapa-de-dominio.md` para tarefas da Etapa 6 em diante;
+- apenas as regras, requisitos e Casos de Uso necessários à tarefa.
+
+Não é necessário enviar o repositório inteiro quando a tarefa puder ser executada com contexto menor e suficiente.
 
 ## Regra de segurança operacional
 

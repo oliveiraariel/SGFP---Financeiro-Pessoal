@@ -6,9 +6,9 @@ Este documento permite retomar o trabalho do SGFP em uma nova sessão, novo chat
 
 Ele funciona como **handoff operacional do estado corrente**.
 
-Este documento **não substitui** as fontes canônicas do projeto e não deve ser usado para criar ou alterar regras de negócio por conta própria.
+Este documento não substitui as fontes canônicas do projeto e não deve ser utilizado para criar ou alterar regras de negócio por conta própria.
 
-## 2. Ordem de autoridade e leitura
+## 2. Ordem de leitura para retomada
 
 Ao retomar o projeto, leia nesta ordem:
 
@@ -16,281 +16,216 @@ Ao retomar o projeto, leia nesta ordem:
 2. `ORCHESTRATOR.md`
 3. `project-manifest.yaml`
 4. `docs/governanca/continuidade-de-contexto.md`
-5. somente os documentos canônicos e derivados necessários para a tarefa atual
+5. `docs/dominio/01-mapa-de-dominio.md` para tarefas da Etapa 6 em diante
+6. somente os documentos canônicos e derivados necessários para a tarefa atual
 
 Em caso de divergência:
 
 - regras de negócio e requisitos aprovados prevalecem conforme a autoridade definida em `ORCHESTRATOR.md` e `project-manifest.yaml`;
-- este documento descreve o **estado operacional de continuidade**, não cria uma nova fonte de verdade;
+- o Mapa do Domínio organiza os conceitos aprovados da Etapa 5, mas não substitui regras de negócio, requisitos ou Casos de Uso;
+- este documento descreve o estado operacional de continuidade;
 - o estado real do Git deve ser confirmado antes de qualquer alteração.
 
 ## 3. Estado atual do projeto
 
-Última etapa formalmente concluída:
+Baseline funcional oficial da V1:
 
-- **Etapa 4 — Casos de Uso**
+- `RF-001` a `RF-021`.
 
-Próxima etapa planejada:
+Última etapa concluída e validada:
 
 - **Etapa 5 — Mapa do Domínio**
 
+Artefato da Etapa 5:
+
+- `docs/dominio/01-mapa-de-dominio.md`
+
+Próxima etapa:
+
+- **Etapa 6 — Modelagem Conceitual (MER)**
+
 Situação:
 
-- a Etapa 5 ainda **não foi iniciada**;
-- a baseline documental pré-Etapa 5 está em reconciliação;
-- a reconciliação dos requisitos foi executada no working tree, mas ainda precisa de auditoria independente antes de ser aceita e versionada.
+- o Mapa do Domínio foi revisado para permanecer estritamente no escopo da Etapa 5;
+- o documento preserva rastreabilidade com regras e Casos de Uso;
+- cardinalidades, entidades definitivas, chaves, tabelas, nulabilidade, persistência, especializações formais e decisões físicas foram deixadas para as etapas correspondentes;
+- a Etapa 6 está apta a iniciar após confirmação do estado real do Git;
+- Etapas 7 a 12 permanecem não iniciadas.
 
-## 4. Estado atual do Git
+## 4. Decisões consolidadas relevantes para a modelagem
 
-Branch de trabalho esperada:
+### 4.1 Baseline funcional
 
-```text
-docs/reconciliacao-baseline-rf-v1
-```
+A V1 utiliza exatamente `RF-001` a `RF-021`.
 
-Estado esperado:
+Não criar RF oficial acima de `RF-021` sem decisão humana explícita e atualização coordenada dos artefatos dependentes.
 
-- existem alterações documentais no working tree;
-- as alterações da reconciliação ainda não devem estar staged;
-- não deve existir commit da reconciliação;
-- não deve existir push da reconciliação;
-- a `main` não deve ser alterada durante essa revisão.
+### 4.2 Contas e saldo
 
-Antes de continuar, confirmar obrigatoriamente:
-
-```bash
-git status
-git branch --show-current
-git diff --stat
-git diff --name-status
-git diff --check
-```
-
-Se o estado real do Git divergir deste documento, **não assumir qual é o estado correto**. Investigar primeiro.
-
-## 5. Trabalho em andamento
-
-Objetivo da branch atual:
-
-> Reconciliar a baseline funcional da V1 antes da Etapa 5, resolvendo `ISSUE-001` a `ISSUE-004`, corrigindo rastreabilidade e consolidando um catálogo funcional único.
-
-O agente `sgfp`, orientado por `AGENTS.md`, `ORCHESTRATOR.md`, `project-manifest.yaml` e pela Skill `project-orchestrator`, executou uma reconciliação documental no working tree.
-
-Resultado informado pelo executor:
-
-```text
-PASSOU
-```
-
-Esse resultado **ainda não foi aceito como definitivo**.
-
-Falta uma auditoria independente do diff e da consistência documental.
-
-## 6. Baseline funcional aprovada para a reconciliação
-
-A baseline funcional proposta e aprovada para reconciliação contém exatamente 21 requisitos:
-
-| ID | Requisito Funcional |
-|---|---|
-| RF-001 | Cadastrar usuário |
-| RF-002 | Autenticar usuário |
-| RF-003 | Gerenciar senha |
-| RF-004 | Gerenciar contas financeiras |
-| RF-005 | Consultar saldos das contas e patrimônio total |
-| RF-006 | Gerenciar compromissos financeiros |
-| RF-007 | Efetivar e desfazer compromissos financeiros |
-| RF-008 | Gerenciar compromissos recorrentes |
-| RF-009 | Gerenciar categorias financeiras |
-| RF-010 | Registrar lançamentos financeiros |
-| RF-011 | Consultar movimentações financeiras |
-| RF-012 | Gerenciar transferências entre contas |
-| RF-013 | Efetivar e desfazer transferências |
-| RF-014 | Gerenciar transferências recorrentes |
-| RF-015 | Gerenciar compromissos de cartão de crédito |
-| RF-016 | Gerenciar compromissos parcelados |
-| RF-017 | Consultar o Dashboard financeiro |
-| RF-018 | Navegar entre períodos financeiros |
-| RF-019 | Gerenciar proteção por PIN |
-| RF-020 | Gerenciar tema da aplicação |
-| RF-021 | Gerenciar cópias de segurança e restauração |
-
-Após validação e versionamento, esses identificadores devem formar a baseline funcional oficial da V1.
-
-## 7. Decisões consolidadas nesta reconciliação
-
-### 7.1 Usuário, autenticação e senha
-
-- cadastro de usuário pertence à V1;
-- autenticação por e-mail e senha pertence à V1;
-- gerenciamento de senha pertence à V1;
-- essas capacidades são formalizadas como `RF-001`, `RF-002` e `RF-003`.
-
-### 7.2 Contas financeiras
-
+- contas são criadas sem saldo armazenado;
+- saldo é derivado das movimentações financeiras;
+- não existe atributo independente de “saldo inicial” na Conta Financeira;
+- quando necessário, o valor existente na Conta Principal no início da utilização é representado por um Lançamento Financeiro de Entrada;
+- o valor destinado inicialmente a uma Conta Secundária chega por Transferência com a Conta Principal;
 - exclusão de contas financeiras não pertence à V1;
-- não criar silenciosamente regras de exclusão, arquivamento ou inativação;
-- contas secundárias recebem movimentações somente por transferências com a conta principal.
+- não criar regras de exclusão, arquivamento ou inativação de contas sem decisão humana explícita e atualização das fontes normativas.
 
-### 7.3 Saldo, valor inicial e patrimônio
+### 4.3 Patrimônio
 
-- saldo não é um atributo financeiro independente mantido manualmente;
-- saldo é derivado das movimentações;
-- patrimônio é derivado dos saldos das contas;
-- valor inicial da conta principal é representado por lançamento de Entrada;
-- valor destinado inicialmente a uma conta secundária deve chegar por transferência com a principal;
-- transferência não altera o patrimônio total;
-- o conceito antigo de "saldo inicial" não deve persistir como estado armazenado independente.
+- Patrimônio Total é derivado dos saldos das contas;
+- Transferências entre contas do próprio usuário não alteram o patrimônio total.
 
-### 7.4 Atualização de saldo
+### 4.4 Compromisso e lançamento
 
-A atualização de saldos não é RF autônomo.
+- Compromisso Financeiro representa planejamento, obrigação ou expectativa;
+- Lançamento Financeiro representa movimentação efetivamente realizada;
+- a efetivação faz a transição entre planejamento e realização;
+- o desfazimento remove o efeito financeiro conforme as regras vigentes;
+- estratégias de persistência do desfazimento pertencem às etapas posteriores.
 
-É comportamento de consistência relacionado principalmente a:
+### 4.5 Categoria
 
-- `RF-005`;
-- `RF-007`;
-- `RF-013`;
-- critérios de aceitação e regras de integridade financeira correspondentes.
+- categoria é obrigatória no momento do cadastro do compromisso;
+- remover uma categoria não exclui os compromissos anteriormente associados;
+- a forma de representar essa situação no modelo de dados será decidida na etapa apropriada.
 
-### 7.5 Categorias
+### 4.6 Recorrência
 
-Criar categoria durante o cadastro de compromisso não é RF independente.
+- recorrência é mensal na V1;
+- alterações e cancelamentos preservam períodos anteriores;
+- a estratégia de representação e eventual materialização de ocorrências pertence à Modelagem Conceitual e etapas posteriores.
 
-É fluxo/capacidade relacionada a:
+### 4.7 Transferência
 
-- `RF-006`;
-- `RF-009`.
+- movimenta valores entre contas do mesmo usuário;
+- origem e destino devem ser contas diferentes;
+- as regras atuais relacionam transferências entre Conta Principal e Conta Secundária;
+- Transferência não altera Patrimônio Total;
+- o Mapa do Domínio não decide se Transferência será especialização, composição ou entidade independente.
 
-### 7.6 Períodos anteriores
+## 5. Papel do Mapa do Domínio
 
-Registrar informações financeiras de períodos anteriores não é RF independente.
+`docs/dominio/01-mapa-de-dominio.md` é a entrada formal para a Etapa 6.
 
-A capacidade deve ser representada pelas regras e requisitos apropriados, especialmente:
+Ele contém:
 
-- `RF-010`;
-- `RF-018`.
+- conceitos;
+- responsabilidades;
+- relações conceituais;
+- informações derivadas;
+- elementos de apoio;
+- limites de escopo;
+- rastreabilidade;
+- pontos que deverão ser decididos nas etapas posteriores.
 
-### 7.7 Movimentações
+Ele **não define**:
 
-Consultar movimentações financeiras permanece capacidade funcional independente:
+- cardinalidades;
+- entidades definitivas;
+- PK/FK;
+- tabelas e colunas;
+- tipos de dados;
+- nulabilidade;
+- índices;
+- estratégias de persistência;
+- arquitetura;
+- implementação.
 
-```text
-RF-011 — Consultar movimentações financeiras
-```
+## 6. Gate da Etapa 6 — Modelagem Conceitual (MER)
 
-### 7.8 Backup
+A Etapa 6 pode iniciar quando:
 
-`RF-021` contempla cópias de segurança e restauração conforme as regras existentes.
+1. `docs/dominio/01-mapa-de-dominio.md` estiver presente no repositório na versão validada;
+2. `git diff --check` não apresentar erro;
+3. não houver divergência bloqueante entre Mapa do Domínio, regras de negócio, SRS e Casos de Uso;
+4. o estado do Git for conhecido e adequado ao trabalho.
 
-Nenhuma tecnologia de armazenamento, formato físico, provedor externo ou mecanismo de infraestrutura deve ser escolhido nesta etapa.
+A aprovação do gate não deve ser inferida apenas pelo resultado de `git diff --check`; a consistência documental e o conteúdo da versão efetivamente versionada também devem ser confirmados.
 
-## 8. Issues tratados pela reconciliação
+Durante o MER:
 
-A reconciliação pretende resolver, preservando proveniência:
+- analisar candidatos do Mapa do Domínio, sem presumir que todos serão entidades;
+- definir conceitos com identidade própria somente quando justificado;
+- definir relacionamentos e cardinalidades na Etapa 6;
+- manter dados derivados como derivados quando aplicável;
+- registrar ambiguidades sem promover suposições a regra;
+- consultar a fonte canônica sempre que uma decisão depender de regra de negócio.
 
-- `ISSUE-001` — divergência entre catálogo formal de 19 RFs e artefatos derivados com 25 RFs;
-- `ISSUE-002` — cadastro, autenticação e senha ausentes do catálogo formal anterior;
-- `ISSUE-003` — exclusão de contas mencionada sem regra de negócio correspondente;
-- `ISSUE-004` — inconsistência sobre valor inicial e contas secundárias.
+## 7. Gates posteriores
 
-Os issues não devem simplesmente desaparecer. Histórico, resolução e justificativa devem permanecer registrados conforme os mecanismos de governança do projeto.
+- **Etapa 7 — DER:** somente após validação do MER.
+- **Etapa 8 — Modelo Físico:** somente após validação do DER.
+- **Etapa 9 — Arquitetura:** somente após compreensão e modelagem compatíveis com os gates anteriores.
+- **Etapa 10 — API:** somente após arquitetura correspondente.
+- **Etapa 11 — Interface Web:** conforme arquitetura e contratos aprovados.
+- **Etapa 12 — Testes:** evolui conforme critérios, implementação e estratégia vigente.
 
-## 9. Próxima ação obrigatória
+A existência de arquivos ou diretórios reservados para etapas futuras não significa que essas etapas foram iniciadas.
 
-Antes de qualquer commit, executar uma **auditoria independente** da reconciliação.
+## 8. Estado do Git na retomada
 
-Primeiro:
+Não assumir branch, working tree limpo ou existência de commit apenas com base neste documento.
+
+Confirmar sempre:
 
 ```bash
+git branch --show-current
 git status
 git diff --stat
 git diff --name-status
 git diff --check
 ```
 
-Depois revisar criticamente o diff completo e confirmar:
+Se existirem arquivos preparados para commit, revisar o diff antes de executar `git add`.
 
-1. existem exatamente `RF-001` a `RF-021` como baseline oficial;
-2. não existe RF oficial além de `RF-021`;
-3. cada identificador possui significado único;
-4. cadastro, autenticação e senha estão corretamente cobertos;
-5. exclusão de contas não aparece como funcionalidade da V1;
-6. saldo inicial não é tratado como atributo independente;
-7. principal e secundárias respeitam as regras de movimentação;
-8. patrimônio permanece derivado;
-9. atualização de saldo não aparece como RF autônomo;
-10. Casos de Uso possuem referências corretas;
-11. Critérios de Aceitação possuem referências corretas;
-12. índices CSV correspondem aos documentos;
-13. rastreabilidade RF → UC → Critério é consistente onde aplicável;
-14. referências antigas permanecem somente quando forem histórico/proveniência válida;
-15. `project-manifest.yaml` e `ORCHESTRATOR.md` representam corretamente o estado reconciliado;
-16. nenhuma etapa de domínio, modelagem, arquitetura ou implementação foi iniciada antecipadamente;
-17. `git diff --check` passa.
+Não executar `push`, `merge`, rebase destrutivo ou alteração da `main` sem compreender o estado atual e a estratégia de integração.
 
-Se qualquer falha relevante for encontrada:
+## 9. Próxima ação recomendada
 
-```text
-corrigir
-→ revalidar
-→ auditar novamente
-```
+Após confirmar que a Etapa 5 e os arquivos de governança atualizados estão corretamente versionados:
 
-Somente após a auditoria independente resultar em **PASSOU** deve ser feito commit.
+1. abrir uma nova unidade de trabalho para **Etapa 6 — Modelagem Conceitual (MER)**;
+2. ler `docs/dominio/01-mapa-de-dominio.md`;
+3. carregar somente as regras de negócio, requisitos e Casos de Uso necessários aos conceitos analisados;
+4. produzir `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
+5. validar o MER antes de qualquer trabalho de DER.
 
-## 10. Ações proibidas neste ponto
+## 10. Arquivos-base para contexto de novas sessões
 
-Até a auditoria independente ser concluída:
+Para uma retomada eficiente, fornecer preferencialmente:
 
-- não executar `git add`;
-- não executar commit;
-- não executar push;
-- não fazer merge;
-- não iniciar o Mapa do Domínio;
-- não alterar a `main`;
-- não inventar novas regras de negócio.
+- `AGENTS.md`;
+- `ORCHESTRATOR.md`;
+- `project-manifest.yaml`;
+- `docs/governanca/PROMPT-RETOMADA.md`;
+- `docs/governanca/continuidade-de-contexto.md`.
 
-## 11. Quando a reconciliação passar
+Para tarefas da Etapa 6 em diante, incluir também:
 
-Depois da aprovação humana da auditoria:
+- `docs/dominio/01-mapa-de-dominio.md`.
 
-```bash
-git status
-git diff --check
-git add -A
-git commit -m "docs: reconcilia baseline funcional da v1"
-git push -u origin docs/reconciliacao-baseline-rf-v1
-git status
-```
+Depois, adicionar somente os documentos de negócio necessários à tarefa.
 
-Depois disso, revisar a integração via Pull Request antes de incorporar à `main`.
+## 11. Documentos históricos que não devem ser usados como estado corrente
 
-## 12. Regra para retomada em nova sessão
+`docs/governanca/relatorio-de-consolidacao.md` deve continuar preservando o histórico da reconciliação dos `ISSUE-001` a `ISSUE-004`.
 
-Ao iniciar uma nova sessão, o primeiro passo deve ser:
+Ele é fonte de governança e proveniência, não um handoff operacional corrente.
 
-> Confirmar o estado do Git e comparar com este documento antes de executar qualquer alteração.
+Não reescrever o histórico somente para refletir a etapa atual.
 
-Não confiar apenas em memória de conversa, resumo de agente ou relatório anterior.
+## 12. Atualização deste documento
 
-## 13. Atualização deste documento
+Atualizar este arquivo quando houver:
 
-Atualizar este arquivo sempre que houver uma mudança relevante de continuidade, por exemplo:
+- conclusão ou início formal de etapa;
+- mudança de gate;
+- novo blocker;
+- decisão humana com impacto transversal;
+- alteração relevante de baseline;
+- commit/merge que mude o ponto de retomada;
+- interrupção do trabalho em estado que precise ser retomado.
 
-- troca de branch ou Work Unit principal;
-- conclusão de uma auditoria;
-- commit/merge importante;
-- alteração do gate da próxima etapa;
-- mudança de blocker;
-- início de nova etapa;
-- interrupção do trabalho em ponto que precise ser retomado depois.
+Registrar apenas o necessário para retomada e manter a próxima ação explícita.
 
-Ao atualizar:
-
-- registrar apenas o estado necessário para retomada;
-- não duplicar documentação canônica desnecessariamente;
-- remover instruções transitórias que já perderam validade;
-- preservar decisões relevantes por referência às fontes oficiais;
-- manter a próxima ação explícita.
-
-Última atualização operacional: **2026-08-24**.
+Última atualização operacional: **2026-08-26**.

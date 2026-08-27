@@ -1,6 +1,6 @@
 schema_version: "1.0"
-manifest_version: "2.0"
-updated_at: "2026-08-24"
+manifest_version: "2.1"
+updated_at: "2026-08-26"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -49,16 +49,16 @@ product_constraints:
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "baseline_reconciled_pending_stage_5_reassessment"
+  current_state: "stage_5_completed_stage_6_ready"
   last_documented_stage:
-    id: 4
-    name: "Casos de Uso"
-  next_planned_stage:
     id: 5
     name: "Mapa do Domínio"
+  next_planned_stage:
+    id: 6
+    name: "Modelagem Conceitual (MER)"
   next_stage_gate:
-    status: "ready_for_reassessment"
-    reason: "A baseline funcional V1 foi reconciliada em 21 RFs. A abertura efetiva da Etapa 5 depende de reavaliação/liberação posterior e não foi iniciada por esta alteração."
+    status: "ready_to_start"
+    reason: "O Mapa do Domínio foi concluído e validado. A Etapa 6 está apta para início após a confirmação de que a versão validada está corretamente versionada no repositório e não existe divergência documental bloqueante."
     blockers: []
 
 stages:
@@ -84,12 +84,12 @@ stages:
 
   - id: 5
     name: "Mapa do Domínio"
-    status: "ready_for_reassessment"
-    path: "docs/dominio/"
+    status: "completed_validated"
+    path: "docs/dominio/01-mapa-de-dominio.md"
 
   - id: 6
     name: "Modelagem Conceitual (MER)"
-    status: "not_started"
+    status: "ready_to_start"
     path: "docs/modelagem-dados/01-modelagem-conceitual-mer.md"
 
   - id: 7
@@ -161,6 +161,11 @@ canonical_sources:
     path: "docs/casos-de-uso/"
     authority: "derived_reconciled"
 
+  domain_map:
+    path: "docs/dominio/01-mapa-de-dominio.md"
+    authority: "validated_domain_concepts"
+    note: "Organiza conceitos e relações da Etapa 5 sem substituir regras de negócio, requisitos ou Casos de Uso e sem antecipar decisões de modelagem."
+
   governance_report:
     path: "docs/governanca/relatorio-de-consolidacao.md"
     authority: "governance_only"
@@ -197,7 +202,7 @@ traceability:
     - "implementation"
     - "test_case"
     - "test_result"
-  current_status: "consistent_for_functional_baseline"
+  current_status: "consistent_through_validated_domain_map"
   blocking_issue: null
   update_policy: "When a traceable source changes, inspect and update directly affected downstream references in the same change set."
 
