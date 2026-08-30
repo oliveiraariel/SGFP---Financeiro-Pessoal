@@ -32,6 +32,7 @@ O usuário solicita recuperação de senha.
 **Fluxos alternativos e exceções**
 
 * O sistema não deverá revelar a senha anterior.
+* Se o mecanismo de recuperação do WordPress considerar o link ou a chave de recuperação expirado, inválido ou já utilizado, a definição de nova senha não deverá ser permitida.
 
 **Pós-condições**
 
