@@ -398,16 +398,16 @@ Na Versão 1, a anexação de arquivos de imagem aos compromissos não fará par
 
 Subetapa destinada à análise das regras e necessidades de segurança do sistema.
 
-Foram definidas, entre outras, as seguintes diretrizes:
+Para a Versão 1, foram consolidadas, entre outras, as seguintes diretrizes:
 
-1. Utilização de hash para armazenamento de senhas.
-2. Alteração de senha diretamente pela aplicação.
-3. Alteração de senha diretamente pela aplicação utilizando os mecanismos do WordPress.
-4. Recuperação de senha pelo endereço de e-mail cadastrado utilizando os mecanismos do WordPress.
-5. Isolamento dos dados pertencentes a usuários diferentes.
+1. Autenticação do usuário por e-mail e senha.
+2. Armazenamento seguro das senhas por meio dos mecanismos de hash fornecidos pela plataforma de autenticação adotada.
+3. Alteração de senha diretamente pela aplicação utilizando os mecanismos disponibilizados pelo WordPress.
+4. Recuperação de senha por meio do endereço de e-mail cadastrado, utilizando o mecanismo de recuperação disponibilizado pelo WordPress.
+5. Isolamento dos dados financeiros pertencentes a usuários diferentes.
 6. Proteção das operações e dos recursos da API contra acesso não autorizado.
 
-A proteção opcional por PIN não fará parte da Versão 1. Em versão futura, será tratada como mecanismo de bloqueio rápido do SGFP durante uma sessão já autenticada, sem substituir a autenticação principal por e-mail e senha.
+A proteção opcional por PIN não fará parte da Versão 1. Para uma versão futura, o PIN será tratado como mecanismo de bloqueio rápido do SGFP durante uma sessão já autenticada, sem substituir a autenticação principal por e-mail e senha.
 
 ### **14. Integrações**
 
