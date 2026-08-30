@@ -2,9 +2,9 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 2.0
+**Versão:** 2.1
 
-**Baseline funcional:** V1 reconciliada
+**Baseline funcional:** catálogo preservado com RF-001 a RF-021; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
 
 ## 1. Usuários e credenciais
 
@@ -48,7 +48,7 @@ O sistema deverá permitir configurar e administrar compromissos financeiros rec
 
 ### **RF-009 — Gerenciar categorias financeiras**
 
-O sistema deverá permitir criar, visualizar, alterar e excluir categorias, bem como associá-las aos compromissos financeiros. A criação de categoria durante o cadastro de um compromisso deverá permanecer disponível como fluxo relacionado.
+O sistema deverá disponibilizar, para cada novo usuário, um conjunto inicial de categorias criado já vinculado a esse usuário. O sistema deverá permitir criar, visualizar, alterar e excluir as categorias do próprio usuário, bem como associá-las aos compromissos financeiros. A criação de categoria durante o cadastro de um compromisso deverá permanecer disponível como fluxo relacionado. Alterações nas categorias de um usuário não deverão afetar categorias pertencentes a outros usuários.
 
 ### **RF-010 — Registrar lançamentos financeiros**
 
@@ -94,9 +94,11 @@ O sistema deverá permitir navegar entre diferentes meses e consultar ou registr
 
 ## 8. Configurações e segurança
 
-### **RF-019 — Gerenciar proteção por PIN**
+### **RF-019 — Gerenciar proteção por PIN — Versão Futura**
 
-O sistema deverá permitir configurar e administrar a proteção por PIN, incluindo ativação, alteração, desativação e recuperação conforme as regras estabelecidas.
+Este requisito permanece no catálogo para preservar a rastreabilidade histórica, mas não integra o escopo ativo da Versão 1.
+
+Em versão futura, o sistema poderá permitir a proteção opcional por PIN como mecanismo de bloqueio rápido do SGFP durante uma sessão já autenticada. O PIN não substituirá a autenticação principal por e-mail e senha. Em caso de esquecimento ou bloqueio, a redefinição deverá ocorrer mediante confirmação da senha da conta, sem mecanismo próprio de recuperação por e-mail ou token.
 
 ### **RF-020 — Gerenciar tema da aplicação**
 
@@ -107,6 +109,8 @@ O sistema deverá permitir selecionar e aplicar o tema de apresentação da apli
 O sistema deverá permitir criar e restaurar cópias de segurança dos dados, respeitando as regras de preservação, proteção e restauração. Não ficam definidos neste requisito tecnologia, formato físico, armazenamento externo ou infraestrutura.
 
 ## Lista Consolidada
+
+O catálogo preserva os identificadores RF-001 a RF-021. Na Versão 1, RF-001 a RF-018, RF-020 e RF-021 permanecem ativos. O RF-019 foi adiado para versão futura e não deverá provocar renumeração dos requisitos posteriores.
 
 | Código | Requisito Funcional |
 | --- | --- |
@@ -128,6 +132,6 @@ O sistema deverá permitir criar e restaurar cópias de segurança dos dados, re
 | **RF-016** | Gerenciar compromissos parcelados |
 | **RF-017** | Consultar o Dashboard financeiro |
 | **RF-018** | Navegar entre períodos financeiros |
-| **RF-019** | Gerenciar proteção por PIN |
+| **RF-019** | Gerenciar proteção por PIN — **Versão futura** |
 | **RF-020** | Gerenciar tema da aplicação |
 | **RF-021** | Gerenciar cópias de segurança e restauração |
