@@ -13,4 +13,4 @@ A Etapa 4 foi reorganizada para evitar um único arquivo Markdown excessivamente
 
 **Baseline funcional reconciliada.**
 
-Os campos `Requisitos relacionados` foram realinhados à baseline oficial RF-001 a RF-021. A proveniência histórica do catálogo anterior de 25 RFs permanece registrada em `docs/governanca/proveniencia.csv` e no relatório de consolidação.
+Os identificadores de requisitos permanecem preservados de RF-001 a RF-021. A Versão 1 possui 20 requisitos funcionais ativos; RF-019 e UC-018 foram adiados para versão futura sem renumeração. A proveniência histórica do catálogo anterior de 25 RFs permanece registrada em `docs/governanca/proveniencia.csv` e no relatório de consolidação.
