@@ -2,7 +2,7 @@
 
 **Documento:** Levantamento de Requisitos
 
-**Versão:** 1.0
+**Versão:** 1.1
 
 **Objetivo**
 
@@ -12,9 +12,13 @@ Definir como os compromissos financeiros poderão ser organizados em grupos, fac
 
 **RN-001**
 
-O sistema disponibilizará um conjunto inicial de categorias para facilitar a utilização da aplicação.
+No cadastro de cada usuário, o sistema disponibilizará um conjunto inicial de categorias para facilitar a utilização da aplicação.
 
-Essas categorias serão apenas sugestões e poderão ser livremente alteradas pelo usuário.
+Essas categorias serão criadas como registros próprios já vinculados ao usuário correspondente.
+
+As categorias iniciais serão apenas sugestões e, após sua criação, poderão ser livremente renomeadas ou removidas pelo próprio usuário, assim como novas categorias poderão ser adicionadas.
+
+Alterações realizadas por um usuário em suas categorias não deverão afetar as categorias de outros usuários.
 
 **RN-002**
 
@@ -63,6 +67,8 @@ A categoria criada durante o cadastro do compromisso deverá ficar disponível p
 **Decisões Tomadas**
 
 - O sistema disponibilizará categorias iniciais apenas como sugestão.
+- O conjunto inicial será criado individualmente para cada novo usuário e ficará vinculado a ele desde sua criação.
+- Não haverá um conjunto global compartilhado de categorias cuja alteração por um usuário afete os demais.
 - O usuário poderá criar novas categorias.
 - O usuário poderá renomear categorias existentes.
 - O usuário poderá remover categorias.
@@ -89,4 +95,4 @@ A categoria criada durante o cadastro do compromisso deverá ficar disponível p
 
 **Data de Revisão**
 
-13/08/2026
+30/08/2026
