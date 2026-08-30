@@ -41,6 +41,8 @@ Entre as principais características previstas para a V1 estão:
 
 Não haverá integração bancária automática na Versão 1.
 
+O catálogo funcional preserva os identificadores RF-001 a RF-021. A V1 possui **20 requisitos funcionais ativos**; RF-019 — proteção por PIN — está adiado para versão futura, sem renumeração dos requisitos posteriores.
+
 ## Metodologia de Desenvolvimento
 
 O projeto segue uma sequência incremental de desenvolvimento:
