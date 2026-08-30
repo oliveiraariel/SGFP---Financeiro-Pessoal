@@ -2,9 +2,9 @@
 
 ## Sistema de Gestão Financeira Pessoal
 
-**Versão do documento:** 1.1
+**Versão do documento:** 1.2
 
-**Data da última atualização:** 24/08/2026
+**Data da última atualização:** 30/08/2026
 
 ### 1. Apresentação
 
@@ -24,9 +24,11 @@ Desenvolver uma aplicação capaz de auxiliar pessoas na organização de suas f
 
 O sistema destina-se a pessoas que desejam controlar suas finanças pessoais de forma organizada.
 
-Cada instalação será utilizada por um único usuário.
+A aplicação Web poderá ser utilizada por múltiplos usuários cadastrados.
 
-Não haverá compartilhamento de dados entre diferentes usuários.
+Cada usuário possuirá seus próprios dados financeiros, configurações e categorias, mantidos de forma isolada dos dados dos demais usuários.
+
+Não haverá compartilhamento de dados financeiros entre usuários na Versão 1.
 
 ### 4. Escopo da Primeira Versão
 
@@ -35,7 +37,7 @@ A primeira versão do sistema contemplará as funcionalidades essenciais para o 
 Serão desenvolvidos:
 
 - cadastro de usuário;
-- autenticação por login, senha e PIN;
+- autenticação por e-mail e senha;
 - gerenciamento de contas financeiras;
 - gerenciamento de compromissos financeiros;
 - controle de receitas;
@@ -47,7 +49,7 @@ Serão desenvolvidos:
 - controle básico de cartão de crédito;
 - controle de parcelamentos;
 - dashboard inicial;
-- recuperação de senha e PIN por e mail;
+- recuperação de senha por e-mail;
 - criação manual de cópia de segurança;
 - restauração de cópia de segurança;
 - preservação do estado anterior durante uma restauração;
@@ -60,6 +62,8 @@ As funcionalidades abaixo não fazem parte da primeira versão, porém já fazem
 
 Entre elas destacam se:
 
+- proteção opcional por PIN para bloqueio rápido do SGFP durante uma sessão já autenticada;
+- bloqueio automático da aplicação após período de inatividade;
 - autenticação utilizando conta Google;
 - sincronização dos dados em nuvem;
 - aplicativo para dispositivos móveis;
@@ -72,11 +76,15 @@ Entre elas destacam se:
 
 ### 6. Plataforma
 
-A primeira versão será desenvolvida como uma aplicação Web utilizando PHP.
+A primeira versão será desenvolvida como uma aplicação Web utilizando PHP sobre WordPress.
 
-A aplicação será construída utilizando uma arquitetura baseada em API REST.
+O WordPress será utilizado como plataforma da aplicação, fornecendo a infraestrutura Web, o gerenciamento de usuários e autenticação, as sessões e o suporte à API REST.
 
-Essa arquitetura permitirá que futuras aplicações, como um aplicativo Android ou iOS, utilizem exatamente a mesma regra de negócio implementada na API, desenvolvendo apenas uma nova interface.
+O backend específico do SGFP será desenvolvido em um plugin próprio, responsável pelas regras de negócio, pelos endpoints da aplicação e pelo acesso aos dados do domínio.
+
+A interface Web consumirá a API REST própria do SGFP.
+
+Essa arquitetura permitirá que futuras aplicações, como um aplicativo Android ou iOS, utilizem a mesma API e as mesmas regras de negócio, desenvolvendo apenas uma nova interface e o mecanismo de autenticação adequado ao novo cliente.
 
 ### 7. Filosofia do Sistema
 
@@ -125,9 +133,11 @@ Cada compromisso possuirá informações que representarão sua situação duran
 
 Os compromissos financeiros deverão ser classificados em categorias.
 
-O sistema disponibilizará um conjunto inicial de categorias para facilitar o primeiro uso.
+No cadastro de cada usuário, o sistema disponibilizará um conjunto inicial de categorias para facilitar o primeiro uso.
 
-A categoria será obrigatória.
+Essas categorias serão criadas já vinculadas ao respectivo usuário e, a partir desse momento, poderão ser renomeadas ou removidas por ele, assim como novas categorias poderão ser adicionadas.
+
+A categoria será obrigatória no cadastro de um compromisso financeiro.
 
 Caso nenhuma das categorias disponíveis seja adequada ao compromisso, o usuário poderá utilizar o botão de adição disponível junto às categorias para criar uma nova categoria.
 
@@ -183,9 +193,11 @@ Somente após a conclusão dessas etapas será iniciado o desenvolvimento da API
 
 ### 12. Situação Atual do Projeto
 
-As etapas de **Levantamento de Requisitos**, **Especificação de Requisitos (SRS)** e **Casos de Uso** encontram-se registradas como concluídas no controle atual do projeto.
+Atualmente o projeto encontra-se na **Etapa 6 — Modelagem Conceitual (MER)**.
 
-A próxima etapa prevista é a **Etapa 5 — Mapa do Domínio**, seguida pelas etapas de modelagem de dados, arquitetura, implementação e testes.
+As etapas de levantamento e especificação de requisitos, Casos de Uso e Mapa do Domínio já foram concluídas e constituem a base para a modelagem conceitual.
+
+A decisão de utilizar WordPress na Versão 1 e de adiar a proteção opcional por PIN para uma versão futura deverá ser considerada nos artefatos das etapas posteriores de modelagem física, arquitetura e implementação.
 
 A documentação continuará passível de revisão quando forem identificadas inconsistências ou impactos decorrentes das etapas posteriores.
 
