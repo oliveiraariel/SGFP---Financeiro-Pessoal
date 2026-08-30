@@ -1,23 +1,23 @@
-id,titulo,arquivo,requisitos_referenciados_no_documento_original
-UC-001,Cadastrar usuário,casos/uc-001-cadastrar-usuario.md,RF-001
-UC-002,Autenticar usuário,casos/uc-002-autenticar-usuario.md,RF-002
-UC-003,Alterar senha,casos/uc-003-alterar-senha.md,RF-003
-UC-004,Recuperar senha,casos/uc-004-recuperar-senha.md,RF-003
-UC-005,Gerenciar contas financeiras,casos/uc-005-gerenciar-contas-financeiras.md,"RF-004, RF-005"
-UC-006,Informar saldo inicial,casos/uc-006-informar-saldo-inicial.md,"RF-005, RF-010"
-UC-007,Gerenciar compromissos financeiros,casos/uc-007-gerenciar-compromissos-financeiros.md,"RF-006, RF-009"
-UC-008,Configurar recorrência,casos/uc-008-configurar-recorrencia.md,"RF-008, RF-014, RF-016"
-UC-009,Efetivar compromisso financeiro,casos/uc-009-efetivar-compromisso-financeiro.md,"RF-007, RF-010"
-UC-010,Desfazer efetivação,casos/uc-010-desfazer-efetivacao.md,"RF-007, RF-010"
-UC-011,Gerenciar categorias,casos/uc-011-gerenciar-categorias.md,"RF-006, RF-009"
-UC-012,Consultar movimentações financeiras,casos/uc-012-consultar-movimentacoes-financeiras.md,"RF-010, RF-011, RF-018"
-UC-013,Gerenciar transferências,casos/uc-013-gerenciar-transferencias.md,"RF-012, RF-013"
-UC-014,Gerenciar cartão de crédito,casos/uc-014-gerenciar-cartao-de-credito.md,RF-015
-UC-015,Gerenciar parcelamentos,casos/uc-015-gerenciar-parcelamentos.md,"RF-016, RF-008"
-UC-016,Consultar Dashboard financeiro,casos/uc-016-consultar-dashboard-financeiro.md,"RF-017, RF-018"
-UC-017,Navegar entre períodos financeiros,casos/uc-017-navegar-entre-periodos-financeiros.md,"RF-010, RF-011, RF-018"
-UC-018,Gerenciar proteção por PIN,casos/uc-018-gerenciar-protecao-por-pin.md,RF-019
-UC-019,Gerenciar tema da aplicação,casos/uc-019-gerenciar-tema-da-aplicacao.md,RF-020
-UC-020,Criar cópia de segurança,casos/uc-020-criar-copia-de-seguranca.md,RF-021
-UC-021,Restaurar cópia de segurança,casos/uc-021-restaurar-copia-de-seguranca.md,RF-021
-UC-022,Consultar patrimônio total,casos/uc-022-consultar-patrimonio-total.md,RF-005
+id,titulo,arquivo,requisitos_referenciados_no_documento_original,status
+UC-001,Cadastrar usuário,casos/uc-001-cadastrar-usuario.md,RF-001,v1_active
+UC-002,Autenticar usuário,casos/uc-002-autenticar-usuario.md,RF-002,v1_active
+UC-003,Alterar senha,casos/uc-003-alterar-senha.md,RF-003,v1_active
+UC-004,Recuperar senha,casos/uc-004-recuperar-senha.md,RF-003,v1_active
+UC-005,Gerenciar contas financeiras,casos/uc-005-gerenciar-contas-financeiras.md,"RF-004, RF-005",v1_active
+UC-006,Informar saldo inicial,casos/uc-006-informar-saldo-inicial.md,"RF-005, RF-010",v1_active
+UC-007,Gerenciar compromissos financeiros,casos/uc-007-gerenciar-compromissos-financeiros.md,"RF-006, RF-009",v1_active
+UC-008,Configurar recorrência,casos/uc-008-configurar-recorrencia.md,"RF-008, RF-014, RF-016",v1_active
+UC-009,Efetivar compromisso financeiro,casos/uc-009-efetivar-compromisso-financeiro.md,"RF-007, RF-010",v1_active
+UC-010,Desfazer efetivação,casos/uc-010-desfazer-efetivacao.md,"RF-007, RF-010",v1_active
+UC-011,Gerenciar categorias,casos/uc-011-gerenciar-categorias.md,"RF-006, RF-009",v1_active
+UC-012,Consultar movimentações financeiras,casos/uc-012-consultar-movimentacoes-financeiras.md,"RF-010, RF-011, RF-018",v1_active
+UC-013,Gerenciar transferências,casos/uc-013-gerenciar-transferencias.md,"RF-012, RF-013",v1_active
+UC-014,Gerenciar cartão de crédito,casos/uc-014-gerenciar-cartao-de-credito.md,RF-015,v1_active
+UC-015,Gerenciar parcelamentos,casos/uc-015-gerenciar-parcelamentos.md,"RF-016, RF-008",v1_active
+UC-016,Consultar Dashboard financeiro,casos/uc-016-consultar-dashboard-financeiro.md,"RF-017, RF-018",v1_active
+UC-017,Navegar entre períodos financeiros,casos/uc-017-navegar-entre-periodos-financeiros.md,"RF-010, RF-011, RF-018",v1_active
+UC-018,Gerenciar proteção por PIN,casos/uc-018-gerenciar-protecao-por-pin.md,RF-019,deferred_future
+UC-019,Gerenciar tema da aplicação,casos/uc-019-gerenciar-tema-da-aplicacao.md,RF-020,v1_active
+UC-020,Criar cópia de segurança,casos/uc-020-criar-copia-de-seguranca.md,RF-021,v1_active
+UC-021,Restaurar cópia de segurança,casos/uc-021-restaurar-copia-de-seguranca.md,RF-021,v1_active
+UC-022,Consultar patrimônio total,casos/uc-022-consultar-patrimonio-total.md,RF-005,v1_active
