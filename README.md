@@ -20,7 +20,7 @@ O SGFP tem como objetivo permitir que o usuário organize sua vida financeira po
 * planejamento mensal;
 * configurações pessoais.
 
-A primeira versão será uma aplicação Web baseada em API REST.
+A primeira versão será uma aplicação Web em PHP sobre WordPress, utilizando API REST própria do SGFP.
 
 ## Características da Versão 1
 
@@ -36,11 +36,12 @@ Entre as principais características previstas para a V1 estão:
 * transferências entre contas;
 * tratamento básico de cartão de crédito e parcelamentos;
 * Dashboard financeiro;
-* proteção por PIN;
 * tema claro e escuro;
 * criação e restauração manual de cópias de segurança.
 
 Não haverá integração bancária automática na Versão 1.
+
+O catálogo funcional preserva os identificadores RF-001 a RF-021. A V1 possui **20 requisitos funcionais ativos**; RF-019 — proteção por PIN — está adiado para versão futura, sem renumeração dos requisitos posteriores.
 
 ## Metodologia de Desenvolvimento
 
@@ -67,7 +68,7 @@ As etapas de levantamento e especificação de requisitos já possuem documenta�
 
 Os Casos de Uso também foram organizados individualmente para facilitar manutenção, rastreabilidade e consumo por agentes.
 
-A próxima etapa de evolução do projeto é o **Mapa do Domínio**, após a resolução das divergências documentais ainda registradas na governança do projeto.
+A **Etapa 5 — Mapa do Domínio** foi concluída e validada. A etapa corrente é a **Etapa 6 — Modelagem Conceitual (MER)**.
 
 ## Estrutura do Repositório
 
@@ -196,11 +197,14 @@ A arquitetura técnica será consolidada na etapa correspondente.
 Já estão definidos como direcionamentos da Versão 1:
 
 * aplicação Web;
-* API REST;
+* WordPress como plataforma da V1;
 * PHP;
-* banco de dados relacional.
+* plugin próprio do SGFP para o backend;
+* API REST própria do SGFP sobre a infraestrutura REST do WordPress;
+* MySQL ou MariaDB como banco de dados relacional;
+* autenticação da V1 por e-mail e senha utilizando os mecanismos do WordPress.
 
-Decisões adicionais de infraestrutura, persistência, autenticação técnica e organização interna deverão ser documentadas posteriormente.
+A proteção opcional por PIN foi adiada para versão futura. Ela não integra a autenticação da V1 e, quando implementada, servirá apenas para bloqueio rápido da aplicação durante uma sessão já autenticada.
 
 ## Contexto Acadêmico
 

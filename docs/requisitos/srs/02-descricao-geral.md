@@ -35,6 +35,8 @@ Não fazem parte da primeira versão, entre outros itens registrados para evolu�
 
 - integrações bancárias ou sincronização automática de dados financeiros;
 - autenticação por provedores externos;
+- proteção opcional por PIN para bloqueio rápido da aplicação;
+- bloqueio automático por inatividade;
 - backup automático e sincronização em nuvem;
 - aplicativo mobile;
 - relatórios financeiros específicos;
@@ -43,7 +45,7 @@ Não fazem parte da primeira versão, entre outros itens registrados para evolu�
 
 ## 2.6 Usuário do Sistema
 
-A Versão 1 é direcionada ao usuário final responsável pelo próprio controle financeiro. Os dados financeiros de cada usuário deverão permanecer isolados e acessíveis somente mediante os mecanismos de autenticação definidos pelo sistema.
+A Versão 1 é direcionada ao usuário final responsável pelo próprio controle financeiro. A aplicação Web poderá possuir múltiplos usuários cadastrados. Os dados financeiros, configurações e categorias de cada usuário deverão permanecer isolados e acessíveis somente mediante os mecanismos de autenticação definidos pelo sistema.
 
 ## 2.7 Limite desta Especificação
 

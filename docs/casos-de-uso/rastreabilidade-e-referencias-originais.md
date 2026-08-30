@@ -22,11 +22,11 @@ A relação inicial entre requisitos funcionais e casos de uso será mantida com
 | RF-016 | UC-008, UC-015 |
 | RF-017 | UC-016 |
 | RF-018 | UC-012, UC-016, UC-017 |
-| RF-019 | UC-018 |
+| RF-019 — **Versão futura** | UC-018 — **Versão futura** |
 | RF-020 | UC-019 |
 | RF-021 | UC-020, UC-021 |
 
-Os vínculos foram realinhados à baseline funcional RF-001 a RF-021. A existência histórica do catálogo alternativo de 25 RFs permanece registrada no relatório de consolidação e na proveniência da governança.
+Os vínculos preservam os identificadores RF-001 a RF-021. Na Versão 1 permanecem ativos 20 requisitos; RF-019 e UC-018 foram adiados para versão futura sem renumeração dos identificadores posteriores. A existência histórica do catálogo alternativo de 25 RFs permanece registrada no relatório de consolidação e na proveniência da governança.
 
 ## 8. Critérios para a Próxima Etapa
 

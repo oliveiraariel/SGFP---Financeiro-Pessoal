@@ -6,7 +6,7 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 1.0
+**Versão:** 1.1
 
 **Subetapa:** Etapa 3 — Especificação de Requisitos
 
@@ -110,9 +110,11 @@ A anexação de imagens ou outros arquivos aos compromissos não fará parte do 
 
 ### RE-016 — Plataforma da Versão 1
 
-A primeira versão será desenvolvida como aplicação Web.
+A primeira versão será desenvolvida como aplicação Web utilizando PHP sobre WordPress.
 
-A arquitetura utilizará uma API REST própria, conforme estabelecido no Plano de Desenvolvimento.
+A solução utilizará uma API REST própria do SGFP apoiada na infraestrutura REST do WordPress, conforme estabelecido no Documento de Visão e no Plano de Desenvolvimento.
+
+O backend específico do SGFP será implementado em plugin próprio.
 
 ### RE-017 — Separação entre Domínio e Implementação
 
@@ -137,21 +139,25 @@ Esses critérios deverão ser definidos posteriormente quando houver base técni
 
 ### DEP-001 — Ambiente de Execução Web
 
-O funcionamento da aplicação dependerá de um ambiente capaz de executar a aplicação Web definida para a Versão 1.
+O funcionamento da aplicação dependerá de um ambiente capaz de executar PHP e WordPress e de disponibilizar a aplicação Web definida para a Versão 1.
 
-Os detalhes técnicos desse ambiente serão definidos na etapa de Arquitetura da Aplicação.
+Os detalhes técnicos de instalação, servidor Web, versões suportadas, configuração e disponibilização serão definidos na etapa de Arquitetura da Aplicação.
 
 ### DEP-002 — Banco de Dados
 
-O sistema dependerá de um mecanismo de persistência de dados capaz de armazenar e recuperar as informações necessárias ao funcionamento da aplicação.
+O sistema dependerá de banco de dados relacional compatível com a plataforma WordPress, utilizando MySQL ou MariaDB na implementação da Versão 1.
 
-A tecnologia e a estrutura definitiva do banco serão definidas nas etapas de Modelagem e Arquitetura.
+A estrutura definitiva das tabelas próprias do SGFP, chaves, restrições, índices e demais decisões físicas será definida nas etapas de Modelagem e Arquitetura.
+
+Os dados de identidade e autenticação que forem responsabilidade do WordPress não deverão ser duplicados desnecessariamente nas tabelas próprias do SGFP.
 
 ### DEP-003 — Serviço de E-mail
 
-Os mecanismos de recuperação de senha e PIN dependerão da disponibilidade de um meio de envio de e-mail ao endereço cadastrado pelo usuário.
+O mecanismo de recuperação de senha dependerá da disponibilidade de um meio de envio de e-mail ao endereço cadastrado pelo usuário.
 
-O serviço ou tecnologia utilizada para esse envio será definido posteriormente.
+A Versão 1 utilizará o fluxo de recuperação de senha fornecido pelo WordPress; o serviço ou tecnologia de entrega de e-mail utilizado no ambiente será definido posteriormente.
+
+A proteção por PIN foi adiada para versão futura e não possuirá mecanismo próprio de recuperação por e-mail.
 
 ### DEP-004 — API REST
 
@@ -171,7 +177,7 @@ As seguintes dependências não caracterizam, por si só, integrações financei
 
 - API REST própria do SGFP;
 - banco de dados utilizado pela própria aplicação;
-- serviço utilizado para envio de e-mails de recuperação;
+- serviço utilizado para envio de e-mails de recuperação de senha;
 - infraestrutura necessária para execução e disponibilização do sistema.
 
 A existência dessas dependências não altera a decisão de que a Versão 1 não possuirá integração com instituições bancárias ou outros serviços externos de negócio.
@@ -225,6 +231,10 @@ Esta subetapa consolida as restrições e dependências conhecidas na Versão 1 
 Novas restrições ou dependências poderão ser registradas posteriormente caso decisões tomadas nas etapas seguintes produzam impacto sobre os requisitos do sistema.
 
 ## 8. Histórico de Atualização
+
+### Versão 1.1 — 30/08/2026
+
+Atualização para refletir a utilização de PHP sobre WordPress na Versão 1, o banco relacional MySQL/MariaDB compatível com a plataforma, a delegação de identidade/autenticação ao WordPress e o adiamento da proteção por PIN para versão futura. A dependência de e-mail da V1 passa a se aplicar à recuperação de senha, e não à recuperação de PIN.
 
 ### Versão 1.0 — 23/08/2026
 

@@ -4,7 +4,7 @@
 
 **Sigla:** SGFP
 **Documento:** Casos de Uso
-**Versão:** 1.0
+**Versão:** 1.1
 **Etapa:** 4 — Casos de Uso
 **Data:** 23/08/2026
 
@@ -57,7 +57,7 @@ O usuário será o ator principal da Versão 1.
 
 ### ACT-02 — Serviço de E-mail
 
-Serviço responsável pela entrega dos links utilizados nos mecanismos de recuperação de senha e PIN.
+Serviço responsável pela entrega das comunicações utilizadas no mecanismo de recuperação de senha.
 
 Este ator representa uma dependência de comunicação necessária a determinadas funcionalidades e não constitui uma integração financeira externa.
 
@@ -82,7 +82,7 @@ Este ator representa uma dependência de comunicação necessária a determinada
 | UC-015 | Gerenciar parcelamentos | Usuário | Representar e controlar compromissos parcelados |
 | UC-016 | Consultar Dashboard financeiro | Usuário | Visualizar a situação financeira do período |
 | UC-017 | Navegar entre períodos financeiros | Usuário | Consultar diferentes meses |
-| UC-018 | Gerenciar proteção por PIN | Usuário | Configurar e utilizar a proteção por PIN |
+| UC-018 | Gerenciar proteção por PIN — **Versão futura** | Usuário | Configurar e utilizar a proteção opcional por PIN em versão futura |
 | UC-019 | Gerenciar tema da aplicação | Usuário | Alterar a apresentação visual |
 | UC-020 | Criar cópia de segurança | Usuário | Gerar uma cópia dos dados |
 | UC-021 | Restaurar cópia de segurança | Usuário | Restaurar o estado a partir de uma cópia |

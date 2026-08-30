@@ -2,9 +2,9 @@
 
 ## **Sistema de Gestão Financeira Pessoal**
 
-**Versão do documento:** 1.4
+**Versão do documento:** 1.5
 
-**Data da última atualização:** 17/08/2026
+**Data da última atualização:** 30/08/2026
 
 **Instituição e graduação:**
 
@@ -252,7 +252,9 @@ Nesta etapa serão definidos:
 
 Definir a organização interna do projeto.
 
-A primeira versão será desenvolvida como uma aplicação Web utilizando PHP e uma arquitetura baseada em API REST.
+A primeira versão será desenvolvida como uma aplicação Web utilizando PHP sobre WordPress e uma arquitetura baseada em API REST.
+
+O WordPress será utilizado como plataforma da aplicação, fornecendo infraestrutura Web, gerenciamento de usuários e autenticação, sessões e suporte à API REST. O backend específico do SGFP será implementado em plugin próprio.
 
 A arquitetura deverá permitir que futuras aplicações, como um aplicativo mobile, utilizem a mesma API e as regras de negócio implementadas no sistema.
 
@@ -374,9 +376,9 @@ O Dashboard não será tratado como uma entidade do domínio.
 
 ### **10. Configurações**
 
-Objetivo relacionado às preferências, proteção e preservação dos dados disponibilizadas ao usuário.
+Objetivo relacionado às preferências e à preservação dos dados disponibilizadas ao usuário.
 
-Entre as definições consolidadas estão as configurações de PIN, tema da aplicação, backup e restauração de dados.
+Na Versão 1, permanecem como definições consolidadas o tema da aplicação, o backup e a restauração de dados. A proteção opcional por PIN foi retirada do escopo da Versão 1 e permanece registrada como funcionalidade prevista para versão futura.
 
 ### **11. Relatórios**
 
@@ -396,16 +398,16 @@ Na Versão 1, a anexação de arquivos de imagem aos compromissos não fará par
 
 Subetapa destinada à análise das regras e necessidades de segurança do sistema.
 
-Foram definidas, entre outras, as seguintes diretrizes:
+Para a Versão 1, foram consolidadas, entre outras, as seguintes diretrizes:
 
-1. Utilização de hash para armazenamento de senhas.
-2. Alteração de senha diretamente pela aplicação.
-3. Alteração de PIN diretamente pela aplicação.
-4. Recuperação de senha e PIN por link enviado ao e mail cadastrado.
-5. Validade de 24 horas para o link de recuperação.
-6. Utilização única do link de recuperação.
-7. Criação de nova senha ou PIN durante a recuperação, sem revelar a credencial anterior.
-8. Confirmação obrigatória para alteração de senha e PIN.
+1. Autenticação do usuário por e-mail e senha.
+2. Armazenamento seguro das senhas por meio dos mecanismos de hash fornecidos pela plataforma de autenticação adotada.
+3. Alteração de senha diretamente pela aplicação utilizando os mecanismos disponibilizados pelo WordPress.
+4. Recuperação de senha por meio do endereço de e-mail cadastrado, utilizando o mecanismo de recuperação disponibilizado pelo WordPress.
+5. Isolamento dos dados financeiros pertencentes a usuários diferentes.
+6. Proteção das operações e dos recursos da API contra acesso não autorizado.
+
+A proteção opcional por PIN não fará parte da Versão 1. Para uma versão futura, o PIN será tratado como mecanismo de bloqueio rápido do SGFP durante uma sessão já autenticada, sem substituir a autenticação principal por e-mail e senha.
 
 ### **14. Integrações**
 
@@ -464,17 +466,21 @@ ou:
 
 Entre as funcionalidades previstas para versões futuras estão:
 
-1. Login com Google.
-2. Sincronização em nuvem.
-3. Aplicativo mobile.
-4. Dashboards avançados.
-5. Relatórios financeiros adicionais.
-6. Integrações externas.
-7. Backup automático.
-8. Anexação de arquivos de imagem aos compromissos.
-9. Outras funcionalidades que venham a ser identificadas como necessárias após a utilização da Versão 1.
+1. Proteção opcional por PIN para bloqueio rápido do SGFP durante uma sessão já autenticada.
+2. Bloqueio automático da aplicação após período de inatividade.
+3. Login com Google.
+4. Sincronização em nuvem.
+5. Aplicativo mobile.
+6. Dashboards avançados.
+7. Relatórios financeiros adicionais.
+8. Integrações externas.
+9. Backup automático.
+10. Anexação de arquivos de imagem aos compromissos.
+11. Outras funcionalidades que venham a ser identificadas como necessárias após a utilização da Versão 1.
 
 As funcionalidades previstas para versões futuras não constituem etapas deste desenvolvimento e não deverão antecipar decisões ou introduzir complexidade na Versão 1.
+
+Quando uma funcionalidade já possuir identificadores de rastreabilidade antes de ser adiada, seus identificadores deverão ser preservados. Assim, RF-019 e UC-018 relacionados à proteção por PIN permanecerão registrados como itens de versão futura, sem renumeração dos requisitos e casos de uso posteriores.
 
 Não deverão ser criados requisitos, entidades, estruturas ou mecanismos apenas para preparar funcionalidades futuras que ainda não façam parte do escopo atual.
 
@@ -550,6 +556,8 @@ Posteriormente deverá ser definido:
 
 A arquitetura deverá servir ao domínio e às necessidades do sistema, evitando a introdução de padrões, abstrações ou tecnologias que não possuam justificativa para o escopo do projeto.
 
+A utilização de WordPress e PHP constitui uma restrição tecnológica já conhecida para a aplicação Web. A Etapa 9 deverá definir como essa plataforma será utilizada sem transferir para o WordPress as regras de negócio próprias do SGFP. Os serviços nativos da plataforma poderão ser reutilizados quando forem adequados, especialmente para identidade, autenticação, sessão e infraestrutura REST.
+
 ## **12. Regra para Implementação**
 
 Quando a implementação for iniciada, o desenvolvimento deverá seguir, sempre que possível, a sequência:
@@ -580,6 +588,21 @@ O desenvolvimento deverá permitir que a equipe compreenda progressivamente:
 Todo o processo deverá ser documentado de maneira que as decisões possam ser compreendidas, justificadas e utilizadas como referência para futuros desenvolvimentos.
 
 ## **14. Histórico de Atualização**
+
+### **Versão 1.5: 30/08/2026**
+
+Atualização do Plano de Desenvolvimento para refletir decisões consolidadas após a definição do WordPress como plataforma da aplicação Web e a retirada da proteção por PIN do escopo da Versão 1.
+
+Principais atualizações:
+
+1. Formalização do uso de PHP sobre WordPress na Versão 1.
+2. Definição do backend específico do SGFP como plugin próprio, utilizando a infraestrutura REST do WordPress.
+3. Manutenção da autenticação da Versão 1 exclusivamente por e-mail e senha.
+4. Transferência da proteção opcional por PIN para versão futura.
+5. Consolidação futura do PIN como mecanismo de bloqueio rápido durante uma sessão já autenticada, sem substituir a autenticação principal.
+6. Retirada da recuperação de PIN por e-mail do escopo planejado.
+7. Preservação dos identificadores RF-019 e UC-018 como itens futuros, sem renumeração dos requisitos e casos de uso posteriores.
+8. Atualização das diretrizes de Configurações e Segurança para refletir o novo escopo.
 
 ### **Versão 1.4: 17/08/2026**
 

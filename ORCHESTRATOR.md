@@ -1,9 +1,9 @@
 # ORCHESTRATOR.md — Contrato Operacional para Agentes
 
 **Projeto:** SGFP — Sistema de Gestão Financeira Pessoal  
-**Versão deste documento:** 2.1  
+**Versão deste documento:** 2.2  
 **Status:** Governança operacional vigente  
-**Última atualização:** 26/08/2026
+**Última atualização:** 30/08/2026
 
 ## 1. Finalidade
 
@@ -41,7 +41,9 @@ A autoridade final sobre:
 
 ## 3. Estado atual do projeto
 
-A baseline funcional da V1 está reconciliada em 21 requisitos funcionais identificados de `RF-001` a `RF-021`.
+O catálogo funcional preserva 21 identificadores de `RF-001` a `RF-021`.
+
+A baseline ativa da V1 possui 20 requisitos funcionais. `RF-019 — Gerenciar proteção por PIN` foi adiado para versão futura, sem renumeração dos requisitos posteriores. `UC-018` e `CA-019.1` a `CA-019.5` permanecem igualmente preservados como artefatos futuros.
 
 A **Etapa 5 — Mapa do Domínio** foi concluída e validada no artefato:
 
@@ -49,11 +51,11 @@ A **Etapa 5 — Mapa do Domínio** foi concluída e validada no artefato:
 
 O Mapa do Domínio organiza os conceitos, responsabilidades e relações conceituais do SGFP sem antecipar cardinalidades, entidades definitivas, estruturas lógicas, estruturas físicas, arquitetura ou implementação.
 
-A próxima etapa planejada é:
+A etapa corrente é:
 
 **Etapa 6 — Modelagem Conceitual (MER)**
 
-A Etapa 6 está apta para início após a confirmação de que a versão validada do Mapa do Domínio está corretamente versionada no repositório e não existe divergência documental bloqueante.
+A Etapa 6 deverá utilizar a baseline documental atualizada e não deverá modelar conceitos, entidades, atributos ou estruturas destinados exclusivamente ao PIN futuro.
 
 Os bloqueadores `ISSUE-001` a `ISSUE-004` permanecem resolvidos documentalmente na baseline atual.
 
@@ -64,6 +66,12 @@ Até a validação do MER:
 - não promover decisões de persistência;
 - não definir arquitetura final;
 - não iniciar implementação.
+
+### Restrição tecnológica vigente
+
+A Versão 1 será uma aplicação Web em PHP sobre WordPress. O WordPress fornecerá identidade, autenticação, sessão e infraestrutura REST; o backend específico do SGFP será implementado em plugin próprio. MySQL ou MariaDB será utilizado como banco relacional compatível com a plataforma.
+
+Essa decisão tecnológica não autoriza antecipar detalhes de arquitetura que pertencem à Etapa 9.
 
 ## 4. Ordem mínima de leitura
 
@@ -135,7 +143,7 @@ Quando duas fontes canônicas divergirem:
 
 Os quatro bloqueadores registrados foram resolvidos na baseline funcional V1:
 
-- `ISSUE-001`: adotado catálogo definitivo de 21 RFs (`RF-001` a `RF-021`) e realinhados os derivados;
+- `ISSUE-001`: adotado catálogo reconciliado de 21 identificadores funcionais (`RF-001` a `RF-021`) e realinhados os derivados;
 - `ISSUE-002`: formalizados cadastro, autenticação e senha como `RF-001`, `RF-002` e `RF-003`;
 - `ISSUE-003`: exclusão de contas registrada como fora do escopo da V1;
 - `ISSUE-004`: valor inicial da principal representado por Entrada, valor de secundária por transferência, sem saldo inicial armazenado.
@@ -292,7 +300,7 @@ Exemplos:
 - alteração de UC pode afetar critérios, interface e testes;
 - alteração de contrato da API pode afetar interface e testes.
 
-A divergência histórica entre os catálogos de 19 e 25 RFs foi reconciliada na baseline definitiva de 21 RFs. A matriz atual somente deve utilizar `RF-001` a `RF-021`; o histórico da migração permanece na governança.
+A divergência histórica entre os catálogos de 19 e 25 RFs foi reconciliada em um catálogo preservado de 21 identificadores. A V1 atual possui 20 RFs ativos e mantém RF-019 como requisito futuro; o histórico da migração permanece na governança.
 
 ## 13. Identificadores
 

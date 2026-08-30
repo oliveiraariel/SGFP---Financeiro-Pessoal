@@ -46,8 +46,11 @@ Não execute git add, commit, push, merge ou troca de branch antes de apresentar
 Para a Etapa 6:
 - use o Mapa do Domínio como entrada conceitual;
 - consulte regras de negócio, requisitos e Casos de Uso quando necessário;
+- considere somente requisitos ativos da V1 ao definir o MER atual;
+- não crie entidade, atributo ou persistência para o PIN, pois RF-019 está adiado para versão futura;
 - não trate os candidatos do Mapa do Domínio como entidades já decididas;
 - defina no MER apenas o que pertence à Modelagem Conceitual;
+- trate WordPress como restrição tecnológica conhecida, sem antecipar detalhes que pertencem à Arquitetura;
 - não antecipe DER, Modelo Físico, Arquitetura ou Implementação.
 
 Se houver divergência entre documentos, aplique a autoridade definida em ORCHESTRATOR.md e project-manifest.yaml e não resolva conflitos de negócio silenciosamente.

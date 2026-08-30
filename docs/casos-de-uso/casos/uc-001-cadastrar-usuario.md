@@ -23,7 +23,8 @@ O usuário solicita o cadastro inicial.
 3. O usuário informa os dados solicitados.
 4. O sistema valida as informações.
 5. O sistema cria o cadastro do usuário.
-6. O sistema disponibiliza o acesso mediante as credenciais cadastradas.
+6. O sistema cria os dados iniciais previstos para o novo usuário, incluindo seu conjunto inicial de categorias, já vinculados ao usuário correspondente.
+7. O sistema disponibiliza o acesso mediante as credenciais cadastradas.
 
 **Fluxos alternativos e exceções**
 
@@ -32,7 +33,7 @@ O usuário solicita o cadastro inicial.
 
 **Pós-condições**
 
-O usuário estará cadastrado e apto a realizar a autenticação.
+O usuário estará cadastrado, terá seus dados iniciais provisionados e estará apto a realizar a autenticação.
 
 **Requisitos relacionados**
 

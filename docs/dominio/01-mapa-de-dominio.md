@@ -136,7 +136,7 @@ Esses elementos possuem responsabilidades diferentes e não deverão ser tratado
 
 **Responsabilidade** — Representa o proprietário das informações financeiras e das configurações associadas ao uso do sistema.
 
-**Observações** — Na V1, cada instalação é utilizada por um único usuário. As informações financeiras devem permanecer associadas ao respectivo usuário e isoladas de dados pertencentes a outros usuários.
+**Observações** — A aplicação Web poderá possuir múltiplos usuários cadastrados. Cada usuário permanece proprietário de suas próprias informações financeiras, configurações e categorias, que deverão ser isoladas dos dados pertencentes a outros usuários.
 
 **Rastreabilidade** — `USR-RN-001` a `USR-RN-009` · `UC-001` a `UC-004`
 
@@ -237,6 +237,8 @@ Entrada e Saída são classificações do domínio e não conceitos independente
 - pode ser criada durante o cadastro de um compromisso;
 - não produz efeito direto sobre saldo ou patrimônio;
 - a remoção de uma categoria não exclui os compromissos anteriormente associados.
+
+**Observações adicionais** — No cadastro de cada usuário, o sistema disponibiliza um conjunto inicial de categorias criado já vinculado a esse usuário. Essas categorias são sugestões e, após a criação, podem ser renomeadas ou removidas pelo próprio usuário; novas categorias também podem ser adicionadas. Não existe um conjunto global compartilhado cuja alteração afete outros usuários.
 
 **Rastreabilidade** — `CAT-RN-001` a `CAT-RN-009` · `UC-011`
 
@@ -415,22 +417,23 @@ Os elementos abaixo são necessários ao funcionamento do SGFP, mas não pertenc
 
 Na V1 incluem, entre outras configurações previstas:
 
-- proteção opcional por PIN;
 - tema Claro ou Escuro.
+
+A proteção opcional por PIN foi retirada do escopo da V1 e permanece registrada apenas como funcionalidade futura.
 
 Este documento não define como essas preferências serão estruturadas ou armazenadas.
 
-**Rastreabilidade** — `CFG-RN-001` a `CFG-RN-008` · `UC-018` a `UC-019`
+**Rastreabilidade** — regras vigentes de Configurações para tema · `UC-019`; `CFG-RN-001` a `CFG-RN-007` e `UC-018` permanecem preservados para versão futura
 
 ---
 
 ### 7.2 Recuperação de Acesso
 
-**Definição** — Mecanismo que permite ao usuário recuperar o acesso conforme as regras de senha e PIN.
+**Definição** — Mecanismo que permite ao usuário recuperar o acesso por meio da redefinição de senha.
 
 **Responsabilidade** — Possibilitar recuperação controlada das credenciais.
 
-A recuperação utiliza o e-mail cadastrado e deve respeitar as regras de validade, uso e segurança definidas nos requisitos.
+Na V1, a recuperação de senha utiliza o mecanismo disponibilizado pelo WordPress e o e-mail cadastrado do usuário.
 
 Este documento não define estrutura técnica de tokens, algoritmos criptográficos ou mecanismo de persistência.
 
@@ -665,11 +668,11 @@ Este mapa representa relações de negócio e não uma estrutura de banco de dad
 
 Este Mapa do Domínio identifica os pontos abaixo sem antecipar decisões de Modelagem Conceitual, DER, Modelo Físico ou Arquitetura.
 
-### 13.1 Usuário único e isolamento das informações
+### 13.1 Usuários e isolamento das informações
 
-A documentação estabelece uma instalação utilizada por um único usuário e também exige isolamento das informações pertencentes ao usuário.
+A aplicação Web poderá possuir múltiplos usuários cadastrados e exige isolamento das informações pertencentes a cada usuário.
 
-O Mapa do Domínio mantém o conceito **Usuário** como proprietário das informações. A forma definitiva de representação será avaliada na etapa apropriada.
+O Mapa do Domínio mantém o conceito **Usuário** como proprietário das informações. A forma física de representação da identidade, inclusive sua relação futura com `wp_users`, pertence às etapas posteriores.
 
 ### 13.2 Remoção de Categoria
 
@@ -689,11 +692,13 @@ As regras exigem que compromissos recorrentes estejam disponíveis para planejam
 
 A estratégia de representação e eventual geração de ocorrências pertence às etapas posteriores.
 
-### 13.5 PIN e recuperação de acesso
+### 13.5 PIN — versão futura
 
-As regras estabelecem comportamentos de proteção e recuperação.
+A proteção por PIN foi retirada do escopo ativo da Versão 1.
 
-Algoritmos, parâmetros criptográficos e estruturas técnicas não são definidos pelo Mapa do Domínio.
+`RF-019`, `UC-018` e os respectivos critérios permanecem preservados apenas para versão futura. Nenhum conceito, entidade, atributo ou mecanismo de persistência exclusivo do PIN deverá ser levado ao MER da V1.
+
+Quando implementado futuramente, o PIN será uma proteção secundária para bloqueio rápido do SGFP durante uma sessão já autenticada e não substituirá a autenticação principal por e-mail e senha.
 
 ---
 
