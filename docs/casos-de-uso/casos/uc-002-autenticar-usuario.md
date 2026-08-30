@@ -29,7 +29,7 @@ O usuário solicita acesso ao sistema.
 
 * Se as credenciais forem inválidas, o sistema deverá informar que o acesso não foi autenticado.
 * O sistema não deverá revelar informações que permitam descobrir qual credencial está incorreta.
-* O PIN não fará parte da autenticação inicial.
+* Na Versão 1, a autenticação será realizada exclusivamente por e-mail e senha.
 
 **Pós-condições**
 
