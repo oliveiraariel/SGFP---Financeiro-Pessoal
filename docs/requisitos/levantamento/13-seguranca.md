@@ -2,7 +2,7 @@
 
 **Documento:** Levantamento de Requisitos
 
-**Versão:** 1.0
+**Versão:** 1.1
 
 **Objetivo**
 
@@ -17,19 +17,26 @@ Os demais aspectos de segurança identificados durante o levantamento serão reg
 Os seguintes aspectos já foram definidos em outras subetapas:
 
 - Autenticação por e-mail e senha.
-- Armazenamento seguro das senhas por meio de hash.
-- Recuperação de senha por e-mail.
+- Utilização dos mecanismos nativos do WordPress para identidade, autenticação, sessão, armazenamento seguro e recuperação de senha.
 - Isolamento dos dados entre usuários.
-- PIN opcional.
-- Limite de cinco tentativas de PIN.
-- Recuperação do PIN por e-mail.
+- Cada operação sobre dados privados deverá ser executada no contexto do usuário autenticado.
 - Proteção da cópia de segurança.
 - Confirmação antes da restauração de uma cópia de segurança.
 - Substituição integral dos dados durante uma restauração.
 
+A proteção por PIN **não faz parte da Versão 1**.
+
 Esses requisitos permanecerão registrados nos respectivos módulos, não sendo duplicados como novas regras neste módulo.
 
 ## **Aspectos para Estudo e Evolução Futura**
+
+### **1. Proteção Opcional por PIN**
+
+Avaliar e implementar, em versão futura, um PIN opcional para bloqueio rápido do SGFP durante uma sessão já autenticada.
+
+O PIN não deverá substituir a autenticação principal por e-mail e senha.
+
+Em caso de esquecimento ou bloqueio do PIN, a redefinição deverá ocorrer mediante nova confirmação da senha da conta, sem mecanismo próprio de recuperação de PIN por e-mail ou token.
 
 Os seguintes pontos serão mantidos como **itens de estudo para versões futuras**, não constituindo requisitos obrigatórios da Versão 1 neste momento:
 
@@ -102,4 +109,4 @@ Os aspectos relacionados à arquitetura, tecnologias, mecanismos criptográficos
 
 **Data de Revisão**
 
-13/08/2026
+30/08/2026
