@@ -1,6 +1,6 @@
 schema_version: "1.0"
-manifest_version: "2.1"
-updated_at: "2026-08-26"
+manifest_version: "2.2"
+updated_at: "2026-08-30"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -39,26 +39,33 @@ documentation:
 
 product_constraints:
   v1:
-    platform: "web"
+    platform: "web_wordpress"
     backend_language: "PHP"
-    architecture_direction: "REST API"
+    web_platform: "WordPress"
+    backend_extension_model: "custom_plugin"
+    architecture_direction: "WordPress REST API + SGFP custom REST endpoints"
+    identity_and_authentication: "WordPress users; email + password"
     database_family: "relational"
+    database_implementation: "MySQL_or_MariaDB"
     financial_data_entry: "manual"
     automatic_bank_integration: false
+    pin_enabled: false
+  future:
+    pin: "optional application lock during an already authenticated session; reset by confirming account password"
   future_capabilities_are_not_v1_requirements: true
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "stage_5_completed_stage_6_ready"
-  last_documented_stage:
+  current_state: "stage_6_in_progress"
+  last_completed_stage:
     id: 5
     name: "Mapa do Domínio"
-  next_planned_stage:
+  current_stage:
     id: 6
     name: "Modelagem Conceitual (MER)"
-  next_stage_gate:
-    status: "ready_to_start"
-    reason: "O Mapa do Domínio foi concluído e validado. A Etapa 6 está apta para início após a confirmação de que a versão validada está corretamente versionada no repositório e não existe divergência documental bloqueante."
+  current_stage_gate:
+    status: "in_progress"
+    reason: "A Etapa 5 foi concluída e validada. A Etapa 6 deve utilizar a baseline documental atualizada, sem modelar estruturas exclusivas do PIN adiado."
     blockers: []
 
 stages:
@@ -89,7 +96,7 @@ stages:
 
   - id: 6
     name: "Modelagem Conceitual (MER)"
-    status: "ready_to_start"
+    status: "in_progress"
     path: "docs/modelagem-dados/01-modelagem-conceitual-mer.md"
 
   - id: 7
@@ -139,7 +146,11 @@ canonical_sources:
   functional_requirements:
     path: "docs/requisitos/srs/03-requisitos-funcionais.md"
     authority: "canonical"
-    current_catalog_size: 21
+    catalog_size: 21
+    v1_active_count: 20
+    active_v1: "RF-001..RF-018, RF-020, RF-021"
+    deferred:
+      - "RF-019 — Gerenciar proteção por PIN"
 
   nonfunctional_requirements:
     path: "docs/requisitos/srs/04-requisitos-nao-funcionais.md"
