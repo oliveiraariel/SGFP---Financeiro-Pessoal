@@ -28,9 +28,15 @@ Em caso de divergência:
 
 ## 3. Estado atual do projeto
 
-Baseline funcional oficial da V1:
+Catálogo funcional preservado:
 
 - `RF-001` a `RF-021`.
+
+Baseline ativa da Versão 1:
+
+- 20 requisitos funcionais ativos: `RF-001` a `RF-018`, `RF-020` e `RF-021`;
+- `RF-019` — proteção por PIN — adiado para versão futura;
+- `UC-018` e `CA-019.1` a `CA-019.5` preservados como artefatos futuros, sem renumeração.
 
 Última etapa concluída e validada:
 
@@ -40,7 +46,7 @@ Artefato da Etapa 5:
 
 - `docs/dominio/01-mapa-de-dominio.md`
 
-Próxima etapa:
+Etapa atual:
 
 - **Etapa 6 — Modelagem Conceitual (MER)**
 
@@ -50,18 +56,25 @@ Situação:
 - identidade, autenticação e sessão da V1 serão fornecidas pelo WordPress com e-mail e senha;
 
 - o Mapa do Domínio foi revisado para permanecer estritamente no escopo da Etapa 5;
-- o documento preserva rastreabilidade com regras e Casos de Uso;
-- cardinalidades, entidades definitivas, chaves, tabelas, nulabilidade, persistência, especializações formais e decisões físicas foram deixadas para as etapas correspondentes;
-- a Etapa 6 está apta a iniciar após confirmação do estado real do Git;
-- Etapas 7 a 12 permanecem não iniciadas.
+- a baseline documental foi atualizada para retirar o PIN da V1;
+- WordPress + PHP constituem restrição tecnológica conhecida para a aplicação Web;
+- o backend específico do SGFP será implementado em plugin próprio e a solução utilizará API REST;
+- identidade, autenticação e sessão da V1 serão fornecidas pelo WordPress com e-mail e senha;
+- cardinalidades, entidades definitivas, chaves, tabelas, nulabilidade, persistência, especializações formais e decisões físicas pertencem às etapas correspondentes;
+- estruturas exclusivas do PIN futuro não deverão ser modeladas na V1;
+- Etapas 7 a 12 permanecem condicionadas aos respectivos gates.
 
 ## 4. Decisões consolidadas relevantes para a modelagem
 
 ### 4.1 Baseline funcional
 
-A V1 utiliza exatamente `RF-001` a `RF-021`.
+O catálogo preserva exatamente os identificadores `RF-001` a `RF-021`.
 
-Não criar RF oficial acima de `RF-021` sem decisão humana explícita e atualização coordenada dos artefatos dependentes.
+Na V1 estão ativos `RF-001` a `RF-018`, `RF-020` e `RF-021`.
+
+`RF-019` permanece registrado como requisito de versão futura, com `UC-018` e `CA-019.1` a `CA-019.5` igualmente futuros.
+
+Não renumerar os identificadores posteriores e não criar RF oficial acima de `RF-021` sem decisão humana explícita e atualização coordenada dos artefatos dependentes.
 
 ### 4.2 Contas e saldo
 
@@ -88,6 +101,8 @@ Não criar RF oficial acima de `RF-021` sem decisão humana explícita e atualiz
 
 ### 4.5 Categoria
 
+- cada usuário recebe um conjunto inicial de categorias criado já vinculado ao próprio usuário;
+- essas categorias iniciais são registros do usuário e podem ser renomeadas ou removidas, e novas categorias podem ser adicionadas;
 - categoria é obrigatória no momento do cadastro do compromisso;
 - remover uma categoria não exclui os compromissos anteriormente associados;
 - a forma de representar essa situação no modelo de dados será decidida na etapa apropriada.
