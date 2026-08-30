@@ -51,10 +51,6 @@ Etapa atual:
 - **Etapa 6 — Modelagem Conceitual (MER)**
 
 Situação:
-- a baseline documental foi atualizada para retirar o PIN da V1;
-- WordPress + PHP constituem restrição tecnológica conhecida para a aplicação Web;
-- identidade, autenticação e sessão da V1 serão fornecidas pelo WordPress com e-mail e senha;
-
 - o Mapa do Domínio foi revisado para permanecer estritamente no escopo da Etapa 5;
 - a baseline documental foi atualizada para retirar o PIN da V1;
 - WordPress + PHP constituem restrição tecnológica conhecida para a aplicação Web;
