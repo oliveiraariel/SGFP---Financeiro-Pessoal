@@ -119,3 +119,38 @@ Exclusão de contas financeiras foi registrada como fora do escopo da V1. Não h
 - **ISSUE-004 — resolvido:** valor inicial da principal usa Entrada; secundária recebe por transferência; não há saldo inicial armazenado; saldos e patrimônio são derivados.
 
 Os documentos históricos não foram alterados para apagar a divergência original. O gate da Etapa 5 está apto para reavaliação/liberação posterior, mas a etapa não foi iniciada por esta reconciliação.
+
+
+## 6. Mudança de escopo posterior — 30/08/2026
+
+Após a reconciliação histórica registrada na seção 5, novas decisões de projeto foram formalmente consolidadas no Notion e propagadas aos artefatos canônicos do repositório.
+
+### 6.1 Proteção por PIN
+
+O identificador `RF-019 — Gerenciar proteção por PIN` permanece preservado para manter rastreabilidade e proveniência, porém foi retirado do escopo ativo da Versão 1.
+
+A mesma classificação aplica-se a:
+
+- `UC-018 — Gerenciar proteção por PIN`;
+- `CA-019.1` a `CA-019.5`;
+- regras de negócio específicas de PIN nos módulos Usuários e Configurações.
+
+A Versão 1 passa a possuir 20 requisitos funcionais ativos dentro de um catálogo preservado de 21 identificadores.
+
+A solução futura de PIN será opcional, não participará do login inicial e servirá como bloqueio rápido do SGFP durante uma sessão já autenticada. Em caso de esquecimento ou bloqueio, a redefinição dependerá da confirmação da senha da conta, sem mecanismo próprio de recuperação por e-mail ou token.
+
+### 6.2 Plataforma WordPress
+
+A Versão 1 utilizará PHP sobre WordPress como plataforma Web. O WordPress fornecerá identidade, autenticação, sessão e infraestrutura REST, enquanto o backend específico do SGFP será implementado em plugin próprio. MySQL ou MariaDB será utilizado como banco de dados relacional compatível com a plataforma.
+
+Essa decisão constitui restrição tecnológica conhecida e não autoriza antecipar detalhes que pertencem à Etapa 9 — Arquitetura da Aplicação.
+
+### 6.3 Usuários e categorias
+
+A aplicação Web poderá possuir múltiplos usuários cadastrados, mantendo os dados financeiros, configurações e categorias de cada usuário isolados dos demais.
+
+No cadastro de cada usuário, o SGFP disponibilizará um conjunto inicial de categorias criado já vinculado a esse usuário. Essas categorias são sugestões editáveis e removíveis, e não registros globais compartilhados.
+
+### 6.4 Impacto na Etapa 6
+
+A Etapa 5 permanece concluída e validada. A Etapa 6 — Modelagem Conceitual (MER) deverá utilizar a baseline atualizada e não deverá introduzir conceitos, entidades, atributos ou persistência exclusivos do PIN futuro.
