@@ -6,9 +6,9 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 2.0
+**Versão:** 2.1
 
-**Baseline:** V1 reconciliada com 21 requisitos funcionais
+**Baseline:** catálogo preservado com 21 requisitos funcionais; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
 
 **Subetapa:** Etapa 3 — Especificação de Requisitos
 
@@ -30,7 +30,7 @@ Esta seção define condições observáveis e verificáveis para validar os req
 - **CA-002.1:** O sistema deverá permitir autenticação mediante e-mail e senha válidos.
 - **CA-002.2:** Credenciais inválidas não deverão conceder acesso autenticado.
 - **CA-002.3:** Após autenticação válida, somente os dados do usuário autenticado deverão ser carregados.
-- **CA-002.4:** O PIN não deverá substituir a autenticação inicial por e-mail e senha.
+- **CA-002.4:** Após logout ou expiração da sessão, o usuário deverá realizar nova autenticação utilizando e-mail e senha.
 
 ### RF-003 — Gerenciar senha
 
@@ -96,7 +96,7 @@ Esta seção define condições observáveis e verificáveis para validar os req
 
 ### RF-009 — Gerenciar categorias financeiras
 
-- **CA-009.1:** O usuário deverá conseguir criar e visualizar categorias.
+- **CA-009.1:** Após o cadastro do usuário, o sistema deverá disponibilizar seu conjunto inicial de categorias já vinculado a ele, e o usuário deverá conseguir criar e visualizar suas próprias categorias.
 - **CA-009.2:** O usuário deverá conseguir renomear e excluir categorias.
 - **CA-009.3:** A exclusão de categoria não deverá excluir compromissos associados.
 - **CA-009.4:** Compromissos que perderem categoria deverão continuar existindo.
@@ -179,13 +179,15 @@ Esta seção define condições observáveis e verificáveis para validar os req
 - **CA-018.4:** O usuário deverá conseguir registrar informações em períodos anteriores conforme RF-010 e as regras aplicáveis.
 - **CA-018.5:** A navegação não deverá criar regra temporal além das regras existentes.
 
-### RF-019 — Gerenciar proteção por PIN
+### RF-019 — Gerenciar proteção por PIN — Versão Futura
 
-- **CA-019.1:** O usuário deverá conseguir ativar a proteção por PIN.
-- **CA-019.2:** O PIN não deverá substituir a autenticação inicial por e-mail e senha.
-- **CA-019.3:** O usuário deverá conseguir desbloquear, alterar e desativar o PIN conforme as condições definidas.
-- **CA-019.4:** O sistema deverá respeitar o limite de tentativas e recuperação por e-mail definidos para o PIN.
-- **CA-019.5:** O bloqueio automático por inatividade não fará parte da V1.
+Os critérios abaixo permanecem registrados para preservar a rastreabilidade do RF-019, mas não constituem critérios de aceite da Versão 1.
+
+- **CA-019.1:** Quando a funcionalidade futura for implementada, o usuário deverá conseguir ativar voluntariamente a proteção por PIN.
+- **CA-019.2:** O PIN não deverá substituir a autenticação principal por e-mail e senha.
+- **CA-019.3:** O usuário deverá conseguir bloquear o SGFP e, durante uma sessão já autenticada, desbloqueá-lo utilizando o PIN válido.
+- **CA-019.4:** A solução futura deverá limitar as tentativas de PIN e, em caso de esquecimento ou bloqueio, permitir redefinição mediante confirmação da senha da conta, sem recuperação própria por e-mail ou token.
+- **CA-019.5:** O bloqueio automático por inatividade poderá ser incorporado na versão futura, sem constituir requisito da V1.
 
 ### RF-020 — Gerenciar tema da aplicação
 
@@ -301,7 +303,7 @@ As restrições deverão ser verificadas por inspeção documental e, quando pro
 - As recorrências da V1 deverão utilizar exclusivamente periodicidade mensal, conforme RE-004 e as regras do módulo de Recorrência.
 - Deverá existir exatamente uma conta principal por usuário, conforme RE-005.
 - O Dashboard deverá ser uma visão derivada e consolidada, sem manter dados financeiros independentes, conforme RE-010.
-- Funcionalidades fora do escopo da V1 não deverão ser disponibilizadas, conforme RE-001 e as restrições específicas da V1.
+- Funcionalidades fora do escopo da V1 não deverão ser disponibilizadas, conforme RE-001 e as restrições específicas da V1. O RF-019 e seus critérios CA-019.1 a CA-019.5 permanecem documentados exclusivamente para versão futura.
 
 ## 5. Critérios em Aberto
 
