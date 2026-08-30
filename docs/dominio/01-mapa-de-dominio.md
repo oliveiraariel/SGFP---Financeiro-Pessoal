@@ -668,7 +668,7 @@ Este mapa representa relações de negócio e não uma estrutura de banco de dad
 
 Este Mapa do Domínio identifica os pontos abaixo sem antecipar decisões de Modelagem Conceitual, DER, Modelo Físico ou Arquitetura.
 
-### 13.1 Usuário único e isolamento das informações
+### 13.1 Usuários e isolamento das informações
 
 A aplicação Web poderá possuir múltiplos usuários cadastrados e exige isolamento das informações pertencentes a cada usuário.
 
