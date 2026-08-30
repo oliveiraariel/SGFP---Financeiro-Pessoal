@@ -17,9 +17,12 @@ Antes de qualquer tarefa neste repositório:
 
 ## Estado resumido
 
-- Baseline funcional V1: `RF-001` a `RF-021`.
+- Catálogo funcional preservado: `RF-001` a `RF-021`.
+- Baseline ativa da V1: 20 requisitos funcionais; `RF-019` (proteção por PIN) está adiado para versão futura e não deve provocar renumeração dos itens posteriores.
+- `UC-018` e `CA-019.1` a `CA-019.5` permanecem igualmente preservados como artefatos futuros.
 - Etapa 5 — Mapa do Domínio: concluída e validada.
-- Próxima etapa: Etapa 6 — Modelagem Conceitual (MER).
-- DER, Modelo Físico, Arquitetura e Implementação permanecem não iniciados até seus respectivos gates.
+- Etapa atual: Etapa 6 — Modelagem Conceitual (MER).
+- Restrição tecnológica consolidada para a V1: aplicação Web em PHP sobre WordPress, com backend específico em plugin próprio e API REST.
+- DER, Modelo Físico, Arquitetura detalhada e Implementação permanecem condicionados aos respectivos gates.
 
 As regras operacionais completas deste projeto estão em `ORCHESTRATOR.md`.
