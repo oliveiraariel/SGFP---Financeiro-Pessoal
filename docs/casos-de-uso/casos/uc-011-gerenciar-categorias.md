@@ -18,7 +18,7 @@ O usuário acessa o gerenciamento de categorias.
 
 **Fluxo principal**
 
-1. O usuário consulta as categorias existentes.
+1. O usuário consulta as categorias pertencentes ao seu próprio cadastro, incluindo as categorias iniciais provisionadas quando aplicável.
 2. O usuário poderá criar uma categoria.
 3. O usuário poderá renomear uma categoria.
 4. O usuário poderá excluir uma categoria.
@@ -29,6 +29,7 @@ O usuário acessa o gerenciamento de categorias.
 * A exclusão da categoria não deverá excluir os compromissos associados.
 * O compromisso que perder sua categoria continuará existindo.
 * A categoria poderá ser criada durante o cadastro de um compromisso.
+* Alterações nas categorias de um usuário não deverão afetar categorias pertencentes a outros usuários.
 
 **Pós-condições**
 
