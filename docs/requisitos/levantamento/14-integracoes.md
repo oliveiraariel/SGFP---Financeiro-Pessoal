@@ -2,7 +2,7 @@
 
 **Documento:** Levantamento de Requisitos
 
-**Versão:** 1.0
+**Versão:** 1.1
 
 **Objetivo**
 
@@ -36,8 +36,12 @@ Todas as informações financeiras serão registradas manualmente pelo usuário.
 
 A API REST da própria aplicação não é considerada uma integração externa.
 
-As definições relacionadas à tecnologia e à arquitetura da aplicação serão realizadas posteriormente nas etapas correspondentes.
+O uso do WordPress como plataforma da aplicação Web também não constitui integração externa de negócio; trata-se de uma restrição tecnológica da solução.
+
+O backend específico do SGFP será implementado em plugin próprio e utilizará a infraestrutura REST da plataforma.
+
+As demais definições relacionadas à arquitetura e implementação serão refinadas nas etapas correspondentes.
 
 **Data de Revisão**
 
-13/08/2026
+30/08/2026
