@@ -376,7 +376,7 @@ O Dashboard não será tratado como uma entidade do domínio.
 
 ### **10. Configurações**
 
-Objetivo relacionado às preferências, proteção e preservação dos dados disponibilizadas ao usuário.
+Objetivo relacionado às preferências e à preservação dos dados disponibilizadas ao usuário.
 
 Na Versão 1, permanecem como definições consolidadas o tema da aplicação, o backup e a restauração de dados. A proteção opcional por PIN foi retirada do escopo da Versão 1 e permanece registrada como funcionalidade prevista para versão futura.
 
@@ -556,6 +556,8 @@ Posteriormente deverá ser definido:
 
 A arquitetura deverá servir ao domínio e às necessidades do sistema, evitando a introdução de padrões, abstrações ou tecnologias que não possuam justificativa para o escopo do projeto.
 
+A utilização de WordPress e PHP constitui uma restrição tecnológica já conhecida para a aplicação Web. A Etapa 9 deverá definir como essa plataforma será utilizada sem transferir para o WordPress as regras de negócio próprias do SGFP. Os serviços nativos da plataforma poderão ser reutilizados quando forem adequados, especialmente para identidade, autenticação, sessão e infraestrutura REST.
+
 ## **12. Regra para Implementação**
 
 Quando a implementação for iniciada, o desenvolvimento deverá seguir, sempre que possível, a sequência:
@@ -586,6 +588,21 @@ O desenvolvimento deverá permitir que a equipe compreenda progressivamente:
 Todo o processo deverá ser documentado de maneira que as decisões possam ser compreendidas, justificadas e utilizadas como referência para futuros desenvolvimentos.
 
 ## **14. Histórico de Atualização**
+
+### **Versão 1.5: 30/08/2026**
+
+Atualização do Plano de Desenvolvimento para refletir decisões consolidadas após a definição do WordPress como plataforma da aplicação Web e a retirada da proteção por PIN do escopo da Versão 1.
+
+Principais atualizações:
+
+1. Formalização do uso de PHP sobre WordPress na Versão 1.
+2. Definição do backend específico do SGFP como plugin próprio, utilizando a infraestrutura REST do WordPress.
+3. Manutenção da autenticação da Versão 1 exclusivamente por e-mail e senha.
+4. Transferência da proteção opcional por PIN para versão futura.
+5. Consolidação futura do PIN como mecanismo de bloqueio rápido durante uma sessão já autenticada, sem substituir a autenticação principal.
+6. Retirada da recuperação de PIN por e-mail do escopo planejado.
+7. Preservação dos identificadores RF-019 e UC-018 como itens futuros, sem renumeração dos requisitos e casos de uso posteriores.
+8. Atualização das diretrizes de Configurações e Segurança para refletir o novo escopo.
 
 ### **Versão 1.4: 17/08/2026**
 
