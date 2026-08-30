@@ -273,7 +273,7 @@ known_issues:
       - "docs/requisitos/srs/07-criterios-de-aceitacao.md"
       - "docs/requisitos/srs/08-rastreabilidade.md"
       - "docs/casos-de-uso/"
-    resolution: "Adotada a baseline funcional V1 com 21 RFs, identificados de RF-001 a RF-021, com Critérios de Aceitação, Rastreabilidade, índices e Casos de Uso realinhados."
+    resolution: "Adotado catálogo reconciliado com 21 identificadores RF-001 a RF-021. Após a decisão de 30/08/2026, a V1 possui 20 RFs ativos e preserva RF-019 como requisito futuro."
 
   - id: "ISSUE-002"
     status: "resolved"
@@ -314,6 +314,34 @@ known_issues:
       - "docs/requisitos/srs/03-requisitos-funcionais.md"
       - "docs/casos-de-uso/casos/uc-006-informar-saldo-inicial.md"
     resolution: "Não há saldo inicial armazenado. O valor inicial da conta principal é representado por Entrada; o valor de conta secundária chega por transferência com a principal; saldos e patrimônio são derivados dos movimentos."
+
+  - id: "ISSUE-005"
+    status: "resolved"
+    severity: "medium"
+    category: "scope_change"
+    decision_required: false
+    blocks_stage_5: false
+    summary: "A proteção por PIN foi retirada do escopo ativo da Versão 1."
+    affected_paths:
+      - "docs/requisitos/levantamento/01-usuarios.md"
+      - "docs/requisitos/levantamento/10-configuracoes.md"
+      - "docs/requisitos/srs/03-requisitos-funcionais.md"
+      - "docs/casos-de-uso/casos/uc-018-gerenciar-protecao-por-pin.md"
+      - "docs/dominio/01-mapa-de-dominio.md"
+    resolution: "RF-019, UC-018 e CA-019.* foram preservados para versão futura, sem renumeração. A V1 não modelará estruturas exclusivas do PIN."
+
+  - id: "ISSUE-006"
+    status: "resolved"
+    severity: "medium"
+    category: "technology_constraint"
+    decision_required: false
+    blocks_stage_5: false
+    summary: "WordPress e PHP foram consolidados como restrição tecnológica da aplicação Web."
+    affected_paths:
+      - "docs/projeto/documento-de-visao.md"
+      - "docs/projeto/plano-de-desenvolvimento.md"
+      - "docs/requisitos/srs/06-restricoes-e-dependencias.md"
+    resolution: "A V1 utilizará PHP sobre WordPress, backend SGFP em plugin próprio, infraestrutura REST do WordPress e MySQL/MariaDB. Identidade, autenticação e sessão ficam sob responsabilidade do WordPress."
 
 resolved_consolidation_notes:
   - topic: "use_cases_location"
