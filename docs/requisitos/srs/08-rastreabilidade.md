@@ -6,9 +6,9 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 2.0
+**Versão:** 2.1
 
-**Baseline:** V1 reconciliada com 21 requisitos funcionais
+**Baseline:** catálogo preservado com RF-001 a RF-021; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
 
 **Subetapa:** Etapa 3 — Especificação de Requisitos
 
@@ -44,7 +44,7 @@ As regras de negócio permanecem no Levantamento de Requisitos e não são dupli
 | RF-016 | UC-008, UC-015 | CA-016.1 a CA-016.4 |
 | RF-017 | UC-016 | CA-017.1 a CA-017.6 |
 | RF-018 | UC-012, UC-016, UC-017 | CA-018.1 a CA-018.5 |
-| RF-019 | UC-018 | CA-019.1 a CA-019.5 |
+| RF-019 — **Versão futura** | UC-018 — **Versão futura** | CA-019.1 a CA-019.5 — **Versão futura** |
 | RF-020 | UC-019 | CA-020.1 a CA-020.3 |
 | RF-021 | UC-020, UC-021 | CA-021.1 a CA-021.7 |
 
@@ -83,7 +83,11 @@ O registro do valor inicial da conta principal por Entrada utiliza as regras dos
 
 ## 6. Proveniência da reconciliação
 
-Os artefatos derivados anteriores utilizaram um catálogo de 25 RFs. A migração para a baseline definitiva de 21 RFs está registrada em `docs/governanca/proveniencia.csv` e no relatório de consolidação. Os identificadores RF-001 a RF-021 desta versão são oficiais e não deverão ser renumerados sem decisão formal posterior.
+Os artefatos derivados anteriores utilizaram um catálogo de 25 RFs. A migração para o catálogo reconciliado de 21 RFs está registrada em `docs/governanca/proveniencia.csv` e no relatório de consolidação.
+
+Os identificadores RF-001 a RF-021 permanecem oficiais e não deverão ser renumerados sem decisão formal posterior.
+
+A decisão de 30/08/2026 retirou o RF-019 — Gerenciar proteção por PIN do escopo ativo da Versão 1 e o preservou como requisito de versão futura. Por consequência, UC-018 e CA-019.1 a CA-019.5 também permanecem preservados como artefatos futuros, sem deslocamento dos identificadores posteriores.
 
 ## 7. Rastreabilidade futura
 
@@ -95,14 +99,21 @@ A matriz não deverá registrar componentes ou testes inexistentes apenas para p
 
 ## 8. Verificações de completude
 
-- os 21 RFs da baseline possuem ao menos um Caso de Uso relacionado;
-- os 21 RFs possuem critérios de aceitação relacionados;
+- o catálogo preserva 21 identificadores funcionais, RF-001 a RF-021;
+- 20 requisitos funcionais permanecem ativos na Versão 1;
+- RF-019 está adiado para versão futura, com UC-018 e CA-019.1 a CA-019.5 igualmente preservados como futuros;
+- todos os requisitos funcionais ativos da V1 possuem ao menos um Caso de Uso relacionado;
+- todos os requisitos funcionais ativos da V1 possuem critérios de aceitação relacionados;
 - os 20 RNFs possuem critérios de aceitação relacionados;
 - os RNFs não dependem de correspondência obrigatória com Casos de Uso;
 - os casos de teste ainda não estão vinculados, pois pertencem à Etapa 12 — Testes;
 - não há referência normativa a RF-022, RF-023, RF-024 ou RF-025.
 
 ## 9. Histórico de atualização
+
+### Versão 2.1 — 30/08/2026
+
+Atualizou o escopo funcional da Versão 1 após a decisão de adiar a proteção por PIN. O RF-019, UC-018 e CA-019.1 a CA-019.5 foram preservados como identificadores de versão futura, sem renumeração dos artefatos posteriores. A V1 passa a possuir 20 requisitos funcionais ativos dentro de um catálogo histórico de 21 identificadores.
 
 ### Versão 2.0 — baseline reconciliada
 
