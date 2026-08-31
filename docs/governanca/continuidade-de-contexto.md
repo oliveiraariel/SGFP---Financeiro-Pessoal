@@ -58,6 +58,9 @@ Situação:
 - identidade, autenticação e sessão da V1 serão fornecidas pelo WordPress com e-mail e senha;
 - cardinalidades, entidades definitivas, chaves, tabelas, nulabilidade, persistência, especializações formais e decisões físicas pertencem às etapas correspondentes;
 - estruturas exclusivas do PIN futuro não deverão ser modeladas na V1;
+- os RNFs estão padronizados como `RNF-001` a `RNF-020`;
+- a rastreabilidade direta das 182 regras indexadas para RFs/RNFs está registrada em `docs/requisitos/srs/rastreabilidade-regras-requisitos.csv`;
+- permanece aberta, sem bloquear a Etapa 6, a decisão sobre o significado de "preservar o estado anterior" durante a restauração de backup; essa decisão deverá ser tomada antes da Arquitetura da Aplicação;
 - Etapas 7 a 12 permanecem condicionadas aos respectivos gates.
 
 ## 4. Decisões consolidadas relevantes para a modelagem
