@@ -2,7 +2,7 @@
 
 ## Sistema de Gestão Financeira Pessoal
 
-**Versão do documento:** 1.2
+**Versão do documento:** 1.3
 
 **Data da última atualização:** 30/08/2026
 
@@ -52,7 +52,7 @@ Serão desenvolvidos:
 - recuperação de senha por e-mail;
 - criação manual de cópia de segurança;
 - restauração de cópia de segurança;
-- preservação do estado anterior durante uma restauração;
+- preservação do estado imediatamente anterior por meio de cópia de segurança automática pré-restauração, criada antes da substituição dos dados atuais;
 - API REST;
 - interface Web.
 
@@ -70,7 +70,7 @@ Entre elas destacam se:
 - dashboards avançados;
 - relatórios gerenciais mais completos;
 - integrações com serviços externos;
-- backup automático;
+- backup automático periódico ou contínuo;
 - anexação de arquivos de imagem aos compromissos;
 - outras funcionalidades que venham a ser identificadas como necessárias após a utilização da Versão 1.
 
@@ -198,6 +198,8 @@ Atualmente o projeto encontra-se na **Etapa 6 — Modelagem Conceitual (MER)**.
 As etapas de levantamento e especificação de requisitos, Casos de Uso e Mapa do Domínio já foram concluídas e constituem a base para a modelagem conceitual.
 
 A decisão de utilizar WordPress na Versão 1 e de adiar a proteção opcional por PIN para uma versão futura deverá ser considerada nos artefatos das etapas posteriores de modelagem física, arquitetura e implementação.
+
+A preservação do estado anterior durante uma restauração foi consolidada como cópia de segurança automática pré-restauração: após validação da cópia escolhida e confirmação do usuário, o estado atual deverá ser preservado em condição recuperável antes de qualquer substituição. O mecanismo técnico dessa preservação será definido na etapa apropriada.
 
 A documentação continuará passível de revisão quando forem identificadas inconsistências ou impactos decorrentes das etapas posteriores.
 

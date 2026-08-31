@@ -6,7 +6,7 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 2.2
+**Versão:** 2.3
 
 **Baseline:** catálogo preservado com 21 requisitos funcionais; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
 
@@ -202,11 +202,12 @@ Os critérios abaixo permanecem registrados para preservar a rastreabilidade do 
 - **CA-021.3:** O usuário deverá conseguir fornecer uma cópia válida para restauração.
 - **CA-021.4:** A restauração deverá informar e confirmar a substituição dos dados atuais.
 - **CA-021.5:** A restauração deverá substituir os dados pelos dados representados na cópia.
-- **CA-021.6:** A restauração deverá preservar o estado anterior conforme as regras existentes.
+- **CA-021.6:** Antes de substituir os dados atuais, após a validação da cópia escolhida e a confirmação do usuário, o sistema deverá gerar e preservar em condição recuperável uma cópia de segurança correspondente ao estado imediatamente anterior à restauração.
 - **CA-021.7:** A V1 não deverá realizar mesclagem de dados.
 - **CA-021.8:** A cópia de segurança criada manualmente deverá ser enviada ao endereço de e-mail cadastrado no perfil do usuário.
-
-**Pendência de interpretação de CA-021.6:** o módulo Configurações registra que o significado operacional de "preservar o estado anterior" ainda depende de decisão de negócio. Enquanto essa decisão não for tomada, CA-021.6 permanece rastreável, mas não pode ser convertido em mecanismo técnico específico nem considerado totalmente testável de forma objetiva.
+- **CA-021.9:** Se a cópia pré-restauração não puder ser gerada e preservada com sucesso em condição recuperável, a restauração não deverá ser executada e os dados atuais deverão permanecer inalterados.
+- **CA-021.10:** A cópia pré-restauração deverá ser compatível com o mesmo processo de restauração das cópias manuais e deverá ser identificável como de origem pré-restauração.
+- **CA-021.11:** O sistema deverá tentar enviar a cópia pré-restauração ao e-mail cadastrado; a falha isolada dessa entrega não deverá impedir a restauração quando a cópia já estiver preservada de forma recuperável.
 
 ## 3. Critérios de Aceitação dos Requisitos Não Funcionais
 
@@ -323,9 +324,8 @@ Os seguintes critérios permanecem deliberadamente sem valores quantitativos nes
 | Capacidade de dados | A definir |
 | Critérios quantitativos de escalabilidade | A definir |
 | Critérios técnicos detalhados de segurança | A definir |
-| Significado operacional da preservação do estado anterior na restauração | Decisão de negócio pendente antes da arquitetura |
 
-Esses itens dependem de decisões posteriores e não constituem novos requisitos funcionais. A pendência relativa à restauração é uma decisão de negócio já identificada e deverá ser resolvida antes de implementar o RF-021.
+Esses itens dependem de decisões posteriores e não constituem novos requisitos funcionais. A preservação do estado imediatamente anterior à restauração já possui comportamento de negócio definido nos critérios de RF-021; apenas seu mecanismo técnico permanece para as etapas posteriores.
 
 ## 6. Relação com Casos de Teste e Regras de Negócio
 
@@ -336,6 +336,10 @@ Cada caso de teste deverá referenciar, quando aplicável:
 Os critérios deverão respeitar as regras de negócio consolidadas no Levantamento de Requisitos. As regras não são duplicadas nesta seção.
 
 ## 7. Histórico de atualização
+
+### Versão 2.3 — 30/08/2026
+
+Resolveu a interpretação de CA-021.6 e acrescentou critérios verificáveis para a cópia automática pré-restauração, incluindo preservação recuperável obrigatória, cancelamento em caso de falha, compatibilidade com o processo normal de restauração, identificação da origem e tratamento não bloqueante da falha isolada de envio por e-mail.
 
 ### Versão 2.2 — 30/08/2026
 

@@ -58,9 +58,12 @@ Situação:
 - o backend específico do SGFP será implementado em plugin próprio e a solução utilizará API REST;
 - identidade, autenticação e sessão da V1 serão fornecidas pelo WordPress com e-mail e senha;
 - a proteção básica das operações e dos recursos da API contra acesso não autorizado faz parte da V1; mecanismos técnicos concretos pertencem às Etapas 9 e 10;
-- a cópia de segurança da V1 é criada manualmente, enviada ao e-mail cadastrado e pode ser posteriormente fornecida pelo usuário como arquivo para restauração;
-- `CA-021.8` registra explicitamente o envio da cópia por e-mail;
-- `ISSUE-007` permanece aberta: o significado operacional de preservar o estado imediatamente anterior durante uma restauração exige decisão humana antes da Arquitetura; não bloqueia a Etapa 6;
+- a cópia de segurança ordinária da V1 é criada manualmente, enviada ao e-mail cadastrado e pode ser posteriormente fornecida pelo usuário como arquivo para restauração;
+- antes de uma restauração confirmada, o sistema deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior; se essa preservação falhar, a restauração será cancelada e os dados atuais permanecerão inalterados;
+- a cópia pré-restauração é compatível com o mesmo processo de restauração das cópias manuais, deve ser identificável por sua origem e terá tentativa de envio por e-mail; a falha isolada do envio não bloqueia a restauração quando a preservação recuperável já foi concluída;
+- backup automático periódico ou contínuo permanece fora da V1;
+- `CA-021.8` registra explicitamente o envio da cópia manual por e-mail e `CA-021.9` a `CA-021.11` consolidam a proteção pré-restauração;
+- `ISSUE-007` está resolvida: o significado operacional de preservar o estado imediatamente anterior foi definido como cópia de segurança automática pré-restauração; o mecanismo técnico permanece para as etapas posteriores;
 - `ISSUE-008` permanece aberta: a matriz direta Regra de Negócio → Requisito ainda não foi materializada; não bloqueia a Etapa 6, mas deverá ser concluída antes do fechamento da rastreabilidade da Etapa 12;
 - cardinalidades, entidades definitivas, chaves, tabelas, nulabilidade, persistência, especializações formais e decisões físicas pertencem às etapas correspondentes;
 - estruturas exclusivas do PIN futuro não deverão ser modeladas na V1;
@@ -162,7 +165,7 @@ A Etapa 6 pode iniciar quando:
 
 A aprovação do gate não deve ser inferida apenas pelo resultado de `git diff --check`; a consistência documental e o conteúdo da versão efetivamente versionada também devem ser confirmados.
 
-As pendências `ISSUE-007` e `ISSUE-008` são registradas como **não bloqueadoras da Etapa 6**. `ISSUE-007` deverá ser resolvida antes da Arquitetura e `ISSUE-008` antes do fechamento final da rastreabilidade de testes.
+`ISSUE-007` está resolvida e não constitui mais bloqueio para a Arquitetura. A pendência `ISSUE-008` permanece **não bloqueadora da Etapa 6** e deverá ser concluída antes do fechamento final da rastreabilidade de testes.
 
 Durante o MER:
 
@@ -177,7 +180,7 @@ Durante o MER:
 
 - **Etapa 7 — DER:** somente após validação do MER.
 - **Etapa 8 — Modelo Físico:** somente após validação do DER.
-- **Etapa 9 — Arquitetura:** somente após compreensão e modelagem compatíveis com os gates anteriores e após resolução das ambiguidades de negócio que afetem a arquitetura, incluindo `ISSUE-007`.
+- **Etapa 9 — Arquitetura:** somente após compreensão e modelagem compatíveis com os gates anteriores e após resolução de eventuais ambiguidades de negócio bloqueantes; `ISSUE-007` já se encontra resolvida.
 - **Etapa 10 — API:** somente após arquitetura correspondente.
 - **Etapa 11 — Interface Web:** conforme arquitetura e contratos aprovados.
 - **Etapa 12 — Testes:** evolui conforme critérios, implementação e estratégia vigente; a cadeia direta Regra de Negócio → Requisito deverá estar concluída antes do fechamento final da rastreabilidade.
@@ -212,7 +215,7 @@ Após confirmar que a Etapa 5 e os arquivos de governança atualizados estão co
 4. produzir ou evoluir `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
 5. validar o MER antes de qualquer trabalho de DER.
 
-As pendências `ISSUE-007` e `ISSUE-008` devem permanecer visíveis, sem serem silenciosamente resolvidas durante o MER.
+`ISSUE-007` deve permanecer registrada como resolvida. `ISSUE-008` deve permanecer visível, sem ser silenciosamente resolvida durante o MER.
 
 ## 10. Arquivos-base para contexto de novas sessões
 

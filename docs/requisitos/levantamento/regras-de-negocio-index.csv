@@ -175,6 +175,7 @@ CFG-RN-011,Configurações,RN-011,Restauração de Cópia de Segurança,docs/req
 CFG-RN-012,Configurações,RN-012,Restauração Integral,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-013,Configurações,RN-013,Confirmação da Restauração,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-014,Configurações,RN-014,Proteção da Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-015,Configurações,RN-015,Cópia de Segurança Pré-Restauração,docs/requisitos/levantamento/10-configuracoes.md
 REL-RN-001,Relatórios,RN-001,,docs/requisitos/levantamento/11-relatorios.md
 REL-RN-002,Relatórios,RN-002,,docs/requisitos/levantamento/11-relatorios.md
 REL-RN-003,Relatórios,RN-003,,docs/requisitos/levantamento/11-relatorios.md

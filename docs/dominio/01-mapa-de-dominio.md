@@ -4,7 +4,7 @@
 
 **Sigla:** SGFP  
 **Documento:** Mapa do Domínio  
-**Versão:** 1.2  
+**Versão:** 1.3  
 **Etapa:** Etapa 5 — Mapa do Domínio  
 **Data da revisão:** 30/08/2026  
 
@@ -457,9 +457,13 @@ Não constitui integração financeira externa.
 
 **Responsabilidade** — Apoiar a proteção dos dados do usuário.
 
-Na V1, a criação da cópia é manual e a cópia gerada é enviada ao endereço de e-mail cadastrado do usuário.
+Na V1, a criação ordinária da cópia é manual e a cópia gerada é enviada ao endereço de e-mail cadastrado do usuário.
 
-Este documento não define formato, mecanismo técnico de geração ou proteção da cópia.
+Existe uma única geração automática específica na V1: após a validação da cópia escolhida e a confirmação de uma restauração, o sistema deverá gerar uma cópia do estado imediatamente anterior antes de substituir os dados atuais. Essa cópia deverá permanecer preservada em condição recuperável, ser compatível com o mesmo processo de restauração das cópias manuais e ser identificável como de origem pré-restauração.
+
+Essa proteção pontual não caracteriza backup automático periódico ou contínuo.
+
+Este documento não define formato, mecanismo técnico de geração, armazenamento ou proteção da cópia.
 
 **Rastreabilidade** — regras de Backup e Restauração · `UC-020` e `UC-021`
 
@@ -473,11 +477,11 @@ Este documento não define formato, mecanismo técnico de geração ou proteçã
 
 Na V1, o usuário fornece ao sistema o arquivo correspondente à cópia de segurança que deseja restaurar.
 
-A restauração deve respeitar as regras de confirmação, validação, substituição integral dos dados e preservação de integridade definidas no projeto.
+Após a validação da cópia e a confirmação do usuário, o estado imediatamente anterior deverá ser preservado em uma cópia de segurança recuperável antes da substituição integral dos dados atuais. Se essa preservação não puder ser concluída com sucesso, a restauração não deverá prosseguir e os dados atuais deverão permanecer inalterados.
 
-O significado operacional de preservar o estado imediatamente anterior à restauração permanece como decisão pendente e não é definido neste documento.
+A restauração deve respeitar as regras de confirmação, validação, substituição integral dos dados, ausência de mesclagem e preservação de integridade definidas no projeto.
 
-Este documento não define a estratégia técnica utilizada para implementar o processo.
+Este documento não define a estratégia técnica utilizada para gerar, armazenar ou disponibilizar a cópia pré-restauração.
 
 **Rastreabilidade** — regras de Backup e Restauração · `UC-020` e `UC-021`
 
@@ -708,7 +712,9 @@ Quando implementado futuramente, o PIN será uma proteção secundária para blo
 
 O projeto determina que os dados atuais sejam substituídos pelos dados da cópia selecionada e que não haja mesclagem na Versão 1.
 
-Permanece pendente de decisão o significado operacional da exigência de preservar o estado imediatamente anterior durante uma restauração. Esta pendência não altera os conceitos centrais do domínio nem bloqueia o MER, mas deve ser resolvida antes da Arquitetura da Aplicação.
+A preservação do estado imediatamente anterior está definida como a geração e preservação recuperável de uma cópia de segurança pré-restauração, realizada depois da validação da cópia escolhida e da confirmação do usuário e antes da substituição dos dados atuais.
+
+A restauração não poderá prosseguir se essa preservação falhar. A decisão resolve a ambiguidade de negócio sem definir o mecanismo técnico de armazenamento, transação ou infraestrutura, que permanece para as etapas posteriores.
 
 ---
 
@@ -793,6 +799,10 @@ Com a validação deste Mapa do Domínio, os conceitos identificados tornam-se e
 ---
 
 ## 17. Histórico de atualização
+
+### Versão 1.3 — 30/08/2026
+
+Alinhamento da Cópia de Segurança e da Restauração à decisão que resolveu a ISSUE-007: a V1 passa a reconhecer a cópia automática pré-restauração como proteção do estado imediatamente anterior, condicionando a substituição dos dados à preservação recuperável bem-sucedida, sem antecipar mecanismo técnico de implementação.
 
 ### Versão 1.2 — 30/08/2026
 

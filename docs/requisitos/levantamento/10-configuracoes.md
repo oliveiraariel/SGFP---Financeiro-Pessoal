@@ -2,7 +2,7 @@
 
 **Documento:** Levantamento de Requisitos
 
-**Versão:** 1.2
+**Versão:** 1.3
 
 **Objetivo**
 
@@ -26,7 +26,7 @@ A cópia deverá contemplar os dados necessários para preservar o estado do sis
 
 A cópia de segurança criada manualmente será enviada para o endereço de e-mail cadastrado no perfil do usuário.
 
-Na Versão 1, não haverá geração automática de cópias de segurança.
+A geração automática prevista especificamente como proteção pré-restauração é regida pela RN-015 e não caracteriza backup automático periódico ou contínuo.
 
 ### RN-011 — Restauração de Cópia de Segurança
 
@@ -51,6 +51,20 @@ Antes de executar uma restauração, o sistema deverá informar ao usuário que 
 A cópia de segurança deverá possuir proteção adequada contra acesso não autorizado.
 
 A forma técnica de proteção será definida posteriormente na etapa de arquitetura e implementação.
+
+### RN-015 — Cópia de Segurança Pré-Restauração
+
+Depois que a cópia a restaurar tiver sido validada e o usuário confirmar a operação, mas antes de substituir os dados atuais, o sistema deverá gerar automaticamente uma cópia de segurança que represente o estado imediatamente anterior à restauração.
+
+A restauração somente poderá prosseguir se essa cópia for gerada e preservada com sucesso em condição recuperável. Se essa preservação falhar, a restauração deverá ser cancelada e os dados atuais deverão permanecer inalterados.
+
+A cópia pré-restauração deverá ser compatível com o mesmo processo de restauração das cópias criadas manualmente e deverá ser identificável como de origem pré-restauração.
+
+O sistema deverá tentar entregar a cópia pré-restauração ao endereço de e-mail cadastrado. A falha dessa entrega, isoladamente, não impedirá a restauração quando a cópia já tiver sido gerada e preservada de forma recuperável.
+
+Essa geração automática ocorre exclusivamente como medida de segurança vinculada a uma restauração confirmada e não caracteriza backup automático periódico ou contínuo.
+
+O mecanismo técnico utilizado para preservar a cópia em condição recuperável será definido nas etapas de arquitetura e implementação.
 
 ## Regras Preservadas para Versão Futura — PIN
 
@@ -102,9 +116,13 @@ O PIN não substituirá a autenticação principal por e-mail e senha.
 - A recuperação futura do PIN não utilizará e-mail, token próprio ou link com prazo de validade; a redefinição dependerá da confirmação da senha da conta.
 - O bloqueio automático por inatividade poderá ser avaliado juntamente com a funcionalidade futura de PIN.
 - A aplicação disponibilizará os temas Claro e Escuro na Versão 1.
-- A criação de cópia de segurança será manual.
-- A cópia de segurança será enviada ao e-mail cadastrado no perfil do usuário.
-- Não haverá backup automático na Versão 1.
+- A criação ordinária de cópia de segurança será manual.
+- A cópia de segurança criada manualmente será enviada ao e-mail cadastrado no perfil do usuário.
+- Não haverá backup automático periódico ou contínuo na Versão 1.
+- Como proteção da restauração, o sistema criará automaticamente uma cópia do estado imediatamente anterior antes de substituir os dados atuais.
+- A restauração somente prosseguirá se essa cópia pré-restauração for gerada e preservada com sucesso em condição recuperável.
+- A cópia pré-restauração utilizará o mesmo processo de restauração das cópias manuais e será identificável como de origem pré-restauração.
+- O sistema tentará enviar a cópia pré-restauração ao e-mail cadastrado, mas a falha isolada do envio não bloqueará a restauração quando a cópia já estiver preservada de forma recuperável.
 - O usuário poderá restaurar uma cópia de segurança por meio do arquivo correspondente.
 - O arquivo de backup enviado por e-mail poderá ser preservado pelo usuário e posteriormente fornecido ao sistema para restauração.
 - A restauração representará um ponto de restauração integral do sistema.
@@ -121,6 +139,8 @@ O PIN não substituirá a autenticação principal por e-mail e senha.
 - Envio da cópia de segurança para o e-mail cadastrado.
 - Restauração de cópia de segurança por arquivo.
 - Confirmação antes da restauração.
+- Geração automática de cópia de segurança do estado imediatamente anterior à restauração confirmada.
+- Cancelamento da restauração se a cópia pré-restauração não puder ser gerada e preservada em condição recuperável.
 - Substituição integral dos dados durante a restauração.
 
 ## Funcionalidades Previstas para Versões Futuras
@@ -131,18 +151,18 @@ O PIN não substituirá a autenticação principal por e-mail e senha.
 - Redefinição do PIN mediante confirmação da senha da conta.
 - Bloqueio automático da aplicação após período de inatividade.
 - Outras opções de personalização visual.
-- Backup automático.
+- Backup automático periódico ou contínuo.
 - Integração com serviços externos de armazenamento.
 - Outras formas de proteção e recuperação de dados.
 - Outras funcionalidades de configuração que sejam identificadas durante a utilização do sistema.
 
-## Questão Pendente de Decisão
+## Decisão Consolidada sobre Preservação Pré-Restauração
 
-O Documento de Visão e o Plano de Desenvolvimento registram a necessidade de **preservar o estado anterior do sistema durante processos de restauração**. As regras RN-011 a RN-014 definem restauração por arquivo, substituição integral, confirmação e proteção da cópia, mas ainda não determinam o significado operacional dessa preservação do estado anterior.
+A exigência de **preservar o estado anterior do sistema durante processos de restauração** é atendida pela RN-015.
 
-Antes da Etapa 9 — Arquitetura da Aplicação, deverá ser decidido se essa preservação representa, por exemplo, a criação de uma cópia de segurança do estado imediatamente anterior à restauração ou outro comportamento. Nenhum mecanismo técnico deverá ser presumido antes dessa decisão.
+Na Versão 1, após a validação da cópia escolhida e a confirmação do usuário, o sistema deverá gerar e preservar em condição recuperável uma cópia do estado imediatamente anterior antes de qualquer substituição dos dados atuais. Se essa preservação falhar, a restauração não será executada.
 
-Essa pendência não altera as regras já consolidadas de criação, envio por e-mail, fornecimento do arquivo, confirmação e substituição integral durante a restauração.
+Essa decisão define o comportamento de negócio necessário sem antecipar o mecanismo técnico de armazenamento, transação, formato físico ou infraestrutura, que permanecerá para as etapas apropriadas.
 
 ## Observações
 
@@ -161,6 +181,10 @@ Esses itens não constituem configurações do sistema e, portanto, não possuem
 As definições de arquitetura e implementação necessárias para concretizar as funcionalidades deste módulo serão realizadas posteriormente.
 
 ## Histórico de atualização
+
+### Versão 1.3 — 30/08/2026
+
+Resolveu a ambiguidade sobre preservação do estado anterior durante restaurações: foi criada a RN-015, estabelecendo cópia automática pré-restauração, preservação recuperável obrigatória antes da substituição, cancelamento em caso de falha, compatibilidade com o processo normal de restauração e distinção entre essa proteção pontual e backup automático periódico.
 
 ### Versão 1.2 — 30/08/2026
 

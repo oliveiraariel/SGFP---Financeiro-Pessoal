@@ -2,7 +2,7 @@
 
 ## **Sistema de Gestão Financeira Pessoal**
 
-**Versão do documento:** 1.5
+**Versão do documento:** 1.6
 
 **Data da última atualização:** 30/08/2026
 
@@ -53,7 +53,7 @@ Durante todo o desenvolvimento serão adotados os seguintes princípios:
 9. Não transformar automaticamente módulos ou funcionalidades em entidades do domínio.
 10. Separar regras de negócio, funcionalidades, dados, entidades, interface, configuração, arquitetura e implementação.
 11. Preservar o histórico financeiro quando as regras do sistema exigirem alterações em períodos futuros.
-12. Preservar o estado anterior do sistema durante processos de restauração de dados.
+12. Preservar o estado imediatamente anterior durante processos de restauração por meio de uma cópia de segurança pré-restauração gerada e preservada em condição recuperável antes da substituição dos dados atuais.
 13. Considerar a possibilidade de evolução futura sem introduzir complexidade desnecessária na Versão 1.
 
 ## **3. Metodologia de Desenvolvimento**
@@ -378,7 +378,7 @@ O Dashboard não será tratado como uma entidade do domínio.
 
 Objetivo relacionado às preferências e à preservação dos dados disponibilizadas ao usuário.
 
-Na Versão 1, permanecem como definições consolidadas o tema da aplicação, o backup e a restauração de dados. A proteção opcional por PIN foi retirada do escopo da Versão 1 e permanece registrada como funcionalidade prevista para versão futura.
+Na Versão 1, permanecem como definições consolidadas o tema da aplicação, a criação manual de cópias de segurança e a restauração de dados. Como proteção específica da restauração, o sistema deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior antes da substituição dos dados atuais. Essa proteção pontual não caracteriza backup automático periódico ou contínuo. A proteção opcional por PIN foi retirada do escopo da Versão 1 e permanece registrada como funcionalidade prevista para versão futura.
 
 ### **11. Relatórios**
 
@@ -474,7 +474,7 @@ Entre as funcionalidades previstas para versões futuras estão:
 6. Dashboards avançados.
 7. Relatórios financeiros adicionais.
 8. Integrações externas.
-9. Backup automático.
+9. Backup automático periódico ou contínuo.
 10. Anexação de arquivos de imagem aos compromissos.
 11. Outras funcionalidades que venham a ser identificadas como necessárias após a utilização da Versão 1.
 
@@ -588,6 +588,17 @@ O desenvolvimento deverá permitir que a equipe compreenda progressivamente:
 Todo o processo deverá ser documentado de maneira que as decisões possam ser compreendidas, justificadas e utilizadas como referência para futuros desenvolvimentos.
 
 ## **14. Histórico de Atualização**
+
+### **Versão 1.6: 30/08/2026**
+
+Atualização para consolidar a decisão de negócio sobre preservação do estado anterior em restaurações.
+
+Principais atualizações:
+
+1. Definição da cópia de segurança pré-restauração como mecanismo funcional de preservação do estado imediatamente anterior.
+2. Determinação de que a restauração somente poderá substituir os dados atuais após a cópia pré-restauração ter sido gerada e preservada em condição recuperável.
+3. Manutenção de backup automático periódico ou contínuo fora do escopo da Versão 1.
+4. Preservação das decisões técnicas de armazenamento, transação e infraestrutura para as etapas posteriores.
 
 ### **Versão 1.5: 30/08/2026**
 
