@@ -13,6 +13,11 @@ Esta pasta reúne as subetapas vigentes da **Etapa 3 — Especificação de Requ
 7. Critérios de Aceitação
 8. Rastreabilidade dos Requisitos
 
+## Arquivos de apoio
+
+- `requisitos-index.csv` — índice dos RFs e RNFs vigentes.
+- `rastreabilidade-regras-requisitos.csv` — ligação individual entre as regras de negócio indexadas na Etapa 2 e os RFs/RNFs relacionados.
+
 ## Fonte normativa atual de RFs
 
 O catálogo `03-requisitos-funcionais.md` preserva **21 identificadores funcionais de RF-001 a RF-021**. Na Versão 1 permanecem ativos 20 requisitos; **RF-019 — Gerenciar proteção por PIN** foi adiado para versão futura sem renumeração dos identificadores posteriores.
