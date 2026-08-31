@@ -6,7 +6,7 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 2.2
+**Versão:** 2.3
 
 **Baseline:** catálogo preservado com RF-001 a RF-021; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
 
@@ -50,7 +50,7 @@ A rastreabilidade atualmente materializada de forma completa nesta matriz começ
 | RF-018 | UC-012, UC-016, UC-017 | CA-018.1 a CA-018.5 |
 | RF-019 — **Versão futura** | UC-018 — **Versão futura** | CA-019.1 a CA-019.5 — **Versão futura** |
 | RF-020 | UC-019 | CA-020.1 a CA-020.3 |
-| RF-021 | UC-020, UC-021 | CA-021.1 a CA-021.8 |
+| RF-021 | UC-020, UC-021 | CA-021.1 a CA-021.11 |
 
 ## 4. Rastreabilidade dos Requisitos Não Funcionais
 
@@ -120,7 +120,7 @@ A ligação direta **Regra de Negócio → Requisito** deverá ser concluída em
 - RF-019 está adiado para versão futura, com UC-018 e CA-019.1 a CA-019.5 igualmente preservados como futuros;
 - todos os requisitos funcionais ativos da V1 possuem ao menos um Caso de Uso relacionado;
 - todos os requisitos funcionais ativos da V1 possuem critérios de aceitação relacionados;
-- RF-021 possui CA-021.1 a CA-021.8, incluindo a entrega da cópia de segurança por e-mail;
+- RF-021 possui CA-021.1 a CA-021.11, incluindo backup manual, entrega por e-mail, preservação recuperável do estado pré-restauração, cancelamento seguro em caso de falha e tratamento da tentativa de entrega da cópia pré-restauração;
 - os 20 RNFs possuem critérios de aceitação relacionados;
 - os RNFs utilizam o padrão de identificador `RNF-001` a `RNF-020`;
 - os RNFs não dependem de correspondência obrigatória com Casos de Uso;
@@ -129,6 +129,10 @@ A ligação direta **Regra de Negócio → Requisito** deverá ser concluída em
 - não há referência normativa a RF-022, RF-023, RF-024 ou RF-025.
 
 ## 9. Histórico de atualização
+
+### Versão 2.3 — 30/08/2026
+
+Atualizou a rastreabilidade de RF-021 para CA-021.1 a CA-021.11 após a resolução da ISSUE-007, incorporando os critérios verificáveis de preservação do estado pré-restauração sem alterar a pendência independente da matriz direta Regra de Negócio → Requisito.
 
 ### Versão 2.2 — 30/08/2026
 
