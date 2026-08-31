@@ -21,13 +21,13 @@ O usuário solicita a criação de uma cópia.
 1. O usuário solicita a criação do backup.
 2. O sistema reúne os dados necessários para preservar o estado do sistema.
 3. O sistema gera a cópia.
-4. O sistema disponibiliza a cópia ao usuário.
-5. O usuário poderá preservar a cópia fora do ambiente de utilização.
+4. O sistema envia a cópia para o endereço de e-mail cadastrado no perfil do usuário.
+5. O usuário poderá preservar o arquivo recebido fora do ambiente de utilização.
 
 **Fluxos alternativos e exceções**
 
 * A criação do backup será manual na Versão 1.
-* O mecanismo técnico de geração e disponibilização será definido posteriormente.
+* O formato do arquivo, o mecanismo técnico de geração e a proteção da cópia serão definidos posteriormente nas etapas técnicas apropriadas.
 
 **Pós-condições**
 
