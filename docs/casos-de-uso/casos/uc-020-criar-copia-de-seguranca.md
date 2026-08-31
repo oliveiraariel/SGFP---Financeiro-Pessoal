@@ -28,7 +28,6 @@ O usuário solicita a criação de uma cópia.
 
 * A criação do backup será manual na Versão 1.
 * O envio por e-mail faz parte da Versão 1; o mecanismo técnico de geração do arquivo, proteção da cópia e entrega da mensagem será definido posteriormente nas etapas técnicas apropriadas.
-* A indisponibilidade do serviço de e-mail deverá impedir que a operação seja considerada concluída com sucesso enquanto a cópia não puder ser entregue ao usuário.
 
 **Pós-condições**
 
