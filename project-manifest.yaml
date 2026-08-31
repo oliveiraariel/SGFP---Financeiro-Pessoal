@@ -220,7 +220,6 @@ traceability:
   current_status: "requirements_use_cases_acceptance_consistent; business_rule_to_requirement_matrix_pending"
   blocking_issue: null
   open_nonblocking_issues:
-    - "ISSUE-007"
     - "ISSUE-008"
   update_policy: "When a traceable source changes, inspect and update directly affected downstream references in the same change set."
 
@@ -351,20 +350,24 @@ known_issues:
     resolution: "A V1 utilizará PHP sobre WordPress, backend SGFP em plugin próprio, infraestrutura REST do WordPress e MySQL/MariaDB. Identidade, autenticação e sessão ficam sob responsabilidade do WordPress."
 
   - id: "ISSUE-007"
-    status: "open"
+    status: "resolved"
     severity: "medium"
     category: "business_rule_ambiguity"
-    decision_required: true
+    decision_required: false
     blocks_stage_6: false
-    blocks_stage_9: true
-    summary: "O projeto exige preservar o estado anterior durante a restauração, mas ainda não define o significado operacional dessa preservação."
+    blocks_stage_9: false
+    summary: "A preservação do estado imediatamente anterior à restauração foi definida como cópia de segurança automática pré-restauração."
     affected_paths:
       - "docs/projeto/documento-de-visao.md"
       - "docs/projeto/plano-de-desenvolvimento.md"
       - "docs/requisitos/levantamento/10-configuracoes.md"
+      - "docs/requisitos/levantamento/regras-de-negocio-index.csv"
+      - "docs/requisitos/srs/06-restricoes-e-dependencias.md"
       - "docs/requisitos/srs/07-criterios-de-aceitacao.md"
+      - "docs/requisitos/srs/08-rastreabilidade.md"
       - "docs/casos-de-uso/casos/uc-021-restaurar-copia-de-seguranca.md"
-    next_action: "Obter decisão humana antes da Etapa 9 sobre como o estado imediatamente anterior à restauração deve ser preservado; não presumir mecanismo técnico."
+      - "docs/dominio/01-mapa-de-dominio.md"
+    resolution: "Após validar a cópia escolhida e receber a confirmação do usuário, o SGFP deverá gerar e preservar em condição recuperável uma cópia do estado imediatamente anterior antes de substituir os dados atuais. Se essa preservação falhar, a restauração será cancelada e os dados atuais permanecerão inalterados. A cópia pré-restauração será compatível com o mesmo processo de restauração das cópias manuais, identificável por sua origem e terá tentativa de envio por e-mail; a falha isolada do envio não bloqueará a restauração quando a preservação recuperável já tiver sido concluída. Backup automático periódico ou contínuo permanece fora da V1, e o mecanismo técnico de preservação será decidido nas etapas posteriores."
 
   - id: "ISSUE-008"
     status: "open"
