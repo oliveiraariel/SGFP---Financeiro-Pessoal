@@ -10,7 +10,7 @@ Usuário.
 
 **Pré-condições**
 
-O usuário deverá possuir uma cópia de segurança válida.
+O usuário deverá possuir um arquivo de cópia de segurança válido, previamente gerado pelo SGFP e preservado pelo usuário.
 
 **Gatilho**
 
@@ -18,7 +18,7 @@ O usuário solicita uma restauração.
 
 **Fluxo principal**
 
-1. O usuário seleciona ou fornece a cópia de segurança.
+1. O usuário fornece ao sistema o arquivo correspondente à cópia de segurança que deseja restaurar.
 2. O sistema valida a cópia.
 3. O sistema informa que os dados atuais serão substituídos.
 4. O usuário confirma a operação.
@@ -32,10 +32,11 @@ O usuário solicita uma restauração.
 * O sistema não deverá mesclar os dados atuais com os dados da cópia.
 * A confirmação será obrigatória.
 * A restauração deverá preservar a integridade do estado restaurado.
+* A definição do comportamento denominado "preservar o estado anterior do sistema durante a restauração" permanece pendente de decisão, conforme registrado no módulo Configurações; este caso de uso não deverá presumir automaticamente a criação de uma nova cópia ou outro mecanismo técnico.
 
 **Pós-condições**
 
-Os dados atuais estarão substituídos pelos dados da cópia selecionada.
+Os dados atuais estarão substituídos pelos dados da cópia fornecida e validada, respeitada a decisão futura sobre a preservação do estado imediatamente anterior à restauração.
 
 **Requisitos relacionados**
 
