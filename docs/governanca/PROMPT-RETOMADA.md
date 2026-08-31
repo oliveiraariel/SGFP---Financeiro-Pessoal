@@ -32,12 +32,21 @@ Depois compare o estado real do repositório com project-manifest.yaml e docs/go
 
 Confirme explicitamente:
 
-1. se a baseline funcional oficial continua sendo RF-001 a RF-021;
-2. se docs/dominio/01-mapa-de-dominio.md existe e corresponde à Etapa 5 validada;
-3. se a Etapa 5 está concluída;
-4. se a próxima etapa é Etapa 6 — Modelagem Conceitual (MER);
-5. quais arquivos ou validações estão pendentes no working tree;
-6. se existe qualquer divergência entre Git, manifesto, continuidade e fontes canônicas.
+1. se a baseline funcional oficial continua sendo RF-001 a RF-021, com 20 RFs ativos e RF-019 futuro;
+2. se os RNFs utilizam o padrão RNF-001 a RNF-020;
+3. se docs/dominio/01-mapa-de-dominio.md existe e corresponde à Etapa 5 validada;
+4. se a Etapa 5 está concluída;
+5. se a etapa atual é Etapa 6 — Modelagem Conceitual (MER);
+6. quais arquivos ou validações estão pendentes no working tree;
+7. se ISSUE-007 e ISSUE-008 continuam abertas e quais gates elas afetam;
+8. se existe qualquer divergência entre Git, manifesto, continuidade e fontes canônicas.
+
+Considere como estado atual:
+- a proteção básica das operações e dos recursos da API contra acesso não autorizado faz parte da V1;
+- mecanismos técnicos concretos de proteção da API pertencem à Arquitetura e ao Desenvolvimento da API;
+- a cópia de segurança da V1 é criada manualmente, enviada ao e-mail cadastrado e restaurada por meio do arquivo fornecido pelo usuário;
+- ISSUE-007: o significado operacional de preservar o estado imediatamente anterior durante uma restauração ainda exige decisão humana antes da Arquitetura;
+- ISSUE-008: a matriz direta Regra de Negócio → Requisito ainda deverá ser materializada antes do fechamento final da rastreabilidade de testes.
 
 Não invente decisões de negócio.
 Não altere arquivos no primeiro turno.
@@ -51,6 +60,7 @@ Para a Etapa 6:
 - não trate os candidatos do Mapa do Domínio como entidades já decididas;
 - defina no MER apenas o que pertence à Modelagem Conceitual;
 - trate WordPress como restrição tecnológica conhecida, sem antecipar detalhes que pertencem à Arquitetura;
+- mantenha ISSUE-007 e ISSUE-008 visíveis sem tentar resolvê-las por inferência durante o MER;
 - não antecipe DER, Modelo Físico, Arquitetura ou Implementação.
 
 Se houver divergência entre documentos, aplique a autoridade definida em ORCHESTRATOR.md e project-manifest.yaml e não resolva conflitos de negócio silenciosamente.
