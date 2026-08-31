@@ -378,7 +378,7 @@ O Dashboard não será tratado como uma entidade do domínio.
 
 Objetivo relacionado às preferências e à preservação dos dados disponibilizadas ao usuário.
 
-Na Versão 1, permanecem como definições consolidadas o tema da aplicação, o backup e a restauração de dados. A proteção opcional por PIN foi retirada do escopo da Versão 1 e permanece registrada como funcionalidade prevista para versão futura.
+Na Versão 1, permanecem como definições consolidadas o tema da aplicação, a criação manual de cópias de segurança e a restauração de dados. Como proteção específica da restauração, o sistema deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior antes da substituição dos dados atuais. Essa proteção pontual não caracteriza backup automático periódico ou contínuo. A proteção opcional por PIN foi retirada do escopo da Versão 1 e permanece registrada como funcionalidade prevista para versão futura.
 
 ### **11. Relatórios**
 
@@ -474,7 +474,7 @@ Entre as funcionalidades previstas para versões futuras estão:
 6. Dashboards avançados.
 7. Relatórios financeiros adicionais.
 8. Integrações externas.
-9. Backup automático.
+9. Backup automático periódico ou contínuo.
 10. Anexação de arquivos de imagem aos compromissos.
 11. Outras funcionalidades que venham a ser identificadas como necessárias após a utilização da Versão 1.
 
