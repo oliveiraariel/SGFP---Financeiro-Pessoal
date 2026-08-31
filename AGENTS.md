@@ -25,8 +25,8 @@ Antes de qualquer tarefa neste repositório:
 - Etapa atual: Etapa 6 — Modelagem Conceitual (MER).
 - Restrição tecnológica consolidada para a V1: aplicação Web em PHP sobre WordPress, com backend específico em plugin próprio e API REST.
 - A proteção básica das operações e recursos da API contra acesso não autorizado faz parte da V1; mecanismos técnicos concretos pertencem às etapas de Arquitetura e Desenvolvimento da API.
-- A cópia de segurança da V1 é criada manualmente, enviada ao e-mail cadastrado e restaurada posteriormente por meio do arquivo fornecido pelo usuário.
-- `ISSUE-007`: permanece pendente a decisão humana sobre o significado operacional de preservar o estado imediatamente anterior durante uma restauração; não bloqueia o MER, mas deve ser resolvida antes da Arquitetura.
+- A cópia de segurança ordinária da V1 é criada manualmente e enviada ao e-mail cadastrado. Antes de uma restauração confirmada, o SGFP deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior; se essa preservação falhar, a restauração será cancelada. Essa proteção pontual não caracteriza backup automático periódico ou contínuo.
+- `ISSUE-007`: resolvida pela decisão de cópia de segurança automática pré-restauração, sem antecipar o mecanismo técnico de preservação.
 - `ISSUE-008`: a matriz direta Regra de Negócio → Requisito ainda não foi materializada; não bloqueia o MER, mas deverá ser concluída antes do fechamento da rastreabilidade de testes.
 - DER, Modelo Físico, Arquitetura detalhada e Implementação permanecem condicionados aos respectivos gates.
 
