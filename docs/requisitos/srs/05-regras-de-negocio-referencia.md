@@ -6,6 +6,10 @@ Este documento não reproduzirá integralmente essas regras, a fim de evitar dup
 
 Os **Requisitos Funcionais (RF)** e **Requisitos Não Funcionais (RNF)** especificados neste SRS deverão ser considerados em conjunto com as regras de negócio correspondentes definidas no Levantamento de Requisitos.
 
-Quando necessário, um requisito poderá indicar explicitamente a regra de negócio relacionada.
+As regras possuem identificadores globais no arquivo `docs/requisitos/levantamento/regras-de-negocio-index.csv`, permitindo referenciar de forma inequívoca regras que possuem identificadores locais repetidos entre módulos.
+
+A cadeia-alvo do projeto é **Regra de Negócio → Requisito → Caso de Uso → Critério de Aceitação → Caso de Teste → Resultado**. A matriz `docs/requisitos/srs/08-rastreabilidade.md` documenta o estado atual dessa cadeia e registra que a associação direta, regra por regra, entre Regra de Negócio e Requisito ainda deverá ser concluída em operação específica de rastreabilidade.
+
+Essa pendência não autoriza criar vínculos por inferência genérica de módulo; cada associação deverá ser revisada individualmente antes de ser registrada como definitiva.
 
 **Documento de referência:** *Levantamento de Requisitos — Etapa 2.*

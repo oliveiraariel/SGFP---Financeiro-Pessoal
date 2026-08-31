@@ -6,7 +6,7 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 2.1
+**Versão:** 2.2
 
 **Baseline:** catálogo preservado com 21 requisitos funcionais; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
 
@@ -204,6 +204,9 @@ Os critérios abaixo permanecem registrados para preservar a rastreabilidade do 
 - **CA-021.5:** A restauração deverá substituir os dados pelos dados representados na cópia.
 - **CA-021.6:** A restauração deverá preservar o estado anterior conforme as regras existentes.
 - **CA-021.7:** A V1 não deverá realizar mesclagem de dados.
+- **CA-021.8:** A cópia de segurança criada manualmente deverá ser enviada ao endereço de e-mail cadastrado no perfil do usuário.
+
+**Pendência de interpretação de CA-021.6:** o módulo Configurações registra que o significado operacional de "preservar o estado anterior" ainda depende de decisão de negócio. Enquanto essa decisão não for tomada, CA-021.6 permanece rastreável, mas não pode ser convertido em mecanismo técnico específico nem considerado totalmente testável de forma objetiva.
 
 ## 3. Critérios de Aceitação dos Requisitos Não Funcionais
 
@@ -320,8 +323,9 @@ Os seguintes critérios permanecem deliberadamente sem valores quantitativos nes
 | Capacidade de dados | A definir |
 | Critérios quantitativos de escalabilidade | A definir |
 | Critérios técnicos detalhados de segurança | A definir |
+| Significado operacional da preservação do estado anterior na restauração | Decisão de negócio pendente antes da arquitetura |
 
-Esses itens dependem de decisões técnicas posteriores e não constituem novos requisitos funcionais.
+Esses itens dependem de decisões posteriores e não constituem novos requisitos funcionais. A pendência relativa à restauração é uma decisão de negócio já identificada e deverá ser resolvida antes de implementar o RF-021.
 
 ## 6. Relação com Casos de Teste e Regras de Negócio
 
@@ -330,3 +334,9 @@ Cada caso de teste deverá referenciar, quando aplicável:
 **Requisito → Critério de Aceitação → Caso de Teste → Resultado**
 
 Os critérios deverão respeitar as regras de negócio consolidadas no Levantamento de Requisitos. As regras não são duplicadas nesta seção.
+
+## 7. Histórico de atualização
+
+### Versão 2.2 — 30/08/2026
+
+Incluiu critério explícito para a entrega do backup por e-mail, registrou a pendência de interpretação de CA-021.6 e manteve a padronização dos identificadores RNF no formato `RNF-001` a `RNF-020`.

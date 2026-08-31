@@ -6,11 +6,11 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 1.1
+**Versão:** 1.2
 
 **Subetapa:** Etapa 3 — Especificação de Requisitos
 
-**Data:** 23/08/2026
+**Data:** 30/08/2026
 
 ## 1. Objetivo
 
@@ -153,9 +153,12 @@ Os dados de identidade e autenticação que forem responsabilidade do WordPress 
 
 ### DEP-003 — Serviço de E-mail
 
-O mecanismo de recuperação de senha dependerá da disponibilidade de um meio de envio de e-mail ao endereço cadastrado pelo usuário.
+A Versão 1 depende de um meio de envio de e-mail ao endereço cadastrado do usuário para duas funcionalidades distintas:
 
-A Versão 1 utilizará o fluxo de recuperação de senha fornecido pelo WordPress; o serviço ou tecnologia de entrega de e-mail utilizado no ambiente será definido posteriormente.
+- recuperação de senha, utilizando o fluxo fornecido pelo WordPress;
+- entrega da cópia de segurança criada manualmente pelo usuário, conforme RF-021 e as regras do módulo Configurações.
+
+O serviço ou tecnologia concreta de entrega de e-mail utilizado no ambiente será definido posteriormente.
 
 A proteção por PIN foi adiada para versão futura e não possuirá mecanismo próprio de recuperação por e-mail.
 
@@ -164,6 +167,8 @@ A proteção por PIN foi adiada para versão futura e não possuirá mecanismo p
 A interface Web dependerá da API REST própria da aplicação para acesso às funcionalidades e aos dados disponibilizados pelo sistema.
 
 A API será desenvolvida antes da implementação da interface Web, conforme o Plano de Desenvolvimento.
+
+As operações e os recursos protegidos da API deverão respeitar os requisitos de autenticação, autorização e isolamento dos dados definidos para a Versão 1. Os mecanismos técnicos concretos serão definidos na Etapa 9 — Arquitetura da Aplicação e detalhados na Etapa 10 — Desenvolvimento da API.
 
 ### DEP-005 — Infraestrutura de Disponibilização
 
@@ -177,7 +182,7 @@ As seguintes dependências não caracterizam, por si só, integrações financei
 
 - API REST própria do SGFP;
 - banco de dados utilizado pela própria aplicação;
-- serviço utilizado para envio de e-mails de recuperação de senha;
+- serviço utilizado para envio de e-mails de recuperação de senha e entrega de cópias de segurança;
 - infraestrutura necessária para execução e disponibilização do sistema.
 
 A existência dessas dependências não altera a decisão de que a Versão 1 não possuirá integração com instituições bancárias ou outros serviços externos de negócio.
@@ -231,6 +236,10 @@ Esta subetapa consolida as restrições e dependências conhecidas na Versão 1 
 Novas restrições ou dependências poderão ser registradas posteriormente caso decisões tomadas nas etapas seguintes produzam impacto sobre os requisitos do sistema.
 
 ## 8. Histórico de Atualização
+
+### Versão 1.2 — 30/08/2026
+
+Saneamento documental após auditoria da baseline: a dependência de e-mail da V1 passa a abranger tanto a recuperação de senha quanto a entrega das cópias de segurança; a dependência da API REST explicita a obrigação já existente de proteção contra acesso não autorizado, sem antecipar os mecanismos técnicos da arquitetura.
 
 ### Versão 1.1 — 30/08/2026
 

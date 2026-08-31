@@ -1,5 +1,5 @@
 schema_version: "1.0"
-manifest_version: "2.2"
+manifest_version: "2.3"
 updated_at: "2026-08-30"
 
 project:
@@ -50,6 +50,9 @@ product_constraints:
     financial_data_entry: "manual"
     automatic_bank_integration: false
     pin_enabled: false
+    api_requires_authenticated_authorized_access: true
+    backup_delivery: "registered_user_email"
+    backup_restore_input: "user_provided_backup_file"
   future:
     pin: "optional application lock during an already authenticated session; reset by confirming account password"
   future_capabilities_are_not_v1_requirements: true
@@ -81,7 +84,7 @@ stages:
 
   - id: 3
     name: "Especificação de Requisitos de Software (SRS)"
-    status: "completed_reconciled"
+    status: "completed_reconciled_with_open_nonblocking_traceability_work"
     path: "docs/requisitos/srs/"
 
   - id: 4
@@ -155,6 +158,7 @@ canonical_sources:
   nonfunctional_requirements:
     path: "docs/requisitos/srs/04-requisitos-nao-funcionais.md"
     authority: "canonical"
+    identifier_format: "RNF-001..RNF-020"
 
   restrictions_and_dependencies:
     path: "docs/requisitos/srs/06-restricoes-e-dependencias.md"
@@ -213,8 +217,11 @@ traceability:
     - "implementation"
     - "test_case"
     - "test_result"
-  current_status: "consistent_through_validated_domain_map"
+  current_status: "requirements_use_cases_acceptance_consistent; business_rule_to_requirement_matrix_pending"
   blocking_issue: null
+  open_nonblocking_issues:
+    - "ISSUE-007"
+    - "ISSUE-008"
   update_policy: "When a traceable source changes, inspect and update directly affected downstream references in the same change set."
 
 agent_execution:
@@ -342,6 +349,35 @@ known_issues:
       - "docs/projeto/plano-de-desenvolvimento.md"
       - "docs/requisitos/srs/06-restricoes-e-dependencias.md"
     resolution: "A V1 utilizará PHP sobre WordPress, backend SGFP em plugin próprio, infraestrutura REST do WordPress e MySQL/MariaDB. Identidade, autenticação e sessão ficam sob responsabilidade do WordPress."
+
+  - id: "ISSUE-007"
+    status: "open"
+    severity: "medium"
+    category: "business_rule_ambiguity"
+    decision_required: true
+    blocks_stage_6: false
+    blocks_stage_9: true
+    summary: "O projeto exige preservar o estado anterior durante a restauração, mas ainda não define o significado operacional dessa preservação."
+    affected_paths:
+      - "docs/projeto/documento-de-visao.md"
+      - "docs/projeto/plano-de-desenvolvimento.md"
+      - "docs/requisitos/levantamento/10-configuracoes.md"
+      - "docs/requisitos/srs/07-criterios-de-aceitacao.md"
+      - "docs/casos-de-uso/casos/uc-021-restaurar-copia-de-seguranca.md"
+    next_action: "Obter decisão humana antes da Etapa 9 sobre como o estado imediatamente anterior à restauração deve ser preservado; não presumir mecanismo técnico."
+
+  - id: "ISSUE-008"
+    status: "open"
+    severity: "medium"
+    category: "requirements_traceability"
+    decision_required: false
+    blocks_stage_6: false
+    blocks_stage_12: true
+    summary: "A cadeia-alvo declara Regra de Negócio → Requisito, mas a matriz direta regra por regra ainda não foi materializada."
+    affected_paths:
+      - "docs/requisitos/levantamento/regras-de-negocio-index.csv"
+      - "docs/requisitos/srs/08-rastreabilidade.md"
+    next_action: "Executar operação específica de rastreabilidade, revisando individualmente as regras e registrando seus requisitos relacionados antes da consolidação final dos casos de teste."
 
 resolved_consolidation_notes:
   - topic: "use_cases_location"

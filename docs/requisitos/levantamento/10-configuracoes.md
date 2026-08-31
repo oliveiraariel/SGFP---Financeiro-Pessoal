@@ -2,7 +2,7 @@
 
 **Documento:** Levantamento de Requisitos
 
-**Versão:** 1.1
+**Versão:** 1.2
 
 **Objetivo**
 
@@ -33,6 +33,8 @@ Na Versão 1, não haverá geração automática de cópias de segurança.
 O usuário poderá solicitar a restauração de uma cópia de segurança previamente criada.
 
 Para realizar a restauração, deverá fornecer o arquivo correspondente à cópia que deseja utilizar.
+
+O fluxo da Versão 1 considera que o usuário poderá utilizar, para restauração, o arquivo de cópia de segurança que recebeu por e-mail e preservou sob sua responsabilidade.
 
 ### RN-012 — Restauração Integral
 
@@ -104,6 +106,7 @@ O PIN não substituirá a autenticação principal por e-mail e senha.
 - A cópia de segurança será enviada ao e-mail cadastrado no perfil do usuário.
 - Não haverá backup automático na Versão 1.
 - O usuário poderá restaurar uma cópia de segurança por meio do arquivo correspondente.
+- O arquivo de backup enviado por e-mail poderá ser preservado pelo usuário e posteriormente fornecido ao sistema para restauração.
 - A restauração representará um ponto de restauração integral do sistema.
 - A restauração substituirá os dados atuais pelos dados existentes na cópia selecionada.
 - Não haverá mesclagem de dados na Versão 1.
@@ -133,6 +136,14 @@ O PIN não substituirá a autenticação principal por e-mail e senha.
 - Outras formas de proteção e recuperação de dados.
 - Outras funcionalidades de configuração que sejam identificadas durante a utilização do sistema.
 
+## Questão Pendente de Decisão
+
+O Documento de Visão e o Plano de Desenvolvimento registram a necessidade de **preservar o estado anterior do sistema durante processos de restauração**. As regras RN-011 a RN-014 definem restauração por arquivo, substituição integral, confirmação e proteção da cópia, mas ainda não determinam o significado operacional dessa preservação do estado anterior.
+
+Antes da Etapa 9 — Arquitetura da Aplicação, deverá ser decidido se essa preservação representa, por exemplo, a criação de uma cópia de segurança do estado imediatamente anterior à restauração ou outro comportamento. Nenhum mecanismo técnico deverá ser presumido antes dessa decisão.
+
+Essa pendência não altera as regras já consolidadas de criação, envio por e-mail, fornecimento do arquivo, confirmação e substituição integral durante a restauração.
+
 ## Observações
 
 A subetapa **Configurações** trata exclusivamente das preferências gerais e dos mecanismos de preservação de dados disponibilizados ao usuário.
@@ -148,6 +159,12 @@ O menu lateral também poderá conter:
 Esses itens não constituem configurações do sistema e, portanto, não possuem regras de negócio específicas nesta subetapa.
 
 As definições de arquitetura e implementação necessárias para concretizar as funcionalidades deste módulo serão realizadas posteriormente.
+
+## Histórico de atualização
+
+### Versão 1.2 — 30/08/2026
+
+Alinhou explicitamente a entrega da cópia por e-mail ao fluxo de restauração por arquivo e registrou, sem antecipar solução, a pendência relativa ao significado de preservar o estado anterior durante uma restauração.
 
 ## Data de Revisão
 
