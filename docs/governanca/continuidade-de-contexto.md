@@ -36,7 +36,8 @@ Baseline ativa da Versão 1:
 
 - 20 requisitos funcionais ativos: `RF-001` a `RF-018`, `RF-020` e `RF-021`;
 - `RF-019` — proteção por PIN — adiado para versão futura;
-- `UC-018` e `CA-019.1` a `CA-019.5` preservados como artefatos futuros, sem renumeração.
+- `UC-018` e `CA-019.1` a `CA-019.5` preservados como artefatos futuros, sem renumeração;
+- requisitos não funcionais padronizados como `RNF-001` a `RNF-020`.
 
 Última etapa concluída e validada:
 
@@ -56,6 +57,11 @@ Situação:
 - WordPress + PHP constituem restrição tecnológica conhecida para a aplicação Web;
 - o backend específico do SGFP será implementado em plugin próprio e a solução utilizará API REST;
 - identidade, autenticação e sessão da V1 serão fornecidas pelo WordPress com e-mail e senha;
+- a proteção básica das operações e dos recursos da API contra acesso não autorizado faz parte da V1; mecanismos técnicos concretos pertencem às Etapas 9 e 10;
+- a cópia de segurança da V1 é criada manualmente, enviada ao e-mail cadastrado e pode ser posteriormente fornecida pelo usuário como arquivo para restauração;
+- `CA-021.8` registra explicitamente o envio da cópia por e-mail;
+- `ISSUE-007` permanece aberta: o significado operacional de preservar o estado imediatamente anterior durante uma restauração exige decisão humana antes da Arquitetura; não bloqueia a Etapa 6;
+- `ISSUE-008` permanece aberta: a matriz direta Regra de Negócio → Requisito ainda não foi materializada; não bloqueia a Etapa 6, mas deverá ser concluída antes do fechamento da rastreabilidade da Etapa 12;
 - cardinalidades, entidades definitivas, chaves, tabelas, nulabilidade, persistência, especializações formais e decisões físicas pertencem às etapas correspondentes;
 - estruturas exclusivas do PIN futuro não deverão ser modeladas na V1;
 - Etapas 7 a 12 permanecem condicionadas aos respectivos gates.
@@ -156,6 +162,8 @@ A Etapa 6 pode iniciar quando:
 
 A aprovação do gate não deve ser inferida apenas pelo resultado de `git diff --check`; a consistência documental e o conteúdo da versão efetivamente versionada também devem ser confirmados.
 
+As pendências `ISSUE-007` e `ISSUE-008` são registradas como **não bloqueadoras da Etapa 6**. `ISSUE-007` deverá ser resolvida antes da Arquitetura e `ISSUE-008` antes do fechamento final da rastreabilidade de testes.
+
 Durante o MER:
 
 - analisar candidatos do Mapa do Domínio, sem presumir que todos serão entidades;
@@ -169,10 +177,10 @@ Durante o MER:
 
 - **Etapa 7 — DER:** somente após validação do MER.
 - **Etapa 8 — Modelo Físico:** somente após validação do DER.
-- **Etapa 9 — Arquitetura:** somente após compreensão e modelagem compatíveis com os gates anteriores.
+- **Etapa 9 — Arquitetura:** somente após compreensão e modelagem compatíveis com os gates anteriores e após resolução das ambiguidades de negócio que afetem a arquitetura, incluindo `ISSUE-007`.
 - **Etapa 10 — API:** somente após arquitetura correspondente.
 - **Etapa 11 — Interface Web:** conforme arquitetura e contratos aprovados.
-- **Etapa 12 — Testes:** evolui conforme critérios, implementação e estratégia vigente.
+- **Etapa 12 — Testes:** evolui conforme critérios, implementação e estratégia vigente; a cadeia direta Regra de Negócio → Requisito deverá estar concluída antes do fechamento final da rastreabilidade.
 
 A existência de arquivos ou diretórios reservados para etapas futuras não significa que essas etapas foram iniciadas.
 
@@ -198,11 +206,13 @@ Não executar `push`, `merge`, rebase destrutivo ou alteração da `main` sem co
 
 Após confirmar que a Etapa 5 e os arquivos de governança atualizados estão corretamente versionados:
 
-1. abrir uma nova unidade de trabalho para **Etapa 6 — Modelagem Conceitual (MER)**;
+1. continuar a unidade de trabalho da **Etapa 6 — Modelagem Conceitual (MER)**;
 2. ler `docs/dominio/01-mapa-de-dominio.md`;
 3. carregar somente as regras de negócio, requisitos e Casos de Uso necessários aos conceitos analisados;
-4. produzir `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
+4. produzir ou evoluir `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
 5. validar o MER antes de qualquer trabalho de DER.
+
+As pendências `ISSUE-007` e `ISSUE-008` devem permanecer visíveis, sem serem silenciosamente resolvidas durante o MER.
 
 ## 10. Arquivos-base para contexto de novas sessões
 
@@ -234,7 +244,7 @@ Atualizar este arquivo quando houver:
 
 - conclusão ou início formal de etapa;
 - mudança de gate;
-- novo blocker;
+- novo blocker ou nova pendência operacional relevante;
 - decisão humana com impacto transversal;
 - alteração relevante de baseline;
 - commit/merge que mude o ponto de retomada;
