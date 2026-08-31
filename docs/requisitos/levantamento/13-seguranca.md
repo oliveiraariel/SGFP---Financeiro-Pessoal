@@ -30,7 +30,9 @@ Esses requisitos permanecerão registrados nos respectivos módulos, não sendo 
 
 ## **Aspectos para Estudo e Evolução Futura**
 
-Os seguintes pontos serão mantidos como **itens de estudo para versões futuras**, não constituindo requisitos obrigatórios da Versão 1 neste momento:
+Os seguintes pontos serão mantidos como **itens de estudo para versões futuras**, não constituindo requisitos obrigatórios adicionais da Versão 1 neste momento.
+
+A proteção básica das operações da API contra acesso não autorizado, a autenticação, a autorização compatível e o isolamento dos dados por usuário permanecem requisitos da Versão 1, conforme a seção anterior e os requisitos não funcionais vigentes. Os itens abaixo tratam de mecanismos adicionais, refinamentos técnicos ou evoluções que ainda não foram definidos.
 
 ### **1. Proteção Opcional por PIN**
 
@@ -56,13 +58,13 @@ Avaliar mecanismos para dificultar ataques automatizados contra o processo de au
 
 Avaliar mecanismos adicionais relacionados ao encerramento manual e automático das sessões dos usuários.
 
-### **5. Proteção das APIs**
+### **5. Mecanismos Adicionais de Proteção das APIs**
 
-Avaliar e definir mecanismos de autenticação, autorização, validação e proteção das APIs REST contra acessos ou chamadas não autorizadas.
+Avaliar mecanismos adicionais de validação, endurecimento e proteção das APIs REST além da proteção básica obrigatória da Versão 1.
 
-### **6. Controle de Acesso**
+### **6. Mecanismos Adicionais de Controle de Acesso**
 
-Garantir que cada operação realizada pela aplicação seja executada somente por usuário devidamente autenticado e autorizado e somente sobre dados pertencentes ao seu contexto.
+Avaliar mecanismos adicionais de controle de acesso além da autenticação, autorização compatível e isolamento por usuário já exigidos na Versão 1.
 
 ### **7. Registro de Atividades Sensíveis**
 
