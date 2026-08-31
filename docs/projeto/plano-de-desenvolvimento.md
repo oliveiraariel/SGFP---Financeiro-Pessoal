@@ -193,7 +193,7 @@ Os requisitos funcionais serão identificados individualmente pelo padrão:
 
 Os requisitos não funcionais serão identificados individualmente pelo padrão:
 
-**RNF 001, RNF 002, RNF 003...**
+**RNF-001, RNF-002, RNF-003...**
 
 A rastreabilidade será construída progressivamente após a definição dos requisitos e dos casos de uso, podendo posteriormente incorporar os testes.
 
