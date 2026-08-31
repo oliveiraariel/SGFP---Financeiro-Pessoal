@@ -4,9 +4,9 @@
 
 **Sigla:** SGFP  
 **Documento:** Mapa do Domínio  
-**Versão:** 1.1  
+**Versão:** 1.2  
 **Etapa:** Etapa 5 — Mapa do Domínio  
-**Data da revisão:** 26/08/2026  
+**Data da revisão:** 30/08/2026  
 
 ---
 
@@ -205,7 +205,7 @@ Para composição inicial de valor, uma Conta Secundária não recebe uma Entrad
 - sua efetivação produz a movimentação financeira correspondente;
 - após efetivado, exige desfazimento da efetivação antes de alterações ou exclusões permitidas pelas regras vigentes.
 
-**Rastreabilidade** — `COM-RN-001` a `COM-RN-010` · regras relacionadas de Lançamentos Financeiros
+**Rastreabilidade** — `CMP-RN-001` a `CMP-RN-010` · regras relacionadas de Lançamentos Financeiros
 
 ---
 
@@ -443,9 +443,9 @@ Este documento não define estrutura técnica de tokens, algoritmos criptográfi
 
 ### 7.3 Serviço de E-mail
 
-**Definição** — Serviço externo utilizado para entrega das comunicações necessárias à recuperação de acesso.
+**Definição** — Serviço externo utilizado para entrega das comunicações necessárias à recuperação de acesso e para entrega da cópia de segurança criada manualmente pelo usuário.
 
-**Responsabilidade** — Viabilizar o envio das mensagens previstas no processo de recuperação.
+**Responsabilidade** — Viabilizar o envio das mensagens previstas na recuperação de senha e a entrega da cópia de segurança ao endereço de e-mail cadastrado.
 
 Não constitui integração financeira externa.
 
@@ -457,9 +457,9 @@ Não constitui integração financeira externa.
 
 **Responsabilidade** — Apoiar a proteção dos dados do usuário.
 
-Na V1, a criação da cópia é manual.
+Na V1, a criação da cópia é manual e a cópia gerada é enviada ao endereço de e-mail cadastrado do usuário.
 
-Este documento não define formato, local de armazenamento ou mecanismo técnico da cópia.
+Este documento não define formato, mecanismo técnico de geração ou proteção da cópia.
 
 **Rastreabilidade** — regras de Backup e Restauração · `UC-020` e `UC-021`
 
@@ -471,7 +471,11 @@ Este documento não define formato, local de armazenamento ou mecanismo técnico
 
 **Responsabilidade** — Recuperar um estado previamente preservado conforme as regras vigentes.
 
-A restauração deve respeitar as regras de confirmação, validação, substituição dos dados e preservação de integridade definidas no projeto.
+Na V1, o usuário fornece ao sistema o arquivo correspondente à cópia de segurança que deseja restaurar.
+
+A restauração deve respeitar as regras de confirmação, validação, substituição integral dos dados e preservação de integridade definidas no projeto.
+
+O significado operacional de preservar o estado imediatamente anterior à restauração permanece como decisão pendente e não é definido neste documento.
 
 Este documento não define a estratégia técnica utilizada para implementar o processo.
 
@@ -700,6 +704,12 @@ A proteção por PIN foi retirada do escopo ativo da Versão 1.
 
 Quando implementado futuramente, o PIN será uma proteção secundária para bloqueio rápido do SGFP durante uma sessão já autenticada e não substituirá a autenticação principal por e-mail e senha.
 
+### 13.6 Restauração — preservação do estado anterior
+
+O projeto determina que os dados atuais sejam substituídos pelos dados da cópia selecionada e que não haja mesclagem na Versão 1.
+
+Permanece pendente de decisão o significado operacional da exigência de preservar o estado imediatamente anterior durante uma restauração. Esta pendência não altera os conceitos centrais do domínio nem bloqueia o MER, mas deve ser resolvida antes da Arquitetura da Aplicação.
+
 ---
 
 ## 14. Conceitos a Serem Analisados na Modelagem Conceitual
@@ -779,3 +789,11 @@ Dashboard e Histórico Financeiro representam formas de consulta e apresentaçã
 Preferências, recuperação de acesso, cópia de segurança e restauração apoiam a utilização e proteção do sistema, sem constituírem o núcleo financeiro.
 
 Com a validação deste Mapa do Domínio, os conceitos identificados tornam-se entrada para a **Etapa 6 — Modelagem Conceitual (MER)**, sem antecipar as decisões próprias dessa etapa.
+
+---
+
+## 17. Histórico de atualização
+
+### Versão 1.2 — 30/08/2026
+
+Correção de rastreabilidade do módulo Compromissos para o identificador global `CMP-RN-*` definido no índice de regras de negócio e alinhamento dos elementos de apoio Serviço de E-mail, Cópia de Segurança e Restauração às regras vigentes de backup. A atualização não altera o núcleo conceitual validado na Etapa 5 nem antecipa decisões do MER.
