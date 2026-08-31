@@ -34,6 +34,8 @@ O usuário poderá solicitar a restauração de uma cópia de segurança previam
 
 Para realizar a restauração, deverá fornecer o arquivo correspondente à cópia que deseja utilizar.
 
+Na Versão 1, o fluxo pressupõe que o usuário preserve o arquivo recebido por e-mail após a criação da cópia e o forneça novamente quando solicitar uma restauração.
+
 ### RN-012 — Restauração Integral
 
 A restauração de uma cópia de segurança substituirá integralmente os dados atuais pelos dados existentes na cópia selecionada.
