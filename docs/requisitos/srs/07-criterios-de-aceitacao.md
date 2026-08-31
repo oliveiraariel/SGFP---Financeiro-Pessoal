@@ -199,11 +199,12 @@ Os critérios abaixo permanecem registrados para preservar a rastreabilidade do 
 
 - **CA-021.1:** O usuário deverá conseguir solicitar manualmente uma cópia de segurança.
 - **CA-021.2:** A cópia deverá representar o estado dos dados no momento da criação.
-- **CA-021.3:** O usuário deverá conseguir fornecer uma cópia válida para restauração.
+- **CA-021.3:** O usuário deverá conseguir fornecer o arquivo de uma cópia válida previamente preservada para restauração.
 - **CA-021.4:** A restauração deverá informar e confirmar a substituição dos dados atuais.
 - **CA-021.5:** A restauração deverá substituir os dados pelos dados representados na cópia.
 - **CA-021.6:** A restauração deverá preservar o estado anterior conforme as regras existentes.
 - **CA-021.7:** A V1 não deverá realizar mesclagem de dados.
+- **CA-021.8:** A cópia de segurança criada manualmente deverá ser enviada ao endereço de e-mail cadastrado do usuário.
 
 ## 3. Critérios de Aceitação dos Requisitos Não Funcionais
 
