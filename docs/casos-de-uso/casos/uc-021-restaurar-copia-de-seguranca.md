@@ -18,7 +18,7 @@ O usuário solicita uma restauração.
 
 **Fluxo principal**
 
-1. O usuário seleciona ou fornece a cópia de segurança.
+1. O usuário fornece o arquivo correspondente a uma cópia de segurança previamente criada e preservada.
 2. O sistema valida a cópia.
 3. O sistema informa que os dados atuais serão substituídos.
 4. O usuário confirma a operação.
@@ -28,6 +28,7 @@ O usuário solicita uma restauração.
 
 **Fluxos alternativos e exceções**
 
+* O arquivo fornecido poderá corresponder à cópia anteriormente enviada ao e-mail cadastrado no fluxo do UC-020.
 * Uma cópia inválida não deverá ser restaurada.
 * O sistema não deverá mesclar os dados atuais com os dados da cópia.
 * A confirmação será obrigatória.
