@@ -153,9 +153,9 @@ Os dados de identidade e autenticação que forem responsabilidade do WordPress 
 
 ### DEP-003 — Serviço de E-mail
 
-O mecanismo de recuperação de senha dependerá da disponibilidade de um meio de envio de e-mail ao endereço cadastrado pelo usuário.
+A recuperação de senha e o envio das cópias de segurança criadas manualmente dependerão da disponibilidade de um meio de envio de e-mail ao endereço cadastrado pelo usuário.
 
-A Versão 1 utilizará o fluxo de recuperação de senha fornecido pelo WordPress; o serviço ou tecnologia de entrega de e-mail utilizado no ambiente será definido posteriormente.
+A Versão 1 utilizará o fluxo de recuperação de senha fornecido pelo WordPress e enviará ao e-mail cadastrado as cópias de segurança solicitadas pelo usuário. O serviço ou a tecnologia de entrega de e-mail utilizado no ambiente será definido posteriormente.
 
 A proteção por PIN foi adiada para versão futura e não possuirá mecanismo próprio de recuperação por e-mail.
 
@@ -177,7 +177,7 @@ As seguintes dependências não caracterizam, por si só, integrações financei
 
 - API REST própria do SGFP;
 - banco de dados utilizado pela própria aplicação;
-- serviço utilizado para envio de e-mails de recuperação de senha;
+- serviço utilizado para envio de e-mails de recuperação de senha e das cópias de segurança solicitadas;
 - infraestrutura necessária para execução e disponibilização do sistema.
 
 A existência dessas dependências não altera a decisão de que a Versão 1 não possuirá integração com instituições bancárias ou outros serviços externos de negócio.
@@ -234,7 +234,7 @@ Novas restrições ou dependências poderão ser registradas posteriormente caso
 
 ### Versão 1.1 — 30/08/2026
 
-Atualização para refletir a utilização de PHP sobre WordPress na Versão 1, o banco relacional MySQL/MariaDB compatível com a plataforma, a delegação de identidade/autenticação ao WordPress e o adiamento da proteção por PIN para versão futura. A dependência de e-mail da V1 passa a se aplicar à recuperação de senha, e não à recuperação de PIN.
+Atualização para refletir a utilização de PHP sobre WordPress na Versão 1, o banco relacional MySQL/MariaDB compatível com a plataforma, a delegação de identidade/autenticação ao WordPress e o adiamento da proteção por PIN para versão futura. A dependência de e-mail da V1 passa a se aplicar à recuperação de senha e ao envio das cópias de segurança solicitadas, e não à recuperação de PIN.
 
 ### Versão 1.0 — 23/08/2026
 
