@@ -185,6 +185,9 @@ derived_indexes:
   business_rules:
     path: "docs/requisitos/levantamento/regras-de-negocio-index.csv"
     identifier_field: "rule_uid"
+  business_rule_to_requirements:
+    path: "docs/requisitos/srs/rastreabilidade-regras-requisitos.csv"
+    identifier_field: "rule_uid"
   requirements:
     path: "docs/requisitos/srs/requisitos-index.csv"
   use_cases:
@@ -213,7 +216,7 @@ traceability:
     - "implementation"
     - "test_case"
     - "test_result"
-  current_status: "consistent_through_validated_domain_map"
+  current_status: "consistent_through_business_rule_requirement_mapping_and_validated_domain_map"
   blocking_issue: null
   update_policy: "When a traceable source changes, inspect and update directly affected downstream references in the same change set."
 
@@ -342,6 +345,60 @@ known_issues:
       - "docs/projeto/plano-de-desenvolvimento.md"
       - "docs/requisitos/srs/06-restricoes-e-dependencias.md"
     resolution: "A V1 utilizará PHP sobre WordPress, backend SGFP em plugin próprio, infraestrutura REST do WordPress e MySQL/MariaDB. Identidade, autenticação e sessão ficam sob responsabilidade do WordPress."
+
+  - id: "ISSUE-007"
+    status: "resolved"
+    severity: "medium"
+    category: "security_documentation"
+    decision_required: false
+    blocks_stage_6: false
+    summary: "A proteção básica da API aparecia como requisito da V1 e, simultaneamente, a proteção das APIs aparecia sob itens futuros."
+    affected_paths:
+      - "docs/requisitos/levantamento/13-seguranca.md"
+      - "docs/projeto/plano-de-desenvolvimento.md"
+      - "docs/requisitos/srs/04-requisitos-nao-funcionais.md"
+    resolution: "A proteção básica, autenticação/autorização compatível e isolamento permanecem obrigatórios na V1; a seção futura passa a tratar somente de mecanismos adicionais e refinamentos."
+
+  - id: "ISSUE-008"
+    status: "open"
+    severity: "medium"
+    category: "business_rule_ambiguity"
+    decision_required: true
+    blocks_stage_6: false
+    summary: "Documento de Visão, Plano e CA-021.6 exigem preservação do estado anterior durante restauração, enquanto Configurações define substituição integral sem explicitar o significado dessa preservação."
+    affected_paths:
+      - "docs/projeto/documento-de-visao.md"
+      - "docs/projeto/plano-de-desenvolvimento.md"
+      - "docs/requisitos/levantamento/10-configuracoes.md"
+      - "docs/requisitos/srs/07-criterios-de-aceitacao.md"
+    next_action: "Antes da Arquitetura da Aplicação, decidir se preservar o estado anterior significa criar uma cópia pré-restauração ou outra garantia. Não promover uma hipótese a regra sem decisão humana."
+
+  - id: "ISSUE-009"
+    status: "resolved"
+    severity: "medium"
+    category: "identifier_consistency"
+    decision_required: false
+    blocks_stage_6: false
+    summary: "Os RNFs utilizavam RNF01..RNF20 no catálogo canônico e RNF-001..RNF-020 nos critérios e na rastreabilidade."
+    affected_paths:
+      - "docs/requisitos/srs/04-requisitos-nao-funcionais.md"
+      - "docs/requisitos/srs/07-criterios-de-aceitacao.md"
+      - "docs/requisitos/srs/08-rastreabilidade.md"
+      - "docs/requisitos/srs/requisitos-index.csv"
+    resolution: "Padronizados os identificadores como RNF-001 a RNF-020 em todos os artefatos correntes."
+
+  - id: "ISSUE-010"
+    status: "resolved"
+    severity: "medium"
+    category: "requirements_traceability"
+    decision_required: false
+    blocks_stage_6: false
+    summary: "A cadeia declarada Regra de Negócio → Requisito não possuía ligação individual verificável."
+    affected_paths:
+      - "docs/requisitos/levantamento/regras-de-negocio-index.csv"
+      - "docs/requisitos/srs/08-rastreabilidade.md"
+      - "docs/requisitos/srs/rastreabilidade-regras-requisitos.csv"
+    resolution: "Criado mapa individual para as 182 regras indexadas, relacionando RFs/RNFs e justificando regras sem requisito direto."
 
 resolved_consolidation_notes:
   - topic: "use_cases_location"
