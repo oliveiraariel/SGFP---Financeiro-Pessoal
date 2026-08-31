@@ -20,23 +20,23 @@ RF-018,Navegar entre períodos financeiros,docs/requisitos/srs/03-requisitos-fun
 RF-019,Gerenciar proteção por PIN,docs/requisitos/srs/03-requisitos-funcionais.md,deferred_future
 RF-020,Gerenciar tema da aplicação,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
 RF-021,Gerenciar cópias de segurança e restauração,docs/requisitos/srs/03-requisitos-funcionais.md,baseline_v1_reconciliada
-RNF01,Segurança,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF02,Proteção das Credenciais,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF03,Isolamento dos Dados dos Usuários,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF04,Proteção dos Dados,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF05,Integridade dos Dados Financeiros,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF06,Consistência das Operações,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF07,Preservação do Histórico Financeiro,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF08,Confiabilidade dos Cálculos Financeiros,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF09,Integridade dos Valores Monetários,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF10,Desempenho,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF11,Disponibilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF12,Usabilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF13,Responsividade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF14,Compatibilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF15,Manutenibilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF16,Escalabilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF17,Recuperação de Dados,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF18,Proteção das Cópias de Segurança,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF19,Privacidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
-RNF20,Evolutividade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-001,Segurança,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-002,Proteção das Credenciais,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-003,Isolamento dos Dados dos Usuários,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-004,Proteção dos Dados,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-005,Integridade dos Dados Financeiros,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-006,Consistência das Operações,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-007,Preservação do Histórico Financeiro,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-008,Confiabilidade dos Cálculos Financeiros,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-009,Integridade dos Valores Monetários,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-010,Desempenho,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-011,Disponibilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-012,Usabilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-013,Responsividade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-014,Compatibilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-015,Manutenibilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-016,Escalabilidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-017,Recuperação de Dados,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-018,Proteção das Cópias de Segurança,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-019,Privacidade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
+RNF-020,Evolutividade,docs/requisitos/srs/04-requisitos-nao-funcionais.md,vigente
