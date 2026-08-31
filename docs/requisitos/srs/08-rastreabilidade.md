@@ -46,7 +46,7 @@ As regras de negócio permanecem no Levantamento de Requisitos e não são dupli
 | RF-018 | UC-012, UC-016, UC-017 | CA-018.1 a CA-018.5 |
 | RF-019 — **Versão futura** | UC-018 — **Versão futura** | CA-019.1 a CA-019.5 — **Versão futura** |
 | RF-020 | UC-019 | CA-020.1 a CA-020.3 |
-| RF-021 | UC-020, UC-021 | CA-021.1 a CA-021.7 |
+| RF-021 | UC-020, UC-021 | CA-021.1 a CA-021.8 |
 
 ## 4. Rastreabilidade dos Requisitos Não Funcionais
 
@@ -77,7 +77,11 @@ Os RNFs não possuem necessariamente um Caso de Uso próprio. Sua verificação 
 
 ## 5. Rastreabilidade com as Regras de Negócio
 
-As regras de negócio permanecem nos módulos da Etapa 2. Quando uma regra for relevante para um requisito, a referência deverá ser mantida nos documentos correspondentes sem duplicar seu conteúdo.
+As regras de negócio permanecem nos módulos da Etapa 2 e não são duplicadas neste documento.
+
+A ligação direta entre cada regra indexada e os requisitos relacionados está materializada em `rastreabilidade-regras-requisitos.csv`. O arquivo utiliza os identificadores globais de `docs/requisitos/levantamento/regras-de-negocio-index.csv` e pode relacionar uma regra a RFs e/ou RNFs.
+
+A classificação `mapped_future` identifica regras relacionadas exclusivamente ao RF-019, preservado para versão futura. A classificação `no_direct_requirement` é utilizada somente quando uma regra registra exclusão ou restrição de escopo sem criar requisito funcional ou não funcional próprio; nesses casos, a justificativa permanece explícita no CSV.
 
 O registro do valor inicial da conta principal por Entrada utiliza as regras dos módulos Contas e Lançamentos Financeiros. Contas secundárias recebem o valor correspondente por transferência com a conta principal; não há saldo inicial armazenado como atributo independente.
 
@@ -104,6 +108,7 @@ A matriz não deverá registrar componentes ou testes inexistentes apenas para p
 - RF-019 está adiado para versão futura, com UC-018 e CA-019.1 a CA-019.5 igualmente preservados como futuros;
 - todos os requisitos funcionais ativos da V1 possuem ao menos um Caso de Uso relacionado;
 - todos os requisitos funcionais ativos da V1 possuem critérios de aceitação relacionados;
+- as 182 regras do índice global possuem registro individual em `rastreabilidade-regras-requisitos.csv`, incluindo justificativa para as regras sem requisito direto;
 - os 20 RNFs possuem critérios de aceitação relacionados;
 - os RNFs não dependem de correspondência obrigatória com Casos de Uso;
 - os casos de teste ainda não estão vinculados, pois pertencem à Etapa 12 — Testes;
