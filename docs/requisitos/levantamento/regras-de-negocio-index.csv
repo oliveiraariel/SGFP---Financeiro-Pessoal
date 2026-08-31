@@ -170,7 +170,7 @@ CFG-RN-006,Configurações,RN-006,Redefinição do PIN — Futuro,docs/requisito
 CFG-RN-007,Configurações,RN-007,Natureza do PIN — Futuro,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-008,Configurações,RN-008,Tema da Aplicação,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-009,Configurações,RN-009,Criação de Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
-CFG-RN-010,Configurações,RN-010,Armazenamento ou Entrega da Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-010,Configurações,RN-010,Envio da Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-011,Configurações,RN-011,Restauração de Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-012,Configurações,RN-012,Restauração Integral,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-013,Configurações,RN-013,Confirmação da Restauração,docs/requisitos/levantamento/10-configuracoes.md
