@@ -1,7 +1,7 @@
 # **MÓDULO 11 – SEGURANÇA**
 
 **Documento:** Levantamento de Requisitos  
-**Versão:** 1.1
+**Versão:** 1.2
 
 **Objetivo**
 
@@ -22,7 +22,11 @@ Os seguintes aspectos já foram definidos em outras subetapas:
 - Proteção da cópia de segurança.
 - Confirmação antes da restauração de uma cópia de segurança.
 - Substituição integral dos dados durante uma restauração.
-- Necessidade de proteção das operações e dos recursos da API contra acessos não autorizados.
+- Proteção das operações e dos recursos da API contra acessos não autorizados.
+
+A proteção básica da API faz parte da Versão 1. Isso inclui exigir autenticação e autorização compatíveis com a operação, respeitar o contexto do usuário autenticado e impedir o acesso a dados pertencentes a outros usuários.
+
+Os mecanismos técnicos concretos utilizados para atender essas exigências serão definidos na Etapa 9 — Arquitetura da Aplicação e detalhados na Etapa 10 — Desenvolvimento da API.
 
 A proteção por PIN **não faz parte da Versão 1**.
 
@@ -30,7 +34,7 @@ Esses requisitos permanecerão registrados nos respectivos módulos, não sendo 
 
 ## **Aspectos para Estudo e Evolução Futura**
 
-Os seguintes pontos serão mantidos como **itens de estudo para versões futuras**, não constituindo requisitos obrigatórios da Versão 1 neste momento:
+Os seguintes pontos serão mantidos como **itens de estudo para versões futuras**, não constituindo requisitos obrigatórios adicionais da Versão 1 neste momento:
 
 ### **1. Proteção Opcional por PIN**
 
@@ -50,19 +54,19 @@ Esse comportamento poderá ser estudado em conjunto com a proteção futura por 
 
 ### **3. Proteção contra Tentativas Automatizadas de Login**
 
-Avaliar mecanismos para dificultar ataques automatizados contra o processo de autenticação, como tentativas repetitivas de descoberta de senha.
+Avaliar mecanismos adicionais para dificultar ataques automatizados contra o processo de autenticação, como tentativas repetitivas de descoberta de senha.
 
 ### **4. Encerramento de Sessão**
 
 Avaliar mecanismos adicionais relacionados ao encerramento manual e automático das sessões dos usuários.
 
-### **5. Proteção das APIs**
+### **5. Mecanismos Adicionais de Proteção das APIs**
 
-Avaliar e definir mecanismos de autenticação, autorização, validação e proteção das APIs REST contra acessos ou chamadas não autorizadas.
+A proteção básica das APIs é obrigatória na Versão 1. Para versões futuras, poderão ser avaliados mecanismos adicionais de endurecimento de segurança, auditoria, limitação de chamadas, políticas mais específicas de autorização e outras proteções complementares que venham a ser justificadas.
 
-### **6. Controle de Acesso**
+### **6. Controle de Acesso Adicional**
 
-Garantir que cada operação realizada pela aplicação seja executada somente por usuário devidamente autenticado e autorizado e somente sobre dados pertencentes ao seu contexto.
+A Versão 1 já deverá garantir que cada operação seja executada somente por usuário autenticado e autorizado e somente sobre dados pertencentes ao seu contexto. Controles adicionais ou políticas mais granulares poderão ser avaliados futuramente conforme a evolução da aplicação.
 
 ### **7. Registro de Atividades Sensíveis**
 
@@ -70,7 +74,7 @@ Avaliar a necessidade de registrar determinadas operações relevantes para segu
 
 ### **8. Proteção de Dados em Trânsito**
 
-Avaliar e definir mecanismos para garantir a proteção das informações durante sua transmissão entre navegador, aplicação, API e demais serviços utilizados.
+Avaliar e definir, na arquitetura e na infraestrutura, os mecanismos técnicos necessários para proteger as informações durante sua transmissão entre navegador, aplicação, API e demais serviços utilizados.
 
 ### **9. Proteção contra Acesso Direto aos Arquivos**
 
@@ -83,10 +87,12 @@ Caso o sistema passe a armazenar arquivos e comprovantes, avaliar mecanismos que
 - Não será criada uma entidade de domínio denominada "Segurança" apenas para representar esses requisitos.
 - Na Versão 1, a autenticação será realizada por e-mail e senha.
 - O WordPress será utilizado para os mecanismos de identidade, autenticação, sessão, armazenamento seguro e recuperação de senha.
+- A proteção básica das operações e dos recursos da API contra acesso não autorizado faz parte da Versão 1.
+- Os mecanismos técnicos de autenticação, autorização e proteção da API serão refinados nas etapas de Arquitetura e Desenvolvimento da API, sem alterar essa obrigação da V1.
 - O PIN foi retirado do escopo da Versão 1 e permanece previsto para versão futura.
 - A solução futura de PIN será um mecanismo secundário de bloqueio rápido durante sessão autenticada, sem substituir e-mail e senha.
 - Não será criado mecanismo próprio de recuperação de PIN por e-mail ou token.
-- Os aspectos de segurança ainda não necessários para a V1 serão mantidos como pontos de estudo e evolução futura.
+- Os aspectos de segurança adicionais ainda não necessários para a V1 serão mantidos como pontos de estudo e evolução futura.
 - Os itens de evolução futura não deverão ser tratados como requisitos obrigatórios da V1 sem uma decisão posterior.
 
 ## **Funcionalidades da Versão 1**
@@ -116,7 +122,7 @@ Sua finalidade é identificar e organizar os requisitos de segurança que atrave
 
 Os requisitos já definidos na Versão 1 permanecem registrados em seus respectivos módulos para evitar duplicidade e inconsistência na documentação.
 
-Os aspectos relacionados à arquitetura, mecanismos de autorização da API, proteção de dados, infraestrutura e demais decisões técnicas serão refinados nas etapas apropriadas do projeto.
+Os aspectos relacionados à arquitetura, mecanismos concretos de autorização da API, proteção de dados, infraestrutura e demais decisões técnicas serão refinados nas etapas apropriadas do projeto.
 
 **Data de Revisão**
 
