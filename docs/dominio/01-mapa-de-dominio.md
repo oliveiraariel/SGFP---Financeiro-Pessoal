@@ -2,11 +2,11 @@
 
 ## Sistema de Gestão Financeira Pessoal — SGFP
 
-**Sigla:** SGFP  
-**Documento:** Mapa do Domínio  
-**Versão:** 1.3  
-**Etapa:** Etapa 5 — Mapa do Domínio  
-**Data da revisão:** 30/08/2026  
+**Sigla:** SGFP
+**Documento:** Mapa do Domínio
+**Versão:** 1.3
+**Etapa:** Etapa 5 — Mapa do Domínio
+**Data da revisão:** 30/08/2026
 
 ---
 
@@ -48,8 +48,8 @@ Este mapa foi consolidado a partir das seguintes fontes do projeto:
 - `docs/requisitos/srs/`;
 - Casos de Uso `UC-001` a `UC-022`, em `docs/casos-de-uso/casos/`.
 
-As regras de negócio permanecem sob autoridade dos documentos de Levantamento de Requisitos.  
-Os requisitos funcionais e não funcionais permanecem sob autoridade do SRS.  
+As regras de negócio permanecem sob autoridade dos documentos de Levantamento de Requisitos.
+Os requisitos funcionais e não funcionais permanecem sob autoridade do SRS.
 Os Casos de Uso permanecem como fonte das interações entre usuário e sistema.
 
 Este Mapa do Domínio **organiza e relaciona esses conceitos**, sem substituir as fontes anteriores.
@@ -288,7 +288,7 @@ A Efetivação representa um comportamento ou transição do domínio. Este docu
 
 **Princípio central do SGFP** —
 
-**Compromisso Financeiro = obrigação ou previsão.**  
+**Compromisso Financeiro = obrigação ou previsão.**
 **Lançamento Financeiro = movimentação efetivamente realizada.**
 
 **Observações** —
