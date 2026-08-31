@@ -6,7 +6,7 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 2.1
+**Versão:** 2.2
 
 **Baseline:** catálogo preservado com RF-001 a RF-021; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
 
@@ -18,9 +18,13 @@ Estabelecer a relação entre regras de negócio, requisitos funcionais, Casos d
 
 ## 2. Estrutura
 
+A cadeia-alvo de rastreabilidade do projeto é:
+
 **Regra de Negócio → Requisito → Caso de Uso → Critério de Aceitação → Caso de Teste → Resultado**
 
 As regras de negócio permanecem no Levantamento de Requisitos e não são duplicadas neste documento.
+
+A rastreabilidade atualmente materializada de forma completa nesta matriz começa em **Requisito → Caso de Uso → Critério de Aceitação**. A ligação individual **Regra de Negócio → Requisito** ainda deverá ser consolidada em operação específica de rastreabilidade, utilizando os identificadores globais existentes em `docs/requisitos/levantamento/regras-de-negocio-index.csv`.
 
 ## 3. Matriz de Rastreabilidade dos Requisitos Funcionais
 
@@ -46,11 +50,13 @@ As regras de negócio permanecem no Levantamento de Requisitos e não são dupli
 | RF-018 | UC-012, UC-016, UC-017 | CA-018.1 a CA-018.5 |
 | RF-019 — **Versão futura** | UC-018 — **Versão futura** | CA-019.1 a CA-019.5 — **Versão futura** |
 | RF-020 | UC-019 | CA-020.1 a CA-020.3 |
-| RF-021 | UC-020, UC-021 | CA-021.1 a CA-021.7 |
+| RF-021 | UC-020, UC-021 | CA-021.1 a CA-021.8 |
 
 ## 4. Rastreabilidade dos Requisitos Não Funcionais
 
 Os RNFs não possuem necessariamente um Caso de Uso próprio. Sua verificação será realizada por critérios de aceitação e, quando aplicável, por testes técnicos, inspeção, análise ou demonstração.
+
+Os identificadores dos RNFs são padronizados no formato `RNF-001` a `RNF-020` em todos os artefatos normativos e derivados.
 
 | Requisito | Critérios de Aceitação |
 | --- | --- |
@@ -77,9 +83,17 @@ Os RNFs não possuem necessariamente um Caso de Uso próprio. Sua verificação 
 
 ## 5. Rastreabilidade com as Regras de Negócio
 
-As regras de negócio permanecem nos módulos da Etapa 2. Quando uma regra for relevante para um requisito, a referência deverá ser mantida nos documentos correspondentes sem duplicar seu conteúdo.
+As regras de negócio permanecem nos módulos da Etapa 2 e possuem identificadores globais catalogados em `docs/requisitos/levantamento/regras-de-negocio-index.csv`.
 
-O registro do valor inicial da conta principal por Entrada utiliza as regras dos módulos Contas e Lançamentos Financeiros. Contas secundárias recebem o valor correspondente por transferência com a conta principal; não há saldo inicial armazenado como atributo independente.
+O índice global permite localizar de forma inequívoca regras como `CTA-RN-005`, `LAN-RN-022` ou `CAT-RN-003`, mas ainda não possui uma coluna que materialize, regra por regra, os requisitos relacionados.
+
+Portanto, a cadeia **Regra de Negócio → Requisito** está conceitualmente definida e possui identificadores estáveis dos dois lados, mas sua matriz direta ainda não foi concluída.
+
+Essa lacuna deverá ser tratada em uma operação específica de rastreabilidade, com revisão individual das regras para evitar vínculos genéricos ou incorretos. Não deverão ser atribuídos requisitos a uma regra apenas pelo módulo em que ela aparece.
+
+A pendência **não bloqueia a Etapa 6 — Modelagem Conceitual (MER)**, pois as regras de negócio canônicas e os requisitos permanecem disponíveis e coerentes para consulta. Entretanto, a ligação direta deverá estar concluída antes de considerar a cadeia de rastreabilidade integralmente fechada e antes da consolidação final dos casos de teste da Etapa 12.
+
+Exemplo já consolidado semanticamente: o registro do valor inicial da conta principal por Entrada utiliza regras dos módulos Contas e Lançamentos Financeiros e sustenta RF-005 e RF-010; contas secundárias recebem o valor correspondente por transferência com a conta principal, sem saldo inicial armazenado como atributo independente.
 
 ## 6. Proveniência da reconciliação
 
@@ -97,6 +111,8 @@ Nas etapas posteriores serão acrescentadas, conforme aplicável:
 
 A matriz não deverá registrar componentes ou testes inexistentes apenas para preencher campos antecipadamente.
 
+A ligação direta **Regra de Negócio → Requisito** deverá ser concluída em operação própria antes de a cadeia completa ser declarada encerrada.
+
 ## 8. Verificações de completude
 
 - o catálogo preserva 21 identificadores funcionais, RF-001 a RF-021;
@@ -104,12 +120,19 @@ A matriz não deverá registrar componentes ou testes inexistentes apenas para p
 - RF-019 está adiado para versão futura, com UC-018 e CA-019.1 a CA-019.5 igualmente preservados como futuros;
 - todos os requisitos funcionais ativos da V1 possuem ao menos um Caso de Uso relacionado;
 - todos os requisitos funcionais ativos da V1 possuem critérios de aceitação relacionados;
+- RF-021 possui CA-021.1 a CA-021.8, incluindo a entrega da cópia de segurança por e-mail;
 - os 20 RNFs possuem critérios de aceitação relacionados;
+- os RNFs utilizam o padrão de identificador `RNF-001` a `RNF-020`;
 - os RNFs não dependem de correspondência obrigatória com Casos de Uso;
+- a matriz direta Regra de Negócio → Requisito ainda está pendente e não deve ser tratada como concluída;
 - os casos de teste ainda não estão vinculados, pois pertencem à Etapa 12 — Testes;
 - não há referência normativa a RF-022, RF-023, RF-024 ou RF-025.
 
 ## 9. Histórico de atualização
+
+### Versão 2.2 — 30/08/2026
+
+Saneamento após auditoria documental: alinhou RF-021 a CA-021.1 até CA-021.8, explicitou a padronização dos RNFs e registrou com precisão que a matriz direta Regra de Negócio → Requisito ainda não foi materializada, evitando declarar como completa uma cadeia ainda parcial.
 
 ### Versão 2.1 — 30/08/2026
 
