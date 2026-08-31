@@ -6,7 +6,7 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 1.2
+**Versão:** 1.3
 
 **Subetapa:** Etapa 3 — Especificação de Requisitos
 
@@ -90,9 +90,11 @@ Na Versão 1, não serão definidos ou implementados relatórios financeiros esp
 
 ### RE-012 — Backup Automático
 
-A Versão 1 não realizará backup automático.
+A Versão 1 não realizará backup automático periódico, contínuo ou independente de uma restauração.
 
-A criação da cópia de segurança será realizada manualmente pelo usuário.
+A criação ordinária de cópias de segurança será realizada manualmente pelo usuário. Como medida de segurança específica do processo de restauração, o sistema deverá gerar automaticamente uma cópia do estado imediatamente anterior antes de substituir os dados atuais, conforme as regras do módulo Configurações.
+
+Essa exceção pré-restauração não caracteriza política de backup automático periódico.
 
 ### RE-013 — Autenticação por Provedores Externos
 
@@ -156,7 +158,7 @@ Os dados de identidade e autenticação que forem responsabilidade do WordPress 
 A Versão 1 depende de um meio de envio de e-mail ao endereço cadastrado do usuário para duas funcionalidades distintas:
 
 - recuperação de senha, utilizando o fluxo fornecido pelo WordPress;
-- entrega da cópia de segurança criada manualmente pelo usuário, conforme RF-021 e as regras do módulo Configurações.
+- entrega da cópia de segurança criada manualmente pelo usuário e tentativa de entrega da cópia pré-restauração, conforme RF-021 e as regras do módulo Configurações.
 
 O serviço ou tecnologia concreta de entrega de e-mail utilizado no ambiente será definido posteriormente.
 
@@ -236,6 +238,10 @@ Esta subetapa consolida as restrições e dependências conhecidas na Versão 1 
 Novas restrições ou dependências poderão ser registradas posteriormente caso decisões tomadas nas etapas seguintes produzam impacto sobre os requisitos do sistema.
 
 ## 8. Histórico de Atualização
+
+### Versão 1.3 — 30/08/2026
+
+Atualizou a restrição de backup automático para distinguir backup periódico ou contínuo, que permanece fora da V1, da cópia automática pré-restauração exigida como proteção do estado atual. Também alinhou a dependência de e-mail à tentativa de entrega dessa cópia, sem tornar o sucesso do envio condição para a restauração quando a preservação recuperável já tiver sido concluída.
 
 ### Versão 1.2 — 30/08/2026
 
