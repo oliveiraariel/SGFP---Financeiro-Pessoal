@@ -38,14 +38,15 @@ Confirme explicitamente:
 4. se a Etapa 5 está concluída;
 5. se a etapa atual é Etapa 6 — Modelagem Conceitual (MER);
 6. quais arquivos ou validações estão pendentes no working tree;
-7. se ISSUE-007 e ISSUE-008 continuam abertas e quais gates elas afetam;
+7. se ISSUE-007 permanece resolvida e se ISSUE-008 continua aberta, indicando o gate afetado pela pendência remanescente;
 8. se existe qualquer divergência entre Git, manifesto, continuidade e fontes canônicas.
 
 Considere como estado atual:
 - a proteção básica das operações e dos recursos da API contra acesso não autorizado faz parte da V1;
 - mecanismos técnicos concretos de proteção da API pertencem à Arquitetura e ao Desenvolvimento da API;
-- a cópia de segurança da V1 é criada manualmente, enviada ao e-mail cadastrado e restaurada por meio do arquivo fornecido pelo usuário;
-- ISSUE-007: o significado operacional de preservar o estado imediatamente anterior durante uma restauração ainda exige decisão humana antes da Arquitetura;
+- a cópia de segurança ordinária da V1 é criada manualmente e enviada ao e-mail cadastrado; antes de uma restauração confirmada, o sistema deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior, cancelando a restauração se essa preservação falhar;
+- a cópia automática pré-restauração é uma proteção pontual e não caracteriza backup automático periódico ou contínuo;
+- ISSUE-007: resolvida por decisão humana com a definição da cópia de segurança pré-restauração, permanecendo apenas o mecanismo técnico para as etapas posteriores;
 - ISSUE-008: a matriz direta Regra de Negócio → Requisito ainda deverá ser materializada antes do fechamento final da rastreabilidade de testes.
 
 Não invente decisões de negócio.
@@ -60,7 +61,7 @@ Para a Etapa 6:
 - não trate os candidatos do Mapa do Domínio como entidades já decididas;
 - defina no MER apenas o que pertence à Modelagem Conceitual;
 - trate WordPress como restrição tecnológica conhecida, sem antecipar detalhes que pertencem à Arquitetura;
-- mantenha ISSUE-007 e ISSUE-008 visíveis sem tentar resolvê-las por inferência durante o MER;
+- considere ISSUE-007 como resolvida e mantenha ISSUE-008 visível sem tentar resolvê-la por inferência durante o MER;
 - não antecipe DER, Modelo Físico, Arquitetura ou Implementação.
 
 Se houver divergência entre documentos, aplique a autoridade definida em ORCHESTRATOR.md e project-manifest.yaml e não resolva conflitos de negócio silenciosamente.
