@@ -6,14 +6,18 @@ Antes de qualquer tarefa neste repositório:
 2. Leia `project-manifest.yaml`.
 3. Leia `docs/governanca/continuidade-de-contexto.md`.
 4. Consulte somente os documentos necessários em `docs/`.
-5. Para tarefas de modelagem, use `docs/dominio/01-mapa-de-dominio.md` como entrada da Etapa 5 já validada, sem tratá-lo como substituto das regras de negócio ou requisitos.
-6. Respeite os gates definidos no projeto.
-7. Não resolva silenciosamente conflitos de negócio.
-8. Não antecipe MER, DER, Modelo Físico, arquitetura ou implementação além da etapa autorizada.
-9. Preserve identificadores e rastreabilidade.
-10. Não altere regras de negócio sem base documental ou decisão humana.
-11. Para alterações relevantes, utilize branch ou worktree isolada.
-12. Antes de concluir, valide consistência documental e Git.
+5. Para tarefas de modelagem, use `docs/dominio/01-mapa-de-dominio.md` como entrada da Etapa 5 já validada, sem tratá-lo como substituto das regras de negócio, requisitos ou Casos de Uso.
+6. Para tarefas que envolvam processo, sequência de etapas ou gates, consulte `docs/projeto/plano-de-desenvolvimento.md`.
+7. Para preparação técnica ou tarefas das Etapas 8 a 12, consulte `docs/projeto/roteiro-tecnico-de-implementacao.md` somente como guia auxiliar; ele não substitui fontes canônicas, decisões da etapa correspondente nem autoriza antecipar gates.
+8. Respeite os gates definidos no projeto.
+9. Não resolva silenciosamente conflitos de negócio.
+10. Não antecipe MER, DER, Modelo Físico, arquitetura ou implementação além da etapa autorizada.
+11. Preserve identificadores e rastreabilidade.
+12. Não altere regras de negócio sem base documental ou decisão humana.
+13. Não transforme ferramentas, sistema operacional, editor ou extensões de desenvolvimento em restrições do produto sem decisão formal.
+14. Não trate SQLs, modelos físicos preliminares ou estruturas de apoio como Modelo Físico oficial antes da validação do MER, do DER e da abertura da Etapa 8.
+15. Para alterações relevantes, utilize branch ou worktree isolada.
+16. Antes de concluir, valide consistência documental e Git.
 
 ## Estado resumido
 
@@ -23,11 +27,14 @@ Antes de qualquer tarefa neste repositório:
 - Requisitos não funcionais padronizados como `RNF-001` a `RNF-020`.
 - Etapa 5 — Mapa do Domínio: concluída e validada.
 - Etapa atual: Etapa 6 — Modelagem Conceitual (MER).
-- Restrição tecnológica consolidada para a V1: aplicação Web em PHP sobre WordPress, com backend específico em plugin próprio e API REST.
+- Restrição tecnológica consolidada para a V1: aplicação Web em PHP sobre WordPress, com backend específico em plugin próprio, infraestrutura REST do WordPress e banco relacional compatível com MySQL ou MariaDB.
+- Sistema operacional, editor e extensões de desenvolvimento não constituem restrições do SGFP, salvo exigência formal posterior.
+- Ferramentas como Composer, clientes HTTP para API, PHPUnit e utilitários de qualidade podem ser adotadas conforme a necessidade e a etapa autorizada; sua presença no roteiro técnico não as transforma em requisitos do produto.
 - A proteção básica das operações e recursos da API contra acesso não autorizado faz parte da V1; mecanismos técnicos concretos pertencem às etapas de Arquitetura e Desenvolvimento da API.
 - A cópia de segurança ordinária da V1 é criada manualmente e enviada ao e-mail cadastrado. Antes de uma restauração confirmada, o SGFP deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior; se essa preservação falhar, a restauração será cancelada. Essa proteção pontual não caracteriza backup automático periódico ou contínuo.
 - `ISSUE-007`: resolvida pela decisão de cópia de segurança automática pré-restauração, sem antecipar o mecanismo técnico de preservação.
 - `ISSUE-008`: a matriz direta Regra de Negócio → Requisito ainda não foi materializada; não bloqueia o MER, mas deverá ser concluída antes do fechamento da rastreabilidade de testes.
 - DER, Modelo Físico, Arquitetura detalhada e Implementação permanecem condicionados aos respectivos gates.
+- Testes e verificações podem acompanhar o desenvolvimento quando a etapa correspondente estiver autorizada; a Etapa 12 permanece responsável pela consolidação formal da estratégia, casos, evidências, rastreabilidade e resultados de teste.
 
 As regras operacionais completas deste projeto estão em `ORCHESTRATOR.md`.

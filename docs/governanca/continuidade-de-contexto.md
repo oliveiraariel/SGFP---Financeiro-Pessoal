@@ -17,12 +17,16 @@ Ao retomar o projeto, leia nesta ordem:
 3. `project-manifest.yaml`
 4. `docs/governanca/continuidade-de-contexto.md`
 5. `docs/dominio/01-mapa-de-dominio.md` para tarefas da Etapa 6 em diante
-6. somente os documentos canônicos e derivados necessários para a tarefa atual
+6. `docs/projeto/plano-de-desenvolvimento.md` quando a tarefa envolver processo, sequência de etapas ou gates
+7. `docs/projeto/roteiro-tecnico-de-implementacao.md` somente quando a tarefa envolver preparação técnica, Modelo Físico, Arquitetura, API, Interface Web, testes ou planejamento das etapas técnicas posteriores
+8. somente os documentos canônicos e derivados necessários para a tarefa atual
 
 Em caso de divergência:
 
 - regras de negócio e requisitos aprovados prevalecem conforme a autoridade definida em `ORCHESTRATOR.md` e `project-manifest.yaml`;
 - o Mapa do Domínio organiza os conceitos aprovados da Etapa 5, mas não substitui regras de negócio, requisitos ou Casos de Uso;
+- o Plano de Desenvolvimento permanece a autoridade sobre processo, sequência de etapas e gates;
+- o roteiro técnico de implementação é documento auxiliar e não substitui fontes canônicas, decisões de arquitetura, modelagem validada ou gates oficiais;
 - este documento descreve o estado operacional de continuidade;
 - o estado real do Git deve ser confirmado antes de qualquer alteração.
 
@@ -53,9 +57,15 @@ Etapa atual:
 
 Situação:
 - o Mapa do Domínio foi revisado para permanecer estritamente no escopo da Etapa 5;
+- o Plano de Desenvolvimento foi ampliado para detalhar melhor a transição entre modelagem, arquitetura, implementação e testes, sem alterar a sequência oficial das 12 etapas;
+- `docs/projeto/roteiro-tecnico-de-implementacao.md` foi definido como guia auxiliar para as etapas técnicas posteriores; ele não constitui nova etapa, não cria uma segunda numeração de fases e não autoriza antecipar gates;
 - a baseline documental foi atualizada para retirar o PIN da V1;
 - WordPress + PHP constituem restrição tecnológica conhecida para a aplicação Web;
-- o backend específico do SGFP será implementado em plugin próprio e a solução utilizará API REST;
+- o backend específico do SGFP será implementado em plugin próprio e a solução utilizará a infraestrutura REST do WordPress;
+- a implementação relacional da V1 permanece compatível com MySQL ou MariaDB;
+- sistema operacional, editor de código e extensão de IDE não constituem restrições do SGFP, salvo exigência formal posterior;
+- Composer é ferramenta preferencial para dependências e autoload PHP quando a etapa de implementação correspondente estiver autorizada;
+- cliente HTTP para testes da API, PHPUnit e ferramentas de qualidade de código são opções preferenciais ou substituíveis conforme a necessidade, e não requisitos funcionais do produto;
 - identidade, autenticação e sessão da V1 serão fornecidas pelo WordPress com e-mail e senha;
 - a proteção básica das operações e dos recursos da API contra acesso não autorizado faz parte da V1; mecanismos técnicos concretos pertencem às Etapas 9 e 10;
 - a cópia de segurança ordinária da V1 é criada manualmente, enviada ao e-mail cadastrado e pode ser posteriormente fornecida pelo usuário como arquivo para restauração;
@@ -66,6 +76,7 @@ Situação:
 - `ISSUE-007` está resolvida: o significado operacional de preservar o estado imediatamente anterior foi definido como cópia de segurança automática pré-restauração; o mecanismo técnico permanece para as etapas posteriores;
 - `ISSUE-008` permanece aberta: a matriz direta Regra de Negócio → Requisito ainda não foi materializada; não bloqueia a Etapa 6, mas deverá ser concluída antes do fechamento da rastreabilidade da Etapa 12;
 - cardinalidades, entidades definitivas, chaves, tabelas, nulabilidade, persistência, especializações formais e decisões físicas pertencem às etapas correspondentes;
+- SQLs, modelos físicos preliminares ou estruturas de banco produzidas como apoio não devem ser tratados como Modelo Físico oficial antes da validação do MER, do DER e da abertura da Etapa 8;
 - estruturas exclusivas do PIN futuro não deverão ser modeladas na V1;
 - Etapas 7 a 12 permanecem condicionadas aos respectivos gates.
 
@@ -187,6 +198,10 @@ Durante o MER:
 
 A existência de arquivos ou diretórios reservados para etapas futuras não significa que essas etapas foram iniciadas.
 
+O roteiro técnico de implementação apenas detalha **como executar** atividades quando o gate correspondente estiver autorizado. Ele não altera a ordem das etapas.
+
+Durante as Etapas 9 a 11, verificações e testes unitários, de integração, de banco ou de API podem acompanhar o desenvolvimento quando forem úteis. A Etapa 12 permanece responsável pela consolidação formal da estratégia, casos, evidências, rastreabilidade e resultados de teste.
+
 ## 8. Estado do Git na retomada
 
 Não assumir branch, working tree limpo ou existência de commit apenas com base neste documento.
@@ -217,6 +232,8 @@ Após confirmar que a Etapa 5 e os arquivos de governança atualizados estão co
 
 `ISSUE-007` deve permanecer registrada como resolvida. `ISSUE-008` deve permanecer visível, sem ser silenciosamente resolvida durante o MER.
 
+O roteiro técnico de implementação deve permanecer como referência futura. Sua existência não altera a próxima ação atual: concluir e validar o MER antes de iniciar o DER.
+
 ## 10. Arquivos-base para contexto de novas sessões
 
 Para uma retomada eficiente, fornecer preferencialmente:
@@ -231,7 +248,15 @@ Para tarefas da Etapa 6 em diante, incluir também:
 
 - `docs/dominio/01-mapa-de-dominio.md`.
 
-Depois, adicionar somente os documentos de negócio necessários à tarefa.
+Quando a tarefa envolver processo, gates ou transição entre etapas, incluir:
+
+- `docs/projeto/plano-de-desenvolvimento.md`.
+
+Quando a tarefa envolver preparação técnica ou as Etapas 8 a 12, incluir também, conforme necessário:
+
+- `docs/projeto/roteiro-tecnico-de-implementacao.md`.
+
+Depois, adicionar somente os documentos de negócio e técnicos necessários à tarefa.
 
 ## 11. Documentos históricos que não devem ser usados como estado corrente
 
@@ -255,4 +280,4 @@ Atualizar este arquivo quando houver:
 
 Registrar apenas o necessário para retomada e manter a próxima ação explícita.
 
-Última atualização operacional: **2026-08-30**.
+Última atualização operacional: **2026-09-02**.

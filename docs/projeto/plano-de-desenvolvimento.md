@@ -2,9 +2,9 @@
 
 ## **Sistema de Gestão Financeira Pessoal**
 
-**Versão do documento:** 1.6
+**Versão do documento:** 1.7
 
-**Data da última atualização:** 30/08/2026
+**Data da última atualização:** 02/09/2026
 
 **Instituição e graduação:**
 
@@ -55,6 +55,11 @@ Durante todo o desenvolvimento serão adotados os seguintes princípios:
 11. Preservar o histórico financeiro quando as regras do sistema exigirem alterações em períodos futuros.
 12. Preservar o estado imediatamente anterior durante processos de restauração por meio de uma cópia de segurança pré-restauração gerada e preservada em condição recuperável antes da substituição dos dados atuais.
 13. Considerar a possibilidade de evolução futura sem introduzir complexidade desnecessária na Versão 1.
+14. Distinguir restrições obrigatórias do produto de ferramentas recomendadas para desenvolvimento, evitando transformar preferências de ambiente em limitações do sistema.
+15. Não vincular o projeto a sistema operacional, editor ou extensão específicos, salvo quando houver exigência acadêmica, técnica ou de infraestrutura formalmente estabelecida.
+16. Introduzir ferramentas e abstrações progressivamente, quando existir uma necessidade concreta que justifique seu uso e permita compreender o problema que resolvem.
+17. Validar incrementalmente o que for produzido, realizando verificações e testes durante o desenvolvimento sem substituir a etapa formal de testes e rastreabilidade.
+18. Manter versionamento e revisão das mudanças como práticas transversais a todo o projeto, e não como uma etapa isolada ao final.
 
 ## **3. Metodologia de Desenvolvimento**
 
@@ -96,6 +101,15 @@ Os documentos principais do projeto serão:
 
 O **Plano de Desenvolvimento** e o **Documento de Visão** são documentos de caráter preliminar e de orientação do projeto. Os sete documentos acima representam os principais documentos produzidos e evoluídos ao longo do desenvolvimento.
 
+Além dos documentos principais, o projeto poderá manter **guias ou roteiros técnicos de apoio** para detalhar práticas, ferramentas, sequência didática, preparação de ambiente e procedimentos de implementação. Esses documentos terão caráter auxiliar e deverão permanecer subordinados aos documentos canônicos, aos gates das etapas e às decisões de arquitetura aprovadas.
+
+Um guia técnico de apoio não poderá, por si só:
+
+- alterar regras de negócio ou requisitos;
+- antecipar uma etapa ainda não autorizada;
+- transformar ferramenta recomendada em restrição obrigatória do produto;
+- substituir decisões que pertencem ao MER, DER, Modelo Físico ou Arquitetura.
+
 ### **3.2 Relação entre Etapas e Documentos**
 
 Os documentos não serão necessariamente produzidos integralmente em uma única etapa.
@@ -127,7 +141,9 @@ Os artefatos produzidos durante o desenvolvimento deverão manter, sempre que ap
 
 A rastreabilidade será construída progressivamente, considerando principalmente:
 
-**Regra de Negócio → Requisito → Caso de Uso → Implementação → Teste**
+**Regra de Negócio → Requisito → Caso de Uso → Critério de Aceitação → Implementação → Teste**
+
+Os artefatos de domínio, modelagem de dados e arquitetura deverão manter referências às fontes que justificam suas decisões quando isso for aplicável, sem serem tratados como substitutos das regras de negócio, requisitos ou Casos de Uso.
 
 A Matriz de Rastreabilidade será desenvolvida progressivamente durante o projeto.
 
@@ -221,36 +237,54 @@ Será construída apenas uma representação organizada dos conceitos que compõ
 
 **Objetivo**
 
-Identificar entidades, atributos e relacionamentos com base nas regras de negócio levantadas anteriormente e nos conceitos validados no Mapa do Domínio.
+Identificar entidades, atributos, relacionamentos e cardinalidades com base nas regras de negócio levantadas anteriormente e nos conceitos validados no Mapa do Domínio.
 
 Nesta etapa será utilizada uma ferramenta de modelagem, como o brModelo.
+
+O MER deverá representar o domínio em nível conceitual, sem antecipar tabelas, colunas, chaves estrangeiras, índices, tipos SQL, mecanismos de persistência ou decisões de arquitetura.
 
 ### **Etapa 7: Modelo Entidade Relacionamento (DER)**
 
 **Objetivo**
 
-Refinar a modelagem conceitual, definindo cardinalidades e relacionamentos completos.
+Consolidar e refinar a representação Entidade-Relacionamento a partir do MER validado, preparando a passagem para o modelo relacional sem antecipar decisões próprias do Modelo Físico.
+
+Nesta etapa deverão ser revisados os relacionamentos, cardinalidades e demais detalhes necessários para que o modelo esteja consistente e apto a ser transformado em estrutura relacional.
 
 ### **Etapa 8: Modelo Físico**
 
 **Objetivo**
 
-Transformar o DER em um banco de dados relacional.
+Transformar o DER validado em um modelo físico relacional compatível com a tecnologia de banco adotada pelo projeto.
 
-Nesta etapa serão definidos:
+Nesta etapa serão definidos, conforme aplicável:
 
 1. Tabelas.
-2. Chaves primárias.
-3. Chaves estrangeiras.
-4. Restrições.
-5. Índices.
-6. Demais elementos necessários à implementação física do banco de dados.
+2. Colunas.
+3. Tipos de dados.
+4. Chaves primárias.
+5. Chaves estrangeiras.
+6. Restrições de integridade.
+7. Índices.
+8. Demais elementos necessários à implementação física do banco de dados.
+
+Deverá ser mantida a distinção entre:
+
+**Modelo físico** — definição da estrutura relacional e de seu SQL;
+
+e
+
+**Banco materializado** — estrutura efetivamente criada e executada em um SGBD.
+
+O modelo físico poderá ser executado em ambiente controlado para validar sintaxe, integridade e compatibilidade com MySQL ou MariaDB. Essa validação não caracteriza o início da implementação da aplicação nem autoriza antecipar decisões da Arquitetura.
+
+Qualquer modelo físico preliminar produzido antes da conclusão desta etapa será tratado apenas como material de apoio e deverá ser confrontado com o MER e o DER validados antes de se tornar artefato oficial.
 
 ### **Etapa 9: Arquitetura da Aplicação**
 
 **Objetivo**
 
-Definir a organização interna do projeto.
+Definir a organização interna do projeto e a forma como os componentes técnicos cooperarão para atender ao domínio e aos requisitos.
 
 A primeira versão será desenvolvida como uma aplicação Web utilizando PHP sobre WordPress e uma arquitetura baseada em API REST.
 
@@ -258,18 +292,26 @@ O WordPress será utilizado como plataforma da aplicação, fornecendo infraestr
 
 A arquitetura deverá permitir que futuras aplicações, como um aplicativo mobile, utilizem a mesma API e as regras de negócio implementadas no sistema.
 
-Serão estabelecidos:
+Serão estabelecidos, conforme a necessidade real do projeto:
 
 1. Estrutura das pastas.
-2. Camadas da aplicação.
+2. Camadas e componentes da aplicação.
 3. Arquitetura da API.
-4. Responsabilidades das camadas.
+4. Responsabilidades e dependências entre componentes.
 5. Padrão Repository.
 6. Services.
 7. Controllers.
-8. Demais componentes necessários à arquitetura.
+8. Representação de conceitos e regras de domínio em código quando necessário.
+9. Estratégia de dependências, autoload e namespaces do backend PHP.
+10. Estratégia de criação, versionamento e evolução das tabelas próprias do plugin no ambiente WordPress.
+11. Integração com identidade, autenticação, sessão e autorização providas pela plataforma.
+12. Demais componentes necessários à arquitetura.
 
-A definição da arquitetura deverá ocorrer somente após a compreensão e modelagem do domínio.
+O uso de **Composer** deverá ser considerado como ferramenta preferencial para gerenciamento de dependências e autoload do backend PHP, incluindo organização por namespaces e PSR-4 quando adequado à arquitetura definida. Sua utilização é uma decisão de engenharia da implementação, não um requisito funcional do produto.
+
+A arquitetura não deverá ser condicionada a sistema operacional, editor de código ou extensão de IDE específicos, salvo exigência formal do projeto.
+
+A definição da arquitetura deverá ocorrer somente após a compreensão e modelagem do domínio e após a validação dos artefatos de dados exigidos pelos gates anteriores.
 
 ### **Etapa 10: Desenvolvimento da API**
 
@@ -277,21 +319,39 @@ A definição da arquitetura deverá ocorrer somente após a compreensão e mode
 
 Implementar as regras de negócio da aplicação e disponibilizar os recursos necessários por meio da API.
 
-A implementação deverá seguir as decisões estabelecidas nas etapas anteriores.
+A implementação deverá seguir as decisões estabelecidas nas etapas anteriores, utilizando a infraestrutura REST do WordPress e o plugin próprio do SGFP.
+
+O desenvolvimento deverá ocorrer de forma incremental. Sempre que apropriado, deverá ser preferida a implementação de uma funcionalidade de ponta a ponta antes da multiplicação de estruturas semelhantes por todo o sistema.
+
+Um fluxo poderá, conforme a arquitetura aprovada, percorrer:
+
+**Rota REST → Controller → Service → regras/conceitos de domínio → Repository → banco de dados → resposta HTTP**
+
+Esse fluxo representa uma direção de implementação e não autoriza a criação antecipada de classes, diretórios ou abstrações sem responsabilidade concreta.
+
+Os endpoints deverão derivar de necessidades reais do sistema, requisitos e Casos de Uso, evitando a criação arbitrária de rotas apenas para preencher uma API.
+
+Durante esta etapa, a API deverá poder ser testada independentemente da Interface Web por meio de um cliente HTTP apropriado, como Bruno, Postman, Insomnia ou ferramenta equivalente. A escolha da ferramenta poderá ser ajustada sem alterar a arquitetura do produto.
+
+Testes automatizados em PHP poderão ser introduzidos progressivamente conforme existam componentes reais que justifiquem sua verificação. **PHPUnit** deverá ser considerado como ferramenta preferencial para esse propósito, sem impedir ferramentas complementares quando necessárias.
 
 ### **Etapa 11: Desenvolvimento da Interface Web**
 
 **Objetivo**
 
-Construir a interface do usuário utilizando a API desenvolvida anteriormente.
+Construir a interface do usuário utilizando os recursos disponibilizados pela API.
 
-A interface deverá utilizar os recursos disponibilizados pela API, evitando duplicação das regras de negócio entre a interface e o backend.
+A interface deverá consumir ou acionar as operações do backend de maneira coerente com a arquitetura definida, evitando duplicação das regras de negócio entre a camada visual e o backend.
+
+O desenvolvimento da interface deverá ocorrer quando a fundação necessária do backend e os contratos de API correspondentes estiverem suficientemente estáveis para suportar a funcionalidade implementada.
+
+A escolha de tecnologias ou ferramentas adicionais para a camada visual deverá respeitar as restrições acadêmicas e arquiteturais vigentes e não deverá ser antecipada sem necessidade.
 
 ### **Etapa 12: Testes**
 
 **Objetivo**
 
-Validar o funcionamento completo do sistema e verificar o atendimento aos requisitos definidos.
+Validar formalmente o funcionamento completo do sistema e verificar o atendimento aos requisitos definidos.
 
 Serão realizados testes relacionados a:
 
@@ -301,8 +361,14 @@ Serão realizados testes relacionados a:
 4. API.
 5. Interface.
 6. Integração entre os componentes.
+7. Autenticação, autorização e isolamento de dados quando aplicável.
+8. Fluxos de erro e comportamentos críticos.
 
-Os resultados dos testes serão utilizados para alimentar a rastreabilidade dos requisitos e identificar eventuais necessidades de correção.
+A Etapa 12 representa a consolidação formal da estratégia, dos casos, das evidências e dos resultados de teste. Ela não significa que o projeto deverá aguardar essa etapa para começar a testar. Verificações unitárias, de integração, de banco e de API deverão acompanhar as etapas de implementação sempre que proporcionarem feedback útil e reduzirem risco.
+
+Ferramentas de apoio à qualidade do código poderão ser introduzidas progressivamente, de acordo com a necessidade do projeto. Entre as opções adequadas ao ecossistema PHP estão ferramentas de formatação e padronização, como PHP-CS-Fixer ou PHP_CodeSniffer, e ferramentas de análise estática, como PHPStan. A escolha e a configuração concretas deverão ser justificadas pelo código existente, evitando rigidez antecipada.
+
+Os resultados dos testes serão utilizados para alimentar a rastreabilidade dos requisitos, registrar evidências de atendimento e identificar eventuais necessidades de correção.
 
 ## **5. Organização do Levantamento de Requisitos**
 
@@ -423,10 +489,14 @@ A equipe somente deverá iniciar uma nova etapa quando a etapa anterior estiver 
 
 Exemplos:
 
-1. Não iniciar a modelagem antes da conclusão do levantamento de requisitos.
-2. Não iniciar o banco de dados antes da conclusão do MER e do DER.
-3. Não iniciar a implementação da API antes da definição da arquitetura.
-4. Não iniciar o desenvolvimento da interface antes da disponibilidade dos recursos necessários da API.
+1. Não iniciar a modelagem antes da conclusão das etapas de requisitos necessárias.
+2. Não iniciar o DER antes da validação do MER.
+3. Não iniciar o Modelo Físico antes da validação do DER.
+4. Não tratar um banco materializado ou um SQL preliminar como modelo físico oficial antes da validação da Etapa 8.
+5. Não definir a arquitetura final antes da conclusão e validação da modelagem de dados exigida pelos gates anteriores.
+6. Não iniciar a implementação da API antes da definição da arquitetura correspondente.
+7. Não iniciar o desenvolvimento da interface antes da disponibilidade dos recursos necessários da API.
+8. Não considerar a Etapa 12 como justificativa para adiar verificações e testes que sejam necessários durante a implementação.
 
 A existência de uma ideia, hipótese ou funcionalidade planejada para uma etapa futura não deverá antecipar a execução dessa etapa.
 
@@ -558,13 +628,49 @@ A arquitetura deverá servir ao domínio e às necessidades do sistema, evitando
 
 A utilização de WordPress e PHP constitui uma restrição tecnológica já conhecida para a aplicação Web. A Etapa 9 deverá definir como essa plataforma será utilizada sem transferir para o WordPress as regras de negócio próprias do SGFP. Os serviços nativos da plataforma poderão ser reutilizados quando forem adequados, especialmente para identidade, autenticação, sessão e infraestrutura REST.
 
+A família de banco de dados da Versão 1 permanece MySQL ou MariaDB, compatível com a plataforma adotada. A escolha de ferramentas de desenvolvimento, sistema operacional, editor, cliente HTTP, formatador ou analisador estático não deverá ser elevada a restrição do produto sem necessidade formal.
+
+Ferramentas consolidadas do ecossistema poderão ser recomendadas e adotadas quando resolverem um problema concreto. A documentação deverá distinguir claramente uma **restrição obrigatória** de uma **ferramenta preferencial ou substituível**.
+
 ## **12. Regra para Implementação**
 
 Quando a implementação for iniciada, o desenvolvimento deverá seguir, sempre que possível, a sequência:
 
-**Conceito → Responsabilidade → Decisão → Estrutura → Implementação → Teste**
+**Problema → Conceito → Responsabilidade → Decisão → Estrutura → Implementação → Teste → Validação → Versionamento**
 
-O objetivo é compreender a responsabilidade de cada componente antes de sua implementação.
+O objetivo é compreender a responsabilidade de cada componente antes de sua implementação e tornar cada avanço verificável.
+
+### **12.1 Implementação incremental**
+
+A implementação deverá preferir mudanças pequenas e semanticamente coerentes. Quando adequado, uma funcionalidade deverá ser percorrida de ponta a ponta antes de se repetir a mesma estrutura em diversas partes do sistema.
+
+Essa estratégia poderá utilizar **fatias verticais de funcionalidade**, permitindo validar em conjunto rota, coordenação da aplicação, regras de negócio, persistência e resposta antes de ampliar a solução.
+
+A adoção de desenvolvimento vertical é uma estratégia de execução dentro das etapas oficiais e não substitui os gates do projeto.
+
+### **12.2 Introdução progressiva de ferramentas**
+
+Nenhuma ferramenta deverá ser instalada ou incorporada apenas porque é comum em outros projetos. Antes da primeira utilização relevante, deverá estar claro:
+
+1. qual problema existe;
+2. por que a ferramenta é adequada;
+3. que responsabilidade ela assumirá;
+4. como será validado seu funcionamento;
+5. se sua adoção cria dependência permanente ou se permanece substituível.
+
+Entre as ferramentas previstas ou recomendadas para as etapas posteriores estão Composer para dependências e autoload, cliente HTTP para verificação da API, PHPUnit para testes automatizados PHP e ferramentas de análise estática ou padronização de código quando houver código suficiente para justificá-las.
+
+### **12.3 Testes durante a implementação**
+
+Testes e verificações deverão acompanhar o desenvolvimento sempre que forem úteis para validar uma decisão ou comportamento. Isso inclui, conforme a etapa e o componente, testes unitários, integração, API, banco de dados e fluxos de erro.
+
+A Etapa 12 continuará responsável pela consolidação formal da estratégia, evidências, rastreabilidade e resultados de teste.
+
+### **12.4 Versionamento como prática transversal**
+
+Git e o repositório remoto adotado pelo projeto deverão acompanhar a evolução do trabalho por meio de alterações revisáveis e pontos estáveis. O versionamento não constitui uma etapa final separada.
+
+Antes de registrar uma mudança, deverão ser executadas as validações pertinentes e revisado o conjunto de arquivos alterados.
 
 A implementação não deverá antecipar decisões que pertençam às etapas anteriores.
 
@@ -588,6 +694,26 @@ O desenvolvimento deverá permitir que a equipe compreenda progressivamente:
 Todo o processo deverá ser documentado de maneira que as decisões possam ser compreendidas, justificadas e utilizadas como referência para futuros desenvolvimentos.
 
 ## **14. Histórico de Atualização**
+
+### **Versão 1.7: 02/09/2026**
+
+Atualização do Plano de Desenvolvimento para detalhar a transição futura entre modelagem, arquitetura e implementação sem alterar a sequência oficial das 12 etapas nem antecipar o estado atual do projeto.
+
+Principais atualizações:
+
+1. Distinção explícita entre restrições obrigatórias do produto, decisões arquiteturais e ferramentas recomendadas de desenvolvimento.
+2. Registro de que sistema operacional, editor e extensões de IDE não constituem restrições do SGFP salvo exigência formal.
+3. Inclusão de guias e roteiros técnicos como documentos auxiliares subordinados às fontes canônicas e aos gates oficiais.
+4. Ajuste da Etapa 6 para explicitar entidades, atributos, relacionamentos e cardinalidades no MER, preservando detalhes físicos para as etapas posteriores.
+5. Detalhamento da Etapa 8, distinguindo modelo físico SQL de banco efetivamente materializado em MySQL ou MariaDB.
+6. Ampliação da Etapa 9 para contemplar responsabilidades dos componentes, autoload, dependências, evolução das tabelas do plugin e integração com os serviços nativos do WordPress.
+7. Registro do Composer como ferramenta preferencial para dependências e autoload PHP, sem transformá-lo em requisito funcional do produto.
+8. Inclusão de estratégia incremental de implementação, com preferência por funcionalidades de ponta a ponta quando apropriado.
+9. Registro do teste independente da API por cliente HTTP substituível e do PHPUnit como ferramenta preferencial para testes automatizados PHP.
+10. Separação entre testes contínuos durante a implementação e a consolidação formal de testes da Etapa 12.
+11. Registro de ferramentas de formatação, padronização e análise estática como opções progressivas, sem obrigatoriedade antecipada.
+12. Reforço do versionamento como prática transversal e da necessidade de validar mudanças antes de registrá-las.
+13. Atualização da cadeia principal de rastreabilidade para incluir Critério de Aceitação entre Caso de Uso e Implementação.
 
 ### **Versão 1.6: 30/08/2026**
 

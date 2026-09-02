@@ -154,3 +154,44 @@ No cadastro de cada usuário, o SGFP disponibilizará um conjunto inicial de cat
 ### 6.4 Impacto na Etapa 6
 
 A Etapa 5 permanece concluída e validada. A Etapa 6 — Modelagem Conceitual (MER) deverá utilizar a baseline atualizada e não deverá introduzir conceitos, entidades, atributos ou persistência exclusivos do PIN futuro.
+
+## 7. Evolução posterior da orientação técnica — 02/09/2026
+
+Após as decisões registradas na seção 6, o processo de desenvolvimento foi detalhado para orientar melhor a transição entre modelagem, arquitetura, implementação e testes.
+
+Essa evolução **não altera a baseline funcional, o escopo de negócio nem os gates já consolidados**. O Plano de Desenvolvimento permanece a fonte de autoridade para processo, sequência de etapas e critérios de avanço.
+
+Foi incorporado ao conjunto documental o arquivo:
+
+- `docs/projeto/roteiro-tecnico-de-implementacao.md`
+
+Esse roteiro possui caráter **auxiliar**. Sua finalidade é detalhar práticas, ferramentas e formas de execução para as etapas técnicas posteriores, sempre subordinado:
+
+- ao Plano de Desenvolvimento;
+- às fontes canônicas do projeto;
+- às decisões produzidas em cada etapa;
+- aos gates oficiais.
+
+O roteiro não cria uma nova sequência de fases e não significa que a implementação tenha sido iniciada.
+
+O estado do projeto permanece:
+
+- Etapa 5 — Mapa do Domínio: concluída e validada;
+- Etapa 6 — Modelagem Conceitual (MER): em andamento;
+- Etapas 7 a 12: condicionadas aos respectivos gates.
+
+As restrições tecnológicas consolidadas da Versão 1 permanecem:
+
+- PHP;
+- WordPress;
+- backend específico em plugin próprio;
+- infraestrutura REST do WordPress;
+- banco relacional compatível com MySQL ou MariaDB.
+
+Sistema operacional, editor de código, extensões de desenvolvimento e ferramentas auxiliares não passam a constituir restrições do produto apenas por serem utilizadas ou recomendadas durante o desenvolvimento.
+
+Ferramentas de dependências, testes, inspeção de API e qualidade de código poderão ser adotadas conforme a necessidade da etapa correspondente, sem alterar requisitos, regras de negócio ou escopo do SGFP.
+
+Modelos físicos preliminares, SQLs de apoio ou estruturas produzidas antecipadamente para estudo não devem ser tratados como Modelo Físico oficial antes da validação do MER, do DER e da abertura da Etapa 8.
+
+Essa atualização possui caráter de **governança e orientação técnica** e não modifica as decisões históricas registradas nas seções anteriores.
