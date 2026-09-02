@@ -1,9 +1,9 @@
 # ORCHESTRATOR.md — Contrato Operacional para Agentes
 
 **Projeto:** SGFP — Sistema de Gestão Financeira Pessoal  
-**Versão deste documento:** 2.2  
+**Versão deste documento:** 2.3
 **Status:** Governança operacional vigente  
-**Última atualização:** 30/08/2026
+**Última atualização:** 02/09/2026
 
 ## 1. Finalidade
 
@@ -57,7 +57,10 @@ A etapa corrente é:
 
 A Etapa 6 deverá utilizar a baseline documental atualizada e não deverá modelar conceitos, entidades, atributos ou estruturas destinados exclusivamente ao PIN futuro.
 
-Os bloqueadores `ISSUE-001` a `ISSUE-004` permanecem resolvidos documentalmente na baseline atual.
+As pendências e decisões de governança relevantes ao estado atual permanecem registradas no `project-manifest.yaml` e nos documentos de continuidade. Em especial:
+
+- `ISSUE-001` a `ISSUE-007` estão resolvidas conforme a baseline vigente;
+- `ISSUE-008` permanece aberta como pendência de rastreabilidade, não bloqueia a Etapa 6 e deverá ser concluída antes do fechamento formal da rastreabilidade de testes na Etapa 12.
 
 Até a validação do MER:
 
@@ -89,7 +92,10 @@ Depois, deverá carregar somente os documentos necessários à tarefa:
 7. `docs/requisitos/srs/README.md` e seções do SRS envolvidas;
 8. `docs/casos-de-uso/README.md` e Casos de Uso relacionados;
 9. `docs/dominio/01-mapa-de-dominio.md` para qualquer tarefa da Etapa 6 em diante;
-10. artefatos das etapas posteriores somente quando a etapa correspondente já tiver sido iniciada e forem relevantes.
+10. artefatos das etapas posteriores somente quando a etapa correspondente já tiver sido iniciada e forem relevantes;
+11. `docs/projeto/roteiro-tecnico-de-implementacao.md` quando a tarefa envolver preparação técnica, Arquitetura, API, Interface, testes durante a implementação, ferramentas de desenvolvimento ou qualidade de código.
+
+O roteiro técnico é um **documento auxiliar**. Ele detalha práticas, ferramentas e sequência didática, mas permanece subordinado ao Plano de Desenvolvimento, às fontes canônicas, aos gates oficiais e às decisões de arquitetura aprovadas.
 
 Não é necessário carregar todo o repositório para cada tarefa. O contexto deve ser suficiente para garantir correção, sem leitura indiscriminada.
 
@@ -110,6 +116,7 @@ A autoridade de cada documento depende do tipo de informação.
 | Implementação da API | `docs/api/` |
 | Implementação da interface Web | `docs/interface-web/` |
 | Estratégia, casos e resultados de teste | `docs/testes/` |
+| Orientação técnica e didática de implementação | `docs/projeto/roteiro-tecnico-de-implementacao.md` — apoio subordinado, sem autoridade para alterar fontes canônicas |
 | Proveniência, inventário e consolidação | `docs/governanca/` |
 
 `project-manifest.yaml` e `ORCHESTRATOR.md` são fontes de **governança e roteamento**, não fontes de regras de negócio.
@@ -117,6 +124,8 @@ A autoridade de cada documento depende do tipo de informação.
 `docs/dominio/01-mapa-de-dominio.md` é a fonte consolidada dos **conceitos do domínio aprovados na Etapa 5**. Ele orienta a Modelagem Conceitual, mas não substitui regras de negócio, requisitos ou Casos de Uso e não autoriza antecipar decisões próprias de MER, DER, Modelo Físico ou Arquitetura.
 
 O relatório de consolidação registra problemas e decisões de reorganização, mas não deve ser utilizado para substituir silenciosamente conteúdo normativo.
+
+`docs/projeto/roteiro-tecnico-de-implementacao.md` não é fonte normativa de negócio, requisito, modelagem ou arquitetura aprovada. Quando houver divergência entre o roteiro e uma fonte canônica ou decisão de etapa já validada, prevalece a fonte oficial do projeto.
 
 ## 6. Regra de precedência e conflitos
 
@@ -139,16 +148,20 @@ Quando duas fontes canônicas divergirem:
 
 É proibido “resolver” conflito apenas porque uma alternativa parece mais comum, elegante ou tecnicamente conveniente.
 
-## 7. Estado dos bloqueadores documentais
+## 7. Estado das pendências documentais
 
-Os quatro bloqueadores registrados foram resolvidos na baseline funcional V1:
+A baseline funcional vigente registra:
 
-- `ISSUE-001`: adotado catálogo reconciliado de 21 identificadores funcionais (`RF-001` a `RF-021`) e realinhados os derivados;
-- `ISSUE-002`: formalizados cadastro, autenticação e senha como `RF-001`, `RF-002` e `RF-003`;
-- `ISSUE-003`: exclusão de contas registrada como fora do escopo da V1;
-- `ISSUE-004`: valor inicial da principal representado por Entrada, valor de secundária por transferência, sem saldo inicial armazenado.
+- `ISSUE-001`: resolvida — catálogo reconciliado de 21 identificadores funcionais (`RF-001` a `RF-021`), com 20 RFs ativos na V1 e `RF-019` preservado como futuro;
+- `ISSUE-002`: resolvida — cadastro, autenticação e senha formalizados como `RF-001`, `RF-002` e `RF-003`;
+- `ISSUE-003`: resolvida — exclusão de contas fora do escopo da V1;
+- `ISSUE-004`: resolvida — valor inicial da Conta Principal representado por Entrada; Conta Secundária recebe valor por Transferência; saldo não é armazenado;
+- `ISSUE-005`: resolvida — proteção por PIN retirada do escopo ativo da V1, com identificadores preservados para versão futura;
+- `ISSUE-006`: resolvida — PHP sobre WordPress, plugin próprio, infraestrutura REST e MySQL/MariaDB consolidados como restrição tecnológica da V1;
+- `ISSUE-007`: resolvida — preservação do estado anterior definida como cópia de segurança automática pré-restauração, permanecendo o mecanismo técnico para a etapa apropriada;
+- `ISSUE-008`: aberta — a matriz direta Regra de Negócio → Requisito ainda deverá ser materializada. Não bloqueia a Etapa 6, mas bloqueia o fechamento final da rastreabilidade da Etapa 12.
 
-Os status, resoluções e evidências permanecem registrados em `project-manifest.yaml` e `docs/governanca/relatorio-de-consolidacao.md`. A Etapa 5 foi concluída e validada; esses bloqueadores não impedem a abertura da Etapa 6.
+Os status, resoluções e evidências permanecem registrados em `project-manifest.yaml`, `docs/governanca/continuidade-de-contexto.md` e `docs/governanca/relatorio-de-consolidacao.md`.
 
 ## 8. Etapas e diretórios
 
@@ -181,9 +194,12 @@ Regras essenciais:
 - a Modelagem Conceitual (MER) pode iniciar somente após a validação do Mapa do Domínio;
 - não criar DER antes da validação do MER;
 - não criar Modelo Físico antes da validação do DER;
+- a execução controlada do Modelo Físico em MySQL/MariaDB para validar sintaxe e integridade pode ocorrer na Etapa 8, sem caracterizar início da implementação da aplicação;
 - não definir a arquitetura final antes da conclusão e validação da modelagem de dados aplicável;
 - não iniciar implementação da API antes da arquitetura correspondente estar definida;
+- preparação de ambiente, estudo de ferramentas ou elaboração de roteiro técnico não altera por si só o estado oficial da etapa;
 - não duplicar regras de negócio na interface Web;
+- testes e verificações técnicas podem acompanhar a implementação quando úteis, mas a Etapa 12 permanece responsável pela consolidação formal da estratégia, evidências, rastreabilidade e resultados;
 - não considerar uma funcionalidade ou etapa concluída sem validação compatível com seu gate.
 
 Uma pendência que não bloqueie a etapa pode permanecer registrada. Uma pendência que altere o significado do domínio, requisito ou comportamento necessário deve impedir o avanço da parte afetada.
@@ -268,7 +284,8 @@ Antes de alterar arquivos, o agente deverá determinar:
 - fontes canônicas aplicáveis;
 - arquivos afetados;
 - bloqueadores conhecidos;
-- critérios para considerar a tarefa concluída.
+- critérios para considerar a tarefa concluída;
+- quando houver tecnologia ou ferramenta envolvida, se ela representa restrição obrigatória, decisão de arquitetura ou ferramenta de apoio substituível.
 
 Durante a execução:
 
@@ -279,7 +296,9 @@ Durante a execução:
 5. atualizar índices e rastreabilidade quando a fonte correspondente mudar;
 6. utilizar links relativos entre documentos;
 7. evitar duplicação de regras;
-8. registrar decisões na fonte apropriada, não apenas na resposta do agente.
+8. registrar decisões na fonte apropriada, não apenas na resposta do agente;
+9. quando introduzir ferramenta, dependência, padrão ou abstração nova, explicitar o problema que ela resolve e verificar se sua adoção é realmente necessária naquele momento;
+10. em tarefas de implementação com objetivo didático, preferir a progressão **Problema → Conceito → Decisão → Implementação → Teste → Validação → Versionamento**, conforme detalhado no roteiro técnico.
 
 Uma decisão tomada em conversa, issue, task ou execução de agente só passa a integrar a fonte de verdade quando for incorporada ao documento canônico correspondente e versionada no repositório.
 
@@ -364,20 +383,39 @@ Todo handoff deve informar, no mínimo:
 - pendências;
 - impacto esperado na rastreabilidade.
 
-## 16. Política para arquitetura e implementação
+## 16. Política para arquitetura, implementação e ferramentas
 
-Até a Etapa 9, decisões técnicas não devem ser promovidas a arquitetura definitiva sem justificativa.
+Até a Etapa 9, decisões técnicas não devem ser promovidas a arquitetura definitiva sem justificativa e sem o gate correspondente.
 
 Direcionamentos já definidos para a V1:
 
 - aplicação Web;
 - PHP;
-- API REST própria;
-- banco de dados relacional.
+- WordPress como plataforma Web;
+- backend específico do SGFP em plugin próprio;
+- infraestrutura WordPress REST API com endpoints próprios do SGFP;
+- identidade, autenticação e sessão fornecidas pelo WordPress;
+- banco de dados relacional MySQL ou MariaDB.
 
-Estrutura definitiva de código, framework, organização de camadas, persistência, infraestrutura e demais detalhes devem ser decididos na etapa apropriada.
+O Plano de Desenvolvimento já prevê que a Etapa 9 defina estrutura de pastas, responsabilidades, arquitetura da API e a utilização de Controllers, Services e Repositories. A forma concreta dessas estruturas deverá ser decidida na própria Arquitetura, sem criar diretórios ou classes vazias antecipadamente.
 
-Não criar `src/`, camadas, frameworks ou abstrações apenas para “preparar” uma implementação futura antes do gate correspondente.
+Representações de domínio no código deverão existir quando houver responsabilidade real de negócio. Não assumir equivalência automática entre **tabela**, **entidade conceitual** e **classe de domínio**, nem exigir uma camada ou diretório `Domain/` apenas por convenção.
+
+Ferramentas de desenvolvimento deverão ser classificadas como apoio e não como restrições do produto, salvo exigência formal. Em particular:
+
+- sistema operacional, editor e extensão de IDE não constituem restrições do SGFP por si só;
+- Composer é ferramenta preferencial para dependências e autoload PHP quando sua adoção for pertinente;
+- clientes HTTP como Bruno, Postman, Insomnia ou equivalentes podem ser usados para testar a API independentemente da interface;
+- PHPUnit é ferramenta preferencial para testes automatizados PHP quando houver componentes reais a testar;
+- ferramentas como PHPStan, PHP-CS-Fixer e PHP_CodeSniffer podem ser adotadas progressivamente para análise estática, formatação ou padronização, conforme necessidade.
+
+Durante a Etapa 10, preferir implementação incremental de funcionalidades de ponta a ponta quando isso favorecer compreensão, validação e redução de risco. Essa estratégia não substitui os gates oficiais nem impede outra sequência quando houver dependência técnica justificada.
+
+Testes unitários, de integração, banco e API podem acompanhar as etapas de implementação. A Etapa 12 permanece responsável pela consolidação formal da estratégia, casos, evidências, rastreabilidade e resultados.
+
+`docs/projeto/roteiro-tecnico-de-implementacao.md` detalha essas práticas de forma didática e operacional. Ele deve ser consultado como apoio e nunca utilizado para sobrepor regras de negócio, requisitos, modelagem, arquitetura aprovada ou gates do Plano de Desenvolvimento.
+
+Não criar `src/`, camadas, frameworks, dependências ou abstrações apenas para “preparar” uma implementação futura antes do gate correspondente.
 
 ## 17. Segurança operacional
 
@@ -435,7 +473,19 @@ A proveniência disponível no repositório deve ser consultada em:
 
 Caso seja necessária auditoria sobre o material bruto original, deve-se utilizar o pacote de preservação completo mantido separadamente.
 
-## 21. Regra final
+## 21. Histórico de atualização
+
+### Versão 2.3 — 02/09/2026
+
+- integração do novo roteiro técnico de implementação como documento auxiliar subordinado às fontes canônicas;
+- atualização do estado das `ISSUE-001` a `ISSUE-008` conforme a governança vigente;
+- distinção explícita entre restrições do produto, decisões arquiteturais e ferramentas de desenvolvimento substituíveis;
+- consolidação de WordPress, plugin próprio, WordPress REST API e MySQL/MariaDB como direcionamentos tecnológicos oficiais da V1;
+- registro de Composer, cliente HTTP, PHPUnit e ferramentas de qualidade como recursos preferenciais ou opcionais introduzidos conforme necessidade;
+- reforço da implementação incremental, dos testes contínuos e da consolidação formal de testes na Etapa 12;
+- preservação integral dos gates: o projeto continua na Etapa 6 e a implementação não foi iniciada.
+
+## 22. Regra final
 
 Quando houver dúvida entre:
 

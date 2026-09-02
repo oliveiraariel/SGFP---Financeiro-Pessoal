@@ -1,6 +1,6 @@
 schema_version: "1.0"
-manifest_version: "2.3"
-updated_at: "2026-08-30"
+manifest_version: "2.4"
+updated_at: "2026-09-02"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -36,6 +36,8 @@ documentation:
     consolidation_report: "docs/governanca/relatorio-de-consolidacao.md"
     provenance_index: "docs/governanca/proveniencia.csv"
     source_inventory: "docs/governanca/inventario-fonte.csv"
+  supporting_guidance:
+    technical_implementation_roadmap: "docs/projeto/roteiro-tecnico-de-implementacao.md"
 
 product_constraints:
   v1:
@@ -56,6 +58,45 @@ product_constraints:
   future:
     pin: "optional application lock during an already authenticated session; reset by confirming account password"
   future_capabilities_are_not_v1_requirements: true
+
+development_guidance:
+  status: "supporting_noncanonical_guidance"
+  roadmap_path: "docs/projeto/roteiro-tecnico-de-implementacao.md"
+  precedence: "canonical_sources_and_stage_gates_always_prevail"
+  environment:
+    operating_system_locked: false
+    editor_locked: false
+    editor_extension_locked: false
+  preferred_tooling:
+    dependency_management_and_autoload:
+      preferred: "Composer"
+      product_requirement: false
+    automated_php_testing:
+      preferred: "PHPUnit"
+      product_requirement: false
+    manual_api_testing:
+      preferred_options:
+        - "Bruno"
+        - "Postman"
+        - "Insomnia"
+        - "equivalent HTTP client"
+      product_requirement: false
+    code_quality:
+      preferred_options:
+        - "PHPStan"
+        - "PHP-CS-Fixer"
+        - "PHP_CodeSniffer"
+        - "equivalent compatible tools"
+      product_requirement: false
+  implementation_method:
+    incremental_end_to_end_slices_preferred: true
+    abstractions_introduced_when_justified: true
+    tests_during_development: true
+    formal_stage_12_testing_preserved: true
+  architecture_boundary:
+    controllers_services_repositories: "planned_direction_to_be_defined_in_stage_9"
+    domain_layer_or_directory: "not_mandatory_before_architecture_decision"
+    table_equals_domain_entity_equals_php_class: false
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
@@ -185,6 +226,12 @@ canonical_sources:
     path: "docs/governanca/relatorio-de-consolidacao.md"
     authority: "governance_only"
 
+supporting_sources:
+  technical_implementation_roadmap:
+    path: "docs/projeto/roteiro-tecnico-de-implementacao.md"
+    authority: "supporting_guidance_only"
+    note: "Detalha práticas, ferramentas e sequência didática para as etapas técnicas sem substituir o Plano de Desenvolvimento, fontes canônicas, gates ou decisões de arquitetura aprovadas."
+
 derived_indexes:
   business_rules:
     path: "docs/requisitos/levantamento/regras-de-negocio-index.csv"
@@ -207,6 +254,8 @@ authority_policy:
     - "start_future_stage_as_completed_work_before_gate"
     - "renumber_stable_identifiers_without_explicit_decision"
     - "treat_governance_reports_as_business_rule_sources"
+    - "treat_supporting_technical_guidance_as_canonical_authority"
+    - "convert_nonrequired_development_tools_into_product_constraints"
 
 traceability:
   target_chain:
@@ -226,6 +275,8 @@ traceability:
 agent_execution:
   entrypoint: "ORCHESTRATOR.md"
   context_strategy: "read_governance_first_then_load_task_relevant_sources"
+  implementation_guidance_path: "docs/projeto/roteiro-tecnico-de-implementacao.md"
+  implementation_guidance_usage: "load_when_task_involves_technical_preparation_architecture_api_interface_implementation_testing_or_code_quality_and_respect_stage_gates"
   change_strategy: "minimum_sufficient_change"
   conflict_strategy: "stop_affected_work_and_request_human_decision"
   parallelism:
@@ -264,6 +315,10 @@ quality_policy:
   avoid_premature_complexity: true
   avoid_unnecessary_entities: true
   separate_business_domain_architecture_and_implementation: true
+  avoid_unnecessary_environment_lock_in: true
+  prefer_incremental_implementation: true
+  test_significant_changes_during_development: true
+  preserve_formal_stage_12_testing: true
   do_not_claim_completion_with_unresolved_blocker: true
 
 known_issues:

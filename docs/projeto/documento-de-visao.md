@@ -2,9 +2,9 @@
 
 ## Sistema de Gestão Financeira Pessoal
 
-**Versão do documento:** 1.3
+**Versão do documento:** 1.4
 
-**Data da última atualização:** 30/08/2026
+**Data da última atualização:** 02/09/2026
 
 ### 1. Apresentação
 
@@ -60,7 +60,7 @@ Serão desenvolvidos:
 
 As funcionalidades abaixo não fazem parte da primeira versão, porém já fazem parte da visão de evolução do projeto.
 
-Entre elas destacam se:
+Entre elas destacam-se:
 
 - proteção opcional por PIN para bloqueio rápido do SGFP durante uma sessão já autenticada;
 - bloqueio automático da aplicação após período de inatividade;
@@ -81,6 +81,8 @@ A primeira versão será desenvolvida como uma aplicação Web utilizando PHP so
 O WordPress será utilizado como plataforma da aplicação, fornecendo a infraestrutura Web, o gerenciamento de usuários e autenticação, as sessões e o suporte à API REST.
 
 O backend específico do SGFP será desenvolvido em um plugin próprio, responsável pelas regras de negócio, pelos endpoints da aplicação e pelo acesso aos dados do domínio.
+
+A persistência relacional da Versão 1 deverá utilizar solução compatível com MySQL ou MariaDB, em conformidade com as restrições tecnológicas consolidadas do projeto.
 
 A interface Web consumirá a API REST própria do SGFP.
 
@@ -177,7 +179,7 @@ Essa abordagem preservará o histórico financeiro e proporcionará maior flexib
 
 O desenvolvimento seguirá uma metodologia baseada em etapas.
 
-Antes da implementação serão realizados:
+Antes da implementação da API serão realizados:
 
 - levantamento completo dos requisitos;
 - especificação formal do sistema;
@@ -185,11 +187,13 @@ Antes da implementação serão realizados:
 - elaboração dos casos de uso;
 - construção do mapa do domínio;
 - modelagem conceitual (MER);
-- modelo entidade relacionamento (DER);
+- modelo entidade-relacionamento (DER);
 - modelo físico do banco de dados;
 - definição da arquitetura da aplicação.
 
-Somente após a conclusão dessas etapas será iniciado o desenvolvimento da API, da interface Web e dos testes.
+Somente após a conclusão e validação das etapas correspondentes será iniciado o desenvolvimento da API. A interface Web será desenvolvida quando os recursos necessários do backend estiverem disponíveis, conforme os gates definidos no Plano de Desenvolvimento.
+
+Verificações e testes poderão acompanhar a implementação sempre que forem úteis para validar incrementos do sistema. A Etapa 12 permanecerá responsável pela consolidação formal da estratégia de testes, casos de teste, evidências, rastreabilidade e resultados.
 
 ### 12. Situação Atual do Projeto
 
@@ -197,7 +201,7 @@ Atualmente o projeto encontra-se na **Etapa 6 — Modelagem Conceitual (MER)**.
 
 As etapas de levantamento e especificação de requisitos, Casos de Uso e Mapa do Domínio já foram concluídas e constituem a base para a modelagem conceitual.
 
-A decisão de utilizar WordPress na Versão 1 e de adiar a proteção opcional por PIN para uma versão futura deverá ser considerada nos artefatos das etapas posteriores de modelagem física, arquitetura e implementação.
+A decisão de utilizar PHP sobre WordPress na Versão 1, com backend específico em plugin próprio, infraestrutura REST do WordPress e persistência relacional compatível com MySQL ou MariaDB, deverá ser considerada nos artefatos das etapas posteriores. A proteção opcional por PIN permanece adiada para uma versão futura.
 
 A preservação do estado anterior durante uma restauração foi consolidada como cópia de segurança automática pré-restauração: após validação da cópia escolhida e confirmação do usuário, o estado atual deverá ser preservado em condição recuperável antes de qualquer substituição. O mecanismo técnico dessa preservação será definido na etapa apropriada.
 
