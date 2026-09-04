@@ -2,7 +2,7 @@
 
 Use este prompt ao abrir um novo chat, nova sessão ou novo agente com acesso ao projeto SGFP.
 
-**Última atualização:** 02/09/2026
+**Última atualização:** 04/09/2026
 
 ## Prompt
 
@@ -69,6 +69,8 @@ Considere como estado atual:
 - a cópia automática pré-restauração é uma proteção pontual e não caracteriza backup automático periódico ou contínuo;
 - ISSUE-007 está resolvida por decisão humana, permanecendo apenas o mecanismo técnico para as etapas posteriores;
 - ISSUE-008 permanece aberta como pendência de rastreabilidade;
+- a associação de Categoria ao Compromisso Financeiro é opcional na V1;
+- um compromisso pode ser cadastrado e permanecer sem categoria;
 - a V1 utilizará PHP sobre WordPress;
 - o backend específico do SGFP será implementado em plugin próprio;
 - a solução utilizará a infraestrutura REST do WordPress;
@@ -95,6 +97,7 @@ Para a Etapa 6:
 - considere ISSUE-007 como resolvida;
 - mantenha ISSUE-008 visível sem tentar resolvê-la por inferência durante o MER;
 - não antecipe DER, Modelo Físico, Arquitetura ou Implementação.
+- não imponha obrigatoriedade de Categoria ao Compromisso Financeiro no MER; a associação é opcional na baseline vigente;
 
 Para tarefas técnicas futuras:
 

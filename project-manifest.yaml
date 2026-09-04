@@ -443,7 +443,7 @@ resolved_consolidation_notes:
     resolution: "Casos de Uso pertencem à Etapa 4 e não são subetapa do SRS."
   - topic: "category_association"
     status: "resolved_by_later_human_decision"
-    resolution: "Por decisão humana de 04/09/2026, a associoção de Categoria ao compromisso Financeiro é opcional; o compromisso pode ser cadastrado e permanecer sem categoriaa."
+    resolution: "Por decisão humana de 04/09/2026, a associação de Categoria ao Compromisso Financeiro é opcional; o compromisso pode ser cadastrado e permanecer sem categoria."
   - topic: "raw_source_location"
     status: "resolved"
     resolution: "A edição Core não contém o export bruto; proveniência e inventário permanecem em docs/governanca/."

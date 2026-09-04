@@ -3,7 +3,7 @@
 **Projeto:** SGFP — Sistema de Gestão Financeira Pessoal  
 **Versão deste documento:** 2.3
 **Status:** Governança operacional vigente  
-**Última atualização:** 02/09/2026
+**Última atualização:** 04/09/2026
 
 ## 1. Finalidade
 
@@ -56,6 +56,8 @@ A etapa corrente é:
 **Etapa 6 — Modelagem Conceitual (MER)**
 
 A Etapa 6 deverá utilizar a baseline documental atualizada e não deverá modelar conceitos, entidades, atributos ou estruturas destinados exclusivamente ao PIN futuro.
+
+A associação de Categoria ao Compromisso Financeiro é opcional na V1; um compromisso pode ser cadastrado e permanecer sem categoria.
 
 As pendências e decisões de governança relevantes ao estado atual permanecem registradas no `project-manifest.yaml` e nos documentos de continuidade. Em especial:
 

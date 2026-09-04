@@ -119,7 +119,7 @@ Não renumerar os identificadores posteriores e não criar RF oficial acima de `
 
 - cada usuário recebe um conjunto inicial de categorias criado já vinculado ao próprio usuário;
 - essas categorias iniciais são registros do usuário e podem ser renomeadas ou removidas, e novas categorias podem ser adicionadas;
-- a associação de Categoria ao compromiso Financeiro é opcional;
+- a associação de Categoria ao compromisso Financeiro é opcional;
 - um compromisso pode ser cadastrado e permanecer sem categoria;
 - remover uma categoria não exclui os compromissos anteriormente associados;
 
