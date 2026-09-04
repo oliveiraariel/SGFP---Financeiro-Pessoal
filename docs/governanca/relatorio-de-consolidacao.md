@@ -195,3 +195,13 @@ Ferramentas de dependências, testes, inspeção de API e qualidade de código p
 Modelos físicos preliminares, SQLs de apoio ou estruturas produzidas antecipadamente para estudo não devem ser tratados como Modelo Físico oficial antes da validação do MER, do DER e da abertura da Etapa 8.
 
 Essa atualização possui caráter de **governança e orientação técnica** e não modifica as decisões históricas registradas nas seções anteriores.
+
+## 8. Mudança posterior da regra de Categoria — 04/09/2026
+
+Por decisão humana posterior à consolidação registrada anteriormente neste documento, a associação de Categoria ao Compromisso Financeiro passa a ser opcional na Versão 1.
+
+Um compromisso financeiro poderá ser cadastrado e permanecer sem categoria.
+
+Permanecem inalteradas as funcionalidades de criação, renomeação e remoção de categorias. A remoção de uma categoria continua não excluindo os compromissos anteriormente associados.
+
+Esta decisão substitui, para a baseline vigente, a regra anterior de obrigatoriedade de categoria, preservando-se o registro histórico da decisão anterior para fins de proveniência e rastreabilidade.

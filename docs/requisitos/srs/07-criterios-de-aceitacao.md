@@ -6,7 +6,7 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 2.3
+**Versão:** 2.4
 
 **Baseline:** catálogo preservado com 21 requisitos funcionais; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
 
@@ -63,9 +63,9 @@ Esta seção define condições observáveis e verificáveis para validar os req
 
 ### RF-006 — Gerenciar compromissos financeiros
 
-- **CA-006.1:** O usuário deverá conseguir cadastrar compromisso com nome, valor, natureza e categoria.
+- **CA-006.1:** O usuário deverá conseguir cadastrar compromisso com nome, valor, natureza, podendo opcionalmente associá-lo a uma categoria.
 - **CA-006.2:** A natureza deverá permitir Entrada ou Saída.
-- **CA-006.3:** A categoria deverá ser obrigatória para concluir o cadastro.
+- **CA-006.3:** A ausência de categoria não deverá impedir a conclusão do cadastro do compromisso.
 - **CA-006.4:** O usuário deverá conseguir consultar compromissos registrados.
 - **CA-006.5:** Compromissos pendentes deverão poder ser alterados conforme as regras.
 - **CA-006.6:** Compromissos pendentes deverão poder ser excluídos conforme as regras.
@@ -336,6 +336,10 @@ Cada caso de teste deverá referenciar, quando aplicável:
 Os critérios deverão respeitar as regras de negócio consolidadas no Levantamento de Requisitos. As regras não são duplicadas nesta seção.
 
 ## 7. Histórico de atualização
+
+### Versão 2.4 - 04/09/2026
+
+Atualizou os critérios CA-006.1 e CA-006.3 para refletir a decisão de tornar opcional a associação de Categoria ao Compromisso Financeiro, presenvanda os identificadores e a rastreabilidade existentes
 
 ### Versão 2.3 — 30/08/2026
 
