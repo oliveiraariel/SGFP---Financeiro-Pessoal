@@ -27,6 +27,7 @@ Antes de qualquer tarefa neste repositório:
 - Requisitos não funcionais padronizados como `RNF-001` a `RNF-020`.
 - Etapa 5 — Mapa do Domínio: concluída e validada.
 - Etapa atual: Etapa 6 — Modelagem Conceitual (MER).
+- A associação de Categoria ao Compromisso Financeiro é opcional na V1; o compromisso pode ser cadastrado e permanecer sem categoria.
 - Restrição tecnológica consolidada para a V1: aplicação Web em PHP sobre WordPress, com backend específico em plugin próprio, infraestrutura REST do WordPress e banco relacional compatível com MySQL ou MariaDB.
 - Sistema operacional, editor e extensões de desenvolvimento não constituem restrições do SGFP, salvo exigência formal posterior.
 - Ferramentas como Composer, clientes HTTP para API, PHPUnit e utilitários de qualidade podem ser adotadas conforme a necessidade e a etapa autorizada; sua presença no roteiro técnico não as transforma em requisitos do produto.
