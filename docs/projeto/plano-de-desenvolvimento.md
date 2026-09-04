@@ -2,9 +2,9 @@
 
 ## **Sistema de Gestão Financeira Pessoal**
 
-**Versão do documento:** 1.7
+**Versão do documento:** 1.8
 
-**Data da última atualização:** 02/09/2026
+**Data da última atualização:** 04/09/2026
 
 **Instituição e graduação:**
 
@@ -400,7 +400,7 @@ O conceito de compromisso financeiro constitui o mecanismo central utilizado par
 
 Objetivo relacionado à organização dos compromissos financeiros por categorias.
 
-A categoria é obrigatória para os compromissos financeiros.
+A categoria é opcional para os compromissos financeiros.
 
 Caso nenhuma categoria disponível seja adequada, o usuário poderá criar uma nova categoria por meio do botão de adição disponível junto às categorias.
 

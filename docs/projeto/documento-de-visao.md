@@ -2,9 +2,9 @@
 
 ## Sistema de Gestão Financeira Pessoal
 
-**Versão do documento:** 1.4
+**Versão do documento:** 1.5
 
-**Data da última atualização:** 02/09/2026
+**Data da última atualização:** 04/09/2026
 
 ### 1. Apresentação
 
@@ -133,13 +133,13 @@ Cada compromisso possuirá informações que representarão sua situação duran
 
 ### 9. Organização Financeira
 
-Os compromissos financeiros deverão ser classificados em categorias.
+Os compromissos financeiros poderão ser classificados em categorias.
 
 No cadastro de cada usuário, o sistema disponibilizará um conjunto inicial de categorias para facilitar o primeiro uso.
 
 Essas categorias serão criadas já vinculadas ao respectivo usuário e, a partir desse momento, poderão ser renomeadas ou removidas por ele, assim como novas categorias poderão ser adicionadas.
 
-A categoria será obrigatória no cadastro de um compromisso financeiro.
+A categoria será opcional no cadastro de um compromisso financeiro.
 
 Caso nenhuma das categorias disponíveis seja adequada ao compromisso, o usuário poderá utilizar o botão de adição disponível junto às categorias para criar uma nova categoria.
 

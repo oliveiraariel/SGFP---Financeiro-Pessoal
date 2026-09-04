@@ -19,10 +19,10 @@ O usuário acessa a área de compromissos ou inicia o cadastro de um novo compro
 **Fluxo principal**
 
 1. O usuário solicita o cadastro de um compromisso.
-2. O sistema solicita nome, valor, natureza e categoria.
+2. O sistema solicita nome, valor, natureza e apresenta as categorias disponíveis para associoação opcional.
 3. O usuário informa os dados.
-4. O usuário seleciona uma categoria.
-5. Caso necessário, o usuário cria uma nova categoria durante o cadastro.
+4. O usuário poderá selecionar uma categoria, se desejar.
+5. Caso deseje utilizar uma categoria ainda inexistente, o usuário poderá criar uma nova categoria durante o cadastro.
 6. O sistema valida as informações.
 7. O sistema registra o compromisso.
 8. O compromisso fica disponível para consulta e posterior efetivação.
@@ -30,7 +30,7 @@ O usuário acessa a área de compromissos ou inicia o cadastro de um novo compro
 **Fluxos alternativos e exceções**
 
 * O compromisso poderá ser Entrada ou Saída.
-* A categoria será obrigatória.
+* A associação a uma categoria será opcional.
 * Um compromisso poderá possuir valor igual a R$ 0,00.
 * Compromissos pendentes poderão ser alterados.
 * Compromissos pendentes poderão ser removidos.

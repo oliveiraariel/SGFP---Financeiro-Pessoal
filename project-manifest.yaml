@@ -1,6 +1,6 @@
 schema_version: "1.0"
-manifest_version: "2.4"
-updated_at: "2026-09-02"
+manifest_version: "2.5"
+updated_at: "2026-09-04"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -442,8 +442,8 @@ resolved_consolidation_notes:
     status: "resolved"
     resolution: "Casos de Uso pertencem à Etapa 4 e não são subetapa do SRS."
   - topic: "category_association"
-    status: "resolved_in_canonical_reorganization"
-    resolution: "A árvore canônica segue a decisão mais recente consolidada para a utilização obrigatória de categoria."
+    status: "resolved_by_later_human_decision"
+    resolution: "Por decisão humana de 04/09/2026, a associoção de Categoria ao compromisso Financeiro é opcional; o compromisso pode ser cadastrado e permanecer sem categoriaa."
   - topic: "raw_source_location"
     status: "resolved"
     resolution: "A edição Core não contém o export bruto; proveniência e inventário permanecem em docs/governanca/."

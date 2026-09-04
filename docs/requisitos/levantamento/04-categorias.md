@@ -2,7 +2,7 @@
 
 **Documento:** Levantamento de Requisitos
 
-**Versão:** 1.1
+**Versão:** 1.2
 
 **Objetivo**
 
@@ -22,7 +22,7 @@ Alterações realizadas por um usuário em suas categorias não deverão afetar 
 
 **RN-002**
 
-A associação entre um compromisso financeiro e uma categoria será obrigatória no momento do cadastro.
+A associação entre um compromisso financeiro e uma categoria será opcional. O compromisso poderá ser cadastrado sem categoria.
 
 **RN-003**
 
@@ -54,7 +54,7 @@ Compromissos que não estiverem associados a nenhuma categoria poderão ser exib
 
 **RN-007**
 
-Ao cadastrar um compromisso financeiro, o sistema deverá apresentar as categorias disponíveis para seleção, sendo obrigatória a escolha de uma categoria para concluir o cadastro.
+Ao cadastrar um compromisso financeiro, o sistema deverá apresentar as categorias disponíveis para seleção, mas a escolha de uma categoria será opcional e sua ausência não impedirá a conclusão do cadastro.
 
 **RN-008**
 
@@ -72,7 +72,7 @@ A categoria criada durante o cadastro do compromisso deverá ficar disponível p
 - O usuário poderá criar novas categorias.
 - O usuário poderá renomear categorias existentes.
 - O usuário poderá remover categorias.
-- A utilização de categorias será obrigatória para os compromissos financeiros.
+- A utilização de categorias será opcional para os compromissos financeiros.
 - A exclusão de uma categoria nunca removerá os compromissos financeiros vinculados.
 - O agrupamento de compromissos servirá apenas para melhorar a organização e a visualização das informações.
 
@@ -95,4 +95,4 @@ A categoria criada durante o cadastro do compromisso deverá ficar disponível p
 
 **Data de Revisão**
 
-30/08/2026
+04/09/2026

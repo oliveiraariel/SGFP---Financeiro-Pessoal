@@ -119,9 +119,9 @@ Não renumerar os identificadores posteriores e não criar RF oficial acima de `
 
 - cada usuário recebe um conjunto inicial de categorias criado já vinculado ao próprio usuário;
 - essas categorias iniciais são registros do usuário e podem ser renomeadas ou removidas, e novas categorias podem ser adicionadas;
-- categoria é obrigatória no momento do cadastro do compromisso;
+- a associação de Categoria ao compromiso Financeiro é opcional;
+- um compromisso pode ser cadastrado e permanecer sem categoria;
 - remover uma categoria não exclui os compromissos anteriormente associados;
-- a forma de representar essa situação no modelo de dados será decidida na etapa apropriada.
 
 ### 4.6 Recorrência
 
@@ -280,4 +280,4 @@ Atualizar este arquivo quando houver:
 
 Registrar apenas o necessário para retomada e manter a próxima ação explícita.
 
-Última atualização operacional: **2026-09-02**.
+Última atualização operacional: **2026-09-04**.

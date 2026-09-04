@@ -4,9 +4,9 @@
 
 **Sigla:** SGFP
 **Documento:** Mapa do Domínio
-**Versão:** 1.3
+**Versão:** 1.4
 **Etapa:** Etapa 5 — Mapa do Domínio
-**Data da revisão:** 30/08/2026
+**Data da revisão:** 04/09/2026
 
 ---
 
@@ -198,7 +198,7 @@ Para composição inicial de valor, uma Conta Secundária não recebe uma Entrad
 **Observações** —
 
 - possui natureza financeira;
-- possui categoria no momento do cadastro;
+- pode estar associado a uma categoria, de forma opcional, podendo ser cadastrado e permanecer sem categoria;
 - está associado a um período financeiro;
 - pode possuir valor igual a zero;
 - enquanto pendente, pode ser alterado ou removido conforme as regras do sistema;
@@ -232,7 +232,7 @@ Entrada e Saída são classificações do domínio e não conceitos independente
 
 **Observações** —
 
-- a categoria é obrigatória no momento do cadastro do compromisso;
+- a categoria é opcional no momento do cadastro do compromisso;
 - pode ser criada, renomeada e removida;
 - pode ser criada durante o cadastro de um compromisso;
 - não produz efeito direto sobre saldo ou patrimônio;
@@ -684,7 +684,7 @@ O Mapa do Domínio mantém o conceito **Usuário** como proprietário das inform
 
 ### 13.2 Remoção de Categoria
 
-A categoria é obrigatória no momento do cadastro de um compromisso, mas sua remoção não deve excluir os compromissos anteriormente associados.
+A categoria é opcional no momento do cadastro de um compromisso, e sua remoção posterior não deve excluir os compromissos anteriormente associados.
 
 O comportamento está registrado como regra do domínio. A forma de representação dessa situação será definida na Modelagem Conceitual e etapas posteriores.
 
