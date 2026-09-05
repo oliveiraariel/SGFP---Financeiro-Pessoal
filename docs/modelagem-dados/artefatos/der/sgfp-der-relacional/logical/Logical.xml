@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="F2C2AAE7-03CC-A170-213B-2BB0B7D6675A" mainViewID="6540F6DD-BAE2-6729-D9F0-DF47403499D0">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 05:14:51 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</LogicalDesign>

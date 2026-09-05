@@ -32,12 +32,17 @@ Todo compromisso financeiro deverá possuir um valor monetário.
 
 ### RN-004
 
-Todo compromisso financeiro deverá possuir uma natureza financeira, definida pelo usuário no momento do cadastro.
+Todo compromisso financeiro deverá possuir uma natureza financeira:
 
-As opções disponíveis serão:
+- Entrada;
+- Saída.
 
-- Entrada
-- Saída
+Nos compromissos financeiros padrão, a natureza será definida pelo usuário no momento do cadastro.
+
+Nas transferências, a natureza será determinada pelo sentido da operação em relação à Conta Principal:
+
+- Conta Principal → Conta Secundária: Saída;
+- Conta Secundária → Conta Principal: Entrada.
 
 ### RN-005
 
@@ -92,6 +97,8 @@ Essa funcionalidade permitirá representar situações em que determinado compro
 - Todo compromisso financeiro possuirá obrigatoriamente um nome.
 - Todo compromisso financeiro possuirá obrigatoriamente um valor.
 - Todo compromisso financeiro será classificado como Entrada ou Saída.
+- Nos compromissos padrão, a natureza será definida pelo usuário.
+- Nas transferências, a natureza será determinada pelo sentido da operação em relação à Conta Principal: Principal → Secundária = Saída; Secundária → Principal = Entrada.
 - Haverá uma única conta principal.
 - Todos os compromissos financeiros incidirão sobre a conta principal.
 - Contas secundárias não receberão compromissos financeiros diretamente.

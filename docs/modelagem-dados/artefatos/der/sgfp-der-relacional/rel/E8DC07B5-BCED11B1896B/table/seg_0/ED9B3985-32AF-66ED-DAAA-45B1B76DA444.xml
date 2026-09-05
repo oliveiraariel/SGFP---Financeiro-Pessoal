@@ -1,0 +1,144 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="ED9B3985-32AF-66ED-DAAA-45B1B76DA444" name="TRANSFERENCIA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>384BA18B-3006-3E8E-7D40-EEE8C86B8518</importedID>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="FK_ID_COMPROMISSO" id="35B1BB71-3D56-FBAA-A883-814F1E7283E8">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>E655D1C0-E1F7-0A10-8836-6C4D5CD186D3</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="86B1DF7A-3EDA-4337-AE98-E8F624D3D361" referredColumn="7770CEFF-DE3A-163D-80E2-7A3FCC4F4B37"/>
+</associations>
+</Column>
+<Column name="FK_ID_USUARIO" id="8A9ACDCF-5991-2542-7A0E-45D79885CB7E">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>150E7040-53E8-D7B5-2F2C-9952EC28D1B0</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="86B1DF7A-3EDA-4337-AE98-E8F624D3D361" referredColumn="70297F38-A902-54CE-28F1-DB4B1EBE0821"/>
+<colAssociation fkAssociation="E3782FA6-E3A8-4BEA-02B9-64A14C3A5F39" referredColumn="0DF41D52-E965-8D72-F236-7C49003E36FA"/>
+<colAssociation fkAssociation="7C11E324-265F-3607-10D2-F14B40AD5F54" referredColumn="0DF41D52-E965-8D72-F236-7C49003E36FA"/>
+<colAssociation fkAssociation="6C6D0CB6-3E0C-4F7C-AA5B-A951091FD823" referredColumn="64FDAEDA-BE84-2F49-568A-E208BD7E3E7F"/>
+</associations>
+</Column>
+<Column name="FK_ID_CONTA_ORIGEM" id="A8536ABE-C305-8FC3-0133-E36603F39CF9">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>63DEB6FC-221D-7873-8A6E-06DAD4A6B7F8</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="7C11E324-265F-3607-10D2-F14B40AD5F54" referredColumn="767B8512-C40D-B966-AB2B-0064B7041281"/>
+</associations>
+</Column>
+<Column name="FK_ID_CONTA_DESTINO" id="2F775EC6-F59D-CCA4-9D17-6D58320EB8ED">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>E98C17A5-1978-4C0F-6CD8-1E3158B0912B</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E3782FA6-E3A8-4BEA-02B9-64A14C3A5F39" referredColumn="767B8512-C40D-B966-AB2B-0064B7041281"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="4CDBD592-FD87-91C3-C082-A1C666C1EB49" name="PK_TRANSFERENCIA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>10E79C95-54D1-E551-86CA-3A279C2745D5</importedID>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="35B1BB71-3D56-FBAA-A883-814F1E7283E8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="DE4EB376-02BA-631C-CE3D-5CBBD5BED242" name="FK_TRANSFERENCIA_COMPROMISSO">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="35B1BB71-3D56-FBAA-A883-814F1E7283E8"/>
+<colUsage columnID="8A9ACDCF-5991-2542-7A0E-45D79885CB7E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="F6123F58-6C61-92CF-58B5-6FBF8C7DD1B3" name="FK_TRANSFERENCIA_DESTINO">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8A9ACDCF-5991-2542-7A0E-45D79885CB7E"/>
+<colUsage columnID="2F775EC6-F59D-CCA4-9D17-6D58320EB8ED"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="999BB734-CEBC-37C0-EA03-F75C2E794F6C" name="FK_TRANSFERENCIA_ORIGEM">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8A9ACDCF-5991-2542-7A0E-45D79885CB7E"/>
+<colUsage columnID="A8536ABE-C305-8FC3-0133-E36603F39CF9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="4355D9E8-9224-88AA-6D1D-CD4D1B01C3D8" name="FK_TRANSFERENCIA_USUARIO">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8A9ACDCF-5991-2542-7A0E-45D79885CB7E"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+<tableCheckConstraints itemClass="oracle.dbtools.crest.model.design.constraint.TableLevelConstraint">
+<tableCheckConstraint name="CK_TRANSFERENCIA_CONTAS_DIFERENTES" directorySegmentName="seg_0" id="842AC758-0086-94DF-6D62-6230E7C91001">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>32039D7E-ED46-338C-83CC-7E0B3E361895</importedID>
+<rule><![CDATA[FK_ID_CONTA_ORIGEM <> FK_ID_CONTA_DESTINO]]></rule>
+</tableCheckConstraint>
+</tableCheckConstraints>
+</Table>

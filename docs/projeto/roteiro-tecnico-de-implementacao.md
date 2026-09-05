@@ -2,9 +2,9 @@
 
 **Sistema de Gestão Financeira Pessoal**
 
-**Versão do documento:** 1.0
+**Versão do documento:** 1.1
 
-**Data da última atualização:** 02/09/2026
+**Data da última atualização:** 05/09/2026
 
 **Classificação:** documento técnico de apoio
 
@@ -41,12 +41,13 @@ Este roteiro também não transforma preferências de ambiente ou ferramentas su
 No estado atual do projeto:
 
 - a Etapa 5 — Mapa do Domínio está concluída e validada;
-- a Etapa 6 — Modelagem Conceitual (MER) está em andamento;
-- DER, Modelo Físico, Arquitetura, API, Interface Web e Testes formais ainda dependem dos respectivos gates.
+- as Etapas 6 — MER, 7 — DER e 8 — Modelo Físico estão concluídas e validadas;
+- a Etapa 9 — Arquitetura da Aplicação está pronta para iniciar;
+- API, Interface Web e Testes formais continuam condicionados aos respectivos gates.
 
-Portanto, este documento descreve **o caminho técnico a ser seguido quando cada etapa correspondente estiver autorizada**.
+A partir deste ponto, este roteiro passa a apoiar diretamente a condução da **Etapa 9 — Arquitetura da Aplicação** e, posteriormente, as etapas de implementação e testes.
 
-Sua existência não significa que a implementação já tenha começado.
+A conclusão da modelagem não significa que a implementação da API já tenha começado.
 
 ---
 
@@ -133,7 +134,7 @@ Este roteiro não possui fases próprias numeradas. Ele detalha atividades técn
 
 ## 6. Etapa 8 — Do modelo físico ao banco materializado
 
-Quando a Etapa 8 estiver autorizada, deverá ser mantida a diferença entre:
+A Etapa 8 foi concluída e validada. Para as atividades técnicas posteriores, deverá continuar sendo mantida a diferença entre:
 
 **Modelo físico**
 Definição das tabelas, colunas, tipos, chaves, restrições, índices e demais elementos físicos.
@@ -159,7 +160,7 @@ Execução controlada em MySQL/MariaDB
 Banco materializado para testes
 ```
 
-Antes de considerar o modelo físico concluído, deverão ser verificados, conforme aplicável:
+Na validação documental e estrutural do Modelo Físico foram verificados, conforme aplicável:
 
 - tabelas;
 - colunas;
@@ -174,7 +175,7 @@ Antes de considerar o modelo físico concluído, deverão ser verificados, confo
 - compatibilidade com a plataforma WordPress;
 - coerência com MER e DER validados.
 
-Qualquer SQL produzido antes dessa etapa deverá ser tratado como **material preliminar de apoio**, sujeito a revisão.
+O Modelo Físico oficial está versionado em `docs/modelagem-dados/artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql`. SQLs auxiliares ou adaptações produzidas para ferramentas não substituem esse artefato validado.
 
 ---
 

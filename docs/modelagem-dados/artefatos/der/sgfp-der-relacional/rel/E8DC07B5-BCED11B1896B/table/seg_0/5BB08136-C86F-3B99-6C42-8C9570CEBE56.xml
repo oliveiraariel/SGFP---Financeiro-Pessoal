@@ -1,0 +1,166 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="5BB08136-C86F-3B99-6C42-8C9570CEBE56" name="RECORRENCIA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>9172C441-50CD-9156-6FA2-908190B311C1</importedID>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID_RECORRENCIA" id="D913C77F-E56D-34FB-D648-0C2415EF0EC1">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>42248D59-C31F-8FE0-03DD-635C7F97EEF5</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="FK_ID_USUARIO" id="A3DB2971-A2FD-F8EA-BA8E-F6F61D8A83DA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>2B519B5D-87C5-B69B-BC81-D9265778AC5C</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="99B1E49E-14E5-9A12-1BD8-95176A9B6FD9" referredColumn="64FDAEDA-BE84-2F49-568A-E208BD7E3E7F"/>
+</associations>
+</Column>
+<Column name="INICIO_MES" id="32C78A02-32E9-9F64-F8C9-F4C859C9D337">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>312846EF-9F4E-E2F3-8386-6A809881CFB3</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<domain>9538B8AA-91A4-AA19-3C54-E47ACF47B588</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="QUANTIDADE_MESES" id="E4A37962-8B63-48BE-81A3-8876B073EE61">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>966B28A4-85F1-CB2C-DD1C-EA166E4F2CE6</importedID>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT018</logicalDatatype>
+<domain>1E296147-208B-2375-FD8A-1B27B3E58E4A</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ENCERRADA_NO_MES" id="CE5815A1-946C-ED30-F8A0-1B3F85BAA9E2">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>C83F08B1-B91C-AE85-73E5-D10FFD83AB6C</importedID>
+<nullsAllowed>true</nullsAllowed>
+<use>0</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<domain>9538B8AA-91A4-AA19-3C54-E47ACF47B588</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CRIADA_EM" id="7BECF3A8-EDFB-C099-0161-4883C9B3BED1">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>12A85269-A854-E214-53E0-3B0F4F94D18C</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<domain>FDB4D211-1A13-8B52-63A2-F6EEA1B63979</domain>
+<usesDefaultValue>true</usesDefaultValue>
+<defaultValue>CURRENT_TIMESTAMP</defaultValue>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="A6B5C30E-7B0F-0B10-791B-E6965507B2AE" name="PK_RECORRENCIA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>B0AF7162-CE3D-8EDD-FA04-6271B65AFB8C</importedID>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D913C77F-E56D-34FB-D648-0C2415EF0EC1"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3C1443CA-D896-A562-4C04-650533118FFA" name="UQ_RECORRENCIA_ID_USUARIO">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>CFE574C7-9A37-3009-200E-F74D91FEECBB</importedID>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D913C77F-E56D-34FB-D648-0C2415EF0EC1"/>
+<colUsage columnID="A3DB2971-A2FD-F8EA-BA8E-F6F61D8A83DA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B52C6133-D3D5-7B86-0C98-0C29C5C19832" name="FK_RECORRENCIA_USUARIO">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A3DB2971-A2FD-F8EA-BA8E-F6F61D8A83DA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+<tableCheckConstraints itemClass="oracle.dbtools.crest.model.design.constraint.TableLevelConstraint">
+<tableCheckConstraint name="CK_RECORRENCIA_INICIO_MES" directorySegmentName="seg_0" id="5A5B6067-D031-0FD6-345F-7448EE362883">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>AE21ED03-C91A-B7B5-A07C-A3A08F8033E5</importedID>
+<rule><![CDATA[DAY(INICIO_MES) = 1]]></rule>
+</tableCheckConstraint>
+<tableCheckConstraint name="CK_RECORRENCIA_QUANTIDADE" directorySegmentName="seg_0" id="06BD4784-6706-1FF5-CF8F-8C72DA79EAAB">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>96882C03-CA83-B46F-74AB-648FCD94E721</importedID>
+<rule><![CDATA[QUANTIDADE_MESES IS NULL OR QUANTIDADE_MESES > 0]]></rule>
+</tableCheckConstraint>
+<tableCheckConstraint name="CK_RECORRENCIA_ENCERRAMENTO_MES" directorySegmentName="seg_0" id="5F25D97D-FECC-3C9E-77F2-EA0ABF008D4F">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>220B1A94-304D-5885-A7B9-FF56AA3F4C09</importedID>
+<rule><![CDATA[ENCERRADA_NO_MES IS NULL OR DAY(ENCERRADA_NO_MES) = 1]]></rule>
+</tableCheckConstraint>
+<tableCheckConstraint name="CK_RECORRENCIA_ENCERRAMENTO_DATA" directorySegmentName="seg_0" id="D8AD8C69-0BF4-6F79-25F6-F360AF846CD8">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>ED29D3DB-F954-892F-2CA2-42DE37BA3DFE</importedID>
+<rule><![CDATA[ENCERRADA_NO_MES IS NULL OR ENCERRADA_NO_MES >= INICIO_MES]]></rule>
+</tableCheckConstraint>
+</tableCheckConstraints>
+</Table>

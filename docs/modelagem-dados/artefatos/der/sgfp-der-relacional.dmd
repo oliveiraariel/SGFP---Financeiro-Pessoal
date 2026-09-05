@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="sgfp-der-relacional" id="9CF25822-10F7-E507-4FA8-1127EAF8C6DC" version="3.5">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 05:14:51 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>9CF25822-10F7-E507-4FA8-1127EAF8C6DC</designId>
+<usedDesignStorageDescriptors>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="962F1F51-8501-13E8-96E5-8662E08BA221">
+<designStoragePath>/sgfp-importacao-datamodeler-sqlserver2012</designStoragePath>
+</designDescr>
+</usedDesignStorageDescriptors>
+</OSDM_Design>

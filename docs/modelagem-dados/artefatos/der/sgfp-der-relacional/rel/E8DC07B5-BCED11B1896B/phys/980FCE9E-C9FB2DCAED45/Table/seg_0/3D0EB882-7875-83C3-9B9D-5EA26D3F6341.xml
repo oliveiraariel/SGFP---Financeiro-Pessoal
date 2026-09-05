@@ -1,0 +1,60 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<TableProxySqlServerv2k5 class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.TableProxySqlServerv2k5" name="CATEGORIA" directorySegmentName="seg_0" id="3D0EB882-7875-83C3-9B9D-5EA26D3F6341">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:03 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<database>DB_NULLELEMENT</database>
+<schema>7446DCD3-E951-30C5-5E3C-4ADA17CED3F8</schema>
+<columnProxies>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.ColumnProxySqlServerv2k12" name="ID_CATEGORIA" id="0AA8EDC4-E5E5-B711-81E7-5EF5B34A6553">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<asIdentity>true</asIdentity>
+<identityForReplication>YES</identityForReplication>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.ColumnProxySqlServerv2k12" name="CRIADA_EM" id="6E9314F1-5ACF-6256-BE24-F57355AEB7C7">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<defaultValue>CURRENT_TIMESTAMP</defaultValue>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.ColumnProxySqlServerv2k12" name="NOME" id="B3816C23-F93E-DDFE-AB20-58E528F75923">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+</ColumnProxy>
+<ColumnProxy class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k12.ColumnProxySqlServerv2k12" name="FK_ID_USUARIO" id="F3EC18DB-5DBA-4CF5-4254-016FDC4FA895">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+</ColumnProxy>
+</columnProxies>
+<foreignKeys>
+<ForeignKey class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.FKProxySqlServerv2k5" name="FK_CATEGORIA_USUARIO" id="A051BDA5-D0E3-9AC5-4E9C-C741F75605A9">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-importacao-datamodeler-sqlserver2012</ownerDesignName>
+</ForeignKey>
+</foreignKeys>
+<primaryKeys>
+<PrimaryKey class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.PKProxySqlServerv2k5" name="PK_CATEGORIA" id="03587A27-3FFE-792E-0977-15CFF27B06D8">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<clustered>true</clustered>
+</PrimaryKey>
+</primaryKeys>
+<uniqueKeys>
+<UniqueKey class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.UniqueProxySqlServerv2k5" name="UQ_CATEGORIA_ID_USUARIO" id="8F589FA2-93AC-E203-AD22-1DBA517F556B">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+</UniqueKey>
+<UniqueKey class="oracle.dbtools.crest.model.design.storage.sqlserver.v2k5.UniqueProxySqlServerv2k5" name="UQ_CATEGORIA_NOME_USUARIO" id="ACBF2431-4A6D-22BE-7893-028202B3BA62">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+</UniqueKey>
+</uniqueKeys>
+</TableProxySqlServerv2k5>

@@ -68,7 +68,9 @@ As etapas de levantamento e especificação de requisitos já possuem documenta�
 
 Os Casos de Uso também foram organizados individualmente para facilitar manutenção, rastreabilidade e consumo por agentes.
 
-A **Etapa 5 — Mapa do Domínio** foi concluída e validada. A etapa corrente é a **Etapa 6 — Modelagem Conceitual (MER)**.
+As Etapas 5 — Mapa do Domínio, 6 — Modelagem Conceitual (MER), 7 — Modelo Entidade-Relacionamento (DER) e 8 — Modelo Físico foram concluídas e validadas.
+
+A próxima etapa autorizada é a **Etapa 9 — Arquitetura da Aplicação**, pronta para iniciar.
 
 ## Estrutura do Repositório
 
@@ -120,12 +122,12 @@ Reservado ao Mapa do Domínio.
 
 ### `docs/modelagem-dados/`
 
-Reservado para:
+Contém a documentação e os artefatos validados da modelagem de dados:
 
-* Modelagem Conceitual;
-* MER;
-* DER;
-* Modelo Físico.
+* Modelagem Conceitual (MER);
+* DER / Modelo Relacional;
+* Modelo Físico;
+* arquivos visuais e editáveis mantidos em `docs/modelagem-dados/artefatos/`.
 
 ### `docs/arquitetura/`
 
@@ -156,6 +158,9 @@ Os principais pontos de entrada para compreender o SGFP são:
 * `docs/requisitos/levantamento/README.md`
 * `docs/requisitos/srs/README.md`
 * `docs/casos-de-uso/README.md`
+* `docs/modelagem-dados/01-modelagem-conceitual-mer.md`
+* `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`
+* `docs/modelagem-dados/03-modelo-fisico.md`
 * `docs/governanca/relatorio-de-consolidacao.md`
 
 ## Fonte de Verdade
@@ -178,17 +183,17 @@ define orientações para utilização do repositório por agentes e sistemas de
 
 Agentes não devem resolver silenciosamente conflitos de requisitos, regras de negócio ou escopo.
 
-## Divergências Conhecidas
+## Pendências Conhecidas
 
-Antes de avançar para as próximas etapas, deve ser consultado:
+O histórico de divergências e reconciliações do projeto está registrado em:
 
 ```text
 docs/governanca/relatorio-de-consolidacao.md
 ```
 
-Entre os principais pontos ainda sujeitos a validação está a divergência entre o catálogo vigente de requisitos funcionais e artefatos derivados que utilizam outra numeração.
+A divergência histórica do catálogo de requisitos funcionais já foi reconciliada.
 
-Essas divergências devem ser resolvidas antes que a documentação seja considerada uma baseline normativa definitiva.
+Permanece aberta a `ISSUE-008`, referente à materialização da matriz direta Regra de Negócio → Requisito. Essa pendência não bloqueia o início da Arquitetura, mas deverá ser concluída antes do fechamento final da rastreabilidade de testes.
 
 ## Tecnologias
 

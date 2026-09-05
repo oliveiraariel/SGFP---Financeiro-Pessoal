@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<BusinessInfoDesign class="oracle.dbtools.crest.model.businessinfo.BusinessInfoDesign" name="Business Information" id="9AADB3C8-37C0-2D09-F79E-156B55625A37">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 05:14:51 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</BusinessInfoDesign>

@@ -2,9 +2,9 @@
 
 ## Sistema de Gestão Financeira Pessoal
 
-**Versão do documento:** 1.5
+**Versão do documento:** 1.6
 
-**Data da última atualização:** 04/09/2026
+**Data da última atualização:** 05/09/2026
 
 ### 1. Apresentação
 
@@ -197,11 +197,11 @@ Verificações e testes poderão acompanhar a implementação sempre que forem �
 
 ### 12. Situação Atual do Projeto
 
-Atualmente o projeto encontra-se na **Etapa 6 — Modelagem Conceitual (MER)**.
+As etapas de levantamento e especificação de requisitos, Casos de Uso, Mapa do Domínio e modelagem de dados foram concluídas.
 
-As etapas de levantamento e especificação de requisitos, Casos de Uso e Mapa do Domínio já foram concluídas e constituem a base para a modelagem conceitual.
+As **Etapas 6 — Modelagem Conceitual (MER), 7 — Modelo Entidade-Relacionamento (DER) e 8 — Modelo Físico** estão concluídas e validadas. A próxima etapa autorizada é a **Etapa 9 — Arquitetura da Aplicação**.
 
-A decisão de utilizar PHP sobre WordPress na Versão 1, com backend específico em plugin próprio, infraestrutura REST do WordPress e persistência relacional compatível com MySQL ou MariaDB, deverá ser considerada nos artefatos das etapas posteriores. A proteção opcional por PIN permanece adiada para uma versão futura.
+A decisão de utilizar PHP sobre WordPress na Versão 1, com backend específico em plugin próprio, infraestrutura REST do WordPress e persistência relacional compatível com MySQL ou MariaDB, deverá orientar a definição da Arquitetura. A proteção opcional por PIN permanece adiada para uma versão futura.
 
 A preservação do estado anterior durante uma restauração foi consolidada como cópia de segurança automática pré-restauração: após validação da cópia escolhida e confirmação do usuário, o estado atual deverá ser preservado em condição recuperável antes de qualquer substituição. O mecanismo técnico dessa preservação será definido na etapa apropriada.
 

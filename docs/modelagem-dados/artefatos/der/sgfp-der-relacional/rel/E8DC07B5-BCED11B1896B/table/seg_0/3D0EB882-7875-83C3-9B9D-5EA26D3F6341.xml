@@ -1,0 +1,119 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="3D0EB882-7875-83C3-9B9D-5EA26D3F6341" name="CATEGORIA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:03 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>77F58067-1D05-45B0-6D2C-687D02AFEDC4</importedID>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID_CATEGORIA" id="0AA8EDC4-E5E5-B711-81E7-5EF5B34A6553">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>31DB1696-E2F4-BC5F-1EC1-ED14104DEDF9</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="FK_ID_USUARIO" id="F3EC18DB-5DBA-4CF5-4254-016FDC4FA895">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>1E15C6BC-F81E-E5E9-D3E1-B685B9C28127</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="82A74692-790F-11BE-D643-509CAA3FB531" referredColumn="64FDAEDA-BE84-2F49-568A-E208BD7E3E7F"/>
+</associations>
+</Column>
+<Column name="NOME" id="B3816C23-F93E-DDFE-AB20-58E528F75923">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>993B4649-B9ED-780B-E39B-BAD2106B493C</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>41BA5841-0EF2-B811-075B-6F31A25F45C9</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CRIADA_EM" id="6E9314F1-5ACF-6256-BE24-F57355AEB7C7">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>56976FB4-0AC9-0F72-A34E-67618C05AA81</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<domain>FDB4D211-1A13-8B52-63A2-F6EEA1B63979</domain>
+<usesDefaultValue>true</usesDefaultValue>
+<defaultValue>CURRENT_TIMESTAMP</defaultValue>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="03587A27-3FFE-792E-0977-15CFF27B06D8" name="PK_CATEGORIA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>E95B2ECE-2B4E-68A5-2874-7E637B256131</importedID>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0AA8EDC4-E5E5-B711-81E7-5EF5B34A6553"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="ACBF2431-4A6D-22BE-7893-028202B3BA62" name="UQ_CATEGORIA_NOME_USUARIO">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>53B18435-741D-99A9-54B4-DA57689AA496</importedID>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F3EC18DB-5DBA-4CF5-4254-016FDC4FA895"/>
+<colUsage columnID="B3816C23-F93E-DDFE-AB20-58E528F75923"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="8F589FA2-93AC-E203-AD22-1DBA517F556B" name="UQ_CATEGORIA_ID_USUARIO">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>BFC0C441-1A31-4E55-641A-B8305166A2D7</importedID>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0AA8EDC4-E5E5-B711-81E7-5EF5B34A6553"/>
+<colUsage columnID="F3EC18DB-5DBA-4CF5-4254-016FDC4FA895"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="A051BDA5-D0E3-9AC5-4E9C-C741F75605A9" name="FK_CATEGORIA_USUARIO">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F3EC18DB-5DBA-4CF5-4254-016FDC4FA895"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

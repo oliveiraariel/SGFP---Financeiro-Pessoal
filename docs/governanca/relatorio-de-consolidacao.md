@@ -205,3 +205,21 @@ Um compromisso financeiro poderá ser cadastrado e permanecer sem categoria.
 Permanecem inalteradas as funcionalidades de criação, renomeação e remoção de categorias. A remoção de uma categoria continua não excluindo os compromissos anteriormente associados.
 
 Esta decisão substitui, para a baseline vigente, a regra anterior de obrigatoriedade de categoria, preservando-se o registro histórico da decisão anterior para fins de proveniência e rastreabilidade.
+
+## 9. Fechamento da Modelagem de Dados — 05/09/2026
+
+As Etapas 6, 7 e 8 foram concluídas e validadas:
+
+- **Etapa 6 — Modelagem Conceitual (MER):** concluída e validada;
+- **Etapa 7 — Modelo Entidade-Relacionamento (DER):** concluída e validada;
+- **Etapa 8 — Modelo Físico:** concluída e validada.
+
+Os artefatos correspondentes foram organizados em `docs/modelagem-dados/artefatos/`, mantendo versões visuais e editáveis quando aplicável.
+
+O Modelo Físico oficial da V1 está registrado em:
+
+- `docs/modelagem-dados/artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql`.
+
+Durante o fechamento da modelagem foi consolidada também a regra de natureza das transferências: para o compromisso de transferência, o fluxo da Conta Principal para uma Conta Secundária possui natureza **Saída**, enquanto o fluxo de uma Conta Secundária para a Conta Principal possui natureza **Entrada**.
+
+Com a validação da modelagem de dados, o gate da **Etapa 9 — Arquitetura da Aplicação** está liberado. A `ISSUE-008` permanece aberta como pendência de rastreabilidade, sem bloquear o início da Arquitetura, devendo ser concluída antes do fechamento final da rastreabilidade de testes.

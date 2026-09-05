@@ -1,9 +1,26 @@
 # Etapa 6 — Modelagem Conceitual (MER)
 
-Identificar entidades, atributos e relacionamentos com base nas regras de negócio e nos conceitos validados no Mapa do Domínio.
+## Objetivo
 
-**Status:** em andamento.
+Representar conceitualmente os dados do SGFP a partir das regras de negócio, requisitos, Casos de Uso e conceitos validados no Mapa do Domínio.
 
-A modelagem desta etapa deverá considerar somente o escopo ativo da Versão 1. O RF-019 — proteção por PIN — está adiado para versão futura e não deverá originar entidade, atributo ou mecanismo de persistência no MER atual.
+**Status:** concluída e validada em 05/09/2026.
 
-O WordPress é uma restrição tecnológica conhecida, mas detalhes físicos como `wp_users`, tabelas, chaves e integração de persistência pertencem às etapas posteriores.
+## Resultado
+
+O MER consolidou as entidades e os relacionamentos necessários à Versão 1, incluindo Usuário, Conta Financeira, Categoria, Recorrência, Compromisso Financeiro, Transferência e Lançamento Financeiro.
+
+Entre as decisões refletidas no modelo:
+
+- a associação de Categoria ao Compromisso Financeiro é opcional;
+- Transferência é uma especialização de Compromisso Financeiro;
+- saldos são derivados dos lançamentos financeiros;
+- a modelagem considera somente o escopo ativo da V1, sem estrutura específica para o PIN futuro;
+- detalhes de persistência e integração física com o WordPress não pertencem ao MER.
+
+## Artefatos
+
+- [MER — representação visual](artefatos/mer/sgfp-mer-conceitual.png)
+- [MER — arquivo editável do brModelo](artefatos/mer/sgfp-mer-conceitual.brM3)
+
+Os artefatos acima constituem a representação validada da Etapa 6 e servem de entrada para as etapas posteriores de modelagem de dados.

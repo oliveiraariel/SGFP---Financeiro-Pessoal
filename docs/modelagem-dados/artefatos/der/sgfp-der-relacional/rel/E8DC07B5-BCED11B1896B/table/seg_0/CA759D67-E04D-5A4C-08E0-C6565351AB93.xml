@@ -1,0 +1,128 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="CA759D67-E04D-5A4C-08E0-C6565351AB93" name="CONTA_FINANCEIRA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>5C365EE6-FCF8-81F0-00D1-ABD3B7000ABF</importedID>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="ID_CONTA" id="0DF41D52-E965-8D72-F236-7C49003E36FA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>250435EB-484E-199C-F108-D18BC455A033</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementColumn>true</autoIncrementColumn>
+<identityColumn>true</identityColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="FK_ID_USUARIO" id="767B8512-C40D-B966-AB2B-0064B7041281">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>22355680-9278-AAA5-E997-56B7F604DD72</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<domain>2C4C692D-D74A-AB7C-76D6-5CF65BE8B804</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="897B8E56-D76E-3CEF-9D69-390F6C248EC2" referredColumn="64FDAEDA-BE84-2F49-568A-E208BD7E3E7F"/>
+</associations>
+</Column>
+<Column name="NOME" id="A806EB7E-C95C-961E-2902-7C0AD6680CEE">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>BD0AB1BF-9514-596E-E962-F10E0216E7B8</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>A3AE9DC8-AA9A-53F3-E355-3B8D524088B1</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="PAPEL" id="2C4C4735-D8D0-9FBD-E1CE-B4A157E28B81">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>52DF9647-2089-7F59-00A9-F687D751FA7A</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<domain>7D9BC513-F036-19E4-E862-D2B5AC32B6E8</domain>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="CRIADA_EM" id="E2AB2E85-D4D3-76E1-6BD6-05A750D36434">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>E7A61EA1-1635-708D-D24A-494FB63D57B9</importedID>
+<use>0</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<domain>FDB4D211-1A13-8B52-63A2-F6EEA1B63979</domain>
+<usesDefaultValue>true</usesDefaultValue>
+<defaultValue>CURRENT_TIMESTAMP</defaultValue>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="84E28186-4330-239E-1E85-71E14478306C" name="PK_CONTA_FINANCEIRA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>1178528E-CF1B-A282-6987-2DF9BE75C018</importedID>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0DF41D52-E965-8D72-F236-7C49003E36FA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="02AB34EC-F426-4513-2999-1A21AA7974B6" name="UQ_CONTA_ID_USUARIO">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>ED82FCD9-A764-1384-A16E-E9C803221227</importedID>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0DF41D52-E965-8D72-F236-7C49003E36FA"/>
+<colUsage columnID="767B8512-C40D-B966-AB2B-0064B7041281"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="66A62A5F-4241-5227-4BB8-5172ABE339C3" name="FK_CONTA_USUARIO">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="767B8512-C40D-B966-AB2B-0064B7041281"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+<tableCheckConstraints itemClass="oracle.dbtools.crest.model.design.constraint.TableLevelConstraint">
+<tableCheckConstraint name="CK_CONTA_PAPEL" directorySegmentName="seg_0" id="317833D0-E9A4-5AE0-9F76-558B797BDDC2">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>F2FBC903-BC60-63B5-DA2A-C38A113A55D5</importedID>
+<rule><![CDATA[PAPEL IN ('PRINCIPAL', 'SECUNDARIA')]]></rule>
+</tableCheckConstraint>
+</tableCheckConstraints>
+</Table>
