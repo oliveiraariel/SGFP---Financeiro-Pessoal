@@ -1,0 +1,4 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle.dbtools.crest.model.design.relational.RelationalDesign>
+   <object objectType="main_view" objectID="53A2DE7F-870F-522E-0C09-FFCFDDE048AE" name="sgfp-importacao-datamodeler-sqlserver2012" visible="true"/>
+</oracle.dbtools.crest.model.design.relational.RelationalDesign>

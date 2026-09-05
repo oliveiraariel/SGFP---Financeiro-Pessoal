@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<ProcessModel class="oracle.dbtools.crest.model.design.process.ProcessModel" name="Process Model" id="AE00C1A0-4672-1F0B-0B64-9EA2AEF8FB2E">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 05:14:51 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</ProcessModel>

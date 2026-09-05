@@ -1,0 +1,15 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<relationalModel class="oracle.dbtools.crest.model.design.relational.RelationalDesign" name="sgfp-importacao-datamodeler-sqlserver2012" id="E8DC07B5-B0BD-802D-0611-BCED11B1896B" mainViewID="53A2DE7F-870F-522E-0C09-FFCFDDE048AE">
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:32:50 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+<selectedRDBMSSite>980FCE9E-D688-BDF0-C89A-C9FB2DCAED45</selectedRDBMSSite>
+<importDDLFileStamps>
+<importDDLFileStamp class="oracle.dbtools.crest.imports.DDLFileStamp">
+<fileName>sgfp-importacao-datamodeler-sqlserver2012.sql</fileName>
+<pathName>/home/ariel/Área de trabalho</pathName>
+<dbType>13</dbType>
+</importDDLFileStamp>
+</importDDLFileStamps>
+</relationalModel>

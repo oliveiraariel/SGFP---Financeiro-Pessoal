@@ -1,6 +1,6 @@
 schema_version: "1.0"
-manifest_version: "2.5"
-updated_at: "2026-09-04"
+manifest_version: "2.6"
+updated_at: "2026-09-05"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -100,16 +100,16 @@ development_guidance:
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "stage_6_in_progress"
+  current_state: "stage_9_ready_to_start"
   last_completed_stage:
-    id: 5
-    name: "Mapa do Domínio"
+    id: 8
+    name: "Modelo Físico"
   current_stage:
-    id: 6
-    name: "Modelagem Conceitual (MER)"
+    id: 9
+    name: "Arquitetura da Aplicação"
   current_stage_gate:
-    status: "in_progress"
-    reason: "A Etapa 5 foi concluída e validada. A Etapa 6 deve utilizar a baseline documental atualizada, sem modelar estruturas exclusivas do PIN adiado."
+    status: "ready_to_start"
+    reason: "As Etapas 6, 7 e 8 foram concluídas e validadas. A Etapa 9 está autorizada a iniciar utilizando o MER, o DER e o Modelo Físico validados como entradas."
     blockers: []
 
 stages:
@@ -140,22 +140,22 @@ stages:
 
   - id: 6
     name: "Modelagem Conceitual (MER)"
-    status: "in_progress"
+    status: "completed_validated"
     path: "docs/modelagem-dados/01-modelagem-conceitual-mer.md"
 
   - id: 7
     name: "Modelo Entidade-Relacionamento (DER)"
-    status: "not_started"
+    status: "completed_validated"
     path: "docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md"
 
   - id: 8
     name: "Modelo Físico"
-    status: "not_started"
+    status: "completed_validated"
     path: "docs/modelagem-dados/03-modelo-fisico.md"
 
   - id: 9
     name: "Arquitetura da Aplicação"
-    status: "not_started"
+    status: "ready_to_start"
     path: "docs/arquitetura/"
 
   - id: 10
@@ -221,6 +221,23 @@ canonical_sources:
     path: "docs/dominio/01-mapa-de-dominio.md"
     authority: "validated_domain_concepts"
     note: "Organiza conceitos e relações da Etapa 5 sem substituir regras de negócio, requisitos ou Casos de Uso e sem antecipar decisões de modelagem."
+
+  conceptual_data_model:
+    path: "docs/modelagem-dados/01-modelagem-conceitual-mer.md"
+    authority: "validated_data_model"
+    editable_artifact: "docs/modelagem-dados/artefatos/mer/sgfp-mer-conceitual.brM3"
+    visual_artifact: "docs/modelagem-dados/artefatos/mer/sgfp-mer-conceitual.png"
+
+  relational_data_model:
+    path: "docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md"
+    authority: "validated_data_model"
+    editable_artifact: "docs/modelagem-dados/artefatos/der/sgfp-der-relacional.dmd"
+    visual_artifact: "docs/modelagem-dados/artefatos/der/sgfp-der-relacional.png"
+
+  physical_data_model:
+    path: "docs/modelagem-dados/03-modelo-fisico.md"
+    authority: "validated_data_model"
+    sql_artifact: "docs/modelagem-dados/artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql"
 
   governance_report:
     path: "docs/governanca/relatorio-de-consolidacao.md"
@@ -430,6 +447,7 @@ known_issues:
     category: "requirements_traceability"
     decision_required: false
     blocks_stage_6: false
+    blocks_stage_9: false
     blocks_stage_12: true
     summary: "A cadeia-alvo declara Regra de Negócio → Requisito, mas a matriz direta regra por regra ainda não foi materializada."
     affected_paths:
@@ -444,6 +462,9 @@ resolved_consolidation_notes:
   - topic: "category_association"
     status: "resolved_by_later_human_decision"
     resolution: "Por decisão humana de 04/09/2026, a associação de Categoria ao Compromisso Financeiro é opcional; o compromisso pode ser cadastrado e permanecer sem categoria."
+  - topic: "transfer_nature"
+    status: "resolved_by_human_decision"
+    resolution: "Na Transferência, a natureza do Compromisso Financeiro é determinada em relação à Conta Principal: Principal para Secundária = Saída; Secundária para Principal = Entrada."
   - topic: "raw_source_location"
     status: "resolved"
     resolution: "A edição Core não contém o export bruto; proveniência e inventário permanecem em docs/governanca/."

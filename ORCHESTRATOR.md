@@ -1,9 +1,9 @@
 # ORCHESTRATOR.md — Contrato Operacional para Agentes
 
 **Projeto:** SGFP — Sistema de Gestão Financeira Pessoal  
-**Versão deste documento:** 2.3
+**Versão deste documento:** 2.4
 **Status:** Governança operacional vigente  
-**Última atualização:** 04/09/2026
+**Última atualização:** 05/09/2026
 
 ## 1. Finalidade
 
@@ -51,26 +51,35 @@ A **Etapa 5 — Mapa do Domínio** foi concluída e validada no artefato:
 
 O Mapa do Domínio organiza os conceitos, responsabilidades e relações conceituais do SGFP sem antecipar cardinalidades, entidades definitivas, estruturas lógicas, estruturas físicas, arquitetura ou implementação.
 
-A etapa corrente é:
+As etapas de modelagem de dados foram concluídas e validadas:
 
-**Etapa 6 — Modelagem Conceitual (MER)**
+- **Etapa 6 — Modelagem Conceitual (MER)**;
+- **Etapa 7 — Modelo Entidade-Relacionamento (DER)**;
+- **Etapa 8 — Modelo Físico**.
 
-A Etapa 6 deverá utilizar a baseline documental atualizada e não deverá modelar conceitos, entidades, atributos ou estruturas destinados exclusivamente ao PIN futuro.
+Os documentos de referência estão em `docs/modelagem-dados/`, com os artefatos editáveis e visuais mantidos em `docs/modelagem-dados/artefatos/`.
+
+A próxima etapa autorizada é:
+
+**Etapa 9 — Arquitetura da Aplicação**
+
+A Etapa 9 está pronta para iniciar e deverá utilizar a modelagem validada, a baseline documental e as restrições tecnológicas já consolidadas como entradas, sem alterar silenciosamente decisões de negócio.
 
 A associação de Categoria ao Compromisso Financeiro é opcional na V1; um compromisso pode ser cadastrado e permanecer sem categoria.
 
 As pendências e decisões de governança relevantes ao estado atual permanecem registradas no `project-manifest.yaml` e nos documentos de continuidade. Em especial:
 
 - `ISSUE-001` a `ISSUE-007` estão resolvidas conforme a baseline vigente;
-- `ISSUE-008` permanece aberta como pendência de rastreabilidade, não bloqueia a Etapa 6 e deverá ser concluída antes do fechamento formal da rastreabilidade de testes na Etapa 12.
+- `ISSUE-008` permanece aberta como pendência de rastreabilidade, não bloqueia o início da Etapa 9 e deverá ser concluída antes do fechamento formal da rastreabilidade de testes na Etapa 12.
 
-Até a validação do MER:
+Os gates das Etapas 6, 7 e 8 foram satisfeitos.
 
-- não iniciar DER;
-- não iniciar Modelo Físico;
-- não promover decisões de persistência;
-- não definir arquitetura final;
-- não iniciar implementação.
+A partir do estado atual:
+
+- a Etapa 9 — Arquitetura da Aplicação pode ser iniciada;
+- decisões arquiteturais deverão ser registradas em `docs/arquitetura/`;
+- a implementação da API não deverá começar antes da definição e validação da arquitetura correspondente;
+- a modelagem validada somente deverá ser alterada quando houver motivo documentado e análise de impacto.
 
 ### Restrição tecnológica vigente
 
@@ -94,8 +103,9 @@ Depois, deverá carregar somente os documentos necessários à tarefa:
 7. `docs/requisitos/srs/README.md` e seções do SRS envolvidas;
 8. `docs/casos-de-uso/README.md` e Casos de Uso relacionados;
 9. `docs/dominio/01-mapa-de-dominio.md` para qualquer tarefa da Etapa 6 em diante;
-10. artefatos das etapas posteriores somente quando a etapa correspondente já tiver sido iniciada e forem relevantes;
-11. `docs/projeto/roteiro-tecnico-de-implementacao.md` quando a tarefa envolver preparação técnica, Arquitetura, API, Interface, testes durante a implementação, ferramentas de desenvolvimento ou qualidade de código.
+10. `docs/modelagem-dados/` e seus artefatos validados para tarefas de Arquitetura, persistência, API ou qualquer alteração que dependa da estrutura de dados;
+11. artefatos das demais etapas somente quando a etapa correspondente já tiver sido iniciada e forem relevantes;
+12. `docs/projeto/roteiro-tecnico-de-implementacao.md` quando a tarefa envolver preparação técnica, Arquitetura, API, Interface, testes durante a implementação, ferramentas de desenvolvimento ou qualidade de código.
 
 O roteiro técnico é um **documento auxiliar**. Ele detalha práticas, ferramentas e sequência didática, mas permanece subordinado ao Plano de Desenvolvimento, às fontes canônicas, aos gates oficiais e às decisões de arquitetura aprovadas.
 
@@ -161,7 +171,7 @@ A baseline funcional vigente registra:
 - `ISSUE-005`: resolvida — proteção por PIN retirada do escopo ativo da V1, com identificadores preservados para versão futura;
 - `ISSUE-006`: resolvida — PHP sobre WordPress, plugin próprio, infraestrutura REST e MySQL/MariaDB consolidados como restrição tecnológica da V1;
 - `ISSUE-007`: resolvida — preservação do estado anterior definida como cópia de segurança automática pré-restauração, permanecendo o mecanismo técnico para a etapa apropriada;
-- `ISSUE-008`: aberta — a matriz direta Regra de Negócio → Requisito ainda deverá ser materializada. Não bloqueia a Etapa 6, mas bloqueia o fechamento final da rastreabilidade da Etapa 12.
+- `ISSUE-008`: aberta — a matriz direta Regra de Negócio → Requisito ainda deverá ser materializada. Não bloqueia o início da Etapa 9, mas bloqueia o fechamento final da rastreabilidade da Etapa 12.
 
 Os status, resoluções e evidências permanecem registrados em `project-manifest.yaml`, `docs/governanca/continuidade-de-contexto.md` e `docs/governanca/relatorio-de-consolidacao.md`.
 
@@ -192,6 +202,7 @@ Os agentes devem respeitar a sequência estabelecida no Plano de Desenvolvimento
 
 Regras essenciais:
 
+- no estado atual, os gates das Etapas 5 a 8 já foram satisfeitos e a Etapa 9 está pronta para iniciar;
 - a Etapa 5 somente é considerada concluída com `docs/dominio/01-mapa-de-dominio.md` validado;
 - a Modelagem Conceitual (MER) pode iniciar somente após a validação do Mapa do Domínio;
 - não criar DER antes da validação do MER;
@@ -476,6 +487,14 @@ A proveniência disponível no repositório deve ser consultada em:
 Caso seja necessária auditoria sobre o material bruto original, deve-se utilizar o pacote de preservação completo mantido separadamente.
 
 ## 21. Histórico de atualização
+
+### Versão 2.4 — 05/09/2026
+
+- registro da conclusão e validação das Etapas 6 — MER, 7 — DER e 8 — Modelo Físico;
+- incorporação dos artefatos validados de modelagem de dados ao fluxo oficial do projeto;
+- liberação do gate da Etapa 9 — Arquitetura da Aplicação;
+- atualização da `ISSUE-008` como pendência não bloqueadora do início da Arquitetura;
+- preservação dos gates de implementação: a API continua condicionada à arquitetura correspondente.
 
 ### Versão 2.3 — 02/09/2026
 

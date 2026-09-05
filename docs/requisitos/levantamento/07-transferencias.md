@@ -112,6 +112,13 @@ Na conta de origem, o valor será apresentado como saída.
 
 Na conta de destino, o valor será apresentado como entrada.
 
+A natureza financeira do compromisso de transferência será determinada pelo sentido da operação em relação à Conta Principal:
+
+- Conta Principal → Conta Secundária: Saída;
+- Conta Secundária → Conta Principal: Entrada.
+
+Essa natureza decorre do fluxo da transferência e não será escolhida de forma independente pelo usuário.
+
 **RN-024**
 
 A alteração, efetivação ou desfazimento de uma transferência deverá manter os registros das contas de origem e destino consistentes entre si.
@@ -143,6 +150,7 @@ A alteração, efetivação ou desfazimento de uma transferência deverá manter
 - O mesmo nome será utilizado nos dois registros.
 - Na conta de origem, o valor será apresentado como saída.
 - Na conta de destino, o valor será apresentado como entrada.
+- A natureza do compromisso de transferência será determinada em relação à Conta Principal: Principal → Secundária = Saída; Secundária → Principal = Entrada.
 
 ## **Funcionalidades da Versão 1**
 

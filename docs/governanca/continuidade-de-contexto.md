@@ -16,10 +16,11 @@ Ao retomar o projeto, leia nesta ordem:
 2. `ORCHESTRATOR.md`
 3. `project-manifest.yaml`
 4. `docs/governanca/continuidade-de-contexto.md`
-5. `docs/dominio/01-mapa-de-dominio.md` para tarefas da Etapa 6 em diante
-6. `docs/projeto/plano-de-desenvolvimento.md` quando a tarefa envolver processo, sequência de etapas ou gates
-7. `docs/projeto/roteiro-tecnico-de-implementacao.md` somente quando a tarefa envolver preparação técnica, Modelo Físico, Arquitetura, API, Interface Web, testes ou planejamento das etapas técnicas posteriores
-8. somente os documentos canônicos e derivados necessários para a tarefa atual
+5. `docs/dominio/01-mapa-de-dominio.md` quando a tarefa depender dos conceitos do domínio
+6. `docs/modelagem-dados/` e seus artefatos validados para tarefas da Etapa 9 em diante que dependam da estrutura de dados
+7. `docs/projeto/plano-de-desenvolvimento.md` quando a tarefa envolver processo, sequência de etapas ou gates
+8. `docs/projeto/roteiro-tecnico-de-implementacao.md` quando a tarefa envolver Arquitetura, API, Interface Web, testes ou preparação técnica
+9. somente os documentos canônicos e derivados necessários para a tarefa atual
 
 Em caso de divergência:
 
@@ -45,15 +46,26 @@ Baseline ativa da Versão 1:
 
 Última etapa concluída e validada:
 
-- **Etapa 5 — Mapa do Domínio**
+- **Etapa 8 — Modelo Físico**
 
-Artefato da Etapa 5:
+Etapas de modelagem concluídas:
 
-- `docs/dominio/01-mapa-de-dominio.md`
+- **Etapa 5 — Mapa do Domínio**;
+- **Etapa 6 — Modelagem Conceitual (MER)**;
+- **Etapa 7 — Modelo Entidade-Relacionamento (DER)**;
+- **Etapa 8 — Modelo Físico**.
 
-Etapa atual:
+Artefatos principais:
 
-- **Etapa 6 — Modelagem Conceitual (MER)**
+- `docs/dominio/01-mapa-de-dominio.md`;
+- `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
+- `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`;
+- `docs/modelagem-dados/03-modelo-fisico.md`;
+- `docs/modelagem-dados/artefatos/`.
+
+Próxima etapa autorizada:
+
+- **Etapa 9 — Arquitetura da Aplicação**, pronta para iniciar.
 
 Situação:
 - o Mapa do Domínio foi revisado para permanecer estritamente no escopo da Etapa 5;
@@ -74,11 +86,11 @@ Situação:
 - backup automático periódico ou contínuo permanece fora da V1;
 - `CA-021.8` registra explicitamente o envio da cópia manual por e-mail e `CA-021.9` a `CA-021.11` consolidam a proteção pré-restauração;
 - `ISSUE-007` está resolvida: o significado operacional de preservar o estado imediatamente anterior foi definido como cópia de segurança automática pré-restauração; o mecanismo técnico permanece para as etapas posteriores;
-- `ISSUE-008` permanece aberta: a matriz direta Regra de Negócio → Requisito ainda não foi materializada; não bloqueia a Etapa 6, mas deverá ser concluída antes do fechamento da rastreabilidade da Etapa 12;
-- cardinalidades, entidades definitivas, chaves, tabelas, nulabilidade, persistência, especializações formais e decisões físicas pertencem às etapas correspondentes;
-- SQLs, modelos físicos preliminares ou estruturas de banco produzidas como apoio não devem ser tratados como Modelo Físico oficial antes da validação do MER, do DER e da abertura da Etapa 8;
-- estruturas exclusivas do PIN futuro não deverão ser modeladas na V1;
-- Etapas 7 a 12 permanecem condicionadas aos respectivos gates.
+- `ISSUE-008` permanece aberta: a matriz direta Regra de Negócio → Requisito ainda não foi materializada; não bloqueia o início da Etapa 9, mas deverá ser concluída antes do fechamento da rastreabilidade da Etapa 12;
+- as decisões de cardinalidade, especialização, estrutura relacional e Modelo Físico das Etapas 6 a 8 estão registradas nos artefatos validados de `docs/modelagem-dados/`;
+- o Modelo Físico oficial da V1 é o artefato `docs/modelagem-dados/artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql`;
+- estruturas exclusivas do PIN futuro não integram a modelagem da V1;
+- a Etapa 9 está pronta para iniciar; as Etapas 10 a 12 permanecem condicionadas aos respectivos gates.
 
 ## 4. Decisões consolidadas relevantes para a modelagem
 
@@ -127,7 +139,7 @@ Não renumerar os identificadores posteriores e não criar RF oficial acima de `
 
 - recorrência é mensal na V1;
 - alterações e cancelamentos preservam períodos anteriores;
-- a estratégia de representação e eventual materialização de ocorrências pertence à Modelagem Conceitual e etapas posteriores.
+- a Recorrência possui representação própria na modelagem validada; a estratégia operacional de materialização das ocorrências será tratada pela aplicação conforme a Arquitetura e a implementação.
 
 ### 4.7 Transferência
 
@@ -135,7 +147,9 @@ Não renumerar os identificadores posteriores e não criar RF oficial acima de `
 - origem e destino devem ser contas diferentes;
 - as regras atuais relacionam transferências entre Conta Principal e Conta Secundária;
 - Transferência não altera Patrimônio Total;
-- o Mapa do Domínio não decide se Transferência será especialização, composição ou entidade independente.
+- na modelagem validada, Transferência é uma especialização de Compromisso Financeiro;
+- a natureza do compromisso de transferência é determinada em relação à Conta Principal: Principal → Secundária = Saída; Secundária → Principal = Entrada;
+- quando efetivada, a transferência produz uma Saída na conta de origem e uma Entrada na conta de destino.
 
 ## 5. Papel do Mapa do Domínio
 
@@ -165,33 +179,26 @@ Ele **não define**:
 - arquitetura;
 - implementação.
 
-## 6. Gate da Etapa 6 — Modelagem Conceitual (MER)
+## 6. Resultado das Etapas 6 a 8 — Modelagem de Dados
 
-A Etapa 6 pode iniciar quando:
+As Etapas 6, 7 e 8 foram concluídas e validadas em 05/09/2026.
 
-1. `docs/dominio/01-mapa-de-dominio.md` estiver presente no repositório na versão validada;
-2. `git diff --check` não apresentar erro;
-3. não houver divergência bloqueante entre Mapa do Domínio, regras de negócio, SRS e Casos de Uso;
-4. o estado do Git for conhecido e adequado ao trabalho.
+Resultados consolidados:
 
-A aprovação do gate não deve ser inferida apenas pelo resultado de `git diff --check`; a consistência documental e o conteúdo da versão efetivamente versionada também devem ser confirmados.
+- MER conceitual validado e preservado em formato visual e editável;
+- DER relacional validado e preservado em formato visual e editável;
+- Modelo Físico MySQL/MariaDB validado e incorporado como referência oficial;
+- associação de Categoria ao Compromisso Financeiro mantida como opcional;
+- Transferência consolidada como especialização de Compromisso Financeiro;
+- natureza da transferência determinada pelo fluxo em relação à Conta Principal;
+- identidade e autenticação mantidas sob responsabilidade do WordPress;
+- saldo mantido como informação derivada dos lançamentos.
 
-`ISSUE-007` está resolvida e não constitui mais bloqueio para a Arquitetura. A pendência `ISSUE-008` permanece **não bloqueadora da Etapa 6** e deverá ser concluída antes do fechamento final da rastreabilidade de testes.
-
-Durante o MER:
-
-- analisar candidatos do Mapa do Domínio, sem presumir que todos serão entidades;
-- definir conceitos com identidade própria somente quando justificado;
-- definir relacionamentos e cardinalidades na Etapa 6;
-- manter dados derivados como derivados quando aplicável;
-- registrar ambiguidades sem promover suposições a regra;
-- consultar a fonte canônica sempre que uma decisão depender de regra de negócio.
+`ISSUE-008` permanece aberta como pendência de rastreabilidade, mas não bloqueia o início da Etapa 9.
 
 ## 7. Gates posteriores
 
-- **Etapa 7 — DER:** somente após validação do MER.
-- **Etapa 8 — Modelo Físico:** somente após validação do DER.
-- **Etapa 9 — Arquitetura:** somente após compreensão e modelagem compatíveis com os gates anteriores e após resolução de eventuais ambiguidades de negócio bloqueantes; `ISSUE-007` já se encontra resolvida.
+- **Etapa 9 — Arquitetura:** gate liberado; é a próxima etapa autorizada.
 - **Etapa 10 — API:** somente após arquitetura correspondente.
 - **Etapa 11 — Interface Web:** conforme arquitetura e contratos aprovados.
 - **Etapa 12 — Testes:** evolui conforme critérios, implementação e estratégia vigente; a cadeia direta Regra de Negócio → Requisito deverá estar concluída antes do fechamento final da rastreabilidade.
@@ -222,17 +229,16 @@ Não executar `push`, `merge`, rebase destrutivo ou alteração da `main` sem co
 
 ## 9. Próxima ação recomendada
 
-Após confirmar que a Etapa 5 e os arquivos de governança atualizados estão corretamente versionados:
+Após confirmar que o fechamento das Etapas 6, 7 e 8 e seus artefatos estão corretamente versionados:
 
-1. continuar a unidade de trabalho da **Etapa 6 — Modelagem Conceitual (MER)**;
-2. ler `docs/dominio/01-mapa-de-dominio.md`;
-3. carregar somente as regras de negócio, requisitos e Casos de Uso necessários aos conceitos analisados;
-4. produzir ou evoluir `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
-5. validar o MER antes de qualquer trabalho de DER.
+1. iniciar a **Etapa 9 — Arquitetura da Aplicação**;
+2. ler a modelagem validada em `docs/modelagem-dados/`;
+3. consultar `docs/projeto/roteiro-tecnico-de-implementacao.md` como guia auxiliar;
+4. definir a organização do plugin, responsabilidades dos componentes, estratégia de persistência, integração com WordPress e contratos REST;
+5. registrar as decisões arquiteturais em `docs/arquitetura/`;
+6. validar a arquitetura antes de iniciar a Etapa 10 — Desenvolvimento da API.
 
-`ISSUE-007` deve permanecer registrada como resolvida. `ISSUE-008` deve permanecer visível, sem ser silenciosamente resolvida durante o MER.
-
-O roteiro técnico de implementação deve permanecer como referência futura. Sua existência não altera a próxima ação atual: concluir e validar o MER antes de iniciar o DER.
+`ISSUE-007` deve permanecer registrada como resolvida. `ISSUE-008` deve permanecer visível como pendência não bloqueadora da Arquitetura.
 
 ## 10. Arquivos-base para contexto de novas sessões
 
@@ -244,15 +250,18 @@ Para uma retomada eficiente, fornecer preferencialmente:
 - `docs/governanca/PROMPT-RETOMADA.md`;
 - `docs/governanca/continuidade-de-contexto.md`.
 
-Para tarefas da Etapa 6 em diante, incluir também:
+Para tarefas da Etapa 9 em diante que dependam do domínio e da estrutura de dados, incluir também:
 
-- `docs/dominio/01-mapa-de-dominio.md`.
+- `docs/dominio/01-mapa-de-dominio.md`;
+- `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
+- `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`;
+- `docs/modelagem-dados/03-modelo-fisico.md`.
 
 Quando a tarefa envolver processo, gates ou transição entre etapas, incluir:
 
 - `docs/projeto/plano-de-desenvolvimento.md`.
 
-Quando a tarefa envolver preparação técnica ou as Etapas 8 a 12, incluir também, conforme necessário:
+Quando a tarefa envolver Arquitetura, API, Interface Web, Testes ou preparação técnica, incluir também, conforme necessário:
 
 - `docs/projeto/roteiro-tecnico-de-implementacao.md`.
 
@@ -280,4 +289,4 @@ Atualizar este arquivo quando houver:
 
 Registrar apenas o necessário para retomada e manter a próxima ação explícita.
 
-Última atualização operacional: **2026-09-04**.
+Última atualização operacional: **2026-09-05**.

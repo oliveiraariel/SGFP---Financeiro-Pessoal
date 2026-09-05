@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="A87A860F-0153-BF45-9881-F32643C53C24" containerWithKeyObject="741ED66A-6864-42B3-B7C7-7817310DF58A" localFKIndex="90D6B9A1-1588-A229-49AC-811BFA5F1718" name="FK_LANCAMENTO_CONTA">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>7F214833-5C25-5AAD-E517-A98243A32B22</importedID>
+<referredTableLongName>CONTA_FINANCEIRA</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>CA759D67-E04D-5A4C-08E0-C6565351AB93</referredTableID>
+<keyObject>02AB34EC-F426-4513-2999-1A21AA7974B6</keyObject>
+<referredKeyID>02AB34EC-F426-4513-2999-1A21AA7974B6</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>ID_CONTA,FK_ID_USUARIO</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

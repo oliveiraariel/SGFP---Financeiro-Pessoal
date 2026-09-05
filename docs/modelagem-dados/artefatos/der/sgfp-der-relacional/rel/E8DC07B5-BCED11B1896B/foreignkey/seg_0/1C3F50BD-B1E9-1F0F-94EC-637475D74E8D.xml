@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="1C3F50BD-B1E9-1F0F-94EC-637475D74E8D" containerWithKeyObject="E7735DF4-75F3-E29D-F5AE-20FE85F0949F" localFKIndex="E8F48F1E-3478-DC98-E2C9-75BDF86277FE" name="FK_COMPROMISSO_USUARIO">
+<sourceDDLFile>sgfp-importacao-datamodeler-sqlserver2012.sql</sourceDDLFile>
+<createdBy>ariel</createdBy>
+<createdTime>2026-09-05 10:33:04 UTC</createdTime>
+<ownerDesignName>sgfp-der-relacional</ownerDesignName>
+<importedID>C02D5E32-93D1-666A-91AC-6377A1C49C90</importedID>
+<referredTableLongName>WP_USERS</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>71ACCA15-EDDD-1F8D-FB5A-5446F28E1471</referredTableID>
+<keyObject>30494D27-2FBA-CB8D-9372-58DEC271686F</keyObject>
+<referredKeyID>30494D27-2FBA-CB8D-9372-58DEC271686F</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>ID</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>
