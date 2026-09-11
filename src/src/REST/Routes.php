@@ -18,6 +18,7 @@ use SGFP\Application\Services\SetInitialBalanceService;
 use SGFP\Application\Services\SettleCommitmentService;
 use SGFP\Application\Services\UndoCommitmentSettlementService;
 use SGFP\Application\Services\SettleTransferService;
+use SGFP\Application\Services\ThemeService;
 use SGFP\Application\Services\UndoTransferSettlementService;
 use SGFP\Domain\Policies\AccountPolicy;
 use SGFP\Infrastructure\WordPress\WpAccountRepository;
@@ -27,12 +28,14 @@ use SGFP\Infrastructure\WordPress\WpEntryRepository;
 use SGFP\Infrastructure\WordPress\WpTransactionManager;
 use SGFP\Infrastructure\WordPress\WpUserContext;
 use SGFP\Infrastructure\WordPress\WpRecurrenceRepository;
+use SGFP\Infrastructure\WordPress\WpUserPreferenceRepository;
 use SGFP\Infrastructure\WordPress\WpTransferRepository;
 use SGFP\REST\Controllers\AccountController;
 use SGFP\REST\Controllers\CategoryController;
 use SGFP\REST\Controllers\CommitmentController;
 use SGFP\REST\Controllers\RecurrenceController;
 use SGFP\REST\Controllers\ReportingController;
+use SGFP\REST\Controllers\ThemeController;
 use SGFP\REST\Controllers\TransferController;
 
 final class Routes
@@ -100,6 +103,10 @@ final class Routes
             new ListMovementsService($entryRepository, $userContext),
             new GetNetWorthService($accountRepository, $entryRepository, $userContext),
             new GetDashboardService($accountRepository, $entryRepository, $commitmentRepository, $userContext)
+        );
+
+        $themeController = new ThemeController(
+            new ThemeService(new WpUserPreferenceRepository(), $userContext)
         );
 
         register_rest_route(self::NAMESPACE, '/accounts', [
@@ -373,6 +380,25 @@ final class Routes
                     'required' => true,
                     'type' => 'string',
                     'pattern' => '^\d{4}-\d{2}$',
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/preferences/theme', [
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => [$themeController, 'get'],
+            'permission_callback' => [$themeController, 'permissionCheck'],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/preferences/theme', [
+            'methods' => \WP_REST_Server::EDITABLE,
+            'callback' => [$themeController, 'update'],
+            'permission_callback' => [$themeController, 'permissionCheck'],
+            'args' => [
+                'theme' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'enum' => ['light', 'dark'],
                 ],
             ],
         ]);
