@@ -64,4 +64,23 @@ final class Entry
             $this->undoneAt,
         );
     }
+
+    public function withUndone(\DateTimeImmutable $now): self
+    {
+        return new self(
+            $this->id,
+            $this->userId,
+            $this->accountId,
+            $this->commitmentId,
+            $this->origin,
+            $this->name,
+            $this->amount,
+            $this->effectType,
+            $this->settledAt,
+            $this->description,
+            EntryState::DESFEITO,
+            $this->createdAt,
+            $now,
+        );
+    }
 }

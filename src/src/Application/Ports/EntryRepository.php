@@ -11,4 +11,6 @@ interface EntryRepository
     public function save(Entry $entry): Entry;
 
     public function findByCommitmentId(int $commitmentId, int $userId): ?Entry;
+
+    public function findActiveInitialBalanceByAccount(int $accountId, int $userId): ?Entry;
 }

@@ -10,6 +10,7 @@ use SGFP\Application\Services\CreateCommitmentService;
 use SGFP\Application\Services\ListAccountsService;
 use SGFP\Application\Services\ListCategoriesService;
 use SGFP\Application\Services\SeedCategoriesService;
+use SGFP\Application\Services\SetInitialBalanceService;
 use SGFP\Application\Services\SettleCommitmentService;
 use SGFP\Domain\Policies\AccountPolicy;
 use SGFP\Infrastructure\WordPress\WpAccountRepository;
@@ -39,7 +40,8 @@ final class Routes
 
         $accountController = new AccountController(
             new CreateAccountService($accountRepository, $userContext, $accountPolicy, $seedCategories),
-            new ListAccountsService($accountRepository, $userContext)
+            new ListAccountsService($accountRepository, $userContext),
+            new SetInitialBalanceService($accountRepository, $entryRepository, $transactionManager, $userContext)
         );
 
         $categoryController = new CategoryController(
@@ -74,6 +76,37 @@ final class Routes
             'methods' => \WP_REST_Server::READABLE,
             'callback' => [$accountController, 'list'],
             'permission_callback' => [$accountController, 'permissionCheck'],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/accounts/(?P<id>\d+)/initial-balance', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$accountController, 'setInitialBalance'],
+            'permission_callback' => [$accountController, 'permissionCheck'],
+            'args' => [
+                'id' => [
+                    'required' => true,
+                    'type' => 'integer',
+                ],
+                'amount' => [
+                    'required' => true,
+                    'type' => 'string',
+                ],
+                'name' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+                'description' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_textarea_field',
+                ],
+                'effective_month' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}$',
+                ],
+            ],
         ]);
 
         register_rest_route(self::NAMESPACE, '/categories', [
