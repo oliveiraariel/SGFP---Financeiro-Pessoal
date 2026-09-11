@@ -166,6 +166,14 @@ final class InMemoryCommitmentRepository implements CommitmentRepository
         usort($matches, fn (Commitment $a, Commitment $b) => $a->referenceMonth <=> $b->referenceMonth);
         return $matches[0] ?? null;
     }
+
+    public function findPendingCommitmentsByUserAndPeriod(int $userId, string $startMonth, string $endMonth): array
+    {
+        return array_values(array_filter(
+            $this->commitments,
+            fn (Commitment $c) => $c->userId === $userId && $c->status->value === 'PENDENTE' && $c->referenceMonth->format('Y-m-d') >= $startMonth && $c->referenceMonth->format('Y-m-d') <= $endMonth
+        ));
+    }
 }
 
 final class InMemoryEntryRepository implements EntryRepository
@@ -219,6 +227,22 @@ final class InMemoryEntryRepository implements EntryRepository
             }
         }
         return null;
+    }
+
+    public function findActiveEntriesByUser(int $userId): array
+    {
+        return array_values(array_filter(
+            $this->entries,
+            fn (Entry $e) => $e->userId === $userId && $e->state === EntryState::ATIVO
+        ));
+    }
+
+    public function findActiveEntriesByUserAndPeriod(int $userId, \DateTimeImmutable $start, \DateTimeImmutable $end): array
+    {
+        return array_values(array_filter(
+            $this->entries,
+            fn (Entry $e) => $e->userId === $userId && $e->state === EntryState::ATIVO && $e->settledAt >= $start && $e->settledAt <= $end
+        ));
     }
 }
 

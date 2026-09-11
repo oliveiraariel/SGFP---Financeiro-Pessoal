@@ -8,8 +8,11 @@ use SGFP\Application\Services\CreateAccountService;
 use SGFP\Application\Services\CreateCategoryService;
 use SGFP\Application\Services\CreateCommitmentService;
 use SGFP\Application\Services\CreateTransferService;
+use SGFP\Application\Services\GetDashboardService;
+use SGFP\Application\Services\GetNetWorthService;
 use SGFP\Application\Services\ListAccountsService;
 use SGFP\Application\Services\ListCategoriesService;
+use SGFP\Application\Services\ListMovementsService;
 use SGFP\Application\Services\SeedCategoriesService;
 use SGFP\Application\Services\SetInitialBalanceService;
 use SGFP\Application\Services\SettleCommitmentService;
@@ -29,6 +32,7 @@ use SGFP\REST\Controllers\AccountController;
 use SGFP\REST\Controllers\CategoryController;
 use SGFP\REST\Controllers\CommitmentController;
 use SGFP\REST\Controllers\RecurrenceController;
+use SGFP\REST\Controllers\ReportingController;
 use SGFP\REST\Controllers\TransferController;
 
 final class Routes
@@ -90,6 +94,12 @@ final class Routes
                 $transactionManager,
                 $userContext
             )
+        );
+
+        $reportingController = new ReportingController(
+            new ListMovementsService($entryRepository, $userContext),
+            new GetNetWorthService($accountRepository, $entryRepository, $userContext),
+            new GetDashboardService($accountRepository, $entryRepository, $commitmentRepository, $userContext)
         );
 
         register_rest_route(self::NAMESPACE, '/accounts', [
@@ -327,6 +337,38 @@ final class Routes
                     'required' => true,
                     'type' => 'integer',
                 ],
+                'month' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}$',
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/movements', [
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => [$reportingController, 'movements'],
+            'permission_callback' => [$reportingController, 'permissionCheck'],
+            'args' => [
+                'month' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}$',
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/net-worth', [
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => [$reportingController, 'netWorth'],
+            'permission_callback' => [$reportingController, 'permissionCheck'],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/dashboard', [
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => [$reportingController, 'dashboard'],
+            'permission_callback' => [$reportingController, 'permissionCheck'],
+            'args' => [
                 'month' => [
                     'required' => true,
                     'type' => 'string',

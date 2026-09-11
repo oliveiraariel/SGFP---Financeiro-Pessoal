@@ -106,6 +106,21 @@ final class WpCommitmentRepository implements CommitmentRepository
         return $row ? $this->mapRow($row) : null;
     }
 
+    public function findPendingCommitmentsByUserAndPeriod(int $userId, string $startMonth, string $endMonth): array
+    {
+        global $wpdb;
+
+        $rows = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM " . TableNames::commitment()
+            . " WHERE fk_id_usuario = %d AND status = 'PENDENTE' AND mes_referencia >= %s AND mes_referencia <= %s ORDER BY mes_referencia ASC",
+            $userId,
+            $startMonth,
+            $endMonth
+        ), ARRAY_A);
+
+        return array_map([$this, 'mapRow'], $rows ?: []);
+    }
+
     private function mapRow(array $row): Commitment
     {
         return new Commitment(

@@ -115,6 +115,22 @@ final class InMemoryEntryRepository implements EntryRepository
     {
         return $this->entries[$id] ?? null;
     }
+
+    public function findActiveEntriesByUser(int $userId): array
+    {
+        return array_values(array_filter(
+            $this->entries,
+            fn (Entry $e) => $e->userId === $userId && $e->state === EntryState::ATIVO
+        ));
+    }
+
+    public function findActiveEntriesByUserAndPeriod(int $userId, \DateTimeImmutable $start, \DateTimeImmutable $end): array
+    {
+        return array_values(array_filter(
+            $this->entries,
+            fn (Entry $e) => $e->userId === $userId && $e->state === EntryState::ATIVO && $e->settledAt >= $start && $e->settledAt <= $end
+        ));
+    }
 }
 
 final class DirectTransactionManager implements TransactionManager
