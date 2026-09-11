@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SGFP\Domain\Models;
 
+use SGFP\Domain\Enums\CommitmentNature;
 use SGFP\Domain\Enums\CommitmentStatus;
 use SGFP\Domain\Enums\CommitmentType;
 
@@ -12,56 +13,56 @@ final class Commitment
     public function __construct(
         public readonly ?int $id,
         public readonly int $userId,
-        public readonly int $accountId,
         public readonly ?int $categoryId,
-        public readonly string $description,
+        public readonly ?int $recurrenceId,
+        public readonly string $name,
         public readonly float $amount,
         public readonly CommitmentType $type,
+        public readonly CommitmentNature $nature,
+        public readonly \DateTimeImmutable $referenceMonth,
         public readonly CommitmentStatus $status,
-        public readonly \DateTimeImmutable $dueDate,
-        public readonly ?\DateTimeImmutable $settledAt,
         public readonly \DateTimeImmutable $createdAt,
     ) {
     }
 
     public static function create(
         int $userId,
-        int $accountId,
         ?int $categoryId,
-        string $description,
+        string $name,
         float $amount,
         CommitmentType $type,
-        \DateTimeImmutable $dueDate,
+        CommitmentNature $nature,
+        \DateTimeImmutable $referenceMonth,
         \DateTimeImmutable $now,
     ): self {
         return new self(
             null,
             $userId,
-            $accountId,
             $categoryId,
-            $description,
+            null,
+            $name,
             $amount,
             $type,
+            $nature,
+            $referenceMonth,
             CommitmentStatus::PENDENTE,
-            $dueDate,
-            null,
             $now,
         );
     }
 
-    public function settle(\DateTimeImmutable $settledAt): self
+    public function settle(): self
     {
         return new self(
             $this->id,
             $this->userId,
-            $this->accountId,
             $this->categoryId,
-            $this->description,
+            $this->recurrenceId,
+            $this->name,
             $this->amount,
             $this->type,
+            $this->nature,
+            $this->referenceMonth,
             CommitmentStatus::EFETIVADO,
-            $this->dueDate,
-            $settledAt,
             $this->createdAt,
         );
     }
@@ -71,14 +72,14 @@ final class Commitment
         return new self(
             $id,
             $this->userId,
-            $this->accountId,
             $this->categoryId,
-            $this->description,
+            $this->recurrenceId,
+            $this->name,
             $this->amount,
             $this->type,
+            $this->nature,
+            $this->referenceMonth,
             $this->status,
-            $this->dueDate,
-            $this->settledAt,
             $this->createdAt,
         );
     }

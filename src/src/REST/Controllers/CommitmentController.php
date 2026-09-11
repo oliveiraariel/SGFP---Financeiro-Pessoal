@@ -6,6 +6,7 @@ namespace SGFP\REST\Controllers;
 
 use SGFP\Application\Services\CreateCommitmentService;
 use SGFP\Application\Services\SettleCommitmentService;
+use SGFP\REST\DTOs\CreateCommitmentRequest;
 
 final class CommitmentController
 {
@@ -18,24 +19,27 @@ final class CommitmentController
     public function create(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
+            $dto = CreateCommitmentRequest::fromRequest($request);
+            $dto->validate();
+
             $commitment = $this->createService->execute(
-                (int) ($request['account_id'] ?? 0),
-                isset($request['category_id']) ? (int) $request['category_id'] : null,
-                (string) ($request['description'] ?? ''),
-                (float) ($request['amount'] ?? 0),
-                (string) ($request['type'] ?? ''),
-                (string) ($request['due_date'] ?? '')
+                $dto->categoryId,
+                $dto->name,
+                $dto->amount,
+                $dto->type,
+                $dto->nature,
+                $dto->referenceMonth
             );
 
             return new \WP_REST_Response([
                 'id' => $commitment->id,
-                'account_id' => $commitment->accountId,
                 'category_id' => $commitment->categoryId,
-                'description' => $commitment->description,
+                'name' => $commitment->name,
                 'amount' => $commitment->amount,
                 'type' => $commitment->type->value,
+                'nature' => $commitment->nature->value,
+                'reference_month' => $commitment->referenceMonth->format('Y-m'),
                 'status' => $commitment->status->value,
-                'due_date' => $commitment->dueDate->format('Y-m-d'),
                 'created_at' => $commitment->createdAt->format('c'),
             ], 201);
         } catch (\InvalidArgumentException $e) {
@@ -56,9 +60,11 @@ final class CommitmentController
                 'entry_id' => $entry->id,
                 'commitment_id' => $entry->commitmentId,
                 'account_id' => $entry->accountId,
+                'origin' => $entry->origin->value,
+                'name' => $entry->name,
                 'amount' => $entry->amount,
-                'type' => $entry->type->value,
-                'competence_date' => $entry->competenceDate->format('Y-m-d'),
+                'effect_type' => $entry->effectType->value,
+                'state' => $entry->state->value,
                 'settled_at' => $entry->settledAt->format('c'),
             ], 201);
         } catch (\InvalidArgumentException $e) {

@@ -38,12 +38,17 @@ final class InMemoryAccountRepository implements AccountRepository
 
     public function hasPrincipal(int $userId): bool
     {
+        return $this->findPrincipal($userId) !== null;
+    }
+
+    public function findPrincipal(int $userId): ?Account
+    {
         foreach ($this->accounts as $account) {
             if ($account->userId === $userId && $account->role === AccountRole::PRINCIPAL) {
-                return true;
+                return $account;
             }
         }
-        return false;
+        return null;
     }
 
     public function countByUser(int $userId): int

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SGFP\Infrastructure\WordPress;
 
 use SGFP\Application\Ports\CategoryRepository;
-use SGFP\Domain\Enums\CategoryType;
 use SGFP\Domain\Models\Category;
 use SGFP\Infrastructure\Database\TableNames;
 
@@ -18,11 +17,10 @@ final class WpCategoryRepository implements CategoryRepository
         $data = [
             'fk_id_usuario' => $category->userId,
             'nome' => $category->name,
-            'tipo' => $category->type->value,
         ];
 
         if ($category->id === null) {
-            $result = $wpdb->insert(TableNames::category(), $data, ['%d', '%s', '%s']);
+            $result = $wpdb->insert(TableNames::category(), $data, ['%d', '%s']);
 
             if ($result === false) {
                 throw new \RuntimeException('Falha ao criar categoria: ' . $wpdb->last_error);
@@ -35,7 +33,7 @@ final class WpCategoryRepository implements CategoryRepository
             TableNames::category(),
             $data,
             ['id_categoria' => $category->id],
-            ['%d', '%s', '%s'],
+            ['%d', '%s'],
             ['%d']
         );
 
@@ -60,22 +58,21 @@ final class WpCategoryRepository implements CategoryRepository
         global $wpdb;
 
         $rows = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM " . TableNames::category() . " WHERE fk_id_usuario = %d ORDER BY tipo, nome",
+            "SELECT * FROM " . TableNames::category() . " WHERE fk_id_usuario = %d ORDER BY nome",
             $userId
         ), ARRAY_A);
 
         return array_map([$this, 'mapRow'], $rows ?: []);
     }
 
-    public function existsByNameAndType(int $userId, string $name, CategoryType $type): bool
+    public function existsByName(int $userId, string $name): bool
     {
         global $wpdb;
 
         $count = $wpdb->get_var($wpdb->prepare(
-            "SELECT COUNT(*) FROM " . TableNames::category() . " WHERE fk_id_usuario = %d AND nome = %s AND tipo = %s",
+            "SELECT COUNT(*) FROM " . TableNames::category() . " WHERE fk_id_usuario = %d AND nome = %s",
             $userId,
-            $name,
-            $type->value
+            $name
         ));
 
         return (int) $count > 0;
@@ -86,24 +83,24 @@ final class WpCategoryRepository implements CategoryRepository
         $now = new \DateTimeImmutable();
 
         $defaults = [
-            ['Salário', CategoryType::RECEITA],
-            ['Investimentos', CategoryType::RECEITA],
-            ['Outras Receitas', CategoryType::RECEITA],
-            ['Moradia', CategoryType::DESPESA],
-            ['Alimentação', CategoryType::DESPESA],
-            ['Transporte', CategoryType::DESPESA],
-            ['Saúde', CategoryType::DESPESA],
-            ['Educação', CategoryType::DESPESA],
-            ['Lazer', CategoryType::DESPESA],
-            ['Vestuário', CategoryType::DESPESA],
-            ['Serviços', CategoryType::DESPESA],
-            ['Impostos', CategoryType::DESPESA],
-            ['Outras Despesas', CategoryType::DESPESA],
+            'Salário',
+            'Investimentos',
+            'Outras Receitas',
+            'Moradia',
+            'Alimentação',
+            'Transporte',
+            'Saúde',
+            'Educação',
+            'Lazer',
+            'Vestuário',
+            'Serviços',
+            'Impostos',
+            'Outras Despesas',
         ];
 
-        foreach ($defaults as [$name, $type]) {
-            if (!$this->existsByNameAndType($userId, $name, $type)) {
-                $this->save(Category::create($userId, $name, $type, $now));
+        foreach ($defaults as $name) {
+            if (!$this->existsByName($userId, $name)) {
+                $this->save(Category::create($userId, $name, $now));
             }
         }
     }
@@ -114,7 +111,6 @@ final class WpCategoryRepository implements CategoryRepository
             (int) $row['id_categoria'],
             (int) $row['fk_id_usuario'],
             $row['nome'],
-            CategoryType::from($row['tipo']),
             new \DateTimeImmutable($row['criada_em'])
         );
     }

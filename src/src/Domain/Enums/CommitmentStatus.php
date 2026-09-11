@@ -8,5 +8,5 @@ enum CommitmentStatus: string
 {
     case PENDENTE = 'PENDENTE';
     case EFETIVADO = 'EFETIVADO';
-    case CANCELADO = 'CANCELADO';
+    case EXCLUIDO = 'EXCLUIDO';
 }

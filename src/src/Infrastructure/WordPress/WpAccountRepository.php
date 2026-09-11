@@ -69,6 +69,18 @@ final class WpAccountRepository implements AccountRepository
         return array_map([$this, 'mapRow'], $rows ?: []);
     }
 
+    public function findPrincipal(int $userId): ?Account
+    {
+        global $wpdb;
+
+        $row = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM " . TableNames::account() . " WHERE fk_id_usuario = %d AND papel = 'PRINCIPAL'",
+            $userId
+        ), ARRAY_A);
+
+        return $row ? $this->mapRow($row) : null;
+    }
+
     public function hasPrincipal(int $userId): bool
     {
         global $wpdb;

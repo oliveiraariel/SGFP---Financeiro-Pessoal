@@ -6,7 +6,6 @@ namespace SGFP\Application\Services;
 
 use SGFP\Application\Ports\CategoryRepository;
 use SGFP\Application\Ports\UserContext;
-use SGFP\Domain\Enums\CategoryType;
 use SGFP\Domain\Models\Category;
 
 final class CreateCategoryService
@@ -17,7 +16,7 @@ final class CreateCategoryService
     ) {
     }
 
-    public function execute(string $name, string $type): Category
+    public function execute(string $name): Category
     {
         $userId = $this->userContext->requireUserId();
         $this->userContext->requireCapability('use_sgfp');
@@ -28,21 +27,15 @@ final class CreateCategoryService
             throw new \InvalidArgumentException('O nome da categoria é obrigatório.');
         }
 
-        if ($this->stringLength($normalizedName) > 120) {
-            throw new \InvalidArgumentException('O nome da categoria deve ter no máximo 120 caracteres.');
+        if ($this->stringLength($normalizedName) > 100) {
+            throw new \InvalidArgumentException('O nome da categoria deve ter no máximo 100 caracteres.');
         }
 
-        $categoryType = CategoryType::tryFrom($type);
-
-        if ($categoryType === null) {
-            throw new \InvalidArgumentException('O tipo da categoria deve ser RECEITA ou DESPESA.');
+        if ($this->repository->existsByName($userId, $normalizedName)) {
+            throw new \InvalidArgumentException('Já existe uma categoria com esse nome.');
         }
 
-        if ($this->repository->existsByNameAndType($userId, $normalizedName, $categoryType)) {
-            throw new \InvalidArgumentException('Já existe uma categoria com esse nome e tipo.');
-        }
-
-        $category = Category::create($userId, $normalizedName, $categoryType, new \DateTimeImmutable());
+        $category = Category::create($userId, $normalizedName, new \DateTimeImmutable());
 
         return $this->repository->save($category);
     }

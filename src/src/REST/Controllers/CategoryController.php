@@ -19,14 +19,12 @@ final class CategoryController
     {
         try {
             $category = $this->createService->execute(
-                (string) ($request['name'] ?? ''),
-                (string) ($request['type'] ?? '')
+                (string) ($request['name'] ?? '')
             );
 
             return new \WP_REST_Response([
                 'id' => $category->id,
                 'name' => $category->name,
-                'type' => $category->type->value,
                 'created_at' => $category->createdAt->format('c'),
             ], 201);
         } catch (\InvalidArgumentException $e) {
@@ -46,7 +44,6 @@ final class CategoryController
             $data = array_map(fn ($category) => [
                 'id' => $category->id,
                 'name' => $category->name,
-                'type' => $category->type->value,
                 'created_at' => $category->createdAt->format('c'),
             ], $categories);
 

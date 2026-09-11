@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SGFP\Domain\Models;
 
-use SGFP\Domain\Enums\CommitmentType;
+use SGFP\Domain\Enums\EntryEffectType;
+use SGFP\Domain\Enums\EntryOrigin;
+use SGFP\Domain\Enums\EntryState;
 
 final class Entry
 {
@@ -13,30 +15,34 @@ final class Entry
         public readonly int $userId,
         public readonly int $accountId,
         public readonly ?int $commitmentId,
-        public readonly ?int $transferId,
-        public readonly string $description,
+        public readonly EntryOrigin $origin,
+        public readonly string $name,
         public readonly float $amount,
-        public readonly CommitmentType $type,
-        public readonly \DateTimeImmutable $competenceDate,
+        public readonly EntryEffectType $effectType,
         public readonly \DateTimeImmutable $settledAt,
+        public readonly ?string $description,
+        public readonly EntryState $state,
         public readonly \DateTimeImmutable $createdAt,
+        public readonly ?\DateTimeImmutable $undoneAt,
     ) {
     }
 
-    public static function fromCommitment(Commitment $commitment, \DateTimeImmutable $now): self
+    public static function fromCommitment(Commitment $commitment, int $accountId, \DateTimeImmutable $now): self
     {
         return new self(
             null,
             $commitment->userId,
-            $commitment->accountId,
+            $accountId,
             $commitment->id,
-            null,
-            $commitment->description,
+            EntryOrigin::COMPROMISSO,
+            $commitment->name,
             $commitment->amount,
-            $commitment->type,
-            $commitment->dueDate,
+            EntryEffectType::fromCommitmentNature($commitment->nature),
             $now,
+            null,
+            EntryState::ATIVO,
             $now,
+            null,
         );
     }
 
@@ -47,13 +53,15 @@ final class Entry
             $this->userId,
             $this->accountId,
             $this->commitmentId,
-            $this->transferId,
-            $this->description,
+            $this->origin,
+            $this->name,
             $this->amount,
-            $this->type,
-            $this->competenceDate,
+            $this->effectType,
             $this->settledAt,
+            $this->description,
+            $this->state,
             $this->createdAt,
+            $this->undoneAt,
         );
     }
 }

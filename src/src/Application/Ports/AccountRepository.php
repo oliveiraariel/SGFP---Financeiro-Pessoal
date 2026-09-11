@@ -14,6 +14,8 @@ interface AccountRepository
 
     public function findAllByUser(int $userId): array;
 
+    public function findPrincipal(int $userId): ?Account;
+
     public function hasPrincipal(int $userId): bool;
 
     public function countByUser(int $userId): int;

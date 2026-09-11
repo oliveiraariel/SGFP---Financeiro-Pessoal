@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SGFP\Application\Services;
 
-use SGFP\Application\Ports\AccountRepository;
 use SGFP\Application\Ports\CategoryRepository;
 use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Application\Ports\UserContext;
+use SGFP\Domain\Enums\CommitmentNature;
 use SGFP\Domain\Enums\CommitmentType;
 use SGFP\Domain\Models\Commitment;
 
@@ -15,75 +15,71 @@ final class CreateCommitmentService
 {
     public function __construct(
         private readonly CommitmentRepository $repository,
-        private readonly AccountRepository $accountRepository,
         private readonly CategoryRepository $categoryRepository,
         private readonly UserContext $userContext,
     ) {
     }
 
     public function execute(
-        int $accountId,
         ?int $categoryId,
-        string $description,
+        string $name,
         float $amount,
         string $type,
-        string $dueDate,
+        string $nature,
+        string $referenceMonth,
     ): Commitment {
         $userId = $this->userContext->requireUserId();
         $this->userContext->requireCapability('use_sgfp');
 
-        $normalizedDescription = trim($description);
+        $normalizedName = trim($name);
 
-        if ($normalizedDescription === '') {
-            throw new \InvalidArgumentException('A descrição é obrigatória.');
+        if ($normalizedName === '') {
+            throw new \InvalidArgumentException('O nome é obrigatório.');
         }
 
-        if ($this->stringLength($normalizedDescription) > 255) {
-            throw new \InvalidArgumentException('A descrição deve ter no máximo 255 caracteres.');
+        if ($this->stringLength($normalizedName) > 180) {
+            throw new \InvalidArgumentException('O nome deve ter no máximo 180 caracteres.');
         }
 
-        if ($amount <= 0) {
-            throw new \InvalidArgumentException('O valor deve ser maior que zero.');
+        if ($amount < 0) {
+            throw new \InvalidArgumentException('O valor deve ser maior ou igual a zero.');
         }
 
         $commitmentType = CommitmentType::tryFrom($type);
 
         if ($commitmentType === null) {
-            throw new \InvalidArgumentException('O tipo deve ser RECEITA ou DESPESA.');
+            throw new \InvalidArgumentException('O tipo deve ser PADRAO ou TRANSFERENCIA.');
         }
 
-        $due = \DateTimeImmutable::createFromFormat('Y-m-d', $dueDate);
-
-        if ($due === false) {
-            throw new \InvalidArgumentException('A data de vencimento deve estar no formato YYYY-MM-DD.');
+        if ($commitmentType === CommitmentType::TRANSFERENCIA) {
+            throw new \InvalidArgumentException('Transferências devem ser criadas pelo fluxo próprio de transferência.');
         }
 
-        $account = $this->accountRepository->findById($accountId, $userId);
+        $commitmentNature = CommitmentNature::tryFrom($nature);
 
-        if ($account === null) {
-            throw new \InvalidArgumentException('Conta não encontrada.');
+        if ($commitmentNature === null) {
+            throw new \InvalidArgumentException('A natureza deve ser ENTRADA ou SAIDA.');
         }
 
-        if ($categoryId !== null) {
-            $category = $this->categoryRepository->findById($categoryId, $userId);
+        $month = \DateTimeImmutable::createFromFormat('!Y-m', $referenceMonth);
+        $errors = \DateTimeImmutable::getLastErrors();
 
-            if ($category === null) {
-                throw new \InvalidArgumentException('Categoria não encontrada.');
-            }
+        if ($month === false || ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))) {
+            throw new \InvalidArgumentException('O mês de referência deve estar no formato YYYY-MM.');
+        }
 
-            if ($category->type->value !== $type) {
-                throw new \InvalidArgumentException('A categoria deve ser do mesmo tipo do compromisso.');
-            }
+        if ($categoryId !== null && $this->categoryRepository->findById($categoryId, $userId) === null) {
+            throw new \InvalidArgumentException('Categoria não encontrada.');
         }
 
         $commitment = Commitment::create(
             $userId,
-            $accountId,
             $categoryId,
-            $normalizedDescription,
+            $normalizedName,
             $amount,
             $commitmentType,
-            $due,
+            $commitmentNature,
+            $month,
             new \DateTimeImmutable()
         );
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SGFP\Infrastructure\WordPress;
 
 use SGFP\Application\Ports\CommitmentRepository;
+use SGFP\Domain\Enums\CommitmentNature;
 use SGFP\Domain\Enums\CommitmentStatus;
 use SGFP\Domain\Enums\CommitmentType;
 use SGFP\Domain\Models\Commitment;
@@ -18,14 +19,14 @@ final class WpCommitmentRepository implements CommitmentRepository
 
         $data = [
             'fk_id_usuario' => $commitment->userId,
-            'fk_id_conta' => $commitment->accountId,
             'fk_id_categoria' => $commitment->categoryId,
-            'descricao' => $commitment->description,
+            'fk_id_recorrencia' => $commitment->recurrenceId,
+            'nome' => $commitment->name,
             'valor' => $commitment->amount,
             'tipo' => $commitment->type->value,
+            'natureza' => $commitment->nature->value,
+            'mes_referencia' => $commitment->referenceMonth->format('Y-m-d'),
             'status' => $commitment->status->value,
-            'data_vencimento' => $commitment->dueDate->format('Y-m-d'),
-            'efetivado_em' => $commitment->settledAt?->format('Y-m-d H:i:s'),
         ];
 
         $format = ['%d', '%d', '%d', '%s', '%f', '%s', '%s', '%s', '%s'];
@@ -69,7 +70,7 @@ final class WpCommitmentRepository implements CommitmentRepository
         global $wpdb;
 
         $rows = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM " . TableNames::commitment() . " WHERE fk_id_usuario = %d ORDER BY data_vencimento DESC, criado_em DESC",
+            "SELECT * FROM " . TableNames::commitment() . " WHERE fk_id_usuario = %d ORDER BY mes_referencia DESC, criado_em DESC",
             $userId
         ), ARRAY_A);
 
@@ -81,14 +82,14 @@ final class WpCommitmentRepository implements CommitmentRepository
         return new Commitment(
             (int) $row['id_compromisso'],
             (int) $row['fk_id_usuario'],
-            (int) $row['fk_id_conta'],
             $row['fk_id_categoria'] !== null ? (int) $row['fk_id_categoria'] : null,
-            $row['descricao'],
+            $row['fk_id_recorrencia'] !== null ? (int) $row['fk_id_recorrencia'] : null,
+            $row['nome'],
             (float) $row['valor'],
             CommitmentType::from($row['tipo']),
+            CommitmentNature::from($row['natureza']),
+            new \DateTimeImmutable($row['mes_referencia']),
             CommitmentStatus::from($row['status']),
-            new \DateTimeImmutable($row['data_vencimento']),
-            $row['efetivado_em'] !== null ? new \DateTimeImmutable($row['efetivado_em']) : null,
             new \DateTimeImmutable($row['criado_em'])
         );
     }

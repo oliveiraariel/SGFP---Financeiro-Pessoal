@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace SGFP\Infrastructure\WordPress;
 
 use SGFP\Application\Ports\EntryRepository;
-use SGFP\Domain\Enums\CommitmentType;
+use SGFP\Domain\Enums\EntryEffectType;
+use SGFP\Domain\Enums\EntryOrigin;
+use SGFP\Domain\Enums\EntryState;
 use SGFP\Domain\Models\Entry;
 use SGFP\Infrastructure\Database\TableNames;
 
@@ -17,17 +19,19 @@ final class WpEntryRepository implements EntryRepository
 
         $data = [
             'fk_id_usuario' => $entry->userId,
-            'fk_id_conta' => $entry->accountId,
             'fk_id_compromisso' => $entry->commitmentId,
-            'fk_id_transferencia' => $entry->transferId,
-            'descricao' => $entry->description,
+            'fk_id_conta' => $entry->accountId,
+            'origem' => $entry->origin->value,
+            'nome' => $entry->name,
             'valor' => $entry->amount,
-            'tipo' => $entry->type->value,
-            'data_competencia' => $entry->competenceDate->format('Y-m-d'),
-            'efetivado_em' => $entry->settledAt->format('Y-m-d H:i:s'),
+            'tipo_efeito' => $entry->effectType->value,
+            'data_efetivacao' => $entry->settledAt->format('Y-m-d H:i:s'),
+            'descricao' => $entry->description,
+            'estado' => $entry->state->value,
+            'desfeito_em' => $entry->undoneAt?->format('Y-m-d H:i:s'),
         ];
 
-        $format = ['%d', '%d', '%d', '%d', '%s', '%f', '%s', '%s', '%s'];
+        $format = ['%d', '%d', '%d', '%s', '%s', '%f', '%s', '%s', '%s', '%s', '%s'];
 
         if ($entry->id === null) {
             $result = $wpdb->insert(TableNames::entry(), $data, $format);
@@ -70,13 +74,15 @@ final class WpEntryRepository implements EntryRepository
             (int) $row['fk_id_usuario'],
             (int) $row['fk_id_conta'],
             $row['fk_id_compromisso'] !== null ? (int) $row['fk_id_compromisso'] : null,
-            $row['fk_id_transferencia'] !== null ? (int) $row['fk_id_transferencia'] : null,
-            $row['descricao'],
+            EntryOrigin::from($row['origem']),
+            $row['nome'],
             (float) $row['valor'],
-            CommitmentType::from($row['tipo']),
-            new \DateTimeImmutable($row['data_competencia']),
-            new \DateTimeImmutable($row['efetivado_em']),
-            new \DateTimeImmutable($row['criado_em'])
+            EntryEffectType::from($row['tipo_efeito']),
+            new \DateTimeImmutable($row['data_efetivacao']),
+            $row['descricao'],
+            EntryState::from($row['estado']),
+            new \DateTimeImmutable($row['criado_em']),
+            $row['desfeito_em'] !== null ? new \DateTimeImmutable($row['desfeito_em']) : null
         );
     }
 }

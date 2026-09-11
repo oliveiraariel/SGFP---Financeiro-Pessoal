@@ -6,6 +6,6 @@ namespace SGFP\Domain\Enums;
 
 enum CommitmentType: string
 {
-    case RECEITA = 'RECEITA';
-    case DESPESA = 'DESPESA';
+    case PADRAO = 'PADRAO';
+    case TRANSFERENCIA = 'TRANSFERENCIA';
 }

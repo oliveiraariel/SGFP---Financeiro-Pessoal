@@ -48,8 +48,8 @@ final class Routes
         );
 
         $commitmentController = new CommitmentController(
-            new CreateCommitmentService($commitmentRepository, $accountRepository, $categoryRepository, $userContext),
-            new SettleCommitmentService($commitmentRepository, $entryRepository, $transactionManager, $userContext)
+            new CreateCommitmentService($commitmentRepository, $categoryRepository, $userContext),
+            new SettleCommitmentService($commitmentRepository, $entryRepository, $accountRepository, $transactionManager, $userContext)
         );
 
         register_rest_route(self::NAMESPACE, '/accounts', [
@@ -86,11 +86,6 @@ final class Routes
                     'type' => 'string',
                     'sanitize_callback' => 'sanitize_text_field',
                 ],
-                'type' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'enum' => ['RECEITA', 'DESPESA'],
-                ],
             ],
         ]);
 
@@ -105,15 +100,11 @@ final class Routes
             'callback' => [$commitmentController, 'create'],
             'permission_callback' => [$commitmentController, 'permissionCheck'],
             'args' => [
-                'account_id' => [
-                    'required' => true,
-                    'type' => 'integer',
-                ],
                 'category_id' => [
                     'required' => false,
                     'type' => 'integer',
                 ],
-                'description' => [
+                'name' => [
                     'required' => true,
                     'type' => 'string',
                     'sanitize_callback' => 'sanitize_text_field',
@@ -125,12 +116,17 @@ final class Routes
                 'type' => [
                     'required' => true,
                     'type' => 'string',
-                    'enum' => ['RECEITA', 'DESPESA'],
+                    'enum' => ['PADRAO', 'TRANSFERENCIA'],
                 ],
-                'due_date' => [
+                'nature' => [
                     'required' => true,
                     'type' => 'string',
-                    'format' => 'date',
+                    'enum' => ['ENTRADA', 'SAIDA'],
+                ],
+                'reference_month' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}$',
                 ],
             ],
         ]);
