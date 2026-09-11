@@ -77,6 +77,35 @@ final class WpCommitmentRepository implements CommitmentRepository
         return array_map([$this, 'mapRow'], $rows ?: []);
     }
 
+    public function findByRecurrenceIdAndMonth(int $recurrenceId, string $month, int $userId): ?Commitment
+    {
+        global $wpdb;
+
+        $row = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM " . TableNames::commitment()
+            . " WHERE fk_id_recorrencia = %d AND mes_referencia = %s AND fk_id_usuario = %d",
+            $recurrenceId,
+            $month,
+            $userId
+        ), ARRAY_A);
+
+        return $row ? $this->mapRow($row) : null;
+    }
+
+    public function findFirstByRecurrenceId(int $recurrenceId, int $userId): ?Commitment
+    {
+        global $wpdb;
+
+        $row = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM " . TableNames::commitment()
+            . " WHERE fk_id_recorrencia = %d AND fk_id_usuario = %d ORDER BY mes_referencia ASC LIMIT 1",
+            $recurrenceId,
+            $userId
+        ), ARRAY_A);
+
+        return $row ? $this->mapRow($row) : null;
+    }
+
     private function mapRow(array $row): Commitment
     {
         return new Commitment(

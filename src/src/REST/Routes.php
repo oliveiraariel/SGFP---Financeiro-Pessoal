@@ -28,6 +28,7 @@ use SGFP\Infrastructure\WordPress\WpTransferRepository;
 use SGFP\REST\Controllers\AccountController;
 use SGFP\REST\Controllers\CategoryController;
 use SGFP\REST\Controllers\CommitmentController;
+use SGFP\REST\Controllers\RecurrenceController;
 use SGFP\REST\Controllers\TransferController;
 
 final class Routes
@@ -70,6 +71,25 @@ final class Routes
             new CreateTransferService($accountRepository, $commitmentRepository, $transferRepository, $transactionManager, $userContext),
             new SettleTransferService($commitmentRepository, $transferRepository, $entryRepository, $transactionManager, $userContext),
             new UndoTransferSettlementService($commitmentRepository, $transferRepository, $entryRepository, $transactionManager, $userContext)
+        );
+
+        $recurrenceController = new RecurrenceController(
+            new MaterializeRecurrenceOccurrenceService($recurrenceRepository, $commitmentRepository, $transactionManager, $userContext),
+            new SettleRecurrenceOccurrenceService(
+                new MaterializeRecurrenceOccurrenceService($recurrenceRepository, $commitmentRepository, $transactionManager, $userContext),
+                $commitmentRepository,
+                $entryRepository,
+                $accountRepository,
+                $transactionManager,
+                $userContext
+            ),
+            new UndoRecurrenceOccurrenceSettlementService(
+                new MaterializeRecurrenceOccurrenceService($recurrenceRepository, $commitmentRepository, $transactionManager, $userContext),
+                $commitmentRepository,
+                $entryRepository,
+                $transactionManager,
+                $userContext
+            )
         );
 
         register_rest_route(self::NAMESPACE, '/accounts', [
@@ -260,6 +280,57 @@ final class Routes
                 'id' => [
                     'required' => true,
                     'type' => 'integer',
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/recurrences/(?P<id>\d+)/occurrences/(?P<month>\d{4}-\d{2})', [
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => [$recurrenceController, 'showOccurrence'],
+            'permission_callback' => [$recurrenceController, 'permissionCheck'],
+            'args' => [
+                'id' => [
+                    'required' => true,
+                    'type' => 'integer',
+                ],
+                'month' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}$',
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/recurrences/(?P<id>\d+)/occurrences/(?P<month>\d{4}-\d{2})/effectuation', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$recurrenceController, 'settleOccurrence'],
+            'permission_callback' => [$recurrenceController, 'permissionCheck'],
+            'args' => [
+                'id' => [
+                    'required' => true,
+                    'type' => 'integer',
+                ],
+                'month' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}$',
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/recurrences/(?P<id>\d+)/occurrences/(?P<month>\d{4}-\d{2})/undo-effectuation', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$recurrenceController, 'undoOccurrence'],
+            'permission_callback' => [$recurrenceController, 'permissionCheck'],
+            'args' => [
+                'id' => [
+                    'required' => true,
+                    'type' => 'integer',
+                ],
+                'month' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'pattern' => '^\d{4}-\d{2}$',
                 ],
             ],
         ]);

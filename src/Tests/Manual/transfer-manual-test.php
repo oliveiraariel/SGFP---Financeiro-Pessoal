@@ -90,6 +90,16 @@ final class InMemoryCommitmentRepository implements CommitmentRepository
     {
         return array_values(array_filter($this->commitments, fn (Commitment $c) => $c->userId === $userId));
     }
+
+    public function findByRecurrenceIdAndMonth(int $recurrenceId, string $month, int $userId): ?Commitment
+    {
+        return null;
+    }
+
+    public function findFirstByRecurrenceId(int $recurrenceId, int $userId): ?Commitment
+    {
+        return null;
+    }
 }
 
 final class InMemoryTransferRepository implements TransferRepository

@@ -5,14 +5,16 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use SGFP\Application\Ports\AccountRepository;
+use SGFP\Application\Ports\CategoryRepository;
 use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Application\Ports\EntryRepository;
 use SGFP\Application\Ports\RecurrenceRepository;
 use SGFP\Application\Ports\TransactionManager;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Services\CreateCommitmentService;
-use SGFP\Application\Services\SettleCommitmentService;
-use SGFP\Application\Services\UndoCommitmentSettlementService;
+use SGFP\Application\Services\MaterializeRecurrenceOccurrenceService;
+use SGFP\Application\Services\SettleRecurrenceOccurrenceService;
+use SGFP\Application\Services\UndoRecurrenceOccurrenceSettlementService;
 use SGFP\Domain\Enums\AccountRole;
 use SGFP\Domain\Enums\CommitmentNature;
 use SGFP\Domain\Enums\CommitmentStatus;
@@ -68,7 +70,7 @@ final class InMemoryAccountRepository implements AccountRepository
     }
 }
 
-final class InMemoryCategoryRepository implements \SGFP\Application\Ports\CategoryRepository
+final class InMemoryCategoryRepository implements CategoryRepository
 {
     public function save(Category $category): Category
     {
@@ -143,12 +145,26 @@ final class InMemoryCommitmentRepository implements CommitmentRepository
 
     public function findByRecurrenceIdAndMonth(int $recurrenceId, string $month, int $userId): ?Commitment
     {
+        foreach ($this->commitments as $commitment) {
+            if (
+                $commitment->recurrenceId === $recurrenceId
+                && $commitment->referenceMonth->format('Y-m-d') === $month
+                && $commitment->userId === $userId
+            ) {
+                return $commitment;
+            }
+        }
         return null;
     }
 
     public function findFirstByRecurrenceId(int $recurrenceId, int $userId): ?Commitment
     {
-        return null;
+        $matches = array_values(array_filter(
+            $this->commitments,
+            fn (Commitment $c) => $c->recurrenceId === $recurrenceId && $c->userId === $userId
+        ));
+        usort($matches, fn (Commitment $a, Commitment $b) => $a->referenceMonth <=> $b->referenceMonth);
+        return $matches[0] ?? null;
     }
 }
 
@@ -268,6 +284,7 @@ function assertNotNull(mixed $actual, string $message): void
 
 $accounts = new InMemoryAccountRepository();
 $categories = new InMemoryCategoryRepository();
+$recurrences = new InMemoryRecurrenceRepository();
 $commitments = new InMemoryCommitmentRepository();
 $entries = new InMemoryEntryRepository();
 $transactions = new DirectTransactionManager();
@@ -276,37 +293,29 @@ $userContext = new FixedUserContext(1);
 $principal = new Account(1, 1, 'Principal', AccountRole::PRINCIPAL, new \DateTimeImmutable());
 $accounts->save($principal);
 
-$recurrences = new InMemoryRecurrenceRepository();
 $createService = new CreateCommitmentService($commitments, $categories, $recurrences, $userContext);
-$settleService = new SettleCommitmentService($commitments, $entries, $accounts, $transactions, $userContext);
-$undoService = new UndoCommitmentSettlementService($commitments, $entries, $transactions, $userContext);
+$materializeService = new MaterializeRecurrenceOccurrenceService($recurrences, $commitments, $transactions, $userContext);
+$settleService = new SettleRecurrenceOccurrenceService($materializeService, $commitments, $entries, $accounts, $transactions, $userContext);
+$undoService = new UndoRecurrenceOccurrenceSettlementService($materializeService, $commitments, $entries, $transactions, $userContext);
 
-// Teste 1: cria, efetiva e desfaz um compromisso simples
-$commitment = $createService->execute(null, 'Salário', 2000.00, 'PADRAO', 'ENTRADA', '2026-09');
-assertEquals(CommitmentStatus::PENDENTE, $commitment->status, 'Status inicial');
+// Cria compromisso recorrente
+$base = $createService->execute(null, 'Netflix', 50.00, 'PADRAO', 'SAIDA', '2026-09', 12);
+assertNotNull($base->recurrenceId, 'Compromisso deve ter recurrence_id');
 
-$entry = $settleService->execute((int) $commitment->id);
-assertEquals(EntryState::ATIVO, $entry->state, 'Lançamento ativo após efetivação');
+// Materializa ocorrência de outubro
+$october = $materializeService->execute((int) $base->recurrenceId, '2026-10');
+assertEquals('Netflix', $october->name, 'Nome da ocorrência materializada');
+assertEquals('2026-10-01', $october->referenceMonth->format('Y-m-d'), 'Mês da ocorrência');
+assertEquals(CommitmentStatus::PENDENTE, $october->status, 'Status da ocorrência');
 
-$undoneCommitment = $commitments->findById((int) $commitment->id, 1);
-assertEquals(CommitmentStatus::EFETIVADO, $undoneCommitment?->status, 'Status após efetivação');
+// Efetiva a ocorrência de outubro
+$entry = $settleService->execute((int) $base->recurrenceId, '2026-10');
+assertEquals(EntryEffectType::SAIDA, $entry->effectType, 'Efeito da ocorrência');
+assertEquals(EntryState::ATIVO, $entry->state, 'Estado do lançamento');
 
-$undoService->execute((int) $commitment->id);
+// Desfaz a efetivação
+$undoService->execute((int) $base->recurrenceId, '2026-10');
+$undoneEntry = $entries->findByCommitmentId((int) $october->id, 1);
+assertEquals(EntryState::DESFEITO, $undoneEntry?->state, 'Lançamento desfeito');
 
-$entryAfterUndo = $entries->findByCommitmentId((int) $commitment->id, 1);
-assertEquals(EntryState::DESFEITO, $entryAfterUndo?->state, 'Lançamento desfeito');
-assertNotNull($entryAfterUndo?->undoneAt, 'Data de desfazimento preenchida');
-
-$commitmentAfterUndo = $commitments->findById((int) $commitment->id, 1);
-assertEquals(CommitmentStatus::PENDENTE, $commitmentAfterUndo?->status, 'Compromisso voltou a pendente');
-
-// Teste 2: não permite desfazer compromisso pendente
-try {
-    $pending = $createService->execute(null, 'Bônus', 100.00, 'PADRAO', 'ENTRADA', '2026-09');
-    $undoService->execute((int) $pending->id);
-    throw new \RuntimeException('FALHA: deveria rejeitar desfazer compromisso pendente');
-} catch (\RuntimeException $e) {
-    assertEquals(409, $e->getCode(), 'Código para compromisso não efetivado');
-}
-
-echo "OK: todos os testes manuais de desfazer efetivação passaram.\n";
+echo "OK: todos os testes manuais de ocorrências de recorrência passaram.\n";

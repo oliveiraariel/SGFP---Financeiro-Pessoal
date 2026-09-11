@@ -13,4 +13,8 @@ interface CommitmentRepository
     public function findById(int $id, int $userId): ?Commitment;
 
     public function findAllByUser(int $userId): array;
+
+    public function findByRecurrenceIdAndMonth(int $recurrenceId, string $month, int $userId): ?Commitment;
+
+    public function findFirstByRecurrenceId(int $recurrenceId, int $userId): ?Commitment;
 }
