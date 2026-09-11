@@ -63,11 +63,14 @@ Artefatos principais:
 - `docs/modelagem-dados/03-modelo-fisico.md`;
 - `docs/modelagem-dados/artefatos/`.
 
-Próxima etapa autorizada:
+Etapa corrente:
 
-- **Etapa 9 — Arquitetura da Aplicação**, pronta para iniciar.
+- **Etapa 9 — Arquitetura da Aplicação**, com proposta validada em 11/09/2026 e gate integral aprovado.
 
 Situação:
+- a proposta da Arquitetura da Aplicação está registrada e validada em `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
+- as cinco decisões humanas foram registradas (`DEC-001` a `DEC-005`): Conta Principal automática; exclusão de usuário com dupla confirmação e apagamento total; matriz de compatibilidade PHP 8.1+/WordPress 6.4+/MySQL 8.0.16+ ou MariaDB 10.6+; backup com chave `SGFP_BACKUP_KEY`, 1 snapshot/24h, limite 25 MB; e categorias iniciais listadas;
+- o apontamento técnico sobre snapshot de backup sob concorrência foi corrigido com lock por usuário, snapshot transacional e critérios de integração com duas conexões;
 - o Mapa do Domínio foi revisado para permanecer estritamente no escopo da Etapa 5;
 - o Plano de Desenvolvimento foi ampliado para detalhar melhor a transição entre modelagem, arquitetura, implementação e testes, sem alterar a sequência oficial das 12 etapas;
 - `docs/projeto/roteiro-tecnico-de-implementacao.md` foi definido como guia auxiliar para as etapas técnicas posteriores; ele não constitui nova etapa, não cria uma segunda numeração de fases e não autoriza antecipar gates;
@@ -90,7 +93,7 @@ Situação:
 - as decisões de cardinalidade, especialização, estrutura relacional e Modelo Físico das Etapas 6 a 8 estão registradas nos artefatos validados de `docs/modelagem-dados/`;
 - o Modelo Físico oficial da V1 é o artefato `docs/modelagem-dados/artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql`;
 - estruturas exclusivas do PIN futuro não integram a modelagem da V1;
-- a Etapa 9 está pronta para iniciar; as Etapas 10 a 12 permanecem condicionadas aos respectivos gates.
+- a Etapa 9 teve seu gate aprovado; a Etapa 10 — Desenvolvimento da API está autorizada a iniciar; a Etapa 11 permanece não iniciada; a Etapa 12 continua condicionada ao respectivo gate.
 
 ## 4. Decisões consolidadas relevantes para a modelagem
 
@@ -198,9 +201,9 @@ Resultados consolidados:
 
 ## 7. Gates posteriores
 
-- **Etapa 9 — Arquitetura:** gate liberado; é a próxima etapa autorizada.
-- **Etapa 10 — API:** somente após arquitetura correspondente.
-- **Etapa 11 — Interface Web:** conforme arquitetura e contratos aprovados.
+- **Etapa 9 — Arquitetura:** proposta validada; gate integral aprovado em 11/09/2026.
+- **Etapa 10 — API:** autorizada a iniciar; deve respeitar a arquitetura validada.
+- **Etapa 11 — Interface Web:** não iniciada; conforme contratos aprovados na Etapa 10.
 - **Etapa 12 — Testes:** evolui conforme critérios, implementação e estratégia vigente; a cadeia direta Regra de Negócio → Requisito deverá estar concluída antes do fechamento final da rastreabilidade.
 
 A existência de arquivos ou diretórios reservados para etapas futuras não significa que essas etapas foram iniciadas.
@@ -229,14 +232,9 @@ Não executar `push`, `merge`, rebase destrutivo ou alteração da `main` sem co
 
 ## 9. Próxima ação recomendada
 
-Após confirmar que o fechamento das Etapas 6, 7 e 8 e seus artefatos estão corretamente versionados:
-
-1. iniciar a **Etapa 9 — Arquitetura da Aplicação**;
-2. ler a modelagem validada em `docs/modelagem-dados/`;
-3. consultar `docs/projeto/roteiro-tecnico-de-implementacao.md` como guia auxiliar;
-4. definir a organização do plugin, responsabilidades dos componentes, estratégia de persistência, integração com WordPress e contratos REST;
-5. registrar as decisões arquiteturais em `docs/arquitetura/`;
-6. validar a arquitetura antes de iniciar a Etapa 10 — Desenvolvimento da API.
+1. dar continuidade à **Etapa 10 — Desenvolvimento da API**, respeitando a arquitetura validada em `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
+2. manter a Etapa 11 — Interface Web não iniciada até que os contratos da API estejam aprovados;
+3. tratar a `ISSUE-008` antes do fechamento formal da rastreabilidade de testes na Etapa 12.
 
 `ISSUE-007` deve permanecer registrada como resolvida. `ISSUE-008` deve permanecer visível como pendência não bloqueadora da Arquitetura.
 
@@ -289,4 +287,4 @@ Atualizar este arquivo quando houver:
 
 Registrar apenas o necessário para retomada e manter a próxima ação explícita.
 
-Última atualização operacional: **2026-09-05**.
+Última atualização operacional: **2026-09-11**.

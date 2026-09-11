@@ -1,9 +1,9 @@
 # ORCHESTRATOR.md — Contrato Operacional para Agentes
 
 **Projeto:** SGFP — Sistema de Gestão Financeira Pessoal  
-**Versão deste documento:** 2.4
+**Versão deste documento:** 2.6
 **Status:** Governança operacional vigente  
-**Última atualização:** 05/09/2026
+**Última atualização:** 11/09/2026
 
 ## 1. Finalidade
 
@@ -59,11 +59,13 @@ As etapas de modelagem de dados foram concluídas e validadas:
 
 Os documentos de referência estão em `docs/modelagem-dados/`, com os artefatos editáveis e visuais mantidos em `docs/modelagem-dados/artefatos/`.
 
-A próxima etapa autorizada é:
+A etapa corrente é:
 
 **Etapa 9 — Arquitetura da Aplicação**
 
-A Etapa 9 está pronta para iniciar e deverá utilizar a modelagem validada, a baseline documental e as restrições tecnológicas já consolidadas como entradas, sem alterar silenciosamente decisões de negócio.
+A proposta arquitetural foi produzida, tecnicamente corrigida após revisão e **validada em 11/09/2026**. As cinco decisões humanas necessárias foram registradas e incorporadas em `docs/arquitetura/01-arquitetura-da-aplicacao.md` (`DEC-001` a `DEC-005`). O gate integral da Etapa 9 está **aprovado**.
+
+A Etapa 10 — Desenvolvimento da API está autorizada a iniciar, desde que respeitada esta arquitetura validada. A Etapa 11 — Desenvolvimento da Interface Web permanece condicionada aos contratos aprovados.
 
 A associação de Categoria ao Compromisso Financeiro é opcional na V1; um compromisso pode ser cadastrado e permanecer sem categoria.
 
@@ -76,9 +78,9 @@ Os gates das Etapas 6, 7 e 8 foram satisfeitos.
 
 A partir do estado atual:
 
-- a Etapa 9 — Arquitetura da Aplicação pode ser iniciada;
-- decisões arquiteturais deverão ser registradas em `docs/arquitetura/`;
-- a implementação da API não deverá começar antes da definição e validação da arquitetura correspondente;
+- a proposta da Etapa 9 constitui baseline validada em `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
+- a Etapa 10 — Desenvolvimento da API está autorizada a iniciar;
+- a Etapa 11 — Desenvolvimento da Interface Web permanece não iniciada, condicionada aos contratos aprovados;
 - a modelagem validada somente deverá ser alterada quando houver motivo documentado e análise de impacto.
 
 ### Restrição tecnológica vigente
@@ -202,7 +204,7 @@ Os agentes devem respeitar a sequência estabelecida no Plano de Desenvolvimento
 
 Regras essenciais:
 
-- no estado atual, os gates das Etapas 5 a 8 já foram satisfeitos e a Etapa 9 está pronta para iniciar;
+- no estado atual, os gates das Etapas 5 a 9 já foram satisfeitos; a Etapa 10 está autorizada a iniciar; a Etapa 11 permanece não iniciada;
 - a Etapa 5 somente é considerada concluída com `docs/dominio/01-mapa-de-dominio.md` validado;
 - a Modelagem Conceitual (MER) pode iniciar somente após a validação do Mapa do Domínio;
 - não criar DER antes da validação do MER;
@@ -487,6 +489,13 @@ A proveniência disponível no repositório deve ser consultada em:
 Caso seja necessária auditoria sobre o material bruto original, deve-se utilizar o pacote de preservação completo mantido separadamente.
 
 ## 21. Histórico de atualização
+
+### Versão 2.6 — 11/09/2026
+
+- registro das cinco decisões humanas (`DEC-001` a `DEC-005`) e aprovação do gate integral da Etapa 9;
+- atualização da arquitetura para baseline validada, subsidiária da Etapa 10;
+- manutenção da Etapa 11 como não iniciada e condicionada aos contratos aprovados;
+- preservação da `ISSUE-008` como pendência não bloqueadora desta etapa.
 
 ### Versão 2.4 — 05/09/2026
 

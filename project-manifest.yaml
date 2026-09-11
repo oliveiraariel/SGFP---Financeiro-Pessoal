@@ -1,6 +1,6 @@
 schema_version: "1.0"
-manifest_version: "2.6"
-updated_at: "2026-09-05"
+manifest_version: "2.8"
+updated_at: "2026-09-11"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -94,22 +94,22 @@ development_guidance:
     tests_during_development: true
     formal_stage_12_testing_preserved: true
   architecture_boundary:
-    controllers_services_repositories: "planned_direction_to_be_defined_in_stage_9"
-    domain_layer_or_directory: "not_mandatory_before_architecture_decision"
+    controllers_services_repositories: "defined_in_stage_9_baseline_validated"
+    domain_layer_or_directory: "introduced_only_by_real_responsibility_in_stage_9_baseline_validated"
     table_equals_domain_entity_equals_php_class: false
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "stage_9_ready_to_start"
+  current_state: "stage_9_validated_stage_10_ready_to_start"
   last_completed_stage:
-    id: 8
-    name: "Modelo Físico"
-  current_stage:
     id: 9
     name: "Arquitetura da Aplicação"
+  current_stage:
+    id: 10
+    name: "Desenvolvimento da API"
   current_stage_gate:
     status: "ready_to_start"
-    reason: "As Etapas 6, 7 e 8 foram concluídas e validadas. A Etapa 9 está autorizada a iniciar utilizando o MER, o DER e o Modelo Físico validados como entradas."
+    reason: "A proposta arquitetural foi validada em 11/09/2026, as cinco decisões humanas foram registradas (DEC-001 a DEC-005) e o gate integral da Etapa 9 foi aprovado. A Etapa 10 está autorizada a iniciar respeitando a arquitetura validada."
     blockers: []
 
 stages:
@@ -155,8 +155,13 @@ stages:
 
   - id: 9
     name: "Arquitetura da Aplicação"
-    status: "ready_to_start"
+    status: "completed_validated"
     path: "docs/arquitetura/"
+
+  - id: 10
+    name: "Desenvolvimento da API"
+    status: "ready_to_start"
+    path: "src/"
 
   - id: 10
     name: "Desenvolvimento da API"
@@ -238,6 +243,11 @@ canonical_sources:
     path: "docs/modelagem-dados/03-modelo-fisico.md"
     authority: "validated_data_model"
     sql_artifact: "docs/modelagem-dados/artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql"
+
+  application_architecture:
+    path: "docs/arquitetura/01-arquitetura-da-aplicacao.md"
+    authority: "baseline_validated_stage_10_input"
+    note: "Baseline validada em 11/09/2026. Decisões humanas registradas como DEC-001 a DEC-005. Gate integral da Etapa 9 aprovado."
 
   governance_report:
     path: "docs/governanca/relatorio-de-consolidacao.md"
