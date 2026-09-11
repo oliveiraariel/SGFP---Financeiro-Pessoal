@@ -6,16 +6,19 @@ namespace SGFP\Application\Services;
 
 use SGFP\Application\Ports\CategoryRepository;
 use SGFP\Application\Ports\CommitmentRepository;
+use SGFP\Application\Ports\RecurrenceRepository;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Domain\Enums\CommitmentNature;
 use SGFP\Domain\Enums\CommitmentType;
 use SGFP\Domain\Models\Commitment;
+use SGFP\Domain\Models\Recurrence;
 
 final class CreateCommitmentService
 {
     public function __construct(
         private readonly CommitmentRepository $repository,
         private readonly CategoryRepository $categoryRepository,
+        private readonly RecurrenceRepository $recurrenceRepository,
         private readonly UserContext $userContext,
     ) {
     }
@@ -27,6 +30,7 @@ final class CreateCommitmentService
         string $type,
         string $nature,
         string $referenceMonth,
+        ?int $recurrenceMonthsCount = null,
     ): Commitment {
         $userId = $this->userContext->requireUserId();
         $this->userContext->requireCapability('use_sgfp');
@@ -72,6 +76,18 @@ final class CreateCommitmentService
             throw new \InvalidArgumentException('Categoria não encontrada.');
         }
 
+        $recurrenceId = null;
+
+        if ($recurrenceMonthsCount !== null) {
+            if ($recurrenceMonthsCount <= 0) {
+                throw new \InvalidArgumentException('A quantidade de meses deve ser maior que zero ou omitida.');
+            }
+
+            $recurrence = Recurrence::create($userId, $month, $recurrenceMonthsCount, new \DateTimeImmutable());
+            $recurrence = $this->recurrenceRepository->save($recurrence);
+            $recurrenceId = $recurrence->id;
+        }
+
         $commitment = Commitment::create(
             $userId,
             $categoryId,
@@ -80,7 +96,8 @@ final class CreateCommitmentService
             $commitmentType,
             $commitmentNature,
             $month,
-            new \DateTimeImmutable()
+            new \DateTimeImmutable(),
+            $recurrenceId,
         );
 
         return $this->repository->save($commitment);

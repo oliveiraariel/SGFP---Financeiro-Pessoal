@@ -30,12 +30,14 @@ final class CommitmentController
                 $dto->amount,
                 $dto->type,
                 $dto->nature,
-                $dto->referenceMonth
+                $dto->referenceMonth,
+                $dto->recurrenceMonthsCount,
             );
 
             return new \WP_REST_Response([
                 'id' => $commitment->id,
                 'category_id' => $commitment->categoryId,
+                'recurrence_id' => $commitment->recurrenceId,
                 'name' => $commitment->name,
                 'amount' => $commitment->amount,
                 'type' => $commitment->type->value,

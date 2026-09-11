@@ -13,6 +13,7 @@ final class CreateCommitmentRequest
         public readonly string $type,
         public readonly string $nature,
         public readonly string $referenceMonth,
+        public readonly ?int $recurrenceMonthsCount,
     ) {
     }
 
@@ -25,6 +26,7 @@ final class CreateCommitmentRequest
             (string) ($request['type'] ?? ''),
             (string) ($request['nature'] ?? ''),
             (string) ($request['reference_month'] ?? ''),
+            isset($request['recurrence_months_count']) ? (int) $request['recurrence_months_count'] : null,
         );
     }
 

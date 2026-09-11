@@ -34,12 +34,13 @@ final class Commitment
         CommitmentNature $nature,
         \DateTimeImmutable $referenceMonth,
         \DateTimeImmutable $now,
+        ?int $recurrenceId = null,
     ): self {
         return new self(
             null,
             $userId,
             $categoryId,
-            null,
+            $recurrenceId,
             $name,
             $amount,
             $type,

@@ -7,6 +7,7 @@ namespace SGFP\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use SGFP\Application\Ports\CategoryRepository;
 use SGFP\Application\Ports\CommitmentRepository;
+use SGFP\Application\Ports\RecurrenceRepository;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Services\CreateCommitmentService;
 use SGFP\Domain\Enums\CommitmentNature;
@@ -14,6 +15,7 @@ use SGFP\Domain\Enums\CommitmentStatus;
 use SGFP\Domain\Enums\CommitmentType;
 use SGFP\Domain\Models\Category;
 use SGFP\Domain\Models\Commitment;
+use SGFP\Domain\Models\Recurrence;
 
 final class CreateCommitmentServiceTest extends TestCase
 {
@@ -21,6 +23,7 @@ final class CreateCommitmentServiceTest extends TestCase
     {
         $commitmentRepository = $this->createMock(CommitmentRepository::class);
         $categoryRepository = $this->createMock(CategoryRepository::class);
+        $recurrenceRepository = $this->createMock(RecurrenceRepository::class);
         $userContext = $this->createMock(UserContext::class);
 
         $userContext->method('requireUserId')->willReturn(1);
@@ -44,7 +47,7 @@ final class CreateCommitmentServiceTest extends TestCase
             }
         );
 
-        $service = new CreateCommitmentService($commitmentRepository, $categoryRepository, $userContext);
+        $service = new CreateCommitmentService($commitmentRepository, $categoryRepository, $recurrenceRepository, $userContext);
         $result = $service->execute(5, 'Aluguel', 1200.0, 'PADRAO', 'SAIDA', '2026-09-15');
 
         $this->assertSame(10, $result->id);
@@ -54,6 +57,7 @@ final class CreateCommitmentServiceTest extends TestCase
     {
         $commitmentRepository = $this->createMock(CommitmentRepository::class);
         $categoryRepository = $this->createMock(CategoryRepository::class);
+        $recurrenceRepository = $this->createMock(RecurrenceRepository::class);
         $userContext = $this->createMock(UserContext::class);
 
         $userContext->method('requireUserId')->willReturn(1);
@@ -66,7 +70,7 @@ final class CreateCommitmentServiceTest extends TestCase
             }
         );
 
-        $service = new CreateCommitmentService($commitmentRepository, $categoryRepository, $userContext);
+        $service = new CreateCommitmentService($commitmentRepository, $categoryRepository, $recurrenceRepository, $userContext);
         $result = $service->execute(null, 'Freelance', 500.0, 'PADRAO', 'ENTRADA', '2026-08');
 
         $this->assertSame(11, $result->id);
@@ -136,16 +140,49 @@ final class CreateCommitmentServiceTest extends TestCase
         $service->execute(null, 'Nome', 100.0, 'PADRAO', 'ENTRADA', '2026/08');
     }
 
+    public function testCreatesRecurrentCommitment(): void
+    {
+        $commitmentRepository = $this->createMock(CommitmentRepository::class);
+        $categoryRepository = $this->createMock(CategoryRepository::class);
+        $recurrenceRepository = $this->createMock(RecurrenceRepository::class);
+        $userContext = $this->createMock(UserContext::class);
+
+        $userContext->method('requireUserId')->willReturn(1);
+        $categoryRepository->expects($this->never())->method('findById');
+
+        $recurrenceRepository->expects($this->once())->method('save')->willReturnCallback(
+            function (Recurrence $recurrence): Recurrence {
+                $this->assertSame('2026-09-01', $recurrence->startsIn->format('Y-m-d'));
+                $this->assertSame(12, $recurrence->monthsCount);
+                return $recurrence->withId(50);
+            }
+        );
+
+        $commitmentRepository->expects($this->once())->method('save')->willReturnCallback(
+            function (Commitment $commitment): Commitment {
+                $this->assertSame(50, $commitment->recurrenceId);
+                return $commitment->withId(20);
+            }
+        );
+
+        $service = new CreateCommitmentService($commitmentRepository, $categoryRepository, $recurrenceRepository, $userContext);
+        $result = $service->execute(null, 'Mensalidade', 200.0, 'PADRAO', 'SAIDA', '2026-09', 12);
+
+        $this->assertSame(20, $result->id);
+        $this->assertSame(50, $result->recurrenceId);
+    }
+
     public function testMissingCategoryThrows(): void
     {
         $commitmentRepository = $this->createMock(CommitmentRepository::class);
         $categoryRepository = $this->createMock(CategoryRepository::class);
+        $recurrenceRepository = $this->createMock(RecurrenceRepository::class);
         $userContext = $this->createMock(UserContext::class);
 
         $userContext->method('requireUserId')->willReturn(1);
         $categoryRepository->method('findById')->with(99, 1)->willReturn(null);
 
-        $service = new CreateCommitmentService($commitmentRepository, $categoryRepository, $userContext);
+        $service = new CreateCommitmentService($commitmentRepository, $categoryRepository, $recurrenceRepository, $userContext);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Categoria não encontrada.');
@@ -156,10 +193,11 @@ final class CreateCommitmentServiceTest extends TestCase
     {
         $commitmentRepository = $this->createMock(CommitmentRepository::class);
         $categoryRepository = $this->createMock(CategoryRepository::class);
+        $recurrenceRepository = $this->createMock(RecurrenceRepository::class);
         $userContext = $this->createMock(UserContext::class);
 
         $userContext->method('requireUserId')->willReturn(1);
 
-        return new CreateCommitmentService($commitmentRepository, $categoryRepository, $userContext);
+        return new CreateCommitmentService($commitmentRepository, $categoryRepository, $recurrenceRepository, $userContext);
     }
 }

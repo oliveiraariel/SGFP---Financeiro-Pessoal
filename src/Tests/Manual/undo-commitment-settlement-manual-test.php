@@ -7,6 +7,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use SGFP\Application\Ports\AccountRepository;
 use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Application\Ports\EntryRepository;
+use SGFP\Application\Ports\RecurrenceRepository;
 use SGFP\Application\Ports\TransactionManager;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Services\CreateCommitmentService;
@@ -23,6 +24,7 @@ use SGFP\Domain\Models\Account;
 use SGFP\Domain\Models\Category;
 use SGFP\Domain\Models\Commitment;
 use SGFP\Domain\Models\Entry;
+use SGFP\Domain\Models\Recurrence;
 
 final class InMemoryAccountRepository implements AccountRepository
 {
@@ -90,6 +92,27 @@ final class InMemoryCategoryRepository implements \SGFP\Application\Ports\Catego
 
     public function seedDefaults(int $userId): void
     {
+    }
+}
+
+final class InMemoryRecurrenceRepository implements RecurrenceRepository
+{
+    private array $recurrences = [];
+    private int $nextId = 1;
+
+    public function save(Recurrence $recurrence): Recurrence
+    {
+        if ($recurrence->id === null) {
+            $recurrence = $recurrence->withId($this->nextId++);
+        }
+        $this->recurrences[$recurrence->id] = $recurrence;
+        return $recurrence;
+    }
+
+    public function findById(int $id, int $userId): ?Recurrence
+    {
+        $recurrence = $this->recurrences[$id] ?? null;
+        return $recurrence && $recurrence->userId === $userId ? $recurrence : null;
     }
 }
 
@@ -243,7 +266,8 @@ $userContext = new FixedUserContext(1);
 $principal = new Account(1, 1, 'Principal', AccountRole::PRINCIPAL, new \DateTimeImmutable());
 $accounts->save($principal);
 
-$createService = new CreateCommitmentService($commitments, $categories, $userContext);
+$recurrences = new InMemoryRecurrenceRepository();
+$createService = new CreateCommitmentService($commitments, $categories, $recurrences, $userContext);
 $settleService = new SettleCommitmentService($commitments, $entries, $accounts, $transactions, $userContext);
 $undoService = new UndoCommitmentSettlementService($commitments, $entries, $transactions, $userContext);
 

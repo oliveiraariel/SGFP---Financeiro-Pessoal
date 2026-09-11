@@ -23,6 +23,7 @@ use SGFP\Infrastructure\WordPress\WpCommitmentRepository;
 use SGFP\Infrastructure\WordPress\WpEntryRepository;
 use SGFP\Infrastructure\WordPress\WpTransactionManager;
 use SGFP\Infrastructure\WordPress\WpUserContext;
+use SGFP\Infrastructure\WordPress\WpRecurrenceRepository;
 use SGFP\Infrastructure\WordPress\WpTransferRepository;
 use SGFP\REST\Controllers\AccountController;
 use SGFP\REST\Controllers\CategoryController;
@@ -55,8 +56,10 @@ final class Routes
             new ListCategoriesService($categoryRepository, $userContext)
         );
 
+        $recurrenceRepository = new WpRecurrenceRepository();
+
         $commitmentController = new CommitmentController(
-            new CreateCommitmentService($commitmentRepository, $categoryRepository, $userContext),
+            new CreateCommitmentService($commitmentRepository, $categoryRepository, $recurrenceRepository, $userContext),
             new SettleCommitmentService($commitmentRepository, $entryRepository, $accountRepository, $transactionManager, $userContext),
             new UndoCommitmentSettlementService($commitmentRepository, $entryRepository, $transactionManager, $userContext)
         );
@@ -175,6 +178,10 @@ final class Routes
                     'required' => true,
                     'type' => 'string',
                     'pattern' => '^\d{4}-\d{2}$',
+                ],
+                'recurrence_months_count' => [
+                    'required' => false,
+                    'type' => 'integer',
                 ],
             ],
         ]);
