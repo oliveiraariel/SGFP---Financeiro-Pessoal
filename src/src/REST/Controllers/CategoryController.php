@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace SGFP\REST\Controllers;
 
-use SGFP\Application\Services\CreateAccountService;
-use SGFP\REST\DTOs\CreateAccountRequest;
+use SGFP\Application\Services\CreateCategoryService;
+use SGFP\Application\Services\ListCategoriesService;
 
-final class AccountController
+final class CategoryController
 {
     public function __construct(
-        private readonly CreateAccountService $createService,
-        private readonly \SGFP\Application\Services\ListAccountsService $listService,
+        private readonly CreateCategoryService $createService,
+        private readonly ListCategoriesService $listService,
     ) {
     }
 
     public function create(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $dto = CreateAccountRequest::fromRequest($request);
-            $dto->validate();
-
-            $account = $this->createService->execute($dto->name, $dto->role);
+            $category = $this->createService->execute(
+                (string) ($request['name'] ?? ''),
+                (string) ($request['type'] ?? '')
+            );
 
             return new \WP_REST_Response([
-                'id' => $account->id,
-                'name' => $account->name,
-                'role' => $account->role->value,
-                'created_at' => $account->createdAt->format('c'),
+                'id' => $category->id,
+                'name' => $category->name,
+                'type' => $category->type->value,
+                'created_at' => $category->createdAt->format('c'),
             ], 201);
         } catch (\InvalidArgumentException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], 400);
@@ -41,14 +41,14 @@ final class AccountController
     public function list(): \WP_REST_Response
     {
         try {
-            $accounts = $this->listService->execute();
+            $categories = $this->listService->execute();
 
-            $data = array_map(fn ($account) => [
-                'id' => $account->id,
-                'name' => $account->name,
-                'role' => $account->role->value,
-                'created_at' => $account->createdAt->format('c'),
-            ], $accounts);
+            $data = array_map(fn ($category) => [
+                'id' => $category->id,
+                'name' => $category->name,
+                'type' => $category->type->value,
+                'created_at' => $category->createdAt->format('c'),
+            ], $categories);
 
             return new \WP_REST_Response($data, 200);
         } catch (\RuntimeException $e) {

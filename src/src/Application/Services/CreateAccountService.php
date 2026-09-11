@@ -16,6 +16,7 @@ final class CreateAccountService
         private readonly AccountRepository $repository,
         private readonly UserContext $userContext,
         private readonly AccountPolicy $policy,
+        private readonly ?SeedCategoriesService $seedCategories = null,
     ) {
     }
 
@@ -43,6 +44,13 @@ final class CreateAccountService
 
         if ($count === 0) {
             $account = Account::createPrincipal($userId, $normalizedName, new \DateTimeImmutable());
+            $account = $this->repository->save($account);
+
+            if ($this->seedCategories !== null) {
+                $this->seedCategories->execute($userId);
+            }
+
+            return $account;
         } else {
             if ($role === AccountRole::PRINCIPAL->value && $this->repository->hasPrincipal($userId)) {
                 throw new \InvalidArgumentException('O usuário já possui uma conta Principal.');

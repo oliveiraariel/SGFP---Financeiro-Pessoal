@@ -23,6 +23,8 @@ logs/
 
 # PHP / Composer
 /vendor/
+/src/vendor/
+/src/composer.phar
 
 # Node.js / Front-end
 /node_modules/
