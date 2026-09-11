@@ -67,6 +67,23 @@ final class Commitment
         );
     }
 
+    public function undoSettlement(): self
+    {
+        return new self(
+            $this->id,
+            $this->userId,
+            $this->categoryId,
+            $this->recurrenceId,
+            $this->name,
+            $this->amount,
+            $this->type,
+            $this->nature,
+            $this->referenceMonth,
+            CommitmentStatus::PENDENTE,
+            $this->createdAt,
+        );
+    }
+
     public function withId(int $id): self
     {
         return new self(

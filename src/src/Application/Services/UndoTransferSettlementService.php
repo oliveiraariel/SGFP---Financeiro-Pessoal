@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SGFP\Application\Services;
+
+use SGFP\Application\Ports\CommitmentRepository;
+use SGFP\Application\Ports\EntryRepository;
+use SGFP\Application\Ports\TransactionManager;
+use SGFP\Application\Ports\TransferRepository;
+use SGFP\Application\Ports\UserContext;
+use SGFP\Domain\Enums\CommitmentStatus;
+use SGFP\Domain\Enums\EntryState;
+
+final class UndoTransferSettlementService
+{
+    public function __construct(
+        private readonly CommitmentRepository $commitmentRepository,
+        private readonly TransferRepository $transferRepository,
+        private readonly EntryRepository $entryRepository,
+        private readonly TransactionManager $transactionManager,
+        private readonly UserContext $userContext,
+    ) {
+    }
+
+    public function execute(int $commitmentId): void
+    {
+        $this->userContext->requireCapability('use_sgfp');
+        $userId = $this->userContext->requireUserId();
+
+        $commitment = $this->commitmentRepository->findById($commitmentId, $userId);
+        if ($commitment === null) {
+            throw new \RuntimeException('Compromisso não encontrado.', 404);
+        }
+
+        if ($commitment->status !== CommitmentStatus::EFETIVADO) {
+            throw new \RuntimeException('O compromisso deve estar efetivado para ser desfeito.', 409);
+        }
+
+        $transfer = $this->transferRepository->findByCommitmentId($commitmentId, $userId);
+        if ($transfer === null) {
+            throw new \RuntimeException('Transferência não encontrada.', 404);
+        }
+
+        $now = new \DateTimeImmutable();
+
+        $this->transactionManager->transactional(function () use ($commitment, $transfer, $userId, $now) {
+            $entries = [
+                $this->entryRepository->findByCommitmentIdAndAccount((int) $commitment->id, $transfer->sourceAccountId, $userId),
+                $this->entryRepository->findByCommitmentIdAndAccount((int) $commitment->id, $transfer->targetAccountId, $userId),
+            ];
+
+            foreach ($entries as $entry) {
+                if ($entry === null || $entry->state !== EntryState::ATIVO) {
+                    throw new \RuntimeException('Efeito da transferência não encontrado ou já desfeito.', 409);
+                }
+
+                $this->entryRepository->save($entry->withUndone($now));
+            }
+
+            $this->commitmentRepository->save($commitment->undoSettlement());
+
+            return null;
+        });
+    }
+}

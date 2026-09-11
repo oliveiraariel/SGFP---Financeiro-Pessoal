@@ -12,5 +12,7 @@ interface EntryRepository
 
     public function findByCommitmentId(int $commitmentId, int $userId): ?Entry;
 
+    public function findByCommitmentIdAndAccount(int $commitmentId, int $accountId, int $userId): ?Entry;
+
     public function findActiveInitialBalanceByAccount(int $accountId, int $userId): ?Entry;
 }

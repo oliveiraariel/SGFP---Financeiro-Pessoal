@@ -81,6 +81,21 @@ final class WpEntryRepository implements EntryRepository
         return $row ? $this->mapRow($row) : null;
     }
 
+    public function findByCommitmentIdAndAccount(int $commitmentId, int $accountId, int $userId): ?Entry
+    {
+        global $wpdb;
+
+        $row = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM " . TableNames::entry()
+            . " WHERE fk_id_compromisso = %d AND fk_id_conta = %d AND fk_id_usuario = %d",
+            $commitmentId,
+            $accountId,
+            $userId
+        ), ARRAY_A);
+
+        return $row ? $this->mapRow($row) : null;
+    }
+
     private function mapRow(array $row): Entry
     {
         return new Entry(

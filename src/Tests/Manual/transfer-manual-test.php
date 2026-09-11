@@ -5,16 +5,24 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use SGFP\Application\Ports\AccountRepository;
+use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Application\Ports\EntryRepository;
 use SGFP\Application\Ports\TransactionManager;
+use SGFP\Application\Ports\TransferRepository;
 use SGFP\Application\Ports\UserContext;
-use SGFP\Application\Services\SetInitialBalanceService;
+use SGFP\Application\Services\CreateTransferService;
+use SGFP\Application\Services\SettleTransferService;
+use SGFP\Application\Services\UndoTransferSettlementService;
 use SGFP\Domain\Enums\AccountRole;
+use SGFP\Domain\Enums\CommitmentStatus;
+use SGFP\Domain\Enums\CommitmentType;
 use SGFP\Domain\Enums\EntryEffectType;
 use SGFP\Domain\Enums\EntryOrigin;
 use SGFP\Domain\Enums\EntryState;
 use SGFP\Domain\Models\Account;
+use SGFP\Domain\Models\Commitment;
 use SGFP\Domain\Models\Entry;
+use SGFP\Domain\Models\Transfer;
 
 final class InMemoryAccountRepository implements AccountRepository
 {
@@ -55,6 +63,48 @@ final class InMemoryAccountRepository implements AccountRepository
     public function countByUser(int $userId): int
     {
         return count(array_filter($this->accounts, fn (Account $a) => $a->userId === $userId));
+    }
+}
+
+final class InMemoryCommitmentRepository implements CommitmentRepository
+{
+    private array $commitments = [];
+    private int $nextId = 1;
+
+    public function save(Commitment $commitment): Commitment
+    {
+        if ($commitment->id === null) {
+            $commitment = $commitment->withId($this->nextId++);
+        }
+        $this->commitments[$commitment->id] = $commitment;
+        return $commitment;
+    }
+
+    public function findById(int $id, int $userId): ?Commitment
+    {
+        $commitment = $this->commitments[$id] ?? null;
+        return $commitment && $commitment->userId === $userId ? $commitment : null;
+    }
+
+    public function findAllByUser(int $userId): array
+    {
+        return array_values(array_filter($this->commitments, fn (Commitment $c) => $c->userId === $userId));
+    }
+}
+
+final class InMemoryTransferRepository implements TransferRepository
+{
+    private array $transfers = [];
+
+    public function save(Transfer $transfer): void
+    {
+        $this->transfers[$transfer->commitmentId] = $transfer;
+    }
+
+    public function findByCommitmentId(int $commitmentId, int $userId): ?Transfer
+    {
+        $transfer = $this->transfers[$commitmentId] ?? null;
+        return $transfer && $transfer->userId === $userId ? $transfer : null;
     }
 }
 
@@ -109,11 +159,6 @@ final class InMemoryEntryRepository implements EntryRepository
             }
         }
         return null;
-    }
-
-    public function findById(int $id): ?Entry
-    {
-        return $this->entries[$id] ?? null;
     }
 }
 
@@ -178,53 +223,55 @@ function assertNotNull(mixed $actual, string $message): void
 }
 
 $accounts = new InMemoryAccountRepository();
+$commitments = new InMemoryCommitmentRepository();
+$transfers = new InMemoryTransferRepository();
 $entries = new InMemoryEntryRepository();
 $transactions = new DirectTransactionManager();
 $userContext = new FixedUserContext(1);
 
 $principal = new Account(1, 1, 'Principal', AccountRole::PRINCIPAL, new \DateTimeImmutable());
-$accounts->save($principal);
-
 $secondary = new Account(2, 1, 'Reserva', AccountRole::SECUNDARIA, new \DateTimeImmutable());
+$accounts->save($principal);
 $accounts->save($secondary);
 
-$service = new SetInitialBalanceService($accounts, $entries, $transactions, $userContext);
+$createService = new CreateTransferService($accounts, $commitments, $transfers, $transactions, $userContext);
+$settleService = new SettleTransferService($commitments, $transfers, $entries, $transactions, $userContext);
+$undoService = new UndoTransferSettlementService($commitments, $transfers, $entries, $transactions, $userContext);
 
-// Teste 1: cria saldo inicial na conta principal
-$entry = $service->execute(1, 1500.00, 'Saldo de abertura', 'Setembro', new \DateTimeImmutable('2026-09-01'));
-assertEquals(1, $entry->id, 'ID do lançamento');
-assertEquals(1, $entry->accountId, 'Conta do lançamento');
-assertEquals(EntryOrigin::SALDO_INICIAL, $entry->origin, 'Origem');
-assertEquals(EntryEffectType::ENTRADA, $entry->effectType, 'Tipo de efeito');
-assertEquals(EntryState::ATIVO, $entry->state, 'Estado');
-assertEquals(1500.00, $entry->amount, 'Valor');
-assertEquals('Saldo de abertura', $entry->name, 'Nome');
-assertEquals('Setembro', $entry->description, 'Descrição');
-assertEquals('2026-09-01T00:00:00+00:00', $entry->settledAt->format('c'), 'Data de efetivação');
+// Teste 1: cria transferência Principal -> Secundária
+[$commitment, $transfer] = $createService->execute('Reserva de emergência', 300.00, '2026-09', 1, 2);
+assertEquals(CommitmentType::TRANSFERENCIA, $commitment->type, 'Tipo deve ser TRANSFERENCIA');
+assertEquals('SAIDA', $commitment->nature->value, 'Natureza Principal->Secundária é SAIDA');
+assertEquals(1, $transfer->sourceAccountId, 'Origem');
+assertEquals(2, $transfer->targetAccountId, 'Destino');
 
-// Teste 2: substitui saldo inicial anterior
-$replacement = $service->execute(1, 2500.00, 'Novo saldo', null, null);
-$active = $entries->findActiveInitialBalanceByAccount(1, 1);
-assertEquals(2, $active?->id, 'ID do novo lançamento ativo');
-assertEquals(2500.00, $active?->amount, 'Valor substituído');
-$old = $entries->findById(1);
-assertEquals(EntryState::DESFEITO, $old?->state, 'Saldo anterior deve estar desfeito');
-assertNotNull($old?->undoneAt, 'Saldo anterior deve ter data de desfazimento');
-
-// Teste 3: conta secundária é rejeitada
+// Teste 2: rejeita Secundária -> Secundária
 try {
-    $service->execute(2, 100.00, null, null, null);
-    throw new \RuntimeException('FALHA: deveria ter rejeitado conta secundária');
+    $createService->execute('Inválida', 100.00, '2026-09', 2, 2);
+    throw new \RuntimeException('FALHA: deveria rejeitar origem e destino iguais');
 } catch (\RuntimeException $e) {
-    assertEquals(403, $e->getCode(), 'Código HTTP para conta secundária');
+    assertEquals(422, $e->getCode(), 'Código para contas iguais');
 }
 
-// Teste 4: conta inexistente é rejeitada
-try {
-    $service->execute(99, 100.00, null, null, null);
-    throw new \RuntimeException('FALHA: deveria ter rejeitado conta inexistente');
-} catch (\RuntimeException $e) {
-    assertEquals(404, $e->getCode(), 'Código HTTP para conta inexistente');
-}
+// Teste 3: efetiva a transferência, gerando dois lançamentos
+[$settled, $outflow, $inflow] = $settleService->execute((int) $commitment->id);
+assertEquals(CommitmentStatus::EFETIVADO, $settled->status, 'Status após efetivação');
+assertEquals(EntryEffectType::SAIDA, $outflow->effectType, 'Saída da origem');
+assertEquals(1, $outflow->accountId, 'Conta de saída');
+assertEquals(EntryEffectType::ENTRADA, $inflow->effectType, 'Entrada no destino');
+assertEquals(2, $inflow->accountId, 'Conta de entrada');
+assertEquals(300.00, $outflow->amount, 'Valor saída');
+assertEquals(300.00, $inflow->amount, 'Valor entrada');
 
-echo "OK: todos os testes manuais de saldo inicial passaram.\n";
+// Teste 4: desfaz a efetivação
+$undoService->execute((int) $commitment->id);
+$undoneOutflow = $entries->findByCommitmentIdAndAccount((int) $commitment->id, 1, 1);
+$undoneInflow = $entries->findByCommitmentIdAndAccount((int) $commitment->id, 2, 1);
+assertEquals(EntryState::DESFEITO, $undoneOutflow?->state, 'Saída desfeita');
+assertEquals(EntryState::DESFEITO, $undoneInflow?->state, 'Entrada desfeita');
+assertNotNull($undoneOutflow?->undoneAt, 'Data de desfazimento saída');
+
+$undoneCommitment = $commitments->findById((int) $commitment->id, 1);
+assertEquals(CommitmentStatus::PENDENTE, $undoneCommitment?->status, 'Compromisso voltou a pendente');
+
+echo "OK: todos os testes manuais de transferência passaram.\n";
