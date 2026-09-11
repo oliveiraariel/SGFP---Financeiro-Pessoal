@@ -13,6 +13,7 @@ use SGFP\Application\Services\ListCategoriesService;
 use SGFP\Application\Services\SeedCategoriesService;
 use SGFP\Application\Services\SetInitialBalanceService;
 use SGFP\Application\Services\SettleCommitmentService;
+use SGFP\Application\Services\UndoCommitmentSettlementService;
 use SGFP\Application\Services\SettleTransferService;
 use SGFP\Application\Services\UndoTransferSettlementService;
 use SGFP\Domain\Policies\AccountPolicy;
@@ -56,7 +57,8 @@ final class Routes
 
         $commitmentController = new CommitmentController(
             new CreateCommitmentService($commitmentRepository, $categoryRepository, $userContext),
-            new SettleCommitmentService($commitmentRepository, $entryRepository, $accountRepository, $transactionManager, $userContext)
+            new SettleCommitmentService($commitmentRepository, $entryRepository, $accountRepository, $transactionManager, $userContext),
+            new UndoCommitmentSettlementService($commitmentRepository, $entryRepository, $transactionManager, $userContext)
         );
 
         $transferRepository = new WpTransferRepository();
@@ -180,6 +182,18 @@ final class Routes
         register_rest_route(self::NAMESPACE, '/commitments/(?P<id>\d+)/settle', [
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => [$commitmentController, 'settle'],
+            'permission_callback' => [$commitmentController, 'permissionCheck'],
+            'args' => [
+                'id' => [
+                    'required' => true,
+                    'type' => 'integer',
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/commitments/(?P<id>\d+)/undo-effectuation', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$commitmentController, 'undo'],
             'permission_callback' => [$commitmentController, 'permissionCheck'],
             'args' => [
                 'id' => [
