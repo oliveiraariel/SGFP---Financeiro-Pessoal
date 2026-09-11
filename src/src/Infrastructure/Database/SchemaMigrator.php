@@ -36,7 +36,7 @@ final class SchemaMigrator
     {
         global $wpdb;
 
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        require_once \ABSPATH . 'wp-admin/includes/upgrade.php';
 
         $charset = $wpdb->get_charset_collate();
         $sql = Schema::getCreateTablesSql($charset);
