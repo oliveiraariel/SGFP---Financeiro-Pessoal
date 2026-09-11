@@ -11,4 +11,9 @@ interface RecurrenceRepository
     public function save(Recurrence $recurrence): Recurrence;
 
     public function findById(int $id, int $userId): ?Recurrence;
+
+    /**
+     * @return Recurrence[]
+     */
+    public function findAllByUser(int $userId): array;
 }

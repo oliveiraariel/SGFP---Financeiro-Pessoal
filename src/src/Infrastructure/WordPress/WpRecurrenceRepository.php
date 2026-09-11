@@ -57,6 +57,18 @@ final class WpRecurrenceRepository implements RecurrenceRepository
         return $row ? $this->mapRow($row) : null;
     }
 
+    public function findAllByUser(int $userId): array
+    {
+        global $wpdb;
+
+        $rows = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM " . TableNames::recurrence() . " WHERE fk_id_usuario = %d ORDER BY inicio_mes",
+            $userId
+        ), ARRAY_A);
+
+        return array_map([$this, 'mapRow'], $rows ?: []);
+    }
+
     private function mapRow(array $row): Recurrence
     {
         return new Recurrence(

@@ -25,4 +25,9 @@ interface EntryRepository
      * @return Entry[]
      */
     public function findActiveEntriesByUserAndPeriod(int $userId, \DateTimeImmutable $start, \DateTimeImmutable $end): array;
+
+    /**
+     * @return Entry[]
+     */
+    public function findAllByUser(int $userId): array;
 }

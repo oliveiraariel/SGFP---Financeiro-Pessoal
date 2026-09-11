@@ -11,4 +11,9 @@ interface TransferRepository
     public function save(Transfer $transfer): void;
 
     public function findByCommitmentId(int $commitmentId, int $userId): ?Transfer;
+
+    /**
+     * @return Transfer[]
+     */
+    public function findAllByUser(int $userId): array;
 }
