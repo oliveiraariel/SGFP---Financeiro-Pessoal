@@ -6,15 +6,21 @@ namespace SGFP\REST;
 
 use SGFP\Application\Services\CreateAccountService;
 use SGFP\Application\Services\CreateCategoryService;
+use SGFP\Application\Services\CreateCommitmentService;
 use SGFP\Application\Services\ListAccountsService;
 use SGFP\Application\Services\ListCategoriesService;
 use SGFP\Application\Services\SeedCategoriesService;
+use SGFP\Application\Services\SettleCommitmentService;
 use SGFP\Domain\Policies\AccountPolicy;
 use SGFP\Infrastructure\WordPress\WpAccountRepository;
 use SGFP\Infrastructure\WordPress\WpCategoryRepository;
+use SGFP\Infrastructure\WordPress\WpCommitmentRepository;
+use SGFP\Infrastructure\WordPress\WpEntryRepository;
+use SGFP\Infrastructure\WordPress\WpTransactionManager;
 use SGFP\Infrastructure\WordPress\WpUserContext;
 use SGFP\REST\Controllers\AccountController;
 use SGFP\REST\Controllers\CategoryController;
+use SGFP\REST\Controllers\CommitmentController;
 
 final class Routes
 {
@@ -25,6 +31,9 @@ final class Routes
         $userContext = new WpUserContext();
         $accountRepository = new WpAccountRepository();
         $categoryRepository = new WpCategoryRepository();
+        $commitmentRepository = new WpCommitmentRepository();
+        $entryRepository = new WpEntryRepository();
+        $transactionManager = new WpTransactionManager();
         $accountPolicy = new AccountPolicy($accountRepository);
         $seedCategories = new SeedCategoriesService($categoryRepository);
 
@@ -36,6 +45,11 @@ final class Routes
         $categoryController = new CategoryController(
             new CreateCategoryService($categoryRepository, $userContext),
             new ListCategoriesService($categoryRepository, $userContext)
+        );
+
+        $commitmentController = new CommitmentController(
+            new CreateCommitmentService($commitmentRepository, $accountRepository, $categoryRepository, $userContext),
+            new SettleCommitmentService($commitmentRepository, $entryRepository, $transactionManager, $userContext)
         );
 
         register_rest_route(self::NAMESPACE, '/accounts', [
@@ -84,6 +98,53 @@ final class Routes
             'methods' => \WP_REST_Server::READABLE,
             'callback' => [$categoryController, 'list'],
             'permission_callback' => [$categoryController, 'permissionCheck'],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/commitments', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$commitmentController, 'create'],
+            'permission_callback' => [$commitmentController, 'permissionCheck'],
+            'args' => [
+                'account_id' => [
+                    'required' => true,
+                    'type' => 'integer',
+                ],
+                'category_id' => [
+                    'required' => false,
+                    'type' => 'integer',
+                ],
+                'description' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+                'amount' => [
+                    'required' => true,
+                    'type' => 'number',
+                ],
+                'type' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'enum' => ['RECEITA', 'DESPESA'],
+                ],
+                'due_date' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'format' => 'date',
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/commitments/(?P<id>\d+)/settle', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$commitmentController, 'settle'],
+            'permission_callback' => [$commitmentController, 'permissionCheck'],
+            'args' => [
+                'id' => [
+                    'required' => true,
+                    'type' => 'integer',
+                ],
+            ],
         ]);
     }
 }
