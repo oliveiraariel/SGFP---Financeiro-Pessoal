@@ -45,10 +45,31 @@ final class ValidateBackupService
         }
 
         $token = bin2hex(random_bytes(32));
+        $directory = getenv('SGFP_BACKUP_DIR') ?: '';
+        if ($directory === '' || !is_dir($directory) || !is_writable($directory)) {
+            throw new \RuntimeException('O staging privado de backups não está configurado.');
+        }
+        $filename = bin2hex(random_bytes(24)) . '.sgfp';
+        $temporary = tempnam($directory, 'sgfp-');
+        if ($temporary === false || file_put_contents($temporary, $encoded, LOCK_EX) === false) {
+            if ($temporary !== false) @unlink($temporary);
+            throw new \RuntimeException('Não foi possível preservar o backup para validação.');
+        }
+        $path = rtrim($directory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
+        if (!rename($temporary, $path)) {
+            @unlink($temporary);
+            throw new \RuntimeException('Não foi possível preservar o backup para validação.');
+        }
+        $stored = file_get_contents($path);
+        if ($stored === false || !hash_equals(hash('sha256', $encoded), hash('sha256', $stored))) {
+            @unlink($path);
+            throw new \RuntimeException('Não foi possível confirmar o staging do backup.');
+        }
         $this->preferences->set('restore_validation_' . hash('sha256', $token), $userId, json_encode([
             'expires_at' => time() + 900,
             'origin' => $payload['origin'] ?? null,
             'hash' => hash('sha256', $encoded),
+            'path' => $path,
         ], JSON_THROW_ON_ERROR));
 
         return [

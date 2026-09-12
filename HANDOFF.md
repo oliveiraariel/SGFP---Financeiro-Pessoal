@@ -28,6 +28,7 @@ A Etapa 10 está em andamento. As unidades de negócio principais já foram impl
 - `POST /sgfp/v1/backups` exige capability `use_sgfp`, captura os dados do usuário em transação, serializa JSON, compacta com gzip, protege com Sodium usando `SGFP_BACKUP_KEY` e envia o arquivo por `wp_mail` ao e-mail cadastrado.
 - Restauração, catálogo de backups, snapshot pré-restauração e Etapa 11 não foram iniciados.
 - `POST /sgfp/v1/restore-validations` recebe o arquivo, autentica/descompacta, valida versão, proprietário e seções obrigatórias, e retorna resumo com token temporário; não altera dados.
+- A validação agora preserva o arquivo em staging privado configurado por `SGFP_BACKUP_DIR`, com nome imprevisível, escrita atômica e confirmação por hash; falha de configuração ou persistência interrompe a validação.
 
 ### Validações desta sessão
 
@@ -40,6 +41,7 @@ A Etapa 10 está em andamento. As unidades de negócio principais já foram impl
 - Os doubles manuais de `EntryRepository`, `RecurrenceRepository` e `TransferRepository` foram alinhados às portas atuais.
 - `php Tests/Manual/*.php`: todos os seis testes manuais passaram.
 - Lint PHP completo após a validação preliminar: passou.
+- Lint PHP e todos os testes manuais após o staging privado: passaram.
 
 ## O que falta
 
@@ -102,4 +104,4 @@ php Tests/Manual/*.php
 
 ## Próxima ação recomendada
 
-Próxima unidade pequena: persistir staging privado e integrar o token de validação ao futuro fluxo de restauração, sem ainda substituir dados.
+Próxima unidade pequena: integrar o token ao início do fluxo de restauração e revalidar arquivo/expiração, ainda sem substituir dados.
