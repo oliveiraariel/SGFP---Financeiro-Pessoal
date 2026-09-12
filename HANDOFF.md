@@ -351,3 +351,21 @@ Implementar e testar somente o fluxo transacional de confirmação da restauraç
 - `php Tests/Manual/*.php`: passou; todos os testes manuais passaram.
 - `git diff --check`: passou.
 - PHPUnit não executado: Composer/extensão `mbstring` indisponíveis no ambiente.
+
+## Unidade `wu:d162246d00ea4854a23ce107dee465e6` — 2026-09-12
+
+### Resultado: BLOQUEADA — integração transacional não pode ser afirmada com os contratos atuais
+
+Não foi conectado o claim do token ao `RestoreFromImportPlanService` nem ativada a rota de restauração integral, porque a execução segura exigida não está disponível no runtime atual:
+
+- não existe implementação concreta de `RestorationPersistence`; os seis repositórios existentes expõem somente `save`/consulta, sem substituição integral user-scoped, preservação de IDs lógicos ou remapeamento físico completo das referências;
+- `WpRestorationTokenClaim` atualiza `wp_usermeta`, enquanto `WpTransactionManager` controla transações SQL das tabelas SGFP; nenhum contrato ou verificação de infraestrutura garante que `wp_usermeta` seja transacional e participe da mesma unidade atômica;
+- o snapshot é persistido por `WpBackupStore` como artefato de filesystem, fora da transação SQL, sem catálogo transacional para garantir atomicidade conjunta.
+
+Consumir o token antes da substituição poderia perder a claim após rollback; consumir depois poderia confirmar a substituição sem garantir claim única. Usar `save` para substituir faria merge e não satisfaria o contrato. Implementar adapters, catálogo ou remapeamento aqui exigiria inventar uma fronteira de persistência não aprovada. Conforme a instrução da unidade, a execução parou e nenhum arquivo protegido foi modificado; Stage 11, catálogo/retention, e-mail e regras adicionais permanecem fora do escopo.
+
+### Evidências
+
+- `git diff --check`: a executar após este registro.
+- Nenhuma alteração em `src/`.
+- Os arquivos protegidos dirty preexistentes (`AGENTS.md`, `PROMPTS-OPENCLAW-SGFP.md`, `docs/api/README.md` e `docs/governanca/continuidade-de-contexto.md`) foram preservados.
