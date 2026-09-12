@@ -1,5 +1,18 @@
 # SGFP — Handoff de Continuidade
 
+## Unidade `wu:d8312afc40b04d56b3f0085e483c0c36` — 2026-09-12
+
+### Resultado: BLOQUEADA — sem implementação segura
+
+A unidade não implementou o executor de restauração porque a arquitetura persistente atual não fornece os fatos necessários para cumprir os invariantes solicitados sem adivinhação:
+
+- As portas `AccountRepository`, `CategoryRepository`, `RecurrenceRepository`, `CommitmentRepository`, `TransferRepository` e `EntryRepository` só expõem `save`/consulta; não existe contrato para exclusão integral user-scoped ou substituição ordenada. Usar `save` sozinho faria merge e não substituiria os dados atuais.
+- Os adaptadores usam IDs físicos autogerados em `insert`; não existe operação/contrato para inserir preservando ou retornar uma remapagem física completa para todas as referências lógicas durante a substituição.
+- `RestorationTokenClaim` atualiza `user_meta` via WordPress, enquanto `TransactionManager` controla transação SQL em `$wpdb`. Não há fronteira transacional comum que permita consumir o token atomicamente com a substituição: consumir antes pode perder o token após rollback; consumir depois pode confirmar dados sem garantir claim único.
+- O snapshot pré-restauração é persistido por `BackupStore` fora da transação SQL de substituição. Também não há contrato de retenção/verificação transacional que permita afirmar que o artefato recuperável e as mutações compartilham a mesma unidade atômica.
+
+Implementar um executor exigiria escolher novos contratos e semânticas de persistência (deleção por usuário, inserção/remapeamento, armazenamento/claim transacional e ordem de snapshot), decisões não especificadas no repositório. Portanto, a unidade parou conforme a regra de não adivinhar fatos ausentes. Nenhum arquivo fora deste `HANDOFF.md` foi alterado; Stage 11 continua não iniciada.
+
 ## Unidade `wu:baf5b4b7acda42e9a33fcaf8868d4eb4` — 2026-09-12
 
 ### Trabalho realizado
