@@ -1,5 +1,42 @@
 # SGFP — Handoff de Continuidade
 
+## Unidade `wu:262f51ad0ca94b8e9d6a860dd2cfb937` — 2026-09-12
+
+### Resultado: BLOQUEADORES RECONCILIADOS DOCUMENTALMENTE — implementação ainda não autorizada nesta unidade
+
+Esta unidade confrontou `HANDOFF.md`, `README.md`, `docs/governanca/continuidade-de-contexto.md`, UC-020/UC-021, o Modelo Físico V7, os contratos REST e a implementação atual. Não houve alteração em `src/`, Stage 11 não foi iniciada e `AGENTS.md`/`PROMPTS-OPENCLAW-SGFP.md` foram preservados.
+
+As classificações usadas abaixo são: **A** regra/decisão de negócio; **B** contrato arquitetural ou de persistência; **C** detalhe técnico implementável sem nova regra; **D** operação, segurança ou disponibilidade.
+
+### Contrato consolidado para a implementação posterior
+
+1. A restauração só pode avançar com `confirmation === true`, capability e usuário atuais, token não expirado, staging íntegro e hash conferido. A confirmação falsa, ausente, malformada ou repetida não muta dados.
+2. O `UserOperationLock` por usuário cobre revalidação, captura do `pre_restore`, substituição, verificação, commit/rollback e claim do token. Perda do lock/conexão cancela; não há continuação em outra conexão.
+3. O `pre_restore` é produzido antes de qualquer exclusão, em visão consistente, protegido, persistido atomically e relido/verificado. Falha em captura, proteção, persistência, catálogo ou verificação impede o início da escrita.
+4. A substituição é integral e user-scoped: apagar o conjunto atual e importar o staging em ordem de dependência dentro de uma única transação SQL. Não há merge. IDs lógicos do backup devem ser preservados ou devem existir remapeamento completo e explícito para todas as referências; `save` isolado não satisfaz esse contrato.
+5. A verificação ocorre antes do commit: contagens, proprietário, referências, constraints, tema e invariantes do Modelo Físico V7. Qualquer falha faz rollback e deixa o estado anterior intacto.
+6. O token é uma claim única e idempotentemente rejeitável. Para ser realmente atômico com a substituição, seu estado consumível e o catálogo do artefato precisam participar da mesma unidade transacional SQL (ou de um protocolo de compensação formalmente equivalente, que não está aprovado). `usermeta` isolado e arquivo fora da transação não podem ser tratados como atomicidade suficiente.
+7. A retenção adotada é a de `DEC-004`: uma cópia `pre_restore`, preservada por 24 horas ou até a próxima tentativa de restauração, o que ocorrer primeiro; o catálogo deve impedir acesso cruzado e identificar usuário, origem, hash, expiração e localização. Falha de e-mail após preservação não desfaz a restauração.
+8. Repetições concorrentes do mesmo token devem resultar em uma única restauração efetiva; as demais recebem rejeição estável. Repetições após sucesso não podem reaplicar a cópia. Uma nova tentativa, quando o token ainda for válido e a operação anterior tiver rollback completo, deve seguir o mesmo lock e revalidar o staging.
+9. Autorização é sempre capability + usuário da sessão + escopo nas consultas/mutações; respostas não enumeram existência de outro usuário. Logs não carregam token, chave, payload ou dados financeiros.
+
+### Matriz de bloqueadores
+
+| BLOCKER | STATE | EXISTING DECISION | DECISION NEEDED | RESOLVED |
+|---|---|---|---|---|
+| Confirmação executável | Implementada apenas como contrato/revalidação; restauração ainda não executa | UC-021 exige confirmação; REST exige booleano verdadeiro | Implementar confirmação sem mutação antes dela | Sim — C |
+| Snapshot pré-restauração | Captura existente, mas artefato/catalogação não compõem a transação SQL | UC-021, `ARQ-013`/`ARQ-014`, `DEC-004` exigem cópia recuperável antes da escrita | Porta de catálogo, persistência atômica, releitura e expiração | Sim — B/C |
+| Substituição integral e referências | Planner existe; portas só têm `save`/consulta e não garantem delete/replace/remapeamento | UC-021 proíbe merge; Modelo V7 exige FKs e escopo por usuário | Operações bulk user-scoped e remapeamento determinístico em ordem de dependência | Sim — B/C |
+| Transação/rollback e falha intermediária | `TransactionManager` cobre SQL; executor integral inexiste | `ARQ-007`, UC-021 e arquitetura exigem rollback e estado não misto | Uma transação de escrita, verificação antes do commit e rollback em toda exceção/conexão perdida | Sim — C |
+| Retenção | Há decisão humana, mas a arquitetura contém texto antigo dizendo que não há política | `DEC-004`: 1 snapshot/24h ou até próxima tentativa | Aplicar essa política no catálogo/limpeza | Sim — A/D |
+| Consumo/invalidação do token | Claim atual usa `usermeta` e está fora da transação SQL de restauração | Token é opaco, ligado ao usuário, expirável e de uso único | Mover claim/catalogação para fronteira transacional comum; consumir somente no commit lógico | Sim — B/C |
+| Retry, concorrência e idempotência | Lock existe; substituição/claim único ainda não formam protocolo completo | `ARQ-014` exige lock; UC-021 não permite estado misto | Lock cobre o fluxo; claim única, rejeição estável e rollback completo | Sim — C/D |
+| Integridade dos dados do usuário | Decoder/planner verificam payload; importação e verificação final não existem | V7, constraints e UC-021 exigem estado integral válido | Verificar contagens, referências, constraints, tema e proprietário antes do commit | Sim — C |
+| Disponibilidade de recuperação/catálogo | Arquivo privado é gravado, mas não há catálogo transacional nem leitura de recuperação | `ARQ-013` exige storage recuperável e identificação `pre_restore` | Catálogo user-scoped transacional e rotina de expiração conforme `DEC-004` | Sim — B/C/D |
+| Autorização e segurança | Rotas/captura têm capability e lock; fluxo integral ainda não existe | `ARQ-004`, `ARQ-015`, `UC-021` e staging privado | Repetir controles em toda operação e não expor artefatos/segredos | Sim — C/D |
+
+Não foi identificada decisão de negócio nova. As lacunas restantes são contratos de persistência, transação, catálogo e execução, portanto podem ser adotadas sem inventar semântica de domínio. A unidade seguinte pode implementar somente esse contrato; não deve tratar `save` como substituição nem claim em `usermeta` como atomicidade da restauração.
+
 ## Unidade `wu:eea1589478744ce6983e01904d7b3505` — 2026-09-12
 
 ### Resultado: BLOQUEADA — checkpoint após retry

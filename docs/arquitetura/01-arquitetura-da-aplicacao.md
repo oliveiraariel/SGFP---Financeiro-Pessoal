@@ -350,7 +350,7 @@ Sucesso do envio significa aceitação pelo transporte WordPress, não garantia 
 
 Não há mesclagem. Se a captura, proteção, persistência ou validação da cópia pré-restauração falhar, a transação de escrita não começa e o estado atual permanece inalterado. Se a substituição falhar, seu rollback preserva esse estado e a cópia `pre_restore` já validada pode permanecer como evidência recuperável. Perda do lock ou da conexão antes do commit causa cancelamento/rollback, nunca continuação em nova conexão.
 
-A cópia pré-restauração permanece no storage privado mesmo se o e-mail falhar. Como não existe política canônica de retenção, nenhuma remoção automática é autorizada; o risco de crescimento do storage deve receber decisão humana antes da operação em produção.
+A cópia pré-restauração permanece no storage privado mesmo se o e-mail falhar. Conforme `DEC-004`, a V1 mantém uma única cópia por 24 horas ou até a próxima tentativa de restauração, o que ocorrer primeiro; o catálogo deve registrar e aplicar essa expiração sem permitir acesso cruzado. Falha isolada de e-mail não reverte a restauração.
 
 ## 14. Observabilidade e privacidade
 
