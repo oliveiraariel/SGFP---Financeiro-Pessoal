@@ -1,5 +1,24 @@
 # SGFP — Handoff de Continuidade
 
+## Unidade `wu:9dda475005f247cf8ac2297c59dc9f1a` — 2026-09-12
+
+### Resultado: BLOQUEADA — atomicidade do token não demonstrável
+
+A investigação não autorizou implementação segura da restauração integral:
+
+- A criação grava `sgfp_restore_validation_<sha256(token)>` em `wp_usermeta` por `update_user_meta()` (`ValidateBackupService`/`WpUserPreferenceRepository`). A confirmação lê e atualiza essa linha em `WpRestorationTokenClaim`, com `SELECT ... FOR UPDATE`, mas não inicia nem recebe um `TransactionManager` comum.
+- O executor disponível (`RestoreFromImportPlanService`) inicia `START TRANSACTION`/`COMMIT`/`ROLLBACK` por `WpTransactionManager` na conexão global `$wpdb`, cobrindo somente a persistência SGFP atualmente contratada. Não há prova no código, na configuração ou no Modelo Físico V7 de que `wp_usermeta` use InnoDB na instalação efetiva e participe da mesma unidade transacional; `FOR UPDATE` isolado não cria essa garantia.
+- O Modelo Físico V7 declara `ENGINE=InnoDB` para as seis tabelas SGFP e exige compatibilidade InnoDB para FKs com `wp_users`, mas trata `wp_usermeta` como responsabilidade WordPress e não define sua engine/DDL. A arquitetura canônica também registra que usermeta não substitui as tabelas financeiras e que cache deve ser invalidado somente após commit.
+- `get_user_meta()`/`update_user_meta()` atravessam a camada WordPress e podem atualizar cache de objeto; não existe no fluxo de restauração uma invalidação pós-commit nem uma garantia de que o estado cacheado acompanhe rollback. Portanto, mesmo a hipótese de conexão compartilhada não bastaria sem contrato explícito de cache.
+- A busca por `TRUNCATE`, `ALTER TABLE`, `DROP TABLE`, `CREATE TABLE`, `RENAME TABLE`, `LOCK TABLES` e equivalentes no código de restauração não encontrou statement de DDL/implicit commit. Os `CREATE TABLE` encontrados pertencem ao bootstrap/migração do schema, fora da restauração; isso remove um risco identificado, mas não resolve a fronteira `wp_usermeta`/SGFP.
+
+Não foi criada token table, não houve alteração em `src/`, não foi iniciada Stage 11 e os arquivos dirty preexistentes foram preservados. Não é seguro implementar claim transacional, rollback conjunto ou os testes de sucesso/falha/concorrência solicitados enquanto a infraestrutura comum e o contrato de cache não forem demonstrados/definidos.
+
+### Evidências
+
+- Inspecionados `ValidateBackupService`, `WpRestorationTokenClaim`, `WpUserPreferenceRepository`, `WpTransactionManager`, `RestoreFromImportPlanService`, `Schema.php`, Modelo Físico V7 e arquitetura canônica.
+- `git diff --check`: passou.
+
 ## Unidade `wu:35d8f2ff6ea0479486edddfaf60bf3ad` — 2026-09-12
 
 ### Trabalho realizado
