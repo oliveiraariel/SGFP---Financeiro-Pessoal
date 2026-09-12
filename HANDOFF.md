@@ -31,6 +31,7 @@ A Etapa 10 está em andamento. As unidades de negócio principais já foram impl
 - A validação agora preserva o arquivo em staging privado configurado por `SGFP_BACKUP_DIR`, com nome imprevisível, escrita atômica e confirmação por hash; falha de configuração ou persistência interrompe a validação.
 - `POST /sgfp/v1/restorations` agora revalida token, expiração, staging e hash, retornando `ready_for_confirmation`; ainda não substitui dados nem consome o token.
 - A captura do backup manual agora adquire e libera `UserOperationLock` por usuário, usando `GET_LOCK`/`RELEASE_LOCK` no adaptador WordPress.
+- A preparação (`POST /restorations`) também revalida token, expiração e hash sob `UserOperationLock`; o token permanece disponível até a confirmação efetiva.
 
 ### Validações desta sessão
 
@@ -46,6 +47,7 @@ A Etapa 10 está em andamento. As unidades de negócio principais já foram impl
 - Lint PHP e todos os testes manuais após o staging privado: passaram.
 - Lint PHP e todos os testes manuais após a revalidação: passaram.
 - Lint PHP e todos os testes manuais após a proteção por lock: passaram.
+- Lint PHP e todos os testes manuais após o lock na preparação da restauração: passaram.
 
 ## O que falta
 
@@ -108,4 +110,4 @@ php Tests/Manual/*.php
 
 ## Próxima ação recomendada
 
-Próxima unidade pequena: integrar o mesmo lock à preparação da restauração e definir o consumo único do token, mantendo a substituição integral fora desta unidade até os gates de proteção pré-restauração.
+Próxima unidade pequena: definir o consumo único do token dentro de um serviço de restauração transacional, somente após a captura e preservação obrigatória do snapshot pré-restauração.

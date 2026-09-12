@@ -6,12 +6,14 @@ namespace SGFP\Application\Services;
 
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Ports\UserPreferenceRepository;
+use SGFP\Application\Ports\UserOperationLock;
 
 final class RevalidateRestorationService
 {
     public function __construct(
         private readonly UserPreferenceRepository $preferences,
         private readonly UserContext $userContext,
+        private readonly UserOperationLock $operationLock,
     ) {}
 
     /** @return array{status:string,expires_at:int,origin:string} */
@@ -22,6 +24,17 @@ final class RevalidateRestorationService
         if (!preg_match('/^[a-f0-9]{64}$/', $token)) {
             throw new \InvalidArgumentException('Token de restauração inválido.');
         }
+        $this->operationLock->acquire($userId);
+        try {
+            return $this->prepareUnlocked($token, $userId);
+        } finally {
+            $this->operationLock->release($userId);
+        }
+    }
+
+    /** @return array{status:string,expires_at:int,origin:string} */
+    private function prepareUnlocked(string $token, int $userId): array
+    {
         $raw = $this->preferences->get('restore_validation_' . hash('sha256', $token), $userId);
         $metadata = $raw === null ? null : json_decode($raw, true);
         if (!is_array($metadata) || (int) ($metadata['expires_at'] ?? 0) < time()) {
