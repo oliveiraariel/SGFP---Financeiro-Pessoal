@@ -1,5 +1,23 @@
 # SGFP — Handoff de Continuidade
 
+## Unidade `wu:35d8f2ff6ea0479486edddfaf60bf3ad` — 2026-09-12
+
+### Trabalho realizado
+
+- Criados `RestorationPersistence` e `RestoreFromImportPlanService`.
+- O executor aceita somente `RestorationImportPlan` válido, delega a substituição user-scoped à porta explícita, executa verificação antes do commit e usa `TransactionManager::transactional`, garantindo rollback em exceções.
+- A porta de persistência exige contagens, proprietário, tema, referências e invariantes verificados; a ordem física do Modelo V7 é validada pelo serviço.
+- A integração no fluxo REST não foi feita: a claim atual em `usermeta` ainda não compartilha a fronteira transacional SQL do executor. Conectá-la agora permitiria consumir o token e depois falhar a restauração sem rollback da claim.
+
+### Evidências
+
+- Lint dos arquivos alterados: passou.
+- `git diff --check`: passou.
+
+### Limite preservado
+
+- Nenhum arquivo protegido foi alterado nesta unidade; Stage 11, catálogo e retenção permanecem fora do escopo.
+
 ## Unidade `wu:c240d3184526476182c0f7bc8a00f829` — 2026-09-12
 
 ### Trabalho realizado
