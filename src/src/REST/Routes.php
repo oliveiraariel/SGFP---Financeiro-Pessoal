@@ -9,6 +9,7 @@ use SGFP\Application\Services\CreateCategoryService;
 use SGFP\Application\Services\CreateCommitmentService;
 use SGFP\Application\Services\CreateTransferService;
 use SGFP\Application\Services\CreateBackupService;
+use SGFP\Application\Services\ValidateBackupService;
 use SGFP\Application\Services\GetDashboardService;
 use SGFP\Application\Services\GetNetWorthService;
 use SGFP\Application\Services\ListAccountsService;
@@ -39,6 +40,7 @@ use SGFP\REST\Controllers\ReportingController;
 use SGFP\REST\Controllers\ThemeController;
 use SGFP\REST\Controllers\TransferController;
 use SGFP\REST\Controllers\BackupController;
+use SGFP\REST\Controllers\RestoreController;
 
 final class Routes
 {
@@ -120,6 +122,10 @@ final class Routes
             $transferRepository,
             new WpUserPreferenceRepository(),
             $transactionManager,
+            $userContext,
+        ));
+        $restoreController = new RestoreController(new ValidateBackupService(
+            new WpUserPreferenceRepository(),
             $userContext,
         ));
 
@@ -408,6 +414,12 @@ final class Routes
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => [$backupController, 'create'],
             'permission_callback' => [$backupController, 'permissionCheck'],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/restore-validations', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$restoreController, 'validate'],
+            'permission_callback' => [$restoreController, 'permissionCheck'],
         ]);
 
         register_rest_route(self::NAMESPACE, '/preferences/theme', [

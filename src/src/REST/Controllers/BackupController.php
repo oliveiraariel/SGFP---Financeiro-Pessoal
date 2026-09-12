@@ -16,7 +16,7 @@ final class BackupController
             $backup = $this->service->create();
             $email = wp_get_current_user()->user_email;
             $tmp = wp_tempnam($backup['filename']);
-            if ($tmp === false || file_put_contents($tmp, base64_decode($backup['content'], true)) === false) {
+            if ($tmp === false || file_put_contents($tmp, $backup['content']) === false) {
                 throw new \RuntimeException('Não foi possível preparar o backup.');
             }
             $sent = wp_mail($email, 'Cópia de segurança do SGFP', 'A cópia de segurança está anexada.', [], [$tmp]);
