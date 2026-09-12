@@ -1,5 +1,23 @@
 # SGFP — Handoff de Continuidade
 
+## Unidade `wu:eea1589478744ce6983e01904d7b3505` — 2026-09-12
+
+### Resultado: BLOQUEADA — checkpoint após retry
+
+O retry foi encerrado sem alteração de código-fonte. A inspeção confirmou que a arquitetura canônica responde à ordem do fluxo e aos invariantes da restauração (lock por usuário, snapshot `pre_restore` antes da substituição, substituição integral, verificação e rollback), mas não define contratos executáveis adicionais nem código validado que os implemente:
+
+- As portas dos seis repositórios continuam limitadas a `save` e consultas; não há operações user-scoped para apagar/substituir integralmente dados nem contrato de inserção que preserve IDs lógicos ou exponha remapeamento físico completo das referências.
+- `TransactionManager` opera na conexão SQL, enquanto `RestorationTokenClaim` usa `usermeta` via WordPress; não existe fronteira transacional comum para garantir claim único atômico com a substituição.
+- `BackupStore` persiste o snapshot como artefato fora da transação SQL; não há contrato de catálogo/retenção/verificação transacional que permita tratar artefato e mutações como uma unidade atômica.
+
+Os documentos canônicos (`docs/arquitetura/01-arquitetura-da-aplicacao.md`, seções 9 e 13) determinam o comportamento esperado, mas não respondem essas escolhas de contrato/persistência. Implementar agora exigiria inventar semânticas não especificadas. Stage 11 não foi iniciada. Os arquivos sujos preexistentes `AGENTS.md`, `PROMPTS-OPENCLAW-SGFP.md`, `docs/api/README.md` e `docs/governanca/continuidade-de-contexto.md` foram preservados.
+
+### Evidências
+
+- `git diff --check`: passou.
+- Nenhuma alteração especulativa em `src/` ou nos documentos canônicos.
+- Checkpoint bloqueado registrado neste commit; o estado anterior válido permanece preservado.
+
 ## Unidade `wu:d8312afc40b04d56b3f0085e483c0c36` — 2026-09-12
 
 ### Resultado: BLOQUEADA — sem implementação segura
