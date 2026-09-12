@@ -32,6 +32,7 @@ use SGFP\Infrastructure\WordPress\WpTransactionManager;
 use SGFP\Infrastructure\WordPress\WpUserContext;
 use SGFP\Infrastructure\WordPress\WpRecurrenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserPreferenceRepository;
+use SGFP\Infrastructure\WordPress\WpUserOperationLock;
 use SGFP\Infrastructure\WordPress\WpTransferRepository;
 use SGFP\REST\Controllers\AccountController;
 use SGFP\REST\Controllers\CategoryController;
@@ -124,6 +125,7 @@ final class Routes
             new WpUserPreferenceRepository(),
             $transactionManager,
             $userContext,
+            new WpUserOperationLock(),
         ));
         $restoreController = new RestoreController(new ValidateBackupService(
             new WpUserPreferenceRepository(),

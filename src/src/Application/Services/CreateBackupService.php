@@ -13,6 +13,7 @@ use SGFP\Application\Ports\TransferRepository;
 use SGFP\Application\Ports\TransactionManager;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Ports\UserPreferenceRepository;
+use SGFP\Application\Ports\UserOperationLock;
 
 final class CreateBackupService
 {
@@ -26,6 +27,7 @@ final class CreateBackupService
         private readonly UserPreferenceRepository $preferences,
         private readonly TransactionManager $transactions,
         private readonly UserContext $userContext,
+        private readonly UserOperationLock $operationLock,
     ) {}
 
     /** @return array{filename:string,content:string,content_type:string} */
@@ -34,8 +36,10 @@ final class CreateBackupService
         $this->userContext->requireCapability('use_sgfp');
         $userId = $this->userContext->requireUserId();
 
-        $payload = $this->transactions->transactional(function () use ($userId): array {
-            return [
+        $this->operationLock->acquire($userId);
+        try {
+            $payload = $this->transactions->transactional(function () use ($userId): array {
+                return [
                 'version' => 1,
                 'origin' => 'manual',
                 'user_id' => $userId,
@@ -47,8 +51,11 @@ final class CreateBackupService
                 'commitments' => $this->commitments->findAllByUser($userId),
                 'transfers' => $this->transfers->findAllByUser($userId),
                 'entries' => $this->entries->findAllByUser($userId),
-            ];
-        });
+                ];
+            });
+        } finally {
+            $this->operationLock->release($userId);
+        }
 
         $json = json_encode($this->normalize($payload), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
         $compressed = gzencode($json, 9, ZLIB_ENCODING_GZIP);
