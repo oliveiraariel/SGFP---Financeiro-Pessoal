@@ -11,6 +11,7 @@ use SGFP\Application\Services\CreateTransferService;
 use SGFP\Application\Services\CreateBackupService;
 use SGFP\Application\Services\ValidateBackupService;
 use SGFP\Application\Services\RevalidateRestorationService;
+use SGFP\Application\Services\CapturePreRestorationSnapshotService;
 use SGFP\Application\Services\GetDashboardService;
 use SGFP\Application\Services\GetNetWorthService;
 use SGFP\Application\Services\ListAccountsService;
@@ -34,6 +35,7 @@ use SGFP\Infrastructure\WordPress\WpRecurrenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserPreferenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserOperationLock;
 use SGFP\Infrastructure\WordPress\WpTransferRepository;
+use SGFP\Infrastructure\WordPress\WpBackupStore;
 use SGFP\REST\Controllers\AccountController;
 use SGFP\REST\Controllers\CategoryController;
 use SGFP\REST\Controllers\CommitmentController;
@@ -127,10 +129,15 @@ final class Routes
             $userContext,
             new WpUserOperationLock(),
         ));
+        $snapshotCapture = new CapturePreRestorationSnapshotService(
+            $accountRepository, $categoryRepository, $commitmentRepository, $entryRepository,
+            $recurrenceRepository, $transferRepository, new WpUserPreferenceRepository(),
+            $transactionManager, $userContext, new WpUserOperationLock(), new WpBackupStore()
+        );
         $restoreController = new RestoreController(new ValidateBackupService(
             new WpUserPreferenceRepository(),
             $userContext,
-        ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext, new WpUserOperationLock()));
+        ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext, new WpUserOperationLock(), $snapshotCapture));
 
         register_rest_route(self::NAMESPACE, '/accounts', [
             'methods' => \WP_REST_Server::CREATABLE,

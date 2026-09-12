@@ -41,7 +41,20 @@ final class CapturePreRestorationSnapshotService
         $userId = $this->userContext->requireUserId();
         $this->operationLock->acquire($userId);
         try {
-            $payload = $this->transactions->transactional(function () use ($userId): array {
+            return $this->captureUnderLock($userId);
+        } finally {
+            $this->operationLock->release($userId);
+        }
+    }
+
+    /** Capture after the caller has acquired the user's operation lock. */
+    public function captureUnderLock(int $userId): array
+    {
+        $this->userContext->requireCapability('use_sgfp');
+        if ($this->userContext->requireUserId() !== $userId) {
+            throw new \RuntimeException('O usuário do snapshot não corresponde ao usuário autenticado.');
+        }
+        $payload = $this->transactions->transactional(function () use ($userId): array {
                 return [
                     'version' => 1, 'origin' => self::ORIGIN, 'user_id' => $userId,
                     'created_at' => gmdate('c'),
@@ -53,19 +66,16 @@ final class CapturePreRestorationSnapshotService
                     'transfers' => $this->transfers->findAllByUser($userId),
                     'entries' => $this->entries->findAllByUser($userId),
                 ];
-            });
-            $json = json_encode($this->normalize($payload), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
-            $compressed = gzencode($json, 9, ZLIB_ENCODING_GZIP);
-            if ($compressed === false) throw new \RuntimeException('Não foi possível compactar o snapshot.');
-            $keyValue = getenv('SGFP_BACKUP_KEY') ?: '';
-            if ($keyValue === '') throw new \RuntimeException('A chave de proteção do backup não está configurada.');
-            $key = hash('sha256', $keyValue, true);
-            $nonce = random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
-            $content = base64_encode($nonce . sodium_crypto_aead_xchacha20poly1305_ietf_encrypt($compressed, '', $nonce, $key));
-            return $this->store->persist($userId, $content, self::ORIGIN, time() + 86400);
-        } finally {
-            $this->operationLock->release($userId);
-        }
+        });
+        $json = json_encode($this->normalize($payload), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
+        $compressed = gzencode($json, 9, ZLIB_ENCODING_GZIP);
+        if ($compressed === false) throw new \RuntimeException('Não foi possível compactar o snapshot.');
+        $keyValue = getenv('SGFP_BACKUP_KEY') ?: '';
+        if ($keyValue === '') throw new \RuntimeException('A chave de proteção do backup não está configurada.');
+        $key = hash('sha256', $keyValue, true);
+        $nonce = random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
+        $content = base64_encode($nonce . sodium_crypto_aead_xchacha20poly1305_ietf_encrypt($compressed, '', $nonce, $key));
+        return $this->store->persist($userId, $content, self::ORIGIN, time() + 86400);
     }
 
     private function normalize(mixed $value): mixed

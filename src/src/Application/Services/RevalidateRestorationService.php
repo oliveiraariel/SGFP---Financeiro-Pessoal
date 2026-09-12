@@ -14,6 +14,7 @@ final class RevalidateRestorationService
         private readonly UserPreferenceRepository $preferences,
         private readonly UserContext $userContext,
         private readonly UserOperationLock $operationLock,
+        private readonly CapturePreRestorationSnapshotService $snapshotCapture,
     ) {}
 
     /** @return array{status:string,expires_at:int,origin:string} */
@@ -46,10 +47,12 @@ final class RevalidateRestorationService
         $this->operationLock->acquire($userId);
         try {
             $prepared = $this->prepareUnlocked($token, $userId);
+            $snapshot = $this->snapshotCapture->captureUnderLock($userId);
             return [
                 'status' => 'confirmation_accepted',
                 'expires_at' => $prepared['expires_at'],
                 'origin' => $prepared['origin'],
+                'snapshot' => $snapshot,
             ];
         } finally {
             $this->operationLock->release($userId);

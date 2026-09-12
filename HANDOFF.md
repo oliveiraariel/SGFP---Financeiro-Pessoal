@@ -151,6 +151,28 @@ Próxima unidade pequena: definir o consumo único do token dentro de um serviç
 
 Implementar e testar somente o fluxo transacional de confirmação da restauração, com snapshot pré-restauração antes da substituição, retenção, rollback e consumo único do token. Depois repetir a revisão; não iniciar a Stage 11.
 
+## Unidade `wu:db2503f175b44f72add0c010bc64342e` — 2026-09-12
+
+### Trabalho realizado
+
+- Integrado `CapturePreRestorationSnapshotService` ao caminho confirmado de `POST /restorations`.
+- A captura ocorre depois da revalidação de capability, usuário, expiração, staging e hash, ainda sob o lock do usuário.
+- Criada a variante `captureUnderLock`, evitando aquisição não reentrante do mesmo lock; a captura mantém transação, cifragem, persistência, releitura/verificação de hash e expiração de 24 horas.
+- `confirmation_accepted` agora só é retornado se a captura concluir; qualquer falha propaga erro e impede sucesso.
+- O snapshot retornado é identificado como `pre_restore` e permanece user-scoped.
+
+### Evidências
+
+- Lint PHP completo: passou.
+- Testes manuais: passaram; todos os testes manuais passaram.
+- PHPUnit: bloqueado porque a extensão `mbstring` não está disponível no ambiente.
+- Arquivos `AGENTS.md` e `PROMPTS-OPENCLAW-SGFP.md` não foram alterados por esta unidade.
+
+### Gaps deliberados
+
+- Substituição integral, verificação/rollback, retenção ativa e consumo único do token permanecem fora do escopo desta unidade.
+- Stage 11 não iniciada.
+
 ## Unidade `wu:a4e0c2c3128742d795fb0d4acbaa1e29` — 2026-09-12
 
 ### Trabalho realizado
