@@ -150,3 +150,25 @@ Próxima unidade pequena: definir o consumo único do token dentro de um serviç
 ### Próxima ação
 
 Implementar e testar somente o fluxo transacional de confirmação da restauração, com snapshot pré-restauração antes da substituição, retenção, rollback e consumo único do token. Depois repetir a revisão; não iniciar a Stage 11.
+
+## Unidade `wu:a4e0c2c3128742d795fb0d4acbaa1e29` — 2026-09-12
+
+### Trabalho realizado
+
+- Criada a porta privada `BackupStore` e o adaptador `WpBackupStore`, com diretório `SGFP_BACKUP_DIR`, nome imprevisível, gravação atômica e confirmação por hash; falhas não retornam artefato utilizável.
+- Criado `CapturePreRestorationSnapshotService`, reutilizável e user-scoped, que exige `use_sgfp`, captura contas, categorias, recorrências, compromissos, transferências, lançamentos e tema dentro de uma transação sob `UserOperationLock`.
+- Snapshot marcado com origem `pre_restore`, comprimido e protegido por AEAD Sodium com `SGFP_BACKUP_KEY`, e persistido com expiração de 24 horas.
+- Nenhuma rota, substituição de dados, consumo de token, envio de e-mail, retenção ativa ou Stage 11 foi iniciada.
+
+### Evidências
+
+- Lint PHP completo: passou.
+- `php Tests/Manual/*.php`: passou; seis testes manuais passaram.
+- `git diff --check`: passou.
+- PHPUnit: não executado; Composer/extensão `mbstring` indisponíveis no ambiente, conforme histórico do repositório.
+
+### Gaps e próximo passo
+
+- O serviço ainda não está conectado ao fluxo de confirmação da restauração; isso permanece para a unidade de restauração transacional.
+- Commit desta unidade: será registrado após a inspeção final do diff.
+- Próximo passo: integrar a captura obrigatória antes da substituição integral, com rollback, verificação e consumo único do token.
