@@ -29,6 +29,7 @@ A Etapa 10 está em andamento. As unidades de negócio principais já foram impl
 - Restauração, catálogo de backups, snapshot pré-restauração e Etapa 11 não foram iniciados.
 - `POST /sgfp/v1/restore-validations` recebe o arquivo, autentica/descompacta, valida versão, proprietário e seções obrigatórias, e retorna resumo com token temporário; não altera dados.
 - A validação agora preserva o arquivo em staging privado configurado por `SGFP_BACKUP_DIR`, com nome imprevisível, escrita atômica e confirmação por hash; falha de configuração ou persistência interrompe a validação.
+- `POST /sgfp/v1/restorations` agora revalida token, expiração, staging e hash, retornando `ready_for_confirmation`; ainda não substitui dados nem consome o token.
 
 ### Validações desta sessão
 
@@ -42,6 +43,7 @@ A Etapa 10 está em andamento. As unidades de negócio principais já foram impl
 - `php Tests/Manual/*.php`: todos os seis testes manuais passaram.
 - Lint PHP completo após a validação preliminar: passou.
 - Lint PHP e todos os testes manuais após o staging privado: passaram.
+- Lint PHP e todos os testes manuais após a revalidação: passaram.
 
 ## O que falta
 
@@ -104,4 +106,4 @@ php Tests/Manual/*.php
 
 ## Próxima ação recomendada
 
-Próxima unidade pequena: integrar o token ao início do fluxo de restauração e revalidar arquivo/expiração, ainda sem substituir dados.
+Próxima unidade pequena: definir o contrato de confirmação e preparar a transação de restauração, mantendo a substituição integral fora desta unidade até os gates de proteção pré-restauração.

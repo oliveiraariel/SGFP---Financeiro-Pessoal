@@ -10,6 +10,7 @@ use SGFP\Application\Services\CreateCommitmentService;
 use SGFP\Application\Services\CreateTransferService;
 use SGFP\Application\Services\CreateBackupService;
 use SGFP\Application\Services\ValidateBackupService;
+use SGFP\Application\Services\RevalidateRestorationService;
 use SGFP\Application\Services\GetDashboardService;
 use SGFP\Application\Services\GetNetWorthService;
 use SGFP\Application\Services\ListAccountsService;
@@ -127,7 +128,7 @@ final class Routes
         $restoreController = new RestoreController(new ValidateBackupService(
             new WpUserPreferenceRepository(),
             $userContext,
-        ));
+        ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext));
 
         register_rest_route(self::NAMESPACE, '/accounts', [
             'methods' => \WP_REST_Server::CREATABLE,
@@ -420,6 +421,13 @@ final class Routes
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => [$restoreController, 'validate'],
             'permission_callback' => [$restoreController, 'permissionCheck'],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/restorations', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$restoreController, 'prepare'],
+            'permission_callback' => [$restoreController, 'permissionCheck'],
+            'args' => ['token' => ['required' => true, 'type' => 'string']],
         ]);
 
         register_rest_route(self::NAMESPACE, '/preferences/theme', [
