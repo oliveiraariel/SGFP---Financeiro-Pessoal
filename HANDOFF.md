@@ -426,3 +426,23 @@ Consumir o token antes da substituição poderia perder a claim após rollback; 
 ### Limites
 
 - A composição REST ainda não executa a substituição integral porque não existe implementação concreta de `RestorationPersistence`; catálogo, retenção, e-mail e Stage 11 permanecem fora do escopo.
+## Unidade `wu:b2387be4f40a4106b2b4e0046f7c6acc` — 2026-09-12
+
+### Resultado: BLOQUEADA — integração segura não demonstrável
+
+- Criado `WpRestorationPersistence` com DML somente nas tabelas canônicas de `TableNames`, exclusão reversa user-scoped, importação em ordem de dependência, remapeamento lógico→físico, verificação de contagens/referências/ownership e aplicação do tema.
+- A unidade não foi ligada ao fluxo REST nem recebeu checkpoint, porque o tema usa `wp_usermeta` por `update_user_meta()` e o claim usa o mesmo mecanismo, enquanto a transação do executor cobre somente SQL SGFP. O runtime não fornece contrato de transação/cache comum que prove rollback e atomicidade do conjunto.
+- Conectar o adapter agora permitiria consumir/alterar metadata e dados SGFP sem garantia de unidade atômica; isso violaria o requisito de commit único. Não foi adicionado catálogo, retenção, e-mail, Stage 11 ou regra nova.
+
+### Evidências
+
+- `php -l src/src/Infrastructure/WordPress/WpRestorationPersistence.php`: passou.
+- `git diff --check`: passou.
+- PHPUnit não executado: Composer/extensão `mbstring` continuam indisponíveis no ambiente.
+- Arquivos dirty protegidos (`AGENTS.md`, `PROMPTS-OPENCLAW-SGFP.md`, `docs/api/README.md`, `docs/governanca/continuidade-de-contexto.md`) preservados.
+## Work Unit `wu:6fb1aa4aa6b441528e2300c94ae3e77e` — restauração transacional
+
+- **Causa raiz:** a persistência usava `update_user_meta()`/`get_user_meta()` dentro da transação, sem garantir engine de `wp_usermeta`, sem preflight comum e sem propagação de falhas de `START`/`COMMIT`/`ROLLBACK`; o tema podia atravessar a fronteira SQL via cache/API.
+- **Solução aplicada:** `WpRestorationPersistence` agora valida `InnoDB` via `information_schema.TABLES` para `wp_usermeta`, token e todas as tabelas SGFP antes de mutar; grava o tema `sgfp_theme` diretamente com `SELECT ... FOR UPDATE` + `INSERT/UPDATE`; mantém somente DML user-scoped. Claim de token e transaction manager propagam erros críticos. A invalidação de cache e a leitura SQL do tema ocorrem somente após commit.
+- **Evidência:** `php -l` passou nos quatro arquivos alterados; `git diff --check` passou. PHPUnit não iniciou por ausência da extensão PHP `mbstring`. PHPStan executou e reportou apenas símbolos WordPress não disponíveis no bootstrap (`get_current_user_id`, `current_user_can`, `get_user_meta`, `update_user_meta`); o novo cache call foi tornado dinâmico.
+- **Riscos residuais:** testes de sucesso/rollback/concurrency/engine incompatível/implicit commit não puderam ser demonstrados neste ambiente sem PHPUnit funcional e sem banco WordPress conectado. Nenhuma alternativa especulativa foi introduzida.

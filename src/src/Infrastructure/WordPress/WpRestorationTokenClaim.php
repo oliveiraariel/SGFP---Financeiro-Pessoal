@@ -20,11 +20,10 @@ final class WpRestorationTokenClaim implements RestorationTokenClaim
             $hash,
             $now
         ), ARRAY_A);
+        if ($row === null && $wpdb->last_error !== '') throw new \RuntimeException('Falha ao bloquear token: ' . $wpdb->last_error);
         if (!is_array($row)) return null;
         $metadata = json_decode((string) ($row['metadata'] ?? ''), true);
-        if (!is_array($metadata)) {
-            return null;
-        }
+        if (!is_array($metadata)) throw new \RuntimeException('Metadata do token inválida.');
         $metadata['claimed_at'] = $now;
         $updated = $wpdb->update(
             $table,
@@ -33,7 +32,7 @@ final class WpRestorationTokenClaim implements RestorationTokenClaim
             ['%s'],
             ['%d', '%d', 'NULL']
         );
-        $metadata['claimed_at'] = $now;
+        if ($updated === false) throw new \RuntimeException('Falha ao consumir token: ' . $wpdb->last_error);
         return $updated === 1 ? $metadata : null;
     }
 }

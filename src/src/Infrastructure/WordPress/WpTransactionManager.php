@@ -42,6 +42,8 @@ final class WpTransactionManager implements TransactionManager
     private function query(string $sql): void
     {
         global $wpdb;
-        $wpdb->query($sql);
+        if ($wpdb->query($sql) === false) {
+            throw new \RuntimeException($sql . ' failed: ' . $wpdb->last_error);
+        }
     }
 }

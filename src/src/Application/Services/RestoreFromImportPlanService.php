@@ -24,7 +24,7 @@ final class RestoreFromImportPlanService
             throw new \InvalidArgumentException('Plano de restauração inválido.');
         }
 
-        return $this->transactions->transactional(function () use ($plan, $token, $now): array {
+        $result = $this->transactions->transactional(function () use ($plan, $token, $now): array {
             if ($this->tokenClaim->claim($plan->userId, $token, $now ?? time()) === null) {
                 throw new \InvalidArgumentException('Token de restauração expirado ou já consumido.');
             }
@@ -36,5 +36,10 @@ final class RestoreFromImportPlanService
             }
             return ['status' => 'restored'] + $result;
         });
+        call_user_func('clean_user_cache', $plan->userId);
+        global $wpdb;
+        $theme = $wpdb->get_var($wpdb->prepare("SELECT meta_value FROM {$wpdb->usermeta} WHERE user_id = %d AND meta_key = %s LIMIT 1", $plan->userId, 'sgfp_theme'));
+        if ($theme !== $plan->theme) throw new \RuntimeException('Falha na leitura pós-commit do tema restaurado.');
+        return $result;
     }
 }
