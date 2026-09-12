@@ -48,6 +48,8 @@ A Etapa 10 está em andamento. As unidades de negócio principais já foram impl
 - Lint PHP e todos os testes manuais após a revalidação: passaram.
 - Lint PHP e todos os testes manuais após a proteção por lock: passaram.
 - Lint PHP e todos os testes manuais após o lock na preparação da restauração: passaram.
+- `WpEntryRepository::findAllByUser` e `WpTransferRepository::findAllByUser` foram implementados com escopo obrigatório por usuário e mapeamento dos modelos existentes.
+- Lint PHP completo e todos os seis testes manuais após esta unidade: passaram.
 
 ## O que falta
 
@@ -87,7 +89,7 @@ Requisitos canônicos (ver `docs/arquitetura/01-arquitetura-da-aplicacao.md`, se
 ## Notas técnicas para continuação
 
 - Os repositórios já possuem `findAllByUser` nas entidades necessárias para exportação.
-- Ainda faltam `findAllByUser` em `WpTransferRepository` e `WpEntryRepository` (as portas já foram atualizadas).
+- `findAllByUser` está implementado em `WpTransferRepository` e `WpEntryRepository`, mantendo o escopo por usuário e as convenções de mapeamento existentes.
 - Será necessário criar:
   - `Application/Ports/UserOperationLock`
   - `Infrastructure/WordPress/WpUserOperationLock` (usar `GET_LOCK`/`RELEASE_LOCK` do MySQL/MariaDB)

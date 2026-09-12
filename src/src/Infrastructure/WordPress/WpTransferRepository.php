@@ -51,4 +51,22 @@ final class WpTransferRepository implements TransferRepository
             (int) $row['fk_id_conta_destino'],
         );
     }
+
+    public function findAllByUser(int $userId): array
+    {
+        global $wpdb;
+
+        $rows = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM " . TableNames::transfer()
+            . " WHERE fk_id_usuario = %d ORDER BY fk_id_compromisso ASC",
+            $userId
+        ), ARRAY_A);
+
+        return array_map(static fn (array $row): Transfer => new Transfer(
+            (int) $row['fk_id_compromisso'],
+            (int) $row['fk_id_usuario'],
+            (int) $row['fk_id_conta_origem'],
+            (int) $row['fk_id_conta_destino'],
+        ), $rows ?: []);
+    }
 }

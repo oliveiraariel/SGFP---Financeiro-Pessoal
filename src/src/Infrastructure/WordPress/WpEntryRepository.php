@@ -109,6 +109,19 @@ final class WpEntryRepository implements EntryRepository
         return array_map([$this, 'mapRow'], $rows ?: []);
     }
 
+    public function findAllByUser(int $userId): array
+    {
+        global $wpdb;
+
+        $rows = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM " . TableNames::entry()
+            . " WHERE fk_id_usuario = %d ORDER BY data_efetivacao DESC, id_lancamento DESC",
+            $userId
+        ), ARRAY_A);
+
+        return array_map([$this, 'mapRow'], $rows ?: []);
+    }
+
     public function findActiveEntriesByUserAndPeriod(int $userId, \DateTimeImmutable $start, \DateTimeImmutable $end): array
     {
         global $wpdb;
