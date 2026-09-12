@@ -18,6 +18,18 @@
 - `git diff --check`: passou.
 - PHPUnit não executado: Composer/extensão `mbstring` indisponíveis no ambiente.
 
+## Unidade `wu:94e3f64adb834b1ab39d8759f0a66601` — 2026-09-12
+
+### Trabalho realizado
+
+- Criados `RestorationImportPlan` imutável e `RestorationImportPlanner`, aceitando somente `StagedBackup` validado e usuário efetivo.
+- Ordem determinística: contas, categorias, recorrências, compromissos, transferências, lançamentos e tema; chaves lógicas e remapeamento explícito de referências.
+- Referências nulas são preservadas; referências não resolvidas ou de outro usuário são rejeitadas. Nenhuma persistência foi executada.
+
+### Evidências
+
+- Lint PHP, testes manuais e `git diff --check`: executados ao final desta unidade.
+
 ### Limites preservados
 
 - Não foram implementados substituição/persistência/exclusão de registros, commit/rollback, retenção/catalogação/e-mail, nem Stage 11.
