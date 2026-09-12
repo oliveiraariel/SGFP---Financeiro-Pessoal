@@ -40,10 +40,7 @@ final class CreateBackupService
         try {
             $payload = $this->transactions->transactional(function () use ($userId): array {
                 return [
-                'version' => 1,
-                'origin' => 'manual',
-                'user_id' => $userId,
-                'created_at' => gmdate('c'),
+                'metadata' => ['schema' => 'sgfp-backup', 'version' => 1, 'owner' => $userId, 'origin' => 'manual', 'created_at' => gmdate('c')],
                 'theme' => $this->preferences->get('theme', $userId) ?: 'light',
                 'accounts' => $this->accounts->findAllByUser($userId),
                 'categories' => $this->categories->findAllByUser($userId),

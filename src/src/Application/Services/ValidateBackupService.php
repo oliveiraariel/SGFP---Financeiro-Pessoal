@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SGFP\Application\Services;
 
+use SGFP\Application\Backup\StagedBackupDecoder;
+
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Ports\UserPreferenceRepository;
 
@@ -14,6 +16,7 @@ final class ValidateBackupService
     public function __construct(
         private readonly UserPreferenceRepository $preferences,
         private readonly UserContext $userContext,
+        private readonly StagedBackupDecoder $decoder = new StagedBackupDecoder(),
     ) {}
 
     /** @return array{token:string,version:int,origin:string,created_at:string,counts:array<string,int>} */
@@ -35,14 +38,8 @@ final class ValidateBackupService
         $plain = sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(substr($binary, $nonceSize), '', substr($binary, 0, $nonceSize), $key);
         $json = $plain === false ? false : gzdecode($plain);
         $payload = $json === false ? null : json_decode($json, true);
-        if (!is_array($payload) || ($payload['version'] ?? null) !== 1 || ($payload['user_id'] ?? null) !== $userId) {
-            throw new \InvalidArgumentException('Backup incompatível com o usuário atual.');
-        }
-        foreach (['accounts', 'categories', 'recurrences', 'commitments', 'transfers', 'entries'] as $section) {
-            if (!isset($payload[$section]) || !is_array($payload[$section])) {
-                throw new \InvalidArgumentException('Backup incompleto.');
-            }
-        }
+        if (!is_array($payload)) throw new \InvalidArgumentException('Backup inválido.');
+        $validated = $this->decoder->decode($payload, $userId);
 
         $token = bin2hex(random_bytes(32));
         $directory = getenv('SGFP_BACKUP_DIR') ?: '';
@@ -67,24 +64,15 @@ final class ValidateBackupService
         }
         $this->preferences->set('restore_validation_' . hash('sha256', $token), $userId, json_encode([
             'expires_at' => time() + 900,
-            'origin' => $payload['origin'] ?? null,
+            'origin' => $validated->metadata['origin'],
             'hash' => hash('sha256', $encoded),
             'path' => $path,
         ], JSON_THROW_ON_ERROR));
 
         return [
             'token' => $token,
-            'version' => 1,
-            'origin' => (string) ($payload['origin'] ?? 'unknown'),
-            'created_at' => (string) ($payload['created_at'] ?? ''),
-            'counts' => [
-                'accounts' => count($payload['accounts']),
-                'categories' => count($payload['categories']),
-                'recurrences' => count($payload['recurrences']),
-                'commitments' => count($payload['commitments']),
-                'transfers' => count($payload['transfers']),
-                'entries' => count($payload['entries']),
-            ],
+            'version' => 1, 'origin' => $validated->metadata['origin'],
+            'created_at' => $validated->metadata['created_at'], 'counts' => $validated->counts(),
         ];
     }
 }

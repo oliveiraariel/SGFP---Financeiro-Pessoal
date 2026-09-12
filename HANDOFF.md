@@ -1,5 +1,28 @@
 # SGFP — Handoff de Continuidade
 
+## Unidade `wu:baf5b4b7acda42e9a33fcaf8868d4eb4` — 2026-09-12
+
+### Trabalho realizado
+
+- Criados `StagedBackup` (estrutura imutável) e `StagedBackupDecoder`.
+- O decoder exige exatamente `metadata`, `theme` e as seis seções de registros; valida schema/version, proprietário, origem, tema, formato escalar dos registros, enums, IDs, referências internas e referências pendentes.
+- Decodificação continua ocorrendo após autenticação, gzip e JSON; nenhuma substituição, persistência ou exclusão de registros foi adicionada.
+- `CreateBackupService` e `CapturePreRestorationSnapshotService` passaram a emitir o formato canônico com metadados agrupados.
+- `ValidateBackupService` agora só cria staging/token após obter a estrutura validada.
+- Testes focados adicionados em `src/Tests/Unit/StagedBackupDecoderTest.php`.
+
+### Evidências
+
+- Lint PHP completo: passou.
+- `php Tests/Manual/*.php`: passou.
+- `git diff --check`: passou.
+- PHPUnit não executado: Composer/extensão `mbstring` indisponíveis no ambiente.
+
+### Limites preservados
+
+- Não foram implementados substituição/persistência/exclusão de registros, commit/rollback, retenção/catalogação/e-mail, nem Stage 11.
+- `AGENTS.md` e `PROMPTS-OPENCLAW-SGFP.md` não foram alterados por esta unidade; alterações preexistentes nesses arquivos foram preservadas.
+
 **Data:** 2026-09-11  
 **Branch ativa:** `feat/stage-9-10-backend`  
 **Último commit:** a definir nesta unidade
