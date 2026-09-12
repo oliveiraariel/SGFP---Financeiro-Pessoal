@@ -5,6 +5,7 @@ namespace SGFP\Application\Services;
 
 use SGFP\Application\Backup\RestorationImportPlan;
 use SGFP\Application\Ports\RestorationPersistence;
+use SGFP\Application\Ports\RestorationTokenClaim;
 use SGFP\Application\Ports\TransactionManager;
 
 /** Executes only a validated plan. The caller owns the user lock. */
@@ -13,16 +14,20 @@ final class RestoreFromImportPlanService
     public function __construct(
         private readonly RestorationPersistence $persistence,
         private readonly TransactionManager $transactions,
+        private readonly RestorationTokenClaim $tokenClaim,
     ) {}
 
     /** @return array{status:string,counts:array<string,int>,references:int,owner:int,theme:string,invariants:bool} */
-    public function execute(RestorationImportPlan $plan): array
+    public function execute(RestorationImportPlan $plan, string $token, ?int $now = null): array
     {
-        if ($plan->userId <= 0 || $plan->replacementOrder !== ['accounts','categories','recurrences','commitments','transfers','entries','theme']) {
+        if ($plan->userId <= 0 || !preg_match('/^[a-f0-9]{64}$/', $token) || $plan->replacementOrder !== ['accounts','categories','recurrences','commitments','transfers','entries','theme']) {
             throw new \InvalidArgumentException('Plano de restauração inválido.');
         }
 
-        return $this->transactions->transactional(function () use ($plan): array {
+        return $this->transactions->transactional(function () use ($plan, $token, $now): array {
+            if ($this->tokenClaim->claim($plan->userId, $token, $now ?? time()) === null) {
+                throw new \InvalidArgumentException('Token de restauração expirado ou já consumido.');
+            }
             $this->persistence->replace($plan);
             $result = $this->persistence->verify($plan);
             $expected = $plan->counts();

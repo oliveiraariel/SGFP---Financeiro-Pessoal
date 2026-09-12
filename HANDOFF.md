@@ -407,3 +407,22 @@ Consumir o token antes da substituição poderia perder a claim após rollback; 
 - `git diff --check`: a executar após este registro.
 - Nenhuma alteração em `src/`.
 - Os arquivos protegidos dirty preexistentes (`AGENTS.md`, `PROMPTS-OPENCLAW-SGFP.md`, `docs/api/README.md` e `docs/governanca/continuidade-de-contexto.md`) foram preservados.
+
+## Unidade `wu:ec348a5ab96c4e4fb6409fa80930dd3a` — 2026-09-12
+
+### Trabalho realizado
+
+- O `RestoreFromImportPlanService` agora exige `RestorationTokenClaim` e token válido.
+- A claim ocorre dentro do mesmo callback de `TransactionManager::transactional`, antes de `replace`; falha de token, substituição ou verificação propaga exceção e aciona rollback da claim e dos dados.
+- O contrato continua limitado ao plano validado e a dados user-scoped; nenhum SQL de DDL/implicit-commit foi introduzido.
+- O lock permanece responsabilidade do chamador (`RevalidateRestorationService` mantém o `UserOperationLock` até o retorno), e os arquivos dirty protegidos foram preservados.
+
+### Evidências
+
+- `php -l src/src/Application/Services/RestoreFromImportPlanService.php`: passou.
+- `git diff --check`: passou.
+- PHPUnit não executado: Composer/extensão `mbstring` indisponíveis no ambiente.
+
+### Limites
+
+- A composição REST ainda não executa a substituição integral porque não existe implementação concreta de `RestorationPersistence`; catálogo, retenção, e-mail e Stage 11 permanecem fora do escopo.
