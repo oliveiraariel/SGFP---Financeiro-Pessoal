@@ -7,6 +7,7 @@ namespace SGFP\Application\Services;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Ports\UserPreferenceRepository;
 use SGFP\Application\Ports\UserOperationLock;
+use SGFP\Application\Ports\RestorationTokenClaim;
 
 final class RevalidateRestorationService
 {
@@ -15,6 +16,7 @@ final class RevalidateRestorationService
         private readonly UserContext $userContext,
         private readonly UserOperationLock $operationLock,
         private readonly CapturePreRestorationSnapshotService $snapshotCapture,
+        private readonly RestorationTokenClaim $tokenClaim,
     ) {}
 
     /** @return array{status:string,expires_at:int,origin:string} */
@@ -48,6 +50,9 @@ final class RevalidateRestorationService
         try {
             $prepared = $this->prepareUnlocked($token, $userId);
             $snapshot = $this->snapshotCapture->captureUnderLock($userId);
+            if ($this->tokenClaim->claim($userId, $token, time()) === null) {
+                throw new \InvalidArgumentException('Token de restauração expirado ou já consumido.');
+            }
             return [
                 'status' => 'confirmation_accepted',
                 'expires_at' => $prepared['expires_at'],

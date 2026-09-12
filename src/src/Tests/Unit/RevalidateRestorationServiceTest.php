@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Ports\UserOperationLock;
 use SGFP\Application\Ports\UserPreferenceRepository;
+use SGFP\Application\Ports\RestorationTokenClaim;
 use SGFP\Application\Services\RevalidateRestorationService;
 use SGFP\Application\Services\CapturePreRestorationSnapshotService;
 
@@ -20,6 +21,7 @@ final class RevalidateRestorationServiceTest extends TestCase
             $this->createMock(UserContext::class),
             $this->createMock(UserOperationLock::class),
             $this->createMock(CapturePreRestorationSnapshotService::class),
+            $this->createMock(RestorationTokenClaim::class),
         );
 
         $this->expectException(\InvalidArgumentException::class);
@@ -45,6 +47,8 @@ final class RevalidateRestorationServiceTest extends TestCase
             'expires_at' => time() + 86400,
             'origin' => 'pre_restore',
         ]);
+        $claim = $this->createMock(RestorationTokenClaim::class);
+        $claim->expects($this->once())->method('claim')->with(7, $token, $this->isType('int'))->willReturn(['claimed_at' => time()]);
         $preferences->method('get')->willReturn(json_encode([
             'expires_at' => time() + 60,
             'origin' => 'manual',
@@ -52,7 +56,7 @@ final class RevalidateRestorationServiceTest extends TestCase
             'path' => $path,
         ], JSON_THROW_ON_ERROR));
 
-        $service = new RevalidateRestorationService($preferences, $context, $lock, $snapshot);
+        $service = new RevalidateRestorationService($preferences, $context, $lock, $snapshot, $claim);
         $result = $service->confirm($token, true);
         $this->assertSame('confirmation_accepted', $result['status']);
         $this->assertSame('manual', $result['origin']);

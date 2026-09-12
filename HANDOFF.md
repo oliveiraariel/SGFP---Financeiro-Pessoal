@@ -194,3 +194,19 @@ Implementar e testar somente o fluxo transacional de confirmação da restauraç
 - O serviço ainda não está conectado ao fluxo de confirmação da restauração; isso permanece para a unidade de restauração transacional.
 - Commit desta unidade: será registrado após a inspeção final do diff.
 - Próximo passo: integrar a captura obrigatória antes da substituição integral, com rollback, verificação e consumo único do token.
+
+## Unidade `wu:0dfaf47b138840c68cc7d8441aeaba15` — 2026-09-12
+
+### Trabalho realizado
+
+- Criada a porta `RestorationTokenClaim` e o adapter `WpRestorationTokenClaim`.
+- O claim é user-scoped e bloqueia/atualiza atomicamente o metadata do token, rejeitando token inexistente, expirado ou já consumido.
+- A confirmação só consome o token depois de capability, usuário, expiração, staging, hash e snapshot `pre_restore` terem sido validados/concluídos.
+- O caminho REST foi conectado ao novo seam; não foram implementadas substituição de dados, rollback, retenção, e-mail ou Stage 11.
+
+### Evidências
+
+- Lint PHP completo: passou.
+- `php Tests/Manual/*.php`: passou; todos os testes manuais passaram.
+- `git diff --check`: passou.
+- PHPUnit não executado: Composer/extensão `mbstring` indisponíveis no ambiente.
