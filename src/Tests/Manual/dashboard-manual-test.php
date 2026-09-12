@@ -52,6 +52,7 @@ final class InMemoryEntryRepository implements \SGFP\Application\Ports\EntryRepo
     public function findByCommitmentId(int $commitmentId, int $userId): ?Entry { return null; }
     public function findByCommitmentIdAndAccount(int $commitmentId, int $accountId, int $userId): ?Entry { return null; }
     public function findActiveInitialBalanceByAccount(int $accountId, int $userId): ?Entry { return null; }
+    public function findAllByUser(int $userId): array { return array_values(array_filter($this->entries, fn (Entry $e) => $e->userId === $userId)); }
     public function findActiveEntriesByUser(int $userId): array { return $this->entries; }
     public function findActiveEntriesByUserAndPeriod(int $userId, \DateTimeImmutable $start, \DateTimeImmutable $end): array
     {

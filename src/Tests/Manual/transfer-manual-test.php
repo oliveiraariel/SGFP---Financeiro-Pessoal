@@ -124,6 +124,8 @@ final class InMemoryTransferRepository implements TransferRepository
         $transfer = $this->transfers[$commitmentId] ?? null;
         return $transfer && $transfer->userId === $userId ? $transfer : null;
     }
+
+    public function findAllByUser(int $userId): array { return []; }
 }
 
 final class InMemoryEntryRepository implements EntryRepository
@@ -177,6 +179,11 @@ final class InMemoryEntryRepository implements EntryRepository
             }
         }
         return null;
+    }
+
+    public function findAllByUser(int $userId): array
+    {
+        return array_values(array_filter($this->entries, fn (Entry $e) => $e->userId === $userId));
     }
 
     public function findActiveEntriesByUser(int $userId): array

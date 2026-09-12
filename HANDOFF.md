@@ -34,6 +34,11 @@ A Etapa 10 está em andamento. As unidades de negócio principais já foram impl
 - `php Tests/Manual/create-account-manual-test.php`: passou.
 - `php Tests/Manual/initial-balance-manual-test.php`: bloqueado antes da execução porque o fake `EntryRepository` do teste não implementa `findAllByUser`, método já exigido pela porta existente.
 
+### Validações da unidade seguinte
+
+- Os doubles manuais de `EntryRepository`, `RecurrenceRepository` e `TransferRepository` foram alinhados às portas atuais.
+- `php Tests/Manual/*.php`: todos os seis testes manuais passaram.
+
 ## O que falta
 
 ### Backup e Restauração (`RF-021`)
@@ -95,4 +100,4 @@ php Tests/Manual/*.php
 
 ## Próxima ação recomendada
 
-Corrigir, em uma unidade separada, os doubles dos testes manuais para a porta `EntryRepository` e então implementar a próxima unidade pequena: validação de restauração, sem ainda substituir dados.
+Próxima unidade pequena: revisar os contratos de proteção/armazenamento do backup manual e criar a validação de restauração, sem ainda substituir dados.

@@ -114,6 +114,8 @@ final class InMemoryRecurrenceRepository implements RecurrenceRepository
         $recurrence = $this->recurrences[$id] ?? null;
         return $recurrence && $recurrence->userId === $userId ? $recurrence : null;
     }
+
+    public function findAllByUser(int $userId): array { return []; }
 }
 
 final class InMemoryCommitmentRepository implements CommitmentRepository
@@ -211,6 +213,11 @@ final class InMemoryEntryRepository implements EntryRepository
             }
         }
         return null;
+    }
+
+    public function findAllByUser(int $userId): array
+    {
+        return array_values(array_filter($this->entries, fn (Entry $e) => $e->userId === $userId));
     }
 
     public function findActiveEntriesByUser(int $userId): array
