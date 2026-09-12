@@ -61,11 +61,11 @@ Os documentos de referência estão em `docs/modelagem-dados/`, com os artefatos
 
 A etapa corrente é:
 
-**Etapa 9 — Arquitetura da Aplicação**
+**Etapa 10 — Desenvolvimento da API, concluída e validada**
 
 A proposta arquitetural foi produzida, tecnicamente corrigida após revisão e **validada em 11/09/2026**. As cinco decisões humanas necessárias foram registradas e incorporadas em `docs/arquitetura/01-arquitetura-da-aplicacao.md` (`DEC-001` a `DEC-005`). O gate integral da Etapa 9 está **aprovado**.
 
-A Etapa 10 — Desenvolvimento da API está autorizada a iniciar, desde que respeitada esta arquitetura validada. A Etapa 11 — Desenvolvimento da Interface Web permanece condicionada aos contratos aprovados.
+A Etapa 10 foi concluída no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`. Lint, testes manuais e verificações Git foram aprovados; PHPUnit e validação WordPress/MySQL/MariaDB real permanecem pendentes por limitação ambiental. A Etapa 11 — Desenvolvimento da Interface Web não foi iniciada e a Etapa 12 permanece futura para consolidação formal dos testes.
 
 A associação de Categoria ao Compromisso Financeiro é opcional na V1; um compromisso pode ser cadastrado e permanecer sem categoria.
 
@@ -79,7 +79,7 @@ Os gates das Etapas 6, 7 e 8 foram satisfeitos.
 A partir do estado atual:
 
 - a proposta da Etapa 9 constitui baseline validada em `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
-- a Etapa 10 — Desenvolvimento da API está autorizada a iniciar;
+- a Etapa 10 — Desenvolvimento da API foi concluída e validada no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`;
 - a Etapa 11 — Desenvolvimento da Interface Web permanece não iniciada, condicionada aos contratos aprovados;
 - a modelagem validada somente deverá ser alterada quando houver motivo documentado e análise de impacto.
 
@@ -204,7 +204,7 @@ Os agentes devem respeitar a sequência estabelecida no Plano de Desenvolvimento
 
 Regras essenciais:
 
-- no estado atual, os gates das Etapas 5 a 9 já foram satisfeitos; a Etapa 10 está autorizada a iniciar; a Etapa 11 permanece não iniciada;
+- no estado atual, os gates das Etapas 5 a 10 já foram satisfeitos; a Etapa 11 permanece não iniciada;
 - a Etapa 5 somente é considerada concluída com `docs/dominio/01-mapa-de-dominio.md` validado;
 - a Modelagem Conceitual (MER) pode iniciar somente após a validação do Mapa do Domínio;
 - não criar DER antes da validação do MER;

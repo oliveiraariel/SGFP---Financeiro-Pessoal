@@ -14,6 +14,6 @@ A Arquitetura considera as restrições consolidadas da V1 — PHP sobre WordPre
 
 ## Condição para avanço
 
-O gate integral da Etapa 9 foi aprovado em 11/09/2026. A Etapa 10 — Desenvolvimento da API está autorizada a iniciar respeitando esta baseline. A Etapa 11 — Interface Web permanece não iniciada até aprovação dos contratos da API.
+O gate integral da Etapa 9 foi aprovado em 11/09/2026. A Etapa 10 — Desenvolvimento da API foi concluída e validada no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`. A Etapa 11 — Interface Web permanece não iniciada.
 
 A pendência `ISSUE-008` continua não bloqueadora para a Etapa 9, mas deverá ser resolvida antes do fechamento integral da rastreabilidade na Etapa 12.

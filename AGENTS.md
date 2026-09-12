@@ -46,7 +46,10 @@ correto.
 - Requisitos não funcionais padronizados como `RNF-001` a `RNF-020`.
 - Etapa 5 — Mapa do Domínio: concluída e validada.
 - Etapas 6 — Modelagem Conceitual (MER), 7 — DER e 8 — Modelo Físico: concluídas e validadas.
-- Próxima etapa autorizada: Etapa 9 — Arquitetura da Aplicação, pronta para iniciar.
+- Etapa 9 — Arquitetura da Aplicação: concluída e validada.
+- Etapa 10 — Desenvolvimento da API: concluída no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`; lint, testes manuais e verificações Git aprovados. PHPUnit e validação WordPress/MySQL/MariaDB real permanecem pendentes por limitação ambiental.
+- Etapa 11 — Interface Web: não iniciada.
+- Etapa 12 — Testes: futura, responsável pela consolidação formal dos testes.
 - A associação de Categoria ao Compromisso Financeiro é opcional na V1; o compromisso pode ser cadastrado e permanecer sem categoria.
 - Restrição tecnológica consolidada para a V1: aplicação Web em PHP sobre WordPress, com backend específico em plugin próprio, infraestrutura REST do WordPress e banco relacional compatível com MySQL ou MariaDB.
 - Sistema operacional, editor e extensões de desenvolvimento não constituem restrições do SGFP, salvo exigência formal posterior.
@@ -55,7 +58,7 @@ correto.
 - A cópia de segurança ordinária da V1 é criada manualmente e enviada ao e-mail cadastrado. Antes de uma restauração confirmada, o SGFP deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior; se essa preservação falhar, a restauração será cancelada. Essa proteção pontual não caracteriza backup automático periódico ou contínuo.
 - `ISSUE-007`: resolvida pela decisão de cópia de segurança automática pré-restauração, sem antecipar o mecanismo técnico de preservação.
 - `ISSUE-008`: a matriz direta Regra de Negócio → Requisito ainda não foi materializada; não bloqueia o início da Etapa 9, mas deverá ser concluída antes do fechamento da rastreabilidade de testes.
-- MER, DER e Modelo Físico estão validados; a Arquitetura é a próxima etapa autorizada e a implementação da API continua condicionada à conclusão da Etapa 9.
+- MER, DER, Modelo Físico, Arquitetura e implementação da API estão validados; a Etapa 11 permanece não iniciada.
 - Testes e verificações podem acompanhar o desenvolvimento quando a etapa correspondente estiver autorizada; a Etapa 12 permanece responsável pela consolidação formal da estratégia, casos, evidências, rastreabilidade e resultados de teste.
 
 As regras operacionais completas deste projeto estão em `ORCHESTRATOR.md`.

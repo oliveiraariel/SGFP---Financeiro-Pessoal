@@ -100,16 +100,16 @@ development_guidance:
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "stage_9_validated_stage_10_ready_to_start"
+  current_state: "stage_10_completed_validated_stage_11_not_started"
   last_completed_stage:
-    id: 9
-    name: "Arquitetura da Aplicação"
-  current_stage:
     id: 10
     name: "Desenvolvimento da API"
+  current_stage:
+    id: 11
+    name: "Desenvolvimento da Interface Web"
   current_stage_gate:
-    status: "ready_to_start"
-    reason: "A proposta arquitetural foi validada em 11/09/2026, as cinco decisões humanas foram registradas (DEC-001 a DEC-005) e o gate integral da Etapa 9 foi aprovado. A Etapa 10 está autorizada a iniciar respeitando a arquitetura validada."
+    status: "not_started"
+    reason: "A Etapa 11 não foi iniciada. A Etapa 10 foi concluída e validada no commit 362c4b947bbfceb171c75c9a71b943d50d1cfe14."
     blockers: []
 
 stages:
@@ -160,13 +160,8 @@ stages:
 
   - id: 10
     name: "Desenvolvimento da API"
-    status: "ready_to_start"
+    status: "completed_validated"
     path: "src/"
-
-  - id: 10
-    name: "Desenvolvimento da API"
-    status: "not_started"
-    path: "docs/api/"
 
   - id: 11
     name: "Desenvolvimento da Interface Web"

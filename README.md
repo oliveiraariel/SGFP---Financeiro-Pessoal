@@ -70,7 +70,7 @@ Os Casos de Uso também foram organizados individualmente para facilitar manuten
 
 As Etapas 5 — Mapa do Domínio, 6 — Modelagem Conceitual (MER), 7 — Modelo Entidade-Relacionamento (DER) e 8 — Modelo Físico foram concluídas e validadas.
 
-A próxima etapa autorizada é a **Etapa 9 — Arquitetura da Aplicação**, pronta para iniciar.
+As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram concluídas e validadas. A implementação da Etapa 10 está registrada no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`; lint, testes manuais e verificações Git foram aprovados. PHPUnit e validação WordPress/MySQL/MariaDB real permanecem pendentes por limitação ambiental. A Etapa 11 não foi iniciada e a Etapa 12 permanece futura para consolidação formal dos testes.
 
 ## Estrutura do Repositório
 
@@ -233,4 +233,3 @@ O repositório deverá evoluir mantendo:
 * separação entre documentação normativa, histórica e técnica;
 * simplicidade arquitetural;
 * controle de mudanças por Git.
-

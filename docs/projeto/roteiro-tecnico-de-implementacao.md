@@ -42,8 +42,9 @@ No estado atual do projeto:
 
 - a Etapa 5 — Mapa do Domínio está concluída e validada;
 - as Etapas 6 — MER, 7 — DER e 8 — Modelo Físico estão concluídas e validadas;
-- a Etapa 9 — Arquitetura da Aplicação está pronta para iniciar;
-- API, Interface Web e Testes formais continuam condicionados aos respectivos gates.
+- a Etapa 9 — Arquitetura da Aplicação foi concluída e validada;
+- a Etapa 10 — Desenvolvimento da API foi concluída no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`;
+- a Etapa 11 não foi iniciada e a Etapa 12 permanece futura para consolidação formal dos testes.
 
 A partir deste ponto, este roteiro passa a apoiar diretamente a condução da **Etapa 9 — Arquitetura da Aplicação** e, posteriormente, as etapas de implementação e testes.
 

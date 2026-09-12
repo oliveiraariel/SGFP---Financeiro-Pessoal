@@ -77,9 +77,10 @@ GATES E ORDEM
 Não presuma que Backend e Frontend formam uma fila rígida, mas também não pule
 gates oficiais.
 
-No estado documentado em 08/09/2026, a Etapa 8 está validada e a próxima etapa
-autorizada é a Etapa 9 — Arquitetura da Aplicação. As Etapas 10 — API e 11 —
-Interface Web continuam condicionadas aos gates correspondentes. Sempre confirme
+No estado documentado em 12/09/2026, as Etapas 9 — Arquitetura da Aplicação e 10 —
+Desenvolvimento da API estão concluídas e validadas. A implementação da Etapa 10
+está no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`; a Etapa 11 não foi
+iniciada e a Etapa 12 permanece futura para consolidação formal dos testes. Sempre confirme
 essa situação nas fontes atuais antes de agir, pois este arquivo pode ficar mais
 antigo que o `project-manifest.yaml`.
 
@@ -187,10 +188,9 @@ blockers e próxima ready frontier.
 ```text
 OBJETIVO DESTA SESSÃO
 
-Confirmar o estado oficial do SGFP e iniciar/continuar a Etapa 9 — Arquitetura da
-Aplicação, usando as fontes canônicas e a modelagem validada. Estruture o trabalho
-em Work Units, explore paralelismo seguro para análises independentes e não inicie
-implementação da API ou da Interface Web antes dos respectivos gates.
+Confirmar o estado oficial do SGFP e, se autorizado, continuar a etapa corrente
+sem iniciar a Etapa 11. A Etapa 10 está concluída e validada; a Etapa 12 deverá
+consolidar formalmente os testes.
 ```
 
 ### Backend / API — usar quando o gate estiver liberado

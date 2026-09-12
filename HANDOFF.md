@@ -1,5 +1,15 @@
 # SGFP — Handoff de Continuidade
 
+## Estado corrente autoritativo — 2026-09-12
+
+- Etapa 9 concluída e validada.
+- Etapa 10 concluída no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`; lint, testes manuais e verificações Git aprovados.
+- PHPUnit e validação WordPress/MySQL/MariaDB real permanecem pendentes por limitação ambiental.
+- Etapa 11 não iniciada.
+- Etapa 12 permanece futura para consolidação formal dos testes.
+
+Os registros abaixo preservam histórico de unidades anteriores e bloqueios já superados; não substituem o estado corrente acima.
+
 ## Unidade `wu:5d2caf8351ab4dc9a08a4168c9b75c00` — 2026-09-12
 
 ### Trabalho realizado

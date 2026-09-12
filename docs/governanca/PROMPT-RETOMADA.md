@@ -57,8 +57,8 @@ Confirme explicitamente:
 4. se docs/dominio/01-mapa-de-dominio.md corresponde à Etapa 5 validada;
 5. se as Etapas 6 — MER, 7 — DER e 8 — Modelo Físico permanecem concluídas e validadas;
 6. se os artefatos oficiais de modelagem estão em docs/modelagem-dados/artefatos/;
-7. se a próxima etapa autorizada permanece sendo Etapa 9 — Arquitetura da Aplicação;
-8. se as Etapas 10 a 12 continuam condicionadas aos respectivos gates;
+7. se a Etapa 9 — Arquitetura da Aplicação permanece concluída e validada;
+8. se a Etapa 10 está concluída e a Etapa 11 não foi iniciada;
 9. se ISSUE-007 permanece resolvida;
 10. se ISSUE-008 continua aberta, sem bloquear o início da Etapa 9, mas devendo ser concluída antes do fechamento final da rastreabilidade de testes;
 11. se existe qualquer divergência entre manifesto, continuidade, Plano, fontes canônicas e, quando disponível, estado real do Git.

@@ -44,9 +44,10 @@ Baseline ativa da Versão 1:
 - `UC-018` e `CA-019.1` a `CA-019.5` preservados como artefatos futuros, sem renumeração;
 - requisitos não funcionais padronizados como `RNF-001` a `RNF-020`.
 
-Última etapa concluída e validada:
+Etapas concluídas e validadas:
 
-- **Etapa 8 — Modelo Físico**
+- **Etapa 9 — Arquitetura da Aplicação**;
+- **Etapa 10 — Desenvolvimento da API**
 
 Etapas de modelagem concluídas:
 
@@ -65,7 +66,7 @@ Artefatos principais:
 
 Etapa corrente:
 
-- **Etapa 9 — Arquitetura da Aplicação**, com proposta validada em 11/09/2026 e gate integral aprovado.
+- **Etapa 10 — Desenvolvimento da API**, encerrada no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`.
 
 Situação:
 - a proposta da Arquitetura da Aplicação está registrada e validada em `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
@@ -93,7 +94,7 @@ Situação:
 - as decisões de cardinalidade, especialização, estrutura relacional e Modelo Físico das Etapas 6 a 8 estão registradas nos artefatos validados de `docs/modelagem-dados/`;
 - o Modelo Físico oficial da V1 é o artefato `docs/modelagem-dados/artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql`;
 - estruturas exclusivas do PIN futuro não integram a modelagem da V1;
-- a Etapa 9 teve seu gate aprovado; a Etapa 10 — Desenvolvimento da API está autorizada a iniciar; a Etapa 11 permanece não iniciada; a Etapa 12 continua condicionada ao respectivo gate.
+- a Etapa 9 teve seu gate aprovado; a Etapa 10 foi concluída e validada; a Etapa 11 permanece não iniciada; a Etapa 12 permanece futura para consolidação formal dos testes.
 
 ## 4. Decisões consolidadas relevantes para a modelagem
 
@@ -202,7 +203,7 @@ Resultados consolidados:
 ## 7. Gates posteriores
 
 - **Etapa 9 — Arquitetura:** proposta validada; gate integral aprovado em 11/09/2026.
-- **Etapa 10 — API:** autorizada a iniciar; deve respeitar a arquitetura validada.
+- **Etapa 10 — API:** concluída e validada no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`.
 - **Etapa 11 — Interface Web:** não iniciada; conforme contratos aprovados na Etapa 10.
 - **Etapa 12 — Testes:** evolui conforme critérios, implementação e estratégia vigente; a cadeia direta Regra de Negócio → Requisito deverá estar concluída antes do fechamento final da rastreabilidade.
 
@@ -245,9 +246,9 @@ Não executar `push`, `merge`, rebase destrutivo ou alteração da `main` sem co
 
 ## 9. Próxima ação recomendada
 
-1. dar continuidade à **Etapa 10 — Desenvolvimento da API**, respeitando a arquitetura validada em `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
-2. manter a Etapa 11 — Interface Web não iniciada até que os contratos da API estejam aprovados;
-3. tratar a `ISSUE-008` antes do fechamento formal da rastreabilidade de testes na Etapa 12.
+1. manter a Etapa 11 — Interface Web não iniciada;
+2. preparar a consolidação formal dos testes na Etapa 12;
+3. tratar a `ISSUE-008` antes do fechamento formal da rastreabilidade de testes.
 
 `ISSUE-007` deve permanecer registrada como resolvida. `ISSUE-008` deve permanecer visível como pendência não bloqueadora da Arquitetura.
 
