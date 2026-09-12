@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SGFP\Application\Services;
 
+use SGFP\Application\Backup\RestorationImportPlanner;
+use SGFP\Application\Backup\StagedBackupDecoder;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Ports\UserPreferenceRepository;
 use SGFP\Application\Ports\UserOperationLock;
@@ -17,6 +19,8 @@ final class RevalidateRestorationService
         private readonly UserOperationLock $operationLock,
         private readonly CapturePreRestorationSnapshotService $snapshotCapture,
         private readonly RestorationTokenClaim $tokenClaim,
+        private readonly StagedBackupDecoder $decoder = new StagedBackupDecoder(),
+        private readonly RestorationImportPlanner $planner = new RestorationImportPlanner(),
     ) {}
 
     /** @return array{status:string,expires_at:int,origin:string} */
@@ -49,6 +53,7 @@ final class RevalidateRestorationService
         $this->operationLock->acquire($userId);
         try {
             $prepared = $this->prepareUnlocked($token, $userId);
+            $plan = $this->reopenAndPlan($prepared['encoded'], $userId);
             $snapshot = $this->snapshotCapture->captureUnderLock($userId);
             if ($this->tokenClaim->claim($userId, $token, time()) === null) {
                 throw new \InvalidArgumentException('Token de restauração expirado ou já consumido.');
@@ -58,13 +63,20 @@ final class RevalidateRestorationService
                 'expires_at' => $prepared['expires_at'],
                 'origin' => $prepared['origin'],
                 'snapshot' => $snapshot,
+                'import_plan' => [
+                    'user_id' => $plan->userId,
+                    'replacement_order' => $plan->replacementOrder,
+                    'counts' => $plan->counts(),
+                    'reference_remapping' => $plan->referenceRemapping,
+                    'theme' => $plan->theme,
+                ],
             ];
         } finally {
             $this->operationLock->release($userId);
         }
     }
 
-    /** @return array{status:string,expires_at:int,origin:string} */
+    /** @return array{status:string,expires_at:int,origin:string,encoded:string} */
     private function prepareUnlocked(string $token, int $userId): array
     {
         $raw = $this->preferences->get('restore_validation_' . hash('sha256', $token), $userId);
@@ -88,6 +100,24 @@ final class RevalidateRestorationService
             'status' => 'ready_for_confirmation',
             'expires_at' => (int) $metadata['expires_at'],
             'origin' => (string) ($metadata['origin'] ?? 'unknown'),
+            'encoded' => $stored,
         ];
+    }
+
+    private function reopenAndPlan(string $encoded, int $userId): \SGFP\Application\Backup\RestorationImportPlan
+    {
+        $binary = base64_decode($encoded, true);
+        $keyValue = getenv('SGFP_BACKUP_KEY') ?: '';
+        $nonceSize = SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES;
+        if ($binary === false || $keyValue === '' || strlen($binary) <= $nonceSize) {
+            throw new \InvalidArgumentException('Arquivo de restauração inválido.');
+        }
+        $plain = sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
+            substr($binary, $nonceSize), '', substr($binary, 0, $nonceSize), hash('sha256', $keyValue, true)
+        );
+        $json = $plain === false ? false : gzdecode($plain);
+        $payload = $json === false ? null : json_decode($json, true);
+        if (!is_array($payload)) throw new \InvalidArgumentException('Arquivo de restauração inválido.');
+        return $this->planner->plan($this->decoder->decode($payload, $userId), $userId);
     }
 }

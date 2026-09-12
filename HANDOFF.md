@@ -1,5 +1,25 @@
 # SGFP — Handoff de Continuidade
 
+## Unidade `wu:c240d3184526476182c0f7bc8a00f829` — 2026-09-12
+
+### Trabalho realizado
+
+- A confirmação reabre o arquivo staged sob o `UserOperationLock` do usuário efetivo.
+- Reautentica, descriptografa com AEAD, descompacta gzip, decodifica/valida o schema e gera o `RestorationImportPlan` determinístico antes do snapshot e da claim do token.
+- Falhas de arquivo indisponível, adulterado, expirado, incompatível, malformado ou não decodificável ocorrem antes de snapshot/claim e não adicionam mutação de dados SGFP.
+- O plano é retornado como preparação (`import_plan`); substituição, rollback, retenção, e-mail e Stage 11 permanecem fora do escopo.
+
+### Evidências
+
+- Lint PHP completo: passou.
+- `php Tests/Manual/*.php`: passou.
+- `git diff --check`: passou.
+- PHPUnit não executado: Composer/extensão `mbstring` indisponíveis no ambiente.
+
+### Limite preservado
+
+O executor de substituição integral continua bloqueado pelos contratos de persistência/atomicidade já registrados nas unidades anteriores; nenhum arquivo protegido dirty foi alterado.
+
 ## Unidade `wu:262f51ad0ca94b8e9d6a860dd2cfb937` — 2026-09-12
 
 ### Resultado: BLOQUEADORES RECONCILIADOS DOCUMENTALMENTE — implementação ainda não autorizada nesta unidade
