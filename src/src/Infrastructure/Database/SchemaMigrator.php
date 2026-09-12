@@ -15,6 +15,7 @@ final class SchemaMigrator
      */
     private const MIGRATIONS = [
         '1.0.0' => 'migrateTo100',
+        '1.1.0' => 'migrateTo110',
     ];
 
     public static function migrate(): void
@@ -61,6 +62,36 @@ final class SchemaMigrator
             if ($previousHideErrors === true) {
                 $wpdb->show_errors();
             }
+        }
+    }
+
+    private static function migrateTo110(string $version): void
+    {
+        global $wpdb;
+        $table = TableNames::restorationToken();
+        $users = $wpdb->users;
+        $charset = $wpdb->get_charset_collate();
+        $sql = "CREATE TABLE IF NOT EXISTS {$table} (
+            id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id BIGINT UNSIGNED NOT NULL,
+            token_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+            metadata LONGTEXT NOT NULL,
+            expires_at DATETIME NOT NULL,
+            claimed_at DATETIME NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            CONSTRAINT fk_sgfp_token_user FOREIGN KEY (user_id) REFERENCES {$users}(ID),
+            UNIQUE KEY uq_sgfp_token_hash (token_hash),
+            KEY idx_sgfp_token_user_expiry (user_id, expires_at)
+        ) ENGINE=InnoDB {$charset}";
+        if ($wpdb->query($sql) === false) {
+            throw new RuntimeException(sprintf('Migration %s failed: %s', $version, $wpdb->last_error));
+        }
+        $engine = $wpdb->get_var($wpdb->prepare(
+            'SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = %s',
+            $table
+        ));
+        if (strtoupper((string) $engine) !== 'INNODB') {
+            throw new RuntimeException(sprintf('Migration %s requires InnoDB for %s.', $version, $table));
         }
     }
 

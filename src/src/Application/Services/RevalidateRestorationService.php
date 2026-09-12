@@ -10,6 +10,7 @@ use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Ports\UserPreferenceRepository;
 use SGFP\Application\Ports\UserOperationLock;
 use SGFP\Application\Ports\RestorationTokenClaim;
+use SGFP\Application\Ports\RestorationTokenStore;
 
 final class RevalidateRestorationService
 {
@@ -19,6 +20,7 @@ final class RevalidateRestorationService
         private readonly UserOperationLock $operationLock,
         private readonly CapturePreRestorationSnapshotService $snapshotCapture,
         private readonly RestorationTokenClaim $tokenClaim,
+        private readonly ?RestorationTokenStore $tokenStore = null,
         private readonly StagedBackupDecoder $decoder = new StagedBackupDecoder(),
         private readonly RestorationImportPlanner $planner = new RestorationImportPlanner(),
     ) {}
@@ -79,8 +81,10 @@ final class RevalidateRestorationService
     /** @return array{status:string,expires_at:int,origin:string,encoded:string} */
     private function prepareUnlocked(string $token, int $userId): array
     {
-        $raw = $this->preferences->get('restore_validation_' . hash('sha256', $token), $userId);
-        $metadata = $raw === null ? null : json_decode($raw, true);
+        $row = $this->tokenStore?->get($userId, hash('sha256', $token));
+        $raw = is_array($row) ? (string) ($row['metadata'] ?? '') : $this->preferences->get('restore_validation_' . hash('sha256', $token), $userId);
+        $metadata = $raw === '' ? null : json_decode($raw, true);
+        if (is_array($row) && isset($row['claimed_at'])) $metadata = null;
         if (!is_array($metadata) || (int) ($metadata['expires_at'] ?? 0) < time()) {
             throw new \InvalidArgumentException('Token de restauração expirado ou inválido.');
         }

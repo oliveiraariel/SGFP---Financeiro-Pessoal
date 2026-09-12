@@ -7,14 +7,14 @@ namespace SGFP\Application\Services;
 use SGFP\Application\Backup\StagedBackupDecoder;
 
 use SGFP\Application\Ports\UserContext;
-use SGFP\Application\Ports\UserPreferenceRepository;
+use SGFP\Application\Ports\RestorationTokenStore;
 
 final class ValidateBackupService
 {
     private const MAX_BYTES = 26214400;
 
     public function __construct(
-        private readonly UserPreferenceRepository $preferences,
+        private readonly RestorationTokenStore $tokens,
         private readonly UserContext $userContext,
         private readonly StagedBackupDecoder $decoder = new StagedBackupDecoder(),
     ) {}
@@ -62,7 +62,7 @@ final class ValidateBackupService
             @unlink($path);
             throw new \RuntimeException('Não foi possível confirmar o staging do backup.');
         }
-        $this->preferences->set('restore_validation_' . hash('sha256', $token), $userId, json_encode([
+        $this->tokens->store($userId, hash('sha256', $token), time() + 900, json_encode([
             'expires_at' => time() + 900,
             'origin' => $validated->metadata['origin'],
             'hash' => hash('sha256', $encoded),

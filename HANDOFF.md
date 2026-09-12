@@ -1,5 +1,24 @@
 # SGFP — Handoff de Continuidade
 
+## Unidade `wu:5d2caf8351ab4dc9a08a4168c9b75c00` — 2026-09-12
+
+### Trabalho realizado
+
+- Criada a tabela física dedicada `{$wpdb->prefix}sgfp_token_restauracao`, com prefixo `sgfp_`, `ENGINE=InnoDB`, FK para `wp_users`, ownership por `user_id`, hash SHA-256 em `CHAR(64)` binário, expiração, metadata e claim.
+- Adicionada migração incremental/idempotente `1.1.0`, com verificação runtime da engine efetiva via `information_schema`.
+- `ValidateBackupService` grava tokens nessa tabela; `WpRestorationTokenClaim` faz `SELECT ... FOR UPDATE` e update condicional na mesma tabela, mantendo o contrato da porta e o escopo do usuário.
+- `RevalidateRestorationService` lê a tabela pelo novo store; a compatibilidade de construtor permanece somente para os testes unitários antigos, enquanto a composição REST usa exclusivamente o store SQL.
+
+### Evidências
+
+- Lint PHP completo: passou.
+- `git diff --check`: passou.
+- PHPUnit/static checks: Composer não está disponível neste ambiente; não foram executados.
+
+### Limites preservados
+
+Esta unidade não implementa transação integral de restauração, replacement/rollback, retenção/catalogação/e-mail ou Stage 11. `AGENTS.md` e `PROMPTS-OPENCLAW-SGFP.md` não foram alterados por esta unidade; alterações dirty preexistentes foram preservadas.
+
 ## Unidade `wu:9dda475005f247cf8ac2297c59dc9f1a` — 2026-09-12
 
 ### Resultado: BLOQUEADA — atomicidade do token não demonstrável

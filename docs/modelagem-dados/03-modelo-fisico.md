@@ -20,6 +20,13 @@ O Modelo Físico da V1 foi consolidado considerando, entre outros pontos:
 - preservação do histórico por meio do estado dos lançamentos;
 - integridade e isolamento dos registros por usuário.
 
+Durante a implementação da Etapa 10 foi adicionada uma estrutura técnica de suporte,
+sem alterar as entidades financeiras do modelo validado: `sgfp_token_restauracao`.
+Ela é uma tabela própria do plugin, prefixada, InnoDB, com FK para `wp_users`,
+ownership por usuário, hash SHA-256 único, expiração e estado de claim. Sua criação
+ocorre por migração incremental; ela não substitui nem altera o artefato SQL das
+seis tabelas financeiras.
+
 ## Artefato
 
 - [Modelo Físico MySQL/MariaDB](artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql)

@@ -41,4 +41,9 @@ final class TableNames
     {
         return self::prefix() . 'transferencia';
     }
+
+    public static function restorationToken(): string
+    {
+        return self::prefix() . 'token_restauracao';
+    }
 }

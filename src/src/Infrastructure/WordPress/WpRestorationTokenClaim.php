@@ -5,31 +5,35 @@ declare(strict_types=1);
 namespace SGFP\Infrastructure\WordPress;
 
 use SGFP\Application\Ports\RestorationTokenClaim;
+use SGFP\Infrastructure\Database\TableNames;
 
 final class WpRestorationTokenClaim implements RestorationTokenClaim
 {
     public function claim(int $userId, string $token, int $now): ?array
     {
         global $wpdb;
-        $key = 'sgfp_restore_validation_' . hash('sha256', $token);
+        $hash = hash('sha256', $token);
+        $table = TableNames::restorationToken();
         $row = $wpdb->get_row($wpdb->prepare(
-            "SELECT umeta_id, meta_value FROM {$wpdb->usermeta} WHERE user_id = %d AND meta_key = %s ORDER BY umeta_id DESC LIMIT 1 FOR UPDATE",
+            "SELECT id, metadata, UNIX_TIMESTAMP(expires_at) AS expires_at FROM {$table} WHERE user_id = %d AND token_hash = %s AND claimed_at IS NULL AND expires_at >= FROM_UNIXTIME(%d) LIMIT 1 FOR UPDATE",
             $userId,
-            $key
+            $hash,
+            $now
         ), ARRAY_A);
         if (!is_array($row)) return null;
-        $metadata = json_decode((string) ($row['meta_value'] ?? ''), true);
-        if (!is_array($metadata) || isset($metadata['claimed_at']) || (int) ($metadata['expires_at'] ?? 0) < $now) {
+        $metadata = json_decode((string) ($row['metadata'] ?? ''), true);
+        if (!is_array($metadata)) {
             return null;
         }
         $metadata['claimed_at'] = $now;
         $updated = $wpdb->update(
-            $wpdb->usermeta,
-            ['meta_value' => json_encode($metadata, JSON_THROW_ON_ERROR)],
-            ['umeta_id' => (int) $row['umeta_id'], 'user_id' => $userId],
+            $table,
+            ['claimed_at' => gmdate('Y-m-d H:i:s', $now)],
+            ['id' => (int) $row['id'], 'user_id' => $userId, 'claimed_at' => null],
             ['%s'],
-            ['%d', '%d']
+            ['%d', '%d', 'NULL']
         );
+        $metadata['claimed_at'] = $now;
         return $updated === 1 ? $metadata : null;
     }
 }

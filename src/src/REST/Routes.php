@@ -36,6 +36,8 @@ use SGFP\Infrastructure\WordPress\WpUserPreferenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserOperationLock;
 use SGFP\Infrastructure\WordPress\WpTransferRepository;
 use SGFP\Infrastructure\WordPress\WpBackupStore;
+use SGFP\Infrastructure\WordPress\WpRestorationTokenClaim;
+use SGFP\Infrastructure\WordPress\WpRestorationTokenStore;
 use SGFP\REST\Controllers\AccountController;
 use SGFP\REST\Controllers\CategoryController;
 use SGFP\REST\Controllers\CommitmentController;
@@ -135,9 +137,9 @@ final class Routes
             $transactionManager, $userContext, new WpUserOperationLock(), new WpBackupStore()
         );
         $restoreController = new RestoreController(new ValidateBackupService(
-            new WpUserPreferenceRepository(),
+            new WpRestorationTokenStore(),
             $userContext,
-        ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext, new WpUserOperationLock(), $snapshotCapture, new WpRestorationTokenClaim()));
+        ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext, new WpUserOperationLock(), $snapshotCapture, new WpRestorationTokenClaim(), new WpRestorationTokenStore()));
 
         register_rest_route(self::NAMESPACE, '/accounts', [
             'methods' => \WP_REST_Server::CREATABLE,
