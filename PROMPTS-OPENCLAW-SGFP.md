@@ -30,8 +30,13 @@ Preencha principalmente **OBJETIVO DESTA SESSÃO** e, quando houver, **MATERIAL 
 ```text
 Quero trabalhar profissionalmente no projeto SGFP.
 
-Use o `adaptive-orchestrator-bridge` como porta de entrada para o
+Use obrigatoriamente o `adaptive-orchestrator-bridge` como porta de entrada para o
 Adaptive AI Orchestrator em modo multiagente de projeto.
+
+Essa regra vale também para tarefas pequenas, inspeções e tarefas somente de
+leitura: use uma Work Unit única quando não houver necessidade de decomposição.
+Não execute a tarefa diretamente pela sessão owner e não faça fallback
+silencioso se a bridge falhar; informe o bloqueio.
 
 Use o agente/workspace OpenClaw `sgfp` como owner do projeto quando ele estiver
 disponível e corretamente configurado para este repositório. Não substitua esse

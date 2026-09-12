@@ -214,6 +214,19 @@ Durante as Etapas 9 a 11, verificações e testes unitários, de integração, d
 
 ## 8. Estado do Git na retomada
 
+### Unidade de encerramento da Etapa 10 — 2026-09-12
+
+`POST /restorations` foi integrado ao executor de restauração. Após confirmação,
+o fluxo mantém o lock do usuário, valida e preserva o snapshot pré-restauração,
+executa substituição integral com claim único do token dentro da transação SQL,
+verifica contagens, referências, proprietário, tema e invariantes, e realiza
+cache/e-mail somente após o commit. Falha de e-mail é registrada sem desfazer a
+restauração. A Etapa 11 permanece não iniciada.
+
+Evidências desta unidade: lint PHP completo, testes manuais e `git diff --check`.
+PHPUnit/composer e validação WordPress/MySQL real não foram executados porque o
+ambiente não os disponibiliza.
+
 Não assumir branch, working tree limpo ou existência de commit apenas com base neste documento.
 
 Confirmar sempre:
@@ -287,4 +300,12 @@ Atualizar este arquivo quando houver:
 
 Registrar apenas o necessário para retomada e manter a próxima ação explícita.
 
-Última atualização operacional: **2026-09-11**.
+## 13. Revisão final da Stage 10 — 2026-09-12
+
+Resultado autoritativo: **BLOQUEADA; Stage 10 não fechada; Stage 11 não iniciada.**
+
+O primeiro bloqueador é concreto: `POST /restorations` apenas revalida o token e retorna `ready_for_confirmation`; não existe confirmação executável para snapshot pré-restauração, substituição integral, commit/rollback, retenção ou consumo único do token. Os critérios `CA-021.4`–`CA-021.11` permanecem sem comprovação.
+
+Evidências executadas: `git diff --check`, lint PHP completo e os seis testes manuais passaram. PHPUnit não foi executado porque `composer` não está disponível. Próxima ação: implementar/testar o fluxo transacional de confirmação da restauração e repetir o gate.
+
+Última atualização operacional: **2026-09-12**.

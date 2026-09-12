@@ -38,6 +38,8 @@ use SGFP\Infrastructure\WordPress\WpTransferRepository;
 use SGFP\Infrastructure\WordPress\WpBackupStore;
 use SGFP\Infrastructure\WordPress\WpRestorationTokenClaim;
 use SGFP\Infrastructure\WordPress\WpRestorationTokenStore;
+use SGFP\Infrastructure\WordPress\WpRestorationPersistence;
+use SGFP\Application\Services\RestoreFromImportPlanService;
 use SGFP\REST\Controllers\AccountController;
 use SGFP\REST\Controllers\CategoryController;
 use SGFP\REST\Controllers\CommitmentController;
@@ -136,10 +138,11 @@ final class Routes
             $recurrenceRepository, $transferRepository, new WpUserPreferenceRepository(),
             $transactionManager, $userContext, new WpUserOperationLock(), new WpBackupStore()
         );
+        $restorer = new RestoreFromImportPlanService(new WpRestorationPersistence(), $transactionManager, new WpRestorationTokenClaim());
         $restoreController = new RestoreController(new ValidateBackupService(
             new WpRestorationTokenStore(),
             $userContext,
-        ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext, new WpUserOperationLock(), $snapshotCapture, new WpRestorationTokenClaim(), new WpRestorationTokenStore()));
+        ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext, new WpUserOperationLock(), $snapshotCapture, new WpRestorationTokenClaim(), new WpRestorationTokenStore(), new \SGFP\Application\Backup\StagedBackupDecoder(), new \SGFP\Application\Backup\RestorationImportPlanner(), $restorer));
 
         register_rest_route(self::NAMESPACE, '/accounts', [
             'methods' => \WP_REST_Server::CREATABLE,

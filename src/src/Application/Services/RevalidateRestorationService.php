@@ -23,6 +23,7 @@ final class RevalidateRestorationService
         private readonly ?RestorationTokenStore $tokenStore = null,
         private readonly StagedBackupDecoder $decoder = new StagedBackupDecoder(),
         private readonly RestorationImportPlanner $planner = new RestorationImportPlanner(),
+        private readonly ?RestoreFromImportPlanService $restorer = null,
     ) {}
 
     /** @return array{status:string,expires_at:int,origin:string} */
@@ -57,14 +58,23 @@ final class RevalidateRestorationService
             $prepared = $this->prepareUnlocked($token, $userId);
             $plan = $this->reopenAndPlan($prepared['encoded'], $userId);
             $snapshot = $this->snapshotCapture->captureUnderLock($userId);
-            if ($this->tokenClaim->claim($userId, $token, time()) === null) {
-                throw new \InvalidArgumentException('Token de restauração expirado ou já consumido.');
+            if ($this->restorer === null) {
+                // Kept only for isolated callers that have not yet supplied the executor.
+                // The production composition always supplies it, so the token is claimed
+                // inside the restoration transaction there.
+                if ($this->tokenClaim->claim($userId, $token, time()) === null) {
+                    throw new \InvalidArgumentException('Token de restauração expirado ou já consumido.');
+                }
+                return ['status' => 'confirmation_accepted', 'expires_at' => $prepared['expires_at'], 'origin' => $prepared['origin'], 'snapshot' => $snapshot, 'import_plan' => ['user_id' => $plan->userId, 'replacement_order' => $plan->replacementOrder, 'counts' => $plan->counts(), 'reference_remapping' => $plan->referenceRemapping, 'theme' => $plan->theme]];
             }
+            $restored = $this->restorer->execute($plan, $token);
+            $this->tryEmailSnapshot($snapshot, $userId);
             return [
-                'status' => 'confirmation_accepted',
+                'status' => 'restored',
                 'expires_at' => $prepared['expires_at'],
                 'origin' => $prepared['origin'],
                 'snapshot' => $snapshot,
+                'restoration' => $restored,
                 'import_plan' => [
                     'user_id' => $plan->userId,
                     'replacement_order' => $plan->replacementOrder,
@@ -76,6 +86,15 @@ final class RevalidateRestorationService
         } finally {
             $this->operationLock->release($userId);
         }
+    }
+
+    private function tryEmailSnapshot(array $snapshot, int $userId): void
+    {
+        $path = (string) ($snapshot['path'] ?? '');
+        $user = wp_get_current_user();
+        if ($path === '' || !is_file($path) || !is_email($user->user_email)) return;
+        $sent = wp_mail($user->user_email, 'Cópia pré-restauração do SGFP', 'Cópia criada antes da restauração.', [], [$path]);
+        if (!$sent) error_log(sprintf('SGFP: falha no envio da cópia pré-restauração do usuário %d.', $userId));
     }
 
     /** @return array{status:string,expires_at:int,origin:string,encoded:string} */

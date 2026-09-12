@@ -19,6 +19,25 @@ Antes de qualquer tarefa neste repositório:
 15. Para alterações relevantes, utilize branch ou worktree isolada.
 16. Antes de concluir, valide consistência documental e Git.
 
+## Roteamento obrigatório de execução
+
+Toda tarefa de desenvolvimento, análise técnica, revisão, teste ou inspeção
+solicitada ao agente `sgfp` deve passar pelo `adaptive-orchestrator-bridge` antes
+de qualquer execução direta. Para uma tarefa pequena, use uma Work Unit única;
+para trabalho decomponível, use o modo multiagente. Não execute a tarefa
+diretamente na sessão owner apenas porque ela é read-only ou parece simples.
+
+O fluxo obrigatório é:
+
+```text
+agente sgfp → adaptive-orchestrator-bridge → Adaptive AI Orchestrator → Work Unit/worker → avaliação
+```
+
+Se a bridge estiver indisponível, pare e informe o bloqueio; não faça fallback
+silencioso para execução direta. O agente `sgfp` deve ser informado como owner
+quando a tarefa for delegada, para que a execução continue associada ao projeto
+correto.
+
 ## Estado resumido
 
 - Catálogo funcional preservado: `RF-001` a `RF-021`.
