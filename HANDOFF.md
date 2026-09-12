@@ -2,13 +2,13 @@
 
 **Data:** 2026-09-11  
 **Branch ativa:** `feat/stage-9-10-backend`  
-**Último commit:** `9266dfa`  
+**Último commit:** a definir nesta unidade
 **Etapa:** 10 — Desenvolvimento da API (em andamento)  
 **Etapa 11:** NÃO iniciada.
 
 ## Estado resumido
 
-A Etapa 10 está ~85% concluída. Todas as unidades de negócio principais já foram implementadas e commitadas, exceto **Backup/Restauração**. Todos os testes manuais existentes passam; PHPUnit foi criado mas não é executável localmente por falta da extensão `mbstring`.
+A Etapa 10 está em andamento. As unidades de negócio principais já foram implementadas e commitadas; esta unidade implementa a criação manual de backup. PHPUnit continua não executável localmente por falta da extensão `mbstring`.
 
 ### Unidades concluídas (commits)
 
@@ -22,6 +22,17 @@ A Etapa 10 está ~85% concluída. Todas as unidades de negócio principais já f
 - `920c4ff` — Dashboard e consultas (`GET /movements`, `/net-worth`, `/dashboard`).
 - `b8d863b` — Tema (`GET/PUT /preferences/theme`).
 - `9266dfa` — Preparação: `findAllByUser` nos repositórios para exportação.
+
+## Unidade concluída nesta sessão
+
+- `POST /sgfp/v1/backups` exige capability `use_sgfp`, captura os dados do usuário em transação, serializa JSON, compacta com gzip, protege com Sodium usando `SGFP_BACKUP_KEY` e envia o arquivo por `wp_mail` ao e-mail cadastrado.
+- Restauração, catálogo de backups, snapshot pré-restauração e Etapa 11 não foram iniciados.
+
+### Validações desta sessão
+
+- `find src/src -name '*.php' -print0 | xargs -0 -n1 php -l`: passou.
+- `php Tests/Manual/create-account-manual-test.php`: passou.
+- `php Tests/Manual/initial-balance-manual-test.php`: bloqueado antes da execução porque o fake `EntryRepository` do teste não implementa `findAllByUser`, método já exigido pela porta existente.
 
 ## O que falta
 
@@ -84,4 +95,4 @@ php Tests/Manual/*.php
 
 ## Próxima ação recomendada
 
-Continuar a Etapa 10 implementando **Backup e Restauração**, começando pelo `BackupService` e `POST /backups`, depois `RestoreValidationService` e `RestoreService`.
+Corrigir, em uma unidade separada, os doubles dos testes manuais para a porta `EntryRepository` e então implementar a próxima unidade pequena: validação de restauração, sem ainda substituir dados.

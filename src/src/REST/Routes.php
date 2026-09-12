@@ -8,6 +8,7 @@ use SGFP\Application\Services\CreateAccountService;
 use SGFP\Application\Services\CreateCategoryService;
 use SGFP\Application\Services\CreateCommitmentService;
 use SGFP\Application\Services\CreateTransferService;
+use SGFP\Application\Services\CreateBackupService;
 use SGFP\Application\Services\GetDashboardService;
 use SGFP\Application\Services\GetNetWorthService;
 use SGFP\Application\Services\ListAccountsService;
@@ -37,6 +38,7 @@ use SGFP\REST\Controllers\RecurrenceController;
 use SGFP\REST\Controllers\ReportingController;
 use SGFP\REST\Controllers\ThemeController;
 use SGFP\REST\Controllers\TransferController;
+use SGFP\REST\Controllers\BackupController;
 
 final class Routes
 {
@@ -108,6 +110,18 @@ final class Routes
         $themeController = new ThemeController(
             new ThemeService(new WpUserPreferenceRepository(), $userContext)
         );
+
+        $backupController = new BackupController(new CreateBackupService(
+            $accountRepository,
+            $categoryRepository,
+            $commitmentRepository,
+            $entryRepository,
+            $recurrenceRepository,
+            $transferRepository,
+            new WpUserPreferenceRepository(),
+            $transactionManager,
+            $userContext,
+        ));
 
         register_rest_route(self::NAMESPACE, '/accounts', [
             'methods' => \WP_REST_Server::CREATABLE,
@@ -388,6 +402,12 @@ final class Routes
             'methods' => \WP_REST_Server::READABLE,
             'callback' => [$themeController, 'get'],
             'permission_callback' => [$themeController, 'permissionCheck'],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/backups', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$backupController, 'create'],
+            'permission_callback' => [$backupController, 'permissionCheck'],
         ]);
 
         register_rest_route(self::NAMESPACE, '/preferences/theme', [
