@@ -37,7 +37,11 @@ final class RestoreController
     public function prepare(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            return new \WP_REST_Response($this->revalidation->prepare((string) $request->get_param('token')), 200);
+            $confirmation = $request->get_param('confirmation');
+            if (!is_bool($confirmation)) {
+                throw new \InvalidArgumentException('A confirmação da restauração deve ser booleana.');
+            }
+            return new \WP_REST_Response($this->revalidation->confirm((string) $request->get_param('token'), $confirmation), 200);
         } catch (\InvalidArgumentException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], 400);
         } catch (\RuntimeException $e) {

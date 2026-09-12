@@ -25,6 +25,23 @@ A Etapa 10 está em andamento. As unidades de negócio principais já foram impl
 
 ## Unidade concluída nesta sessão
 
+- O contrato `POST /restorations` agora exige `token` e `confirmation` booleano explícito; confirmação ausente, não booleana ou falsa é rejeitada sem mutação.
+- Confirmação verdadeira revalida capability, usuário, expiração, staging e hash sob `UserOperationLock` e retorna `confirmation_accepted`, distinto de `ready_for_confirmation`; não cria snapshot, não inicia restauração e não consome o token.
+- Teste unitário focado adicionado para rejeição sem mutação e aceitação após revalidação.
+
+### Evidências desta unidade
+
+- `find src/src -name '*.php' -print0 | xargs -0 -n1 php -l`: passou.
+- `cd src && php Tests/Manual/*.php`: passou; todos os testes manuais passaram.
+- `git diff --check`: passou.
+- PHPUnit não executado: Composer não está instalado/disponível.
+
+### Checkpoint e próxima unidade
+
+- Commit desta unidade: será registrado após a validação final do diff.
+- Gaps pendentes: snapshot pré-restauração recuperável, substituição integral, verificação/rollback, retenção e consumo único do token continuam deliberadamente não implementados.
+- Próxima Work Unit: implementar a restauração transacional completa somente após preservar obrigatoriamente o snapshot pré-restauração, com rollback e consumo único.
+
 - `POST /sgfp/v1/backups` exige capability `use_sgfp`, captura os dados do usuário em transação, serializa JSON, compacta com gzip, protege com Sodium usando `SGFP_BACKUP_KEY` e envia o arquivo por `wp_mail` ao e-mail cadastrado.
 - Restauração, catálogo de backups, snapshot pré-restauração e Etapa 11 não foram iniciados.
 - `POST /sgfp/v1/restore-validations` recebe o arquivo, autentica/descompacta, valida versão, proprietário e seções obrigatórias, e retorna resumo com token temporário; não altera dados.
@@ -113,3 +130,23 @@ php Tests/Manual/*.php
 ## Próxima ação recomendada
 
 Próxima unidade pequena: definir o consumo único do token dentro de um serviço de restauração transacional, somente após a captura e preservação obrigatória do snapshot pré-restauração.
+
+## Revisão final de encerramento da Stage 10 — 2026-09-12
+
+**Resultado autoritativo:** BLOQUEADA — Stage 10 não fechada; Stage 11 não iniciada.
+
+### Evidência
+
+- Contratos REST confrontados com a arquitetura e os critérios `CA-021.1`–`CA-021.11`.
+- Autorização/isolamento inspecionados: `permission_callback`/capability `use_sgfp`, contexto do usuário atual e repositórios com escopo por usuário.
+- Backup manual inspecionado: lock por usuário, transação de captura, gzip, AEAD Sodium, limite/chave, staging privado, proprietário e hash.
+- `git diff --check`: passou; lint PHP completo: passou; `php Tests/Manual/*.php`: seis testes passaram.
+- PHPUnit não executado: `composer` não está instalado/disponível.
+
+### Primeiro bloqueador concreto
+
+`POST /restorations` chama apenas `RevalidateRestorationService::prepare()` e retorna `ready_for_confirmation`. Não existe confirmação executável nem serviço de restauração integral. Não há evidência de snapshot pré-restauração recuperável, substituição integral de dados/tema, verificação transacional, rollback, retenção de 24 horas ou consumo único do token. Isso deixa sem atendimento verificável `CA-021.4`–`CA-021.11`, especialmente `CA-021.6` e `CA-021.9`.
+
+### Próxima ação
+
+Implementar e testar somente o fluxo transacional de confirmação da restauração, com snapshot pré-restauração antes da substituição, retenção, rollback e consumo único do token. Depois repetir a revisão; não iniciar a Stage 11.

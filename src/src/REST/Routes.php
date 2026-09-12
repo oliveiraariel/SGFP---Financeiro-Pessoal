@@ -429,7 +429,10 @@ final class Routes
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => [$restoreController, 'prepare'],
             'permission_callback' => [$restoreController, 'permissionCheck'],
-            'args' => ['token' => ['required' => true, 'type' => 'string']],
+            'args' => [
+                'token' => ['required' => true, 'type' => 'string'],
+                'confirmation' => ['required' => true, 'type' => 'boolean'],
+            ],
         ]);
 
         register_rest_route(self::NAMESPACE, '/preferences/theme', [

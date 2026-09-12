@@ -33,6 +33,30 @@ final class RevalidateRestorationService
     }
 
     /** @return array{status:string,expires_at:int,origin:string} */
+    public function confirm(string $token, bool $confirmation): array
+    {
+        if (!$confirmation) {
+            throw new \InvalidArgumentException('A confirmação da restauração é obrigatória.');
+        }
+        $this->userContext->requireCapability('use_sgfp');
+        $userId = $this->userContext->requireUserId();
+        if (!preg_match('/^[a-f0-9]{64}$/', $token)) {
+            throw new \InvalidArgumentException('Token de restauração inválido.');
+        }
+        $this->operationLock->acquire($userId);
+        try {
+            $prepared = $this->prepareUnlocked($token, $userId);
+            return [
+                'status' => 'confirmation_accepted',
+                'expires_at' => $prepared['expires_at'],
+                'origin' => $prepared['origin'],
+            ];
+        } finally {
+            $this->operationLock->release($userId);
+        }
+    }
+
+    /** @return array{status:string,expires_at:int,origin:string} */
     private function prepareUnlocked(string $token, int $userId): array
     {
         $raw = $this->preferences->get('restore_validation_' . hash('sha256', $token), $userId);
