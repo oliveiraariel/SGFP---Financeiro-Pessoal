@@ -1,9 +1,9 @@
 # ORCHESTRATOR.md — Contrato Operacional para Agentes
 
 **Projeto:** SGFP — Sistema de Gestão Financeira Pessoal  
-**Versão deste documento:** 2.6
+**Versão deste documento:** 2.7
 **Status:** Governança operacional vigente  
-**Última atualização:** 11/09/2026
+**Última atualização:** 13/09/2026
 
 ## 1. Finalidade
 
@@ -38,6 +38,76 @@ A autoridade final sobre:
 - decisões arquiteturais de alto impacto;
 
 é humana.
+
+### 2.1 Roteamento pelo Adaptive e degradação controlada
+
+Para tarefas de desenvolvimento, análise técnica, revisão, teste ou inspeção
+solicitadas ao agente `sgfp`, o caminho operacional padrão é o
+`adaptive-orchestrator-bridge`.
+
+O fluxo preferencial é:
+
+```text
+agente sgfp → adaptive-orchestrator-bridge → Adaptive AI Orchestrator → Work Unit/worker → avaliação
+```
+
+Tarefas pequenas devem usar uma Work Unit única; trabalhos decomponíveis podem
+usar execução multiagente. O objetivo é preservar governança, rastreabilidade e
+separação entre coordenação e execução.
+
+A execução direta pela sessão owner **não deve ocorrer silenciosamente**.
+Entretanto, o Adaptive não constitui um ponto único de falha absoluto. Quando o
+fluxo orquestrado estiver comprovadamente indisponível, bloqueado ou
+inconsistente, poderá ser utilizado **fallback direto controlado**, desde que
+exista autorização humana explícita para aquela tarefa ou recuperação.
+
+São exemplos de falha operacional elegível:
+
+- bridge indisponível ou com erro técnico impeditivo;
+- Work Unit órfã ou stale;
+- execução persistida como `RUNNING` sem worker/subagente realmente ativo;
+- worker ou sessão encerrada sem relatório final enquanto a orquestração
+  permanece ativa;
+- falha repetida de dispatch ou retomada;
+- divergência comprovada entre o estado persistido e o estado real dos workers.
+
+Antes de utilizar fallback, o owner deve, quando tecnicamente possível:
+
+1. verificar o estado da bridge e da orquestração;
+2. verificar se há worker/subagente realmente ativo;
+3. evitar duplicar uma execução ainda válida;
+4. registrar a evidência concreta que caracteriza a falha;
+5. obter autorização humana explícita para executar diretamente.
+
+Com essa autorização, o owner poderá executar diretamente **somente o escopo
+autorizado**, preservando integralmente gates, regras de negócio, WIP,
+isolamento, validações e limites da etapa corrente.
+
+O fallback direto deverá ser registrado no relatório final ou no
+`HANDOFF.md`, incluindo:
+
+- motivo e evidência da falha do Adaptive;
+- escopo autorizado para execução direta;
+- arquivos alterados;
+- validações executadas;
+- resultado obtido.
+
+Concluída a exceção, o roteamento padrão pelo Adaptive volta a valer para novas
+tarefas.
+
+#### Circuit breaker
+
+Duas tentativas consecutivas da mesma tarefa que terminem sem worker ativo e sem
+relatório final caracterizam bloqueio operacional. Nessa condição, o agente não
+deve iniciar automaticamente uma terceira Work Unit equivalente.
+
+O owner deverá informar o diagnóstico e solicitar decisão humana entre:
+
+- recuperação do Adaptive;
+- nova execução governada após correção comprovada;
+- fallback direto controlado.
+
+A execução direta sem autorização humana explícita continua proibida.
 
 ## 3. Estado atual do projeto
 
