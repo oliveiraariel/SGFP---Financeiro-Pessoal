@@ -22,21 +22,65 @@ Antes de qualquer tarefa neste repositório:
 ## Roteamento obrigatório de execução
 
 Toda tarefa de desenvolvimento, análise técnica, revisão, teste ou inspeção
-solicitada ao agente `sgfp` deve passar pelo `adaptive-orchestrator-bridge` antes
-de qualquer execução direta. Para uma tarefa pequena, use uma Work Unit única;
-para trabalho decomponível, use o modo multiagente. Não execute a tarefa
-diretamente na sessão owner apenas porque ela é read-only ou parece simples.
+solicitada ao agente `sgfp` deve, por padrão, passar pelo
+`adaptive-orchestrator-bridge` antes de execução direta.
 
-O fluxo obrigatório é:
+O fluxo preferencial é:
 
 ```text
 agente sgfp → adaptive-orchestrator-bridge → Adaptive AI Orchestrator → Work Unit/worker → avaliação
 ```
 
-Se a bridge estiver indisponível, pare e informe o bloqueio; não faça fallback
-silencioso para execução direta. O agente `sgfp` deve ser informado como owner
-quando a tarefa for delegada, para que a execução continue associada ao projeto
-correto.
+Para uma tarefa pequena, use uma Work Unit única; para trabalho decomponível,
+use o modo multiagente. Não execute diretamente na sessão owner apenas porque a
+tarefa é read-only ou parece simples.
+
+### Fallback direto controlado
+
+A execução direta pela sessão owner nunca deve ocorrer silenciosamente.
+
+Se o fluxo Adaptive estiver comprovadamente indisponível, órfão, stale ou
+inconsistente, o owner poderá executar diretamente **somente após autorização
+humana explícita** para aquela tarefa.
+
+Exemplos de condição elegível:
+
+- bridge indisponível;
+- Work Unit órfã ou stale;
+- estado `RUNNING` sem worker/subagente realmente ativo;
+- sessão worker encerrada sem relatório final;
+- falha repetida de dispatch/retomada;
+- divergência comprovada entre estado persistido e estado real.
+
+Antes do fallback, quando possível, o owner deve verificar o estado real da
+bridge/orquestração, confirmar ausência de worker ativo, evitar duplicação de
+execução e registrar o motivo concreto.
+
+Com autorização explícita, o fallback deve:
+
+- limitar-se ao escopo autorizado;
+- preservar gates, regras de negócio e WIP;
+- não antecipar etapas;
+- executar as validações normalmente exigidas;
+- registrar no relatório final ou `HANDOFF.md` o motivo, a evidência, os
+  arquivos alterados e as validações realizadas.
+
+Após a exceção, novas tarefas voltam ao roteamento padrão pelo Adaptive.
+
+### Circuit breaker
+
+Se duas tentativas consecutivas da mesma tarefa terminarem sem worker ativo e
+sem relatório final, não iniciar automaticamente uma terceira Work Unit
+equivalente.
+
+Nessa situação, informar o bloqueio e solicitar decisão humana entre recuperação
+do Adaptive, nova execução governada após correção ou fallback direto
+controlado.
+
+Fallback direto sem autorização humana explícita continua proibido.
+
+Consulte `ORCHESTRATOR.md`, seção **2.1 — Roteamento pelo Adaptive e
+degradação controlada**, para as regras completas.
 
 ## Estado resumido
 
