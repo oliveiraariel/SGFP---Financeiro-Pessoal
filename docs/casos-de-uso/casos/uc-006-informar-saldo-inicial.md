@@ -1,42 +1,23 @@
 ## UC-006 — Informar saldo inicial
 
-**Objetivo**
+**Objetivo**  
+Representar a posição financeira inicial por Lançamento na Conta Financeira única.
 
-Permitir que o usuário registre o valor financeiro existente na conta principal por meio de um lançamento de Entrada no início da utilização do sistema.
-
-**Ator principal**
-
-Usuário.
-
-**Pré-condições**
-
-O usuário deverá possuir uma conta principal.
-
-**Gatilho**
-
-O usuário solicita o registro do saldo inicial.
+**Pré-condições**  
+Usuário autenticado e Conta Financeira existente.
 
 **Fluxo principal**
-
-1. O usuário informa o valor financeiro real existente na conta principal.
+1. O usuário informa o valor real inicial.
 2. O sistema valida o valor.
-3. O sistema registra um lançamento de Entrada na conta principal para representar o valor informado.
-4. O sistema calcula os saldos posteriores a partir dos movimentos registrados.
+3. O sistema registra Lançamento de origem `SALDO_INICIAL`.
+4. O saldo passa a ser derivado desse e dos demais lançamentos ativos.
 
-**Fluxos alternativos e exceções**
+**Alternativas**
+- O valor pode ser positivo, zero ou negativo.
+- Sem valor inicial, o saldo permanece R$ 0,00 até haver lançamentos.
 
-* O valor informado poderá ser positivo, zero ou negativo, conforme as regras de negócio.
-* Este caso de uso representa somente o valor inicial da conta principal. Para uma conta secundária, não deverá ser registrada Entrada direta; o valor deverá ser obtido por transferência com a conta principal, conforme UC-013.
-* Caso o usuário não queira reconstruir o saldo inicial, o sistema deverá manter a condição padrão definida para a V1.
+**Pós-condições**  
+Não existe atributo independente de saldo inicial.
 
-**Pós-condições**
-
-A conta principal terá o lançamento de Entrada correspondente, sem armazenar saldo inicial como atributo independente.
-
-**Requisitos relacionados**
-
-RF-010, RF-005.
-
-**Regras de negócio relacionadas**
-
-Regras dos módulos Contas e Lançamentos Financeiros referentes ao saldo inicial.
+**Requisitos relacionados**  
+RF-005, RF-010.
