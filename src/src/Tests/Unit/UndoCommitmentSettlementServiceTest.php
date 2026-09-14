@@ -42,12 +42,16 @@ final class UndoCommitmentSettlementServiceTest extends TestCase
 
         $commitments->method('findById')->willReturn($commitment);
         $entries->method('findByCommitmentId')->willReturn($entry);
-        $entries->expects($this->once())->method('save')->with($this->callback(
-            fn (Entry $e): bool => $e->state === EntryState::DESFEITO
-        ));
-        $commitments->expects($this->once())->method('save')->with($this->callback(
-            fn (Commitment $c): bool => $c->status === CommitmentStatus::PENDENTE
-        ));
+
+        $entries->expects($this->once())
+            ->method('save')
+            ->with($this->callback(fn (Entry $e): bool => $e->state === EntryState::DESFEITO))
+            ->willReturnArgument(0);
+
+        $commitments->expects($this->once())
+            ->method('save')
+            ->with($this->callback(fn (Commitment $c): bool => $c->status === CommitmentStatus::PENDENTE))
+            ->willReturnArgument(0);
 
         (new UndoCommitmentSettlementService($commitments, $entries, $tx, $context))->execute(10);
     }
