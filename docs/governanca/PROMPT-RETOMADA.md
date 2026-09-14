@@ -1,151 +1,73 @@
-# SGFP — Prompt de Retomada em Nova Sessão
+# PROMPT DE RETOMADA — SGFP
 
-Use este prompt ao abrir um novo chat, nova sessão ou novo agente com acesso ao projeto SGFP.
+Use este documento ao iniciar uma nova sessão/agente no SGFP.
 
-**Última atualização:** 05/09/2026
+## 1. Leitura obrigatória
 
-## Prompt
+Leia, nesta ordem:
 
-```text
-Estamos continuando o projeto SGFP.
+1. `AGENTS.md`;
+2. `ORCHESTRATOR.md`;
+3. `project-manifest.yaml`;
+4. `docs/governanca/baseline-v1-simplificada-2026-09-14.md`;
+5. `docs/governanca/continuidade-de-contexto.md`;
+6. `docs/requisitos/srs/03-requisitos-funcionais.md`;
+7. `docs/requisitos/srs/07-criterios-de-aceitacao.md`;
+8. `docs/casos-de-uso/catalogo.csv`;
+9. `docs/dominio/01-mapa-de-dominio.md`;
+10. `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
+11. `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`;
+12. `docs/modelagem-dados/03-modelo-fisico.md`;
+13. `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
+14. `docs/api/README.md`;
+15. `docs/interface-web/README.md`;
+16. `HANDOFF.md` quando houver trabalho técnico em continuidade.
 
-Antes de qualquer alteração, leia obrigatoriamente:
+## 2. Baseline vigente que deve ser confirmada
 
-1. AGENTS.md
-2. ORCHESTRATOR.md
-3. project-manifest.yaml
-4. docs/governanca/continuidade-de-contexto.md
+- RF-001 a RF-023 no catálogo.
+- 19 requisitos ativos na V1.
+- RF-012, RF-013 e RF-014 (Transferências) fora da V1 e preservados como futuros.
+- RF-019 (PIN) futuro.
+- exatamente uma Conta Financeira por usuário;
+- conta criada automaticamente no cadastro como **Minha Conta**;
+- saldo derivado dos Lançamentos ativos, nunca armazenado como atributo;
+- Patrimônio Total fora da V1;
+- categoria opcional no Compromisso;
+- criar Compromisso não altera saldo;
+- efetivar Compromisso cria Lançamento;
+- desfazer efetivação remove o efeito preservando histórico;
+- backup manual por **ZIP baixado localmente**;
+- backup/restauração não dependem de e-mail;
+- restauração integral, sem merge, protegida por cópia pré-restauração;
+- Reset do perfil financeiro mantém o login e exige `RESETAR PERFIL`;
+- Exclusão da conta de acesso remove dados + login WordPress e exige `EXCLUIR CONTA`;
+- ambas as operações destrutivas exigem duas etapas de confirmação.
 
-Se a tarefa envolver Arquitetura ou etapas técnicas posteriores, leia também:
+## 3. Estado de desenvolvimento
 
-5. docs/dominio/01-mapa-de-dominio.md
-6. docs/modelagem-dados/01-modelagem-conceitual-mer.md
-7. docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md
-8. docs/modelagem-dados/03-modelo-fisico.md
+- Etapas 5–9 possuem documentação revisada para a baseline de 14/09/2026.
+- A implementação da Etapa 10 existe, mas foi construída sobre a baseline anterior e precisa ser migrada.
+- A Etapa 11 está em andamento na branch `feat/stage-11-web-interface`.
+- O frontend e a API podem conter código de múltiplas contas, Transferências, Patrimônio ou backup por e-mail; isso é **legado a reconciliar**, não fonte para reverter a documentação.
+- `ISSUE-008` de rastreabilidade permanece pendente antes do fechamento da Etapa 12.
 
-Se a tarefa envolver processo, sequência de etapas, gates ou transição entre etapas, consulte também:
+## 4. Regras de operação
 
-9. docs/projeto/plano-de-desenvolvimento.md
+- Não invente regras de negócio.
+- Em conflito, a baseline de 14/09/2026 e as fontes normativas atualizadas prevalecem sobre implementação antiga.
+- Preserve alterações locais preexistentes; não use reset/clean/stash destrutivo sem autorização.
+- No primeiro turno, diagnostique antes de editar.
+- Quando usar Adaptive, respeite governança, bridge e decomposição multiagente.
+- Se Adaptive falhar, não use fallback direto sem autorização humana explícita.
 
-Se a tarefa envolver preparação técnica, Arquitetura, API, Interface Web ou Testes, consulte também, quando necessário:
+## 5. Resposta esperada na retomada
 
-10. docs/projeto/roteiro-tecnico-de-implementacao.md
+Informe:
+- repositório/branch/HEAD;
+- estado do working tree;
+- baseline carregada;
+- divergências entre documentação e código;
+- próximo passo seguro.
 
-O roteiro técnico é apenas um documento auxiliar. Ele não substitui fontes canônicas, não cria novas etapas, não autoriza alterar a modelagem validada sem análise de impacto e não permite antecipar API, Interface Web ou Testes formais antes dos respectivos gates.
-
-Não faça alterações ainda.
-
-Primeiro confirme o estado real do projeto.
-
-Se houver acesso direto ao repositório Git, verifique no mínimo:
-
-- branch atual;
-- git status;
-- git diff --stat;
-- git diff --name-status;
-- git diff --check.
-
-Depois compare o estado real do repositório com project-manifest.yaml, docs/governanca/continuidade-de-contexto.md e, quando pertinente, com o Plano de Desenvolvimento.
-
-Se não houver acesso direto ao Git, use somente os documentos fornecidos e deixe explícito que o estado real do working tree não pôde ser confirmado.
-
-Confirme explicitamente:
-
-1. se o catálogo funcional preservado continua sendo RF-001 a RF-021;
-2. se a baseline ativa da V1 continua com 20 RFs e RF-019 permanece futuro;
-3. se os RNFs utilizam o padrão RNF-001 a RNF-020;
-4. se docs/dominio/01-mapa-de-dominio.md corresponde à Etapa 5 validada;
-5. se as Etapas 6 — MER, 7 — DER e 8 — Modelo Físico permanecem concluídas e validadas;
-6. se os artefatos oficiais de modelagem estão em docs/modelagem-dados/artefatos/;
-7. se a Etapa 9 — Arquitetura da Aplicação permanece concluída e validada;
-8. se a Etapa 10 está concluída e a Etapa 11 não foi iniciada;
-9. se ISSUE-007 permanece resolvida;
-10. se ISSUE-008 continua aberta, sem bloquear o início da Etapa 9, mas devendo ser concluída antes do fechamento final da rastreabilidade de testes;
-11. se existe qualquer divergência entre manifesto, continuidade, Plano, fontes canônicas e, quando disponível, estado real do Git.
-
-Considere como estado atual:
-
-- a proteção básica das operações e dos recursos da API contra acesso não autorizado faz parte da V1;
-- mecanismos técnicos concretos de proteção da API pertencem à Arquitetura e ao Desenvolvimento da API;
-- a cópia de segurança ordinária da V1 é criada manualmente e enviada ao e-mail cadastrado;
-- antes de uma restauração confirmada, o sistema deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior;
-- se essa preservação falhar, a restauração será cancelada;
-- a cópia automática pré-restauração é uma proteção pontual e não caracteriza backup automático periódico ou contínuo;
-- ISSUE-007 está resolvida por decisão humana, permanecendo apenas o mecanismo técnico para as etapas posteriores;
-- ISSUE-008 permanece aberta como pendência de rastreabilidade;
-- a associação de Categoria ao Compromisso Financeiro é opcional na V1;
-- um compromisso pode ser cadastrado e permanecer sem categoria;
-- a V1 utilizará PHP sobre WordPress;
-- o backend específico do SGFP será implementado em plugin próprio;
-- a solução utilizará a infraestrutura REST do WordPress;
-- a implementação relacional permanece compatível com MySQL ou MariaDB;
-- sistema operacional, editor e extensões de desenvolvimento não são restrições do SGFP, salvo exigência formal posterior;
-- ferramentas como Composer, clientes HTTP, PHPUnit e utilitários de qualidade podem ser adotadas quando forem úteis e quando a etapa correspondente estiver autorizada;
-- a presença dessas ferramentas no roteiro técnico não as transforma em requisitos do produto;
-- MER, DER e Modelo Físico da V1 estão concluídos e validados; os artefatos oficiais estão em `docs/modelagem-dados/` e `docs/modelagem-dados/artefatos/`.
-- a natureza de uma transferência é determinada em relação à Conta Principal: Principal → Secundária = Saída; Secundária → Principal = Entrada.
-
-Não invente decisões de negócio.
-Não altere arquivos no primeiro turno.
-Não execute git add, commit, push, merge, rebase destrutivo ou troca de branch antes de apresentar o diagnóstico e receber autorização quando necessária.
-
-Para a Etapa 9:
-
-- use o MER, o DER e o Modelo Físico validados como entradas técnicas;
-- consulte regras de negócio, requisitos e Casos de Uso sempre que uma decisão arquitetural depender do comportamento do sistema;
-- mantenha WordPress, PHP, plugin próprio, WordPress REST API e MySQL/MariaDB como restrições tecnológicas já consolidadas;
-- defina explicitamente responsabilidades, dependências, acesso a dados, estratégia de criação/evolução das tabelas e integração com identidade/autenticação do WordPress;
-- não transforme automaticamente tabela, entidade conceitual e classe PHP na mesma representação;
-- não altere a modelagem validada apenas para acomodar preferência de implementação;
-- considere ISSUE-007 como resolvida;
-- mantenha ISSUE-008 visível como pendência não bloqueadora;
-- não inicie a implementação da API antes de validar a arquitetura correspondente;
-
-Para tarefas técnicas futuras:
-
-- siga sempre os gates oficiais do Plano de Desenvolvimento;
-- use o roteiro técnico apenas para orientar como executar a etapa já autorizada;
-- não trate preferência de ferramenta como restrição do sistema;
-- explique o problema, o conceito e a finalidade de uma ferramenta antes de introduzi-la;
-- prefira implementação incremental e verificável;
-- permita testes durante o desenvolvimento quando úteis;
-- preserve a Etapa 12 como consolidação formal da estratégia, casos, evidências, rastreabilidade e resultados de teste.
-
-Se houver divergência entre documentos, aplique a autoridade definida em ORCHESTRATOR.md e project-manifest.yaml e utilize a fonte canônica correspondente ao assunto.
-
-Não resolva conflitos de negócio silenciosamente.
-```
-
-## Uso recomendado
-
-### Agente com acesso direto ao repositório
-
-Execute o prompt na raiz do repositório e permita somente leitura e diagnóstico no primeiro turno.
-
-O agente deve confirmar o estado real do Git antes de assumir que um arquivo, branch, commit ou alteração existe.
-
-### ChatGPT ou outro assistente sem acesso direto ao diretório local
-
-Forneça, no mínimo:
-
-- `AGENTS.md`;
-- `ORCHESTRATOR.md`;
-- `project-manifest.yaml`;
-- `docs/governanca/continuidade-de-contexto.md`;
-- `docs/dominio/01-mapa-de-dominio.md` para tarefas que dependam dos conceitos do domínio;
-- `docs/modelagem-dados/01-modelagem-conceitual-mer.md`, `02-modelo-entidade-relacionamento-der.md` e `03-modelo-fisico.md` para a Etapa 9 e tarefas técnicas que dependam da modelagem;
-- `docs/projeto/plano-de-desenvolvimento.md` quando a tarefa envolver processo, gates ou transição entre etapas;
-- `docs/projeto/roteiro-tecnico-de-implementacao.md` quando a tarefa envolver Arquitetura, API, Interface Web, testes ou preparação técnica;
-- apenas as regras, requisitos, Casos de Uso e artefatos técnicos necessários à tarefa.
-
-Não é necessário enviar o repositório inteiro quando a tarefa puder ser executada com contexto menor e suficiente.
-
-Se não houver acesso ao Git, o assistente não deve afirmar que o working tree está limpo, que um commit existe ou que um arquivo já foi incorporado ao repositório.
-
-## Regra de segurança operacional
-
-O primeiro turno de retomada deve ser **somente leitura e diagnóstico**.
-
-Alterações só começam após confirmação explícita do estado corrente e da tarefa autorizada.
-
-A existência do roteiro técnico de implementação não altera essa regra e não significa que o projeto já tenha chegado à implementação.
+Não trate documentos históricos como estado vigente.

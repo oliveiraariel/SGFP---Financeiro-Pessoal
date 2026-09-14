@@ -1,3 +1,30 @@
+# Continuidade de Contexto — Baseline vigente 14/09/2026
+
+## Estado atual autoritativo
+
+A decisão humana de 14/09/2026 simplificou a V1. Esta seção **prevalece sobre o registro histórico abaixo**.
+
+- catálogo RF-001 a RF-023; 19 RFs ativos;
+- RF-012 a RF-014 (Transferências) e RF-019 (PIN) futuros/inativos;
+- exatamente uma Conta Financeira por usuário, criada como **Minha Conta**;
+- saldo derivado de Lançamentos ativos;
+- Transferências e Patrimônio Total fora da V1;
+- backup manual local em ZIP; sem entrega por e-mail;
+- restauração integral por ZIP com cópia pré-restauração recuperável;
+- RF-022/UC-023: Resetar perfil financeiro, preservando login, dupla confirmação + `RESETAR PERFIL`;
+- RF-023/UC-024: Excluir conta de acesso, removendo dados + login WordPress, dupla confirmação + `EXCLUIR CONTA`;
+- Etapa 10: implementação histórica concluída, agora precisa ser migrada à nova baseline;
+- Etapa 11: frontend em andamento e precisa ser reconciliado;
+- documentos textuais de MER/DER/Modelo Físico de 14/09 prevalecem sobre imagens/binários antigos até regeneração.
+
+Fonte: `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
+
+---
+
+# Registro histórico anterior a 14/09/2026
+
+> As seções abaixo preservam decisões e evolução anteriores. Menções a Conta Principal/Secundária, Transferências, Patrimônio, backup por e-mail, 21 RF/20 ativos ou Etapa 11 não iniciada são **históricas e superadas** quando conflitarem com a baseline acima.
+
 # SGFP — Continuidade de Contexto
 
 ## 1. Finalidade

@@ -111,53 +111,35 @@ A execução direta sem autorização humana explícita continua proibida.
 
 ## 3. Estado atual do projeto
 
-O catálogo funcional preserva 21 identificadores de `RF-001` a `RF-021`.
+A baseline normativa vigente é a decisão humana consolidada em **14/09/2026** e registrada em:
 
-A baseline ativa da V1 possui 20 requisitos funcionais. `RF-019 — Gerenciar proteção por PIN` foi adiado para versão futura, sem renumeração dos requisitos posteriores. `UC-018` e `CA-019.1` a `CA-019.5` permanecem igualmente preservados como artefatos futuros.
+- `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
 
-A **Etapa 5 — Mapa do Domínio** foi concluída e validada no artefato:
+Estado funcional:
 
-- `docs/dominio/01-mapa-de-dominio.md`
+- catálogo: `RF-001` a `RF-023`;
+- **19 RFs ativos na V1**;
+- `RF-012`, `RF-013`, `RF-014` (Transferências) e `RF-019` (PIN) preservados como futuros/inativos;
+- exatamente uma Conta Financeira por usuário, provisionada automaticamente como **Minha Conta**;
+- saldo derivado dos Lançamentos Financeiros ativos da conta;
+- Transferências e Patrimônio Total fora da V1;
+- backup manual local em ZIP; e-mail não é meio de entrega de backup;
+- restauração integral por ZIP, com cópia pré-restauração recuperável;
+- `RF-022`: Resetar perfil financeiro, mantendo o login;
+- `RF-023`: Excluir conta de acesso, removendo dados SGFP e identidade/login WordPress.
 
-O Mapa do Domínio organiza os conceitos, responsabilidades e relações conceituais do SGFP sem antecipar cardinalidades, entidades definitivas, estruturas lógicas, estruturas físicas, arquitetura ou implementação.
+As Etapas 5–9 foram revisadas documentalmente para refletir essa baseline. A implementação da Etapa 10 foi concluída originalmente sobre a baseline anterior e **agora requer migração/reconciliação**. A Etapa 11 possui frontend em andamento na branch `feat/stage-11-web-interface` e também requer reconciliação.
 
-As etapas de modelagem de dados foram concluídas e validadas:
+Os artefatos binários/visuais antigos de MER/DER que ainda mostrem múltiplas contas ou Transferência são históricos até serem regenerados; os documentos textuais revisados e o Modelo Físico SQL de 14/09/2026 prevalecem.
 
-- **Etapa 6 — Modelagem Conceitual (MER)**;
-- **Etapa 7 — Modelo Entidade-Relacionamento (DER)**;
-- **Etapa 8 — Modelo Físico**.
+A associação de Categoria ao Compromisso continua opcional.
 
-Os documentos de referência estão em `docs/modelagem-dados/`, com os artefatos editáveis e visuais mantidos em `docs/modelagem-dados/artefatos/`.
-
-A etapa corrente é:
-
-**Etapa 10 — Desenvolvimento da API, concluída e validada**
-
-A proposta arquitetural foi produzida, tecnicamente corrigida após revisão e **validada em 11/09/2026**. As cinco decisões humanas necessárias foram registradas e incorporadas em `docs/arquitetura/01-arquitetura-da-aplicacao.md` (`DEC-001` a `DEC-005`). O gate integral da Etapa 9 está **aprovado**.
-
-A Etapa 10 foi concluída no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`. Lint, testes manuais e verificações Git foram aprovados; PHPUnit e validação WordPress/MySQL/MariaDB real permanecem pendentes por limitação ambiental. A Etapa 11 — Desenvolvimento da Interface Web não foi iniciada e a Etapa 12 permanece futura para consolidação formal dos testes.
-
-A associação de Categoria ao Compromisso Financeiro é opcional na V1; um compromisso pode ser cadastrado e permanecer sem categoria.
-
-As pendências e decisões de governança relevantes ao estado atual permanecem registradas no `project-manifest.yaml` e nos documentos de continuidade. Em especial:
-
-- `ISSUE-001` a `ISSUE-007` estão resolvidas conforme a baseline vigente;
-- `ISSUE-008` permanece aberta como pendência de rastreabilidade, não bloqueia o início da Etapa 9 e deverá ser concluída antes do fechamento formal da rastreabilidade de testes na Etapa 12.
-
-Os gates das Etapas 6, 7 e 8 foram satisfeitos.
-
-A partir do estado atual:
-
-- a proposta da Etapa 9 constitui baseline validada em `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
-- a Etapa 10 — Desenvolvimento da API foi concluída e validada no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`;
-- a Etapa 11 — Desenvolvimento da Interface Web permanece não iniciada, condicionada aos contratos aprovados;
-- a modelagem validada somente deverá ser alterada quando houver motivo documentado e análise de impacto.
+`ISSUE-008` permanece aberta apenas como pendência da matriz direta Regra de Negócio → Requisito antes do fechamento final da rastreabilidade da Etapa 12.
 
 ### Restrição tecnológica vigente
 
-A Versão 1 será uma aplicação Web em PHP sobre WordPress. O WordPress fornecerá identidade, autenticação, sessão e infraestrutura REST; o backend específico do SGFP será implementado em plugin próprio. MySQL ou MariaDB será utilizado como banco relacional compatível com a plataforma.
+A V1 continua sendo aplicação Web em PHP sobre WordPress, com plugin SGFP próprio, WordPress REST API, identidade/autenticação WordPress e MySQL/MariaDB.
 
-Essa decisão tecnológica não autoriza antecipar detalhes de arquitetura que pertencem à Etapa 9.
 
 ## 4. Ordem mínima de leitura
 
@@ -405,7 +387,7 @@ Exemplos:
 - alteração de UC pode afetar critérios, interface e testes;
 - alteração de contrato da API pode afetar interface e testes.
 
-A divergência histórica entre os catálogos de 19 e 25 RFs foi reconciliada em um catálogo preservado de 21 identificadores. A V1 atual possui 20 RFs ativos e mantém RF-019 como requisito futuro; o histórico da migração permanece na governança.
+A divergência histórica entre os catálogos de 19 e 25 RFs foi reconciliada em um catálogo preservado de 21 identificadores. A V1 atual possui 19 RFs ativos; RF-012 a RF-014 e RF-019 são futuros/inativos; o histórico da migração permanece na governança.
 
 ## 13. Identificadores
 
@@ -565,7 +547,7 @@ Caso seja necessária auditoria sobre o material bruto original, deve-se utiliza
 
 - registro das cinco decisões humanas (`DEC-001` a `DEC-005`) e aprovação do gate integral da Etapa 9;
 - atualização da arquitetura para baseline validada, subsidiária da Etapa 10;
-- manutenção da Etapa 11 como não iniciada e condicionada aos contratos aprovados;
+- reconciliação da Etapa 11 em andamento com a baseline simplificada;
 - preservação da `ISSUE-008` como pendência não bloqueadora desta etapa.
 
 ### Versão 2.4 — 05/09/2026

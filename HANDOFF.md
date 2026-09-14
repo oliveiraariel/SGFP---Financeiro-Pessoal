@@ -1,3 +1,24 @@
+# CURRENT OVERRIDE — 14/09/2026
+
+Este HANDOFF contém abaixo um registro técnico extenso da implementação da Etapa 10 sobre a **baseline anterior**. Ele deve ser preservado como evidência histórica, mas **não é mais a autoridade funcional atual**.
+
+Antes de retomar código, leia `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
+
+Mudanças vigentes:
+- uma conta por usuário (`Minha Conta`);
+- sem Transferências e sem Patrimônio Total na V1;
+- saldo derivado dos lançamentos da conta única;
+- backup ZIP local, sem e-mail;
+- reset do perfil e exclusão do login com dupla confirmação;
+- API antiga de múltiplas contas/transferências/net-worth/gzip-email precisa ser migrada;
+- frontend da Etapa 11 está em andamento e precisa ser reconciliado.
+
+Não use detalhes históricos abaixo para reintroduzir capacidades removidas da V1.
+
+---
+
+# HANDOFF HISTÓRICO DA IMPLEMENTAÇÃO ANTERIOR
+
 # SGFP — Handoff de Continuidade
 
 ## Estado corrente autoritativo — 2026-09-12

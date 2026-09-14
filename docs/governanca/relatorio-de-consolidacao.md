@@ -1,3 +1,13 @@
+# Nota de supersessão — 14/09/2026
+
+Este relatório documenta a reconciliação histórica que produziu a baseline anterior. Ele permanece válido como **proveniência**, mas suas decisões sobre múltiplas contas, Conta Principal/Secundária, Transferências, Patrimônio Total, backup por e-mail e catálogo de 21 RFs foram substituídas pela baseline:
+
+`docs/governanca/baseline-v1-simplificada-2026-09-14.md`
+
+Não utilizar este relatório para desfazer a baseline atual.
+
+---
+
 # Relatório de Consolidação e Inconsistências
 
 ## 1. Escopo da reorganização

@@ -17,13 +17,11 @@ Consulte `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
 
 O SGFP tem como objetivo permitir que o usuário organize sua vida financeira por meio do controle de:
 
-* contas financeiras;
+* Conta Financeira única;
 * compromissos de entrada e saída;
 * categorias;
 * recorrências;
 * lançamentos financeiros;
-* transferências;
-* patrimônio;
 * planejamento mensal;
 * configurações pessoais.
 
@@ -40,15 +38,14 @@ Entre as principais características previstas para a V1 estão:
 * categorização;
 * recorrências mensais;
 * efetivação de compromissos em lançamentos;
-* transferências entre contas;
 * tratamento básico de cartão de crédito e parcelamentos;
 * Dashboard financeiro;
 * tema claro e escuro;
-* criação e restauração manual de cópias de segurança.
+* backup local em ZIP e restauração por arquivo;\n* reset do perfil financeiro;\n* exclusão definitiva da conta de acesso.
 
 Não haverá integração bancária automática na Versão 1.
 
-O catálogo funcional preserva os identificadores RF-001 a RF-021. A V1 possui **20 requisitos funcionais ativos**; RF-019 — proteção por PIN — está adiado para versão futura, sem renumeração dos requisitos posteriores.
+O catálogo funcional vigente vai de RF-001 a RF-023. A V1 possui **19 requisitos funcionais ativos**. RF-012, RF-013, RF-014 (Transferências) e RF-019 (PIN) permanecem preservados como futuros/inativos.
 
 ## Metodologia de Desenvolvimento
 

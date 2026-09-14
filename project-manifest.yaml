@@ -363,7 +363,7 @@ known_issues:
       - "docs/requisitos/srs/07-criterios-de-aceitacao.md"
       - "docs/requisitos/srs/08-rastreabilidade.md"
       - "docs/casos-de-uso/"
-    resolution: "Adotado catálogo reconciliado com 21 identificadores RF-001 a RF-021. Após a decisão de 30/08/2026, a V1 possui 20 RFs ativos e preserva RF-019 como requisito futuro."
+    resolution: "Histórico: a reconciliação de 30/08 adotou RF-001 a RF-021. Superado em 14/09/2026: catálogo vigente RF-001 a RF-023, 19 ativos; RF-012, RF-013, RF-014 e RF-019 futuros/inativos."
 
   - id: "ISSUE-002"
     status: "resolved"
@@ -403,7 +403,7 @@ known_issues:
       - "docs/requisitos/levantamento/02-contas.md"
       - "docs/requisitos/srs/03-requisitos-funcionais.md"
       - "docs/casos-de-uso/casos/uc-006-informar-saldo-inicial.md"
-    resolution: "Não há saldo inicial armazenado. O valor inicial da conta principal é representado por Entrada; o valor de conta secundária chega por transferência com a principal; saldos e patrimônio são derivados dos movimentos."
+    resolution: "Superado em 14/09/2026: existe exatamente uma Conta Financeira por usuário. Não há saldo armazenado; o valor inicial usa Lançamento SALDO_INICIAL. Transferências e Patrimônio Total saíram da V1."
 
   - id: "ISSUE-005"
     status: "resolved"
@@ -451,7 +451,7 @@ known_issues:
       - "docs/requisitos/srs/08-rastreabilidade.md"
       - "docs/casos-de-uso/casos/uc-021-restaurar-copia-de-seguranca.md"
       - "docs/dominio/01-mapa-de-dominio.md"
-    resolution: "Após validar a cópia escolhida e receber a confirmação do usuário, o SGFP deverá gerar e preservar em condição recuperável uma cópia do estado imediatamente anterior antes de substituir os dados atuais. Se essa preservação falhar, a restauração será cancelada e os dados atuais permanecerão inalterados. A cópia pré-restauração será compatível com o mesmo processo de restauração das cópias manuais, identificável por sua origem e terá tentativa de envio por e-mail; a falha isolada do envio não bloqueará a restauração quando a preservação recuperável já tiver sido concluída. Backup automático periódico ou contínuo permanece fora da V1, e o mecanismo técnico de preservação será decidido nas etapas posteriores."
+    resolution: "Atualizado em 14/09/2026: antes da restauração integral, o SGFP gera e preserva cópia recuperável do estado atual. A restauração é cancelada se isso falhar. Backup manual e cópia pré-restauração usam formato lógico compatível e entrega local em ZIP; não dependem de e-mail."
 
   - id: "ISSUE-008"
     status: "open"
@@ -466,6 +466,24 @@ known_issues:
       - "docs/requisitos/levantamento/regras-de-negocio-index.csv"
       - "docs/requisitos/srs/08-rastreabilidade.md"
     next_action: "Executar operação específica de rastreabilidade, revisando individualmente as regras e registrando seus requisitos relacionados antes da consolidação final dos casos de teste."
+
+  - id: "ISSUE-009"
+    status: "resolved"
+    severity: "high"
+    category: "scope_simplification"
+    decision_required: false
+    blocks_stage_11: false
+    summary: "A V1 foi simplificada por decisão humana em 14/09/2026."
+    affected_paths:
+      - "docs/governanca/baseline-v1-simplificada-2026-09-14.md"
+      - "docs/requisitos/"
+      - "docs/casos-de-uso/"
+      - "docs/dominio/"
+      - "docs/modelagem-dados/"
+      - "docs/arquitetura/"
+      - "docs/api/"
+      - "docs/interface-web/"
+    resolution: "Conta única Minha Conta; saldo derivado; Transferências e Patrimônio fora da V1; backup ZIP local; reset do perfil e exclusão do login com dupla confirmação. Código das Etapas 10/11 deve ser reconciliado."
 
 resolved_consolidation_notes:
   - topic: "use_cases_location"
