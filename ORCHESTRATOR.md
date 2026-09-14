@@ -1,9 +1,9 @@
 # ORCHESTRATOR.md — Contrato Operacional para Agentes
 
 **Projeto:** SGFP — Sistema de Gestão Financeira Pessoal  
-**Versão deste documento:** 2.7
+**Versão deste documento:** 2.8
 **Status:** Governança operacional vigente  
-**Última atualização:** 13/09/2026
+**Última atualização:** 14/09/2026
 
 ## 1. Finalidade
 
@@ -128,7 +128,7 @@ Estado funcional:
 - `RF-022`: Resetar perfil financeiro, mantendo o login;
 - `RF-023`: Excluir conta de acesso, removendo dados SGFP e identidade/login WordPress.
 
-As Etapas 5–9 foram revisadas documentalmente para refletir essa baseline. A implementação da Etapa 10 foi concluída originalmente sobre a baseline anterior e **agora requer migração/reconciliação**. A Etapa 11 possui frontend em andamento na branch `feat/stage-11-web-interface` e também requer reconciliação.
+As Etapas 5–9 foram revisadas documentalmente para refletir essa baseline. A implementação da Etapa 10 foi reconciliada com a V1 simplificada na branch `feat/stage-9-10-backend` e validada por lint, PHPUnit e integração WordPress + MySQL; o trabalho está documentado no Draft PR #12. A Etapa 11 possui frontend em andamento na branch `feat/stage-11-web-interface` e ainda requer reconciliação com essa baseline e com o backend atualizado.
 
 Os artefatos binários/visuais antigos de MER/DER que ainda mostrem múltiplas contas ou Transferência são históricos até serem regenerados; os documentos textuais revisados e o Modelo Físico SQL de 14/09/2026 prevalecem.
 
@@ -228,7 +228,7 @@ A decisão humana de 14/09/2026 estabeleceu uma baseline simplificada e substitu
 - decisões históricas sobre Conta Principal/Conta Secundária, transferência e backup por e-mail estão superadas;
 - `ISSUE-008` (matriz direta Regra de Negócio → Requisito) permanece pendente.
 
-A fonte normativa é `docs/governanca/baseline-v1-simplificada-2026-09-14.md`. Implementação existente que ainda reflita a baseline anterior deve ser reconciliada, não usada para reverter a decisão.
+A fonte normativa é `docs/governanca/baseline-v1-simplificada-2026-09-14.md`. O backend reconciliado da Etapa 10 está na branch `feat/stage-9-10-backend` / Draft PR #12. Qualquer implementação restante que ainda reflita a baseline anterior — especialmente na Etapa 11 — deve ser reconciliada, não usada para reverter a decisão.
 
 ## 8. Etapas e diretórios
 
@@ -257,7 +257,7 @@ Os agentes devem respeitar a sequência estabelecida no Plano de Desenvolvimento
 
 Regras essenciais:
 
-- as Etapas 5–9 possuem baseline documental revisada; a implementação da Etapa 10 precisa ser reconciliada e a Etapa 11 está em andamento;
+- as Etapas 5–9 possuem baseline documental revisada; a Etapa 10 está reconciliada e validada na branch `feat/stage-9-10-backend` / PR #12; a Etapa 11 está em andamento e ainda requer reconciliação;
 - a Etapa 5 somente é considerada concluída com `docs/dominio/01-mapa-de-dominio.md` validado;
 - a Modelagem Conceitual (MER) pode iniciar somente após a validação do Mapa do Domínio;
 - não criar DER antes da validação do MER;
@@ -542,6 +542,12 @@ A proveniência disponível no repositório deve ser consultada em:
 Caso seja necessária auditoria sobre o material bruto original, deve-se utilizar o pacote de preservação completo mantido separadamente.
 
 ## 21. Histórico de atualização
+
+### Versão 2.8 — 14/09/2026
+
+- registro da reconciliação e validação do backend da Etapa 10 com a V1 simplificada na branch `feat/stage-9-10-backend`;
+- referência ao Draft PR #12 como trilha de implementação e ao PR #11 como trilha documental;
+- definição de que a principal reconciliação restante está na Etapa 11/frontend, sem congelar a branch 9–10 para ajustes legítimos descobertos durante a integração.
 
 ### Versão 2.6 — 11/09/2026
 
