@@ -214,11 +214,6 @@ final class Routes
                     'required' => true,
                     'type' => 'number',
                 ],
-                'type' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'enum' => ['PADRAO'],
-                ],
                 'nature' => [
                     'required' => true,
                     'type' => 'string',

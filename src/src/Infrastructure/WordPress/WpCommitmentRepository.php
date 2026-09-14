@@ -7,7 +7,6 @@ namespace SGFP\Infrastructure\WordPress;
 use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Domain\Enums\CommitmentNature;
 use SGFP\Domain\Enums\CommitmentStatus;
-use SGFP\Domain\Enums\CommitmentType;
 use SGFP\Domain\Models\Commitment;
 use SGFP\Infrastructure\Database\TableNames;
 
@@ -23,31 +22,31 @@ final class WpCommitmentRepository implements CommitmentRepository
             'fk_id_recorrencia' => $commitment->recurrenceId,
             'nome' => $commitment->name,
             'valor' => $commitment->amount,
-            'tipo' => $commitment->type->value,
             'natureza' => $commitment->nature->value,
             'mes_referencia' => $commitment->referenceMonth->format('Y-m-d'),
             'status' => $commitment->status->value,
         ];
-
-        $format = ['%d', '%d', '%d', '%s', '%f', '%s', '%s', '%s', '%s'];
+        $format = ['%d', '%d', '%d', '%s', '%f', '%s', '%s', '%s'];
 
         if ($commitment->id === null) {
             $result = $wpdb->insert(TableNames::commitment(), $data, $format);
-
             if ($result === false) {
                 throw new \RuntimeException('Falha ao criar compromisso: ' . $wpdb->last_error);
             }
-
             return $commitment->withId((int) $wpdb->insert_id);
         }
 
-        $wpdb->update(
+        $result = $wpdb->update(
             TableNames::commitment(),
             $data,
-            ['id_compromisso' => $commitment->id],
+            ['id_compromisso' => $commitment->id, 'fk_id_usuario' => $commitment->userId],
             $format,
-            ['%d']
+            ['%d', '%d']
         );
+
+        if ($result === false) {
+            throw new \RuntimeException('Falha ao atualizar compromisso: ' . $wpdb->last_error);
+        }
 
         return $commitment;
     }
@@ -55,70 +54,56 @@ final class WpCommitmentRepository implements CommitmentRepository
     public function findById(int $id, int $userId): ?Commitment
     {
         global $wpdb;
-
         $row = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM " . TableNames::commitment() . " WHERE id_compromisso = %d AND fk_id_usuario = %d",
-            $id,
-            $userId
+            'SELECT * FROM ' . TableNames::commitment() . ' WHERE id_compromisso = %d AND fk_id_usuario = %d',
+            $id, $userId
         ), ARRAY_A);
-
-        return $row ? $this->mapRow($row) : null;
+        return is_array($row) ? $this->mapRow($row) : null;
     }
 
     public function findAllByUser(int $userId): array
     {
         global $wpdb;
-
         $rows = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM " . TableNames::commitment() . " WHERE fk_id_usuario = %d ORDER BY mes_referencia DESC, criado_em DESC",
+            'SELECT * FROM ' . TableNames::commitment()
+            . ' WHERE fk_id_usuario = %d ORDER BY mes_referencia DESC, criado_em DESC',
             $userId
         ), ARRAY_A);
-
-        return array_map([$this, 'mapRow'], $rows ?: []);
+        return array_map([$this, 'mapRow'], is_array($rows) ? $rows : []);
     }
 
     public function findByRecurrenceIdAndMonth(int $recurrenceId, string $month, int $userId): ?Commitment
     {
         global $wpdb;
-
         $row = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM " . TableNames::commitment()
-            . " WHERE fk_id_recorrencia = %d AND mes_referencia = %s AND fk_id_usuario = %d",
-            $recurrenceId,
-            $month,
-            $userId
+            'SELECT * FROM ' . TableNames::commitment()
+            . ' WHERE fk_id_recorrencia = %d AND mes_referencia = %s AND fk_id_usuario = %d',
+            $recurrenceId, $month, $userId
         ), ARRAY_A);
-
-        return $row ? $this->mapRow($row) : null;
+        return is_array($row) ? $this->mapRow($row) : null;
     }
 
     public function findFirstByRecurrenceId(int $recurrenceId, int $userId): ?Commitment
     {
         global $wpdb;
-
         $row = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM " . TableNames::commitment()
-            . " WHERE fk_id_recorrencia = %d AND fk_id_usuario = %d ORDER BY mes_referencia ASC LIMIT 1",
-            $recurrenceId,
-            $userId
+            'SELECT * FROM ' . TableNames::commitment()
+            . ' WHERE fk_id_recorrencia = %d AND fk_id_usuario = %d ORDER BY mes_referencia ASC LIMIT 1',
+            $recurrenceId, $userId
         ), ARRAY_A);
-
-        return $row ? $this->mapRow($row) : null;
+        return is_array($row) ? $this->mapRow($row) : null;
     }
 
     public function findPendingCommitmentsByUserAndPeriod(int $userId, string $startMonth, string $endMonth): array
     {
         global $wpdb;
-
         $rows = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM " . TableNames::commitment()
-            . " WHERE fk_id_usuario = %d AND status = 'PENDENTE' AND mes_referencia >= %s AND mes_referencia <= %s ORDER BY mes_referencia ASC",
-            $userId,
-            $startMonth,
-            $endMonth
+            'SELECT * FROM ' . TableNames::commitment()
+            . " WHERE fk_id_usuario = %d AND status = 'PENDENTE'"
+            . ' AND mes_referencia >= %s AND mes_referencia <= %s ORDER BY mes_referencia ASC',
+            $userId, $startMonth, $endMonth
         ), ARRAY_A);
-
-        return array_map([$this, 'mapRow'], $rows ?: []);
+        return array_map([$this, 'mapRow'], is_array($rows) ? $rows : []);
     }
 
     private function mapRow(array $row): Commitment
@@ -128,13 +113,12 @@ final class WpCommitmentRepository implements CommitmentRepository
             (int) $row['fk_id_usuario'],
             $row['fk_id_categoria'] !== null ? (int) $row['fk_id_categoria'] : null,
             $row['fk_id_recorrencia'] !== null ? (int) $row['fk_id_recorrencia'] : null,
-            $row['nome'],
+            (string) $row['nome'],
             (float) $row['valor'],
-            CommitmentType::from($row['tipo']),
-            CommitmentNature::from($row['natureza']),
-            new \DateTimeImmutable($row['mes_referencia']),
-            CommitmentStatus::from($row['status']),
-            new \DateTimeImmutable($row['criado_em'])
+            CommitmentNature::from((string) $row['natureza']),
+            new \DateTimeImmutable((string) $row['mes_referencia']),
+            CommitmentStatus::from((string) $row['status']),
+            new \DateTimeImmutable((string) $row['criado_em'])
         );
     }
 }

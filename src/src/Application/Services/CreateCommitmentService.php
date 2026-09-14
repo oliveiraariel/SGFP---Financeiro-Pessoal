@@ -9,7 +9,6 @@ use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Application\Ports\RecurrenceRepository;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Domain\Enums\CommitmentNature;
-use SGFP\Domain\Enums\CommitmentType;
 use SGFP\Domain\Models\Commitment;
 use SGFP\Domain\Models\Recurrence;
 
@@ -20,14 +19,12 @@ final class CreateCommitmentService
         private readonly CategoryRepository $categoryRepository,
         private readonly RecurrenceRepository $recurrenceRepository,
         private readonly UserContext $userContext,
-    ) {
-    }
+    ) {}
 
     public function execute(
         ?int $categoryId,
         string $name,
         float $amount,
-        string $type,
         string $nature,
         string $referenceMonth,
         ?int $recurrenceMonthsCount = null,
@@ -36,38 +33,23 @@ final class CreateCommitmentService
         $this->userContext->requireCapability('use_sgfp');
 
         $normalizedName = trim($name);
-
         if ($normalizedName === '') {
             throw new \InvalidArgumentException('O nome é obrigatório.');
         }
-
         if ($this->stringLength($normalizedName) > 180) {
             throw new \InvalidArgumentException('O nome deve ter no máximo 180 caracteres.');
         }
-
         if ($amount < 0) {
             throw new \InvalidArgumentException('O valor deve ser maior ou igual a zero.');
         }
 
-        $commitmentType = CommitmentType::tryFrom($type);
-
-        if ($commitmentType === null) {
-            throw new \InvalidArgumentException('O tipo deve ser PADRAO.');
-        }
-
-        if ($commitmentType === CommitmentType::TRANSFERENCIA) {
-            throw new \InvalidArgumentException('Transferências não integram a V1.');
-        }
-
         $commitmentNature = CommitmentNature::tryFrom($nature);
-
         if ($commitmentNature === null) {
             throw new \InvalidArgumentException('A natureza deve ser ENTRADA ou SAIDA.');
         }
 
         $month = \DateTimeImmutable::createFromFormat('!Y-m', $referenceMonth);
         $errors = \DateTimeImmutable::getLastErrors();
-
         if ($month === false || ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))) {
             throw new \InvalidArgumentException('O mês de referência deve estar no formato YYYY-MM.');
         }
@@ -77,30 +59,27 @@ final class CreateCommitmentService
         }
 
         $recurrenceId = null;
-
         if ($recurrenceMonthsCount !== null) {
             if ($recurrenceMonthsCount <= 0) {
                 throw new \InvalidArgumentException('A quantidade de meses deve ser maior que zero ou omitida.');
             }
 
-            $recurrence = Recurrence::create($userId, $month, $recurrenceMonthsCount, new \DateTimeImmutable());
-            $recurrence = $this->recurrenceRepository->save($recurrence);
+            $recurrence = $this->recurrenceRepository->save(
+                Recurrence::create($userId, $month, $recurrenceMonthsCount, new \DateTimeImmutable())
+            );
             $recurrenceId = $recurrence->id;
         }
 
-        $commitment = Commitment::create(
+        return $this->repository->save(Commitment::create(
             $userId,
             $categoryId,
             $normalizedName,
             $amount,
-            $commitmentType,
             $commitmentNature,
             $month,
             new \DateTimeImmutable(),
             $recurrenceId,
-        );
-
-        return $this->repository->save($commitment);
+        ));
     }
 
     private function stringLength(string $value): int

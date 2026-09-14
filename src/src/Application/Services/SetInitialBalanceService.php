@@ -8,7 +8,6 @@ use SGFP\Application\Ports\AccountRepository;
 use SGFP\Application\Ports\EntryRepository;
 use SGFP\Application\Ports\TransactionManager;
 use SGFP\Application\Ports\UserContext;
-use SGFP\Domain\Enums\AccountRole;
 use SGFP\Domain\Enums\EntryEffectType;
 use SGFP\Domain\Enums\EntryOrigin;
 use SGFP\Domain\Enums\EntryState;
@@ -21,8 +20,7 @@ final class SetInitialBalanceService
         private readonly EntryRepository $entryRepository,
         private readonly TransactionManager $transactionManager,
         private readonly UserContext $userContext,
-    ) {
-    }
+    ) {}
 
     public function execute(
         int $accountId,
@@ -35,26 +33,28 @@ final class SetInitialBalanceService
         $userId = $this->userContext->requireUserId();
 
         $account = $this->accountRepository->findById($accountId, $userId);
-
         if ($account === null) {
             throw new \RuntimeException('Conta não encontrada.', 404);
         }
 
-        if ($account->role !== AccountRole::PRINCIPAL) {
-            throw new \RuntimeException('Saldo inicial somente pode ser definido na conta principal.', 403);
+        $onlyAccount = $this->accountRepository->findByUser($userId);
+        if ($onlyAccount === null || $onlyAccount->id !== $account->id) {
+            throw new \RuntimeException('A conta informada não corresponde à Conta Financeira do usuário.', 409);
         }
 
         $now = new \DateTimeImmutable();
         $settledAt = $this->resolveSettledAt($effectiveMonth ?? $now);
 
-        return $this->transactionManager->transactional(function () use ($userId, $accountId, $amount, $name, $description, $now, $settledAt) {
+        return $this->transactionManager->transactional(function () use (
+            $userId, $accountId, $amount, $name, $description, $now, $settledAt
+        ) {
             $existing = $this->entryRepository->findActiveInitialBalanceByAccount($accountId, $userId);
 
             if ($existing !== null) {
                 $this->entryRepository->save($existing->withUndone($now));
             }
 
-            $entry = new Entry(
+            return $this->entryRepository->save(new Entry(
                 null,
                 $userId,
                 $accountId,
@@ -68,9 +68,7 @@ final class SetInitialBalanceService
                 EntryState::ATIVO,
                 $now,
                 null,
-            );
-
-            return $this->entryRepository->save($entry);
+            ));
         });
     }
 

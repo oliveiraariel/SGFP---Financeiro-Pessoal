@@ -6,7 +6,6 @@ namespace SGFP\Domain\Models;
 
 use SGFP\Domain\Enums\CommitmentNature;
 use SGFP\Domain\Enums\CommitmentStatus;
-use SGFP\Domain\Enums\CommitmentType;
 
 final class Commitment
 {
@@ -17,20 +16,17 @@ final class Commitment
         public readonly ?int $recurrenceId,
         public readonly string $name,
         public readonly float $amount,
-        public readonly CommitmentType $type,
         public readonly CommitmentNature $nature,
         public readonly \DateTimeImmutable $referenceMonth,
         public readonly CommitmentStatus $status,
         public readonly \DateTimeImmutable $createdAt,
-    ) {
-    }
+    ) {}
 
     public static function create(
         int $userId,
         ?int $categoryId,
         string $name,
         float $amount,
-        CommitmentType $type,
         CommitmentNature $nature,
         \DateTimeImmutable $referenceMonth,
         \DateTimeImmutable $now,
@@ -43,7 +39,6 @@ final class Commitment
             $recurrenceId,
             $name,
             $amount,
-            $type,
             $nature,
             $referenceMonth,
             CommitmentStatus::PENDENTE,
@@ -60,7 +55,6 @@ final class Commitment
             $this->recurrenceId,
             $this->name,
             $this->amount,
-            $this->type,
             $this->nature,
             $this->referenceMonth,
             CommitmentStatus::EFETIVADO,
@@ -77,7 +71,6 @@ final class Commitment
             $this->recurrenceId,
             $this->name,
             $this->amount,
-            $this->type,
             $this->nature,
             $this->referenceMonth,
             CommitmentStatus::PENDENTE,
@@ -94,7 +87,6 @@ final class Commitment
             $this->recurrenceId,
             $this->name,
             $this->amount,
-            $this->type,
             $this->nature,
             $this->referenceMonth,
             $this->status,

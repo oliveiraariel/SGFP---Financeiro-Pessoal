@@ -11,11 +11,11 @@ use SGFP\Infrastructure\Database\TableNames;
 final class WpRestorationPersistence implements RestorationPersistence
 {
     private const TABLES = [
-        'accounts' => ['table' => 'account', 'id' => 'id_conta'],
-        'categories' => ['table' => 'category', 'id' => 'id_categoria'],
-        'recurrences' => ['table' => 'recurrence', 'id' => 'id_recorrencia'],
-        'commitments' => ['table' => 'commitment', 'id' => 'id_compromisso'],
-        'entries' => ['table' => 'entry', 'id' => 'id_lancamento'],
+        'accounts' => ['table' => 'account'],
+        'categories' => ['table' => 'category'],
+        'recurrences' => ['table' => 'recurrence'],
+        'commitments' => ['table' => 'commitment'],
+        'entries' => ['table' => 'entry'],
     ];
 
     public function replace(RestorationImportPlan $plan): void
@@ -27,7 +27,6 @@ final class WpRestorationPersistence implements RestorationPersistence
 
         foreach (array_reverse(array_keys(self::TABLES)) as $section) {
             $table = TableNames::{self::TABLES[$section]['table']}();
-
             if ($wpdb->query($wpdb->prepare(
                 "DELETE FROM {$table} WHERE fk_id_usuario = %d",
                 $plan->userId
@@ -46,7 +45,6 @@ final class WpRestorationPersistence implements RestorationPersistence
                 if ($wpdb->insert($table, $data['values'], $data['formats']) === false) {
                     throw new \RuntimeException('Falha ao importar ' . $section . ': ' . $wpdb->last_error);
                 }
-
                 $physical[(string) $record['logical_key']] = (int) $wpdb->insert_id;
             }
         }
@@ -62,18 +60,13 @@ final class WpRestorationPersistence implements RestorationPersistence
             'sgfp_theme'
         ));
 
-        $this->assertQuerySucceeded(
-            $existing !== null || $wpdb->last_error === '',
-            'Falha ao bloquear o tema da restauração'
-        );
-
         if ($existing !== null) {
             $ok = $wpdb->update(
                 $metaTable,
                 ['meta_value' => $plan->theme],
-                ['umeta_id' => (int) $existing, 'user_id' => $plan->userId, 'meta_key' => 'sgfp_theme'],
+                ['umeta_id' => (int) $existing],
                 ['%s'],
-                ['%d', '%d', '%s']
+                ['%d']
             );
         } else {
             $ok = $wpdb->insert(
@@ -93,19 +86,19 @@ final class WpRestorationPersistence implements RestorationPersistence
         global $wpdb;
 
         $counts = [];
-
         foreach (array_keys(self::TABLES) as $section) {
             $table = TableNames::{self::TABLES[$section]['table']}();
             $value = $wpdb->get_var($wpdb->prepare(
                 "SELECT COUNT(*) FROM {$table} WHERE fk_id_usuario = %d",
                 $plan->userId
             ));
-
-            $this->assertQuerySucceeded($value !== null, 'Falha ao verificar ' . $section);
+            if ($value === null) {
+                throw new \RuntimeException('Falha ao verificar ' . $section . ': ' . $wpdb->last_error);
+            }
             $counts[$section] = (int) $value;
         }
 
-        $refsValue = $wpdb->get_var($wpdb->prepare(
+        $references = (int) $wpdb->get_var($wpdb->prepare(
             'SELECT COUNT(*) FROM ' . TableNames::entry()
             . ' e LEFT JOIN ' . TableNames::account()
             . ' a ON a.id_conta=e.fk_id_conta AND a.fk_id_usuario=e.fk_id_usuario'
@@ -116,24 +109,18 @@ final class WpRestorationPersistence implements RestorationPersistence
             $plan->userId
         ));
 
-        $this->assertQuerySucceeded($refsValue !== null, 'Falha ao verificar referências');
-
         $theme = $wpdb->get_var($wpdb->prepare(
             "SELECT meta_value FROM {$wpdb->usermeta} WHERE user_id = %d AND meta_key = %s LIMIT 1",
             $plan->userId,
             'sgfp_theme'
         ));
 
-        $this->assertQuerySucceeded($theme !== null || $wpdb->last_error === '', 'Falha ao verificar tema');
-
-        $refs = (int) $refsValue;
-
         return [
             'counts' => $counts,
-            'references' => $refs,
+            'references' => $references,
             'owner' => $plan->userId,
             'theme' => (string) $theme,
-            'invariants' => $refs === 0,
+            'invariants' => $references === 0 && ($counts['accounts'] ?? 0) === 1,
         ];
     }
 
@@ -181,41 +168,23 @@ final class WpRestorationPersistence implements RestorationPersistence
         }
     }
 
-    private function assertQuerySucceeded(bool $condition, string $message): void
-    {
-        global $wpdb;
-
-        if (!$condition) {
-            throw new \RuntimeException($message . ': ' . $wpdb->last_error);
-        }
-    }
-
     private function row(string $section, array $record, int $userId, array $physical): array
     {
         $id = static function (string $key) use ($record, $physical): ?int {
             if (($record[$key] ?? null) === null) {
                 return null;
             }
-
             return $physical[(string) $record[$key]]
                 ?? throw new \InvalidArgumentException('Referência física ausente.');
         };
 
         return match ($section) {
-            // Compatibilidade transitória até a migração física V8.
             'accounts' => [
-                'values' => [
-                    'fk_id_usuario' => $userId,
-                    'nome' => $record['name'],
-                    'papel' => 'PRINCIPAL',
-                ],
-                'formats' => ['%d', '%s', '%s'],
+                'values' => ['fk_id_usuario' => $userId, 'nome' => $record['name']],
+                'formats' => ['%d', '%s'],
             ],
             'categories' => [
-                'values' => [
-                    'fk_id_usuario' => $userId,
-                    'nome' => $record['name'],
-                ],
+                'values' => ['fk_id_usuario' => $userId, 'nome' => $record['name']],
                 'formats' => ['%d', '%s'],
             ],
             'recurrences' => [
@@ -227,7 +196,6 @@ final class WpRestorationPersistence implements RestorationPersistence
                 ],
                 'formats' => ['%d', '%s', '%d', '%s'],
             ],
-            // Compatibilidade transitória: a coluna tipo ainda existe na V7.
             'commitments' => [
                 'values' => [
                     'fk_id_usuario' => $userId,
@@ -235,12 +203,11 @@ final class WpRestorationPersistence implements RestorationPersistence
                     'fk_id_recorrencia' => $id('recurrenceId'),
                     'nome' => $record['name'],
                     'valor' => $record['amount'],
-                    'tipo' => 'PADRAO',
                     'natureza' => $record['nature'],
                     'mes_referencia' => $record['referenceMonth'],
                     'status' => $record['status'],
                 ],
-                'formats' => ['%d', '%d', '%d', '%s', '%f', '%s', '%s', '%s', '%s'],
+                'formats' => ['%d', '%d', '%d', '%s', '%f', '%s', '%s', '%s'],
             ],
             'entries' => [
                 'values' => [
