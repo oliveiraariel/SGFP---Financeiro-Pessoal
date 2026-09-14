@@ -257,7 +257,7 @@ Os agentes devem respeitar a sequência estabelecida no Plano de Desenvolvimento
 
 Regras essenciais:
 
-- no estado atual, os gates das Etapas 5 a 10 já foram satisfeitos; a Etapa 11 permanece não iniciada;
+- as Etapas 5–9 possuem baseline documental revisada; a implementação da Etapa 10 precisa ser reconciliada e a Etapa 11 está em andamento;
 - a Etapa 5 somente é considerada concluída com `docs/dominio/01-mapa-de-dominio.md` validado;
 - a Modelagem Conceitual (MER) pode iniciar somente após a validação do Mapa do Domínio;
 - não criar DER antes da validação do MER;
@@ -387,7 +387,7 @@ Exemplos:
 - alteração de UC pode afetar critérios, interface e testes;
 - alteração de contrato da API pode afetar interface e testes.
 
-A divergência histórica entre os catálogos de 19 e 25 RFs foi reconciliada em um catálogo preservado de 21 identificadores. A V1 atual possui 19 RFs ativos; RF-012 a RF-014 e RF-019 são futuros/inativos; o histórico da migração permanece na governança.
+A divergência histórica entre os catálogos de 19 e 25 RFs foi reconciliada inicialmente em 21 identificadores. A decisão de 14/09/2026 estabeleceu o catálogo vigente RF-001 a RF-023, com 19 ativos e RF-012 a RF-014 e RF-019 futuros/inativos. O histórico anterior permanece na governança.
 
 ## 13. Identificadores
 

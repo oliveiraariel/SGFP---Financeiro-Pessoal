@@ -107,10 +107,10 @@ Esta seção define condições observáveis e verificáveis para validar os req
 - **CA-010.3:** O lançamento deverá conter informações suficientes para identificar a movimentação realizada.
 - **CA-010.4:** O lançamento deverá registrar a data de efetivação.
 - **CA-010.5:** O lançamento poderá possuir descrição complementar quando aplicável.
-- **CA-010.6:** O valor inicial da conta principal deverá ser representado por lançamento de Entrada quando informado.
+- **CA-010.6:** O valor inicial da Conta Financeira única deverá ser representado por lançamento de Entrada quando informado.
 - **CA-010.7:** Informações financeiras de períodos anteriores deverão ser registradas por lançamentos conforme as funcionalidades aplicáveis.
 - **CA-010.8:** Não deverá existir saldo inicial armazenado como atributo independente da conta.
-- **CA-010.9:** O registro do valor inicial da conta principal deverá utilizar um lançamento de Entrada; essa regra não deverá ser aplicada como Entrada direta a contas secundárias.
+- **CA-010.9:** O registro do valor inicial deverá utilizar um Lançamento de origem `SALDO_INICIAL`; a V1 não possui contas adicionais.
 
 ### RF-011 — Consultar movimentações financeiras
 
@@ -297,7 +297,9 @@ As restrições deverão ser verificadas por inspeção documental e, quando pro
 
 - A V1 não deverá realizar integração bancária ou financeira externa, conforme RE-002, RE-003 e RE-007.
 - As recorrências da V1 deverão utilizar exclusivamente periodicidade mensal, conforme RE-004 e as regras do módulo de Recorrência.
-- Deverá existir exatamente uma Conta Financeira por usuário, conforme RE-005.\n- Transferências e Patrimônio Total ficam fora da V1, conforme RE-006 e RE-007.\n- Reset e exclusão exigem dupla confirmação, conforme RE-019.
+- Deverá existir exatamente uma Conta Financeira por usuário, conforme RE-005.
+- Transferências e Patrimônio Total ficam fora da V1, conforme RE-006 e RE-007.
+- Reset e exclusão exigem dupla confirmação, conforme RE-019.
 - O Dashboard deverá ser uma visão derivada e consolidada, sem manter dados financeiros independentes, conforme RE-010.
 - Funcionalidades fora do escopo da V1 não deverão ser disponibilizadas, conforme RE-001 e as restrições específicas da V1. O RF-019 e seus critérios CA-019.1 a CA-019.5 permanecem documentados exclusivamente para versão futura.
 

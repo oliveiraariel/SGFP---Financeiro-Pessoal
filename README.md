@@ -32,7 +32,7 @@ A primeira versão será uma aplicação Web em PHP sobre WordPress, utilizando 
 Entre as principais características previstas para a V1 estão:
 
 * cadastro e autenticação de usuário;
-* gerenciamento de contas financeiras;
+* gerenciamento da Conta Financeira única;
 * registro manual das informações financeiras;
 * controle de compromissos financeiros;
 * categorização;
@@ -41,7 +41,9 @@ Entre as principais características previstas para a V1 estão:
 * tratamento básico de cartão de crédito e parcelamentos;
 * Dashboard financeiro;
 * tema claro e escuro;
-* backup local em ZIP e restauração por arquivo;\n* reset do perfil financeiro;\n* exclusão definitiva da conta de acesso.
+* backup local em ZIP e restauração por arquivo;
+* reset do perfil financeiro;
+* exclusão definitiva da conta de acesso.
 
 Não haverá integração bancária automática na Versão 1.
 

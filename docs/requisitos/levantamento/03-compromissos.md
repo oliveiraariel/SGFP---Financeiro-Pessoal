@@ -39,10 +39,7 @@ Todo compromisso financeiro deverá possuir uma natureza financeira:
 
 Nos compromissos financeiros padrão, a natureza será definida pelo usuário no momento do cadastro.
 
-Nas transferências, a natureza será determinada pelo sentido da operação em relação à Conta Principal:
-
-- Conta Principal → Conta Secundária: Saída;
-- Conta Secundária → Conta Principal: Entrada.
+Transferências não integram a V1 simplificada. Todo Compromisso Financeiro ativo da V1 possui natureza Entrada ou Saída e incide sobre a Conta Financeira única.
 
 ### RN-005
 
