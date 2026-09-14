@@ -88,6 +88,10 @@ Os identificadores históricos são preservados quando úteis à rastreabilidade
 
 ## 9. Implementação
 
-A documentação pode ser atualizada antes do código. Enquanto a API/frontend ainda refletirem a baseline anterior, isso deve ser tratado como **divergência de implementação a reconciliar**, não como autorização para reverter esta decisão.
+A documentação foi atualizada antes do código. Posteriormente, o backend da Etapa 10 foi reconciliado com esta baseline na branch `feat/stage-9-10-backend` e validado por lint, PHPUnit e integração WordPress + MySQL; a trilha está no Draft PR #12.
+
+A Etapa 11/frontend continua em reconciliação. Qualquer código remanescente que ainda reflita a baseline anterior deve ser tratado como **divergência de implementação a reconciliar**, não como autorização para reverter esta decisão.
+
+A branch 9–10 permanece aberta para ajustes legítimos descobertos durante a integração da Etapa 11, desde que a alteração seja documentada, testada e reintegrada de forma controlada.
 
 **Data da decisão:** 14/09/2026
