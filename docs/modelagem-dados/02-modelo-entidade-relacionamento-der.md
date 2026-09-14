@@ -1,20 +1,35 @@
 # Etapa 7 — Modelo Entidade-Relacionamento (DER)
 
-## Objetivo
+**Status:** baseline textual revisada em 14/09/2026.
 
-Consolidar a representação relacional dos dados a partir do MER validado, explicitando entidades relacionais, identificadores, chaves e relacionamentos necessários à passagem para o Modelo Físico.
+## Estruturas relacionais da V1
 
-**Status:** concluída e validada em 05/09/2026.
+- `CONTA_FINANCEIRA`
+- `CATEGORIA`
+- `RECORRENCIA`
+- `COMPROMISSO_FINANCEIRO`
+- `LANCAMENTO_FINANCEIRO`
 
-## Resultado
+`TRANSFERENCIA` não integra mais o DER ativo da V1.
 
-O DER relacional foi revisado em conjunto com o MER e com o Modelo Físico, preservando os relacionamentos e as regras estruturais definidas para o SGFP.
+## Relações principais
 
-A especialização de Transferência em relação a Compromisso Financeiro é representada no modelo relacional por chave compartilhada entre as estruturas correspondentes.
+- `CONTA_FINANCEIRA.FK_ID_USUARIO` referencia `wp_users(ID)` e é **UNIQUE**, garantindo no máximo uma conta por usuário; o provisionamento garante a existência da conta.
+- Categoria, Recorrência, Compromisso e Lançamento permanecem escopados por usuário.
+- Compromisso pode referenciar Categoria e Recorrência.
+- Lançamento referencia obrigatoriamente Conta Financeira e opcionalmente Compromisso.
+- Saldo é consulta derivada sobre Lançamentos ativos.
 
-## Artefatos
+## Simplificações
 
-- [DER — representação visual](artefatos/der/sgfp-der-relacional.png)
-- [DER — projeto editável do Oracle Data Modeler](artefatos/der/sgfp-der-relacional.dmd)
+Foram removidos do modelo ativo:
+- `PAPEL`;
+- `ID_USUARIO_PRINCIPAL`;
+- distinção PRINCIPAL/SECUNDARIA;
+- especialização/tabela Transferência;
+- `TIPO=TRANSFERENCIA` no Compromisso;
+- Patrimônio Total como informação própria da V1.
 
-A pasta `artefatos/der/sgfp-der-relacional/` contém arquivos internos necessários para reabrir o projeto no Oracle Data Modeler e deve permanecer versionada junto ao arquivo `.dmd`.
+## Artefatos gráficos
+
+O DER gráfico anterior permanece como histórico até ser regenerado. Em divergência, este documento e o Modelo Físico revisado prevalecem.

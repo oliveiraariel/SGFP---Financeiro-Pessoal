@@ -1,26 +1,42 @@
 # Etapa 6 — Modelagem Conceitual (MER)
 
-## Objetivo
+**Status:** baseline revisada em 14/09/2026.
 
-Representar conceitualmente os dados do SGFP a partir das regras de negócio, requisitos, Casos de Uso e conceitos validados no Mapa do Domínio.
+## Entidades da V1
 
-**Status:** concluída e validada em 05/09/2026.
+1. **Usuário** — identidade fornecida por WordPress; usado para propriedade/cardinalidade.
+2. **Conta Financeira** — exatamente uma por usuário.
+3. **Categoria** — pertence ao usuário e pode classificar compromissos.
+4. **Recorrência** — configura repetição mensal.
+5. **Compromisso Financeiro** — previsão/obrigação de Entrada ou Saída.
+6. **Lançamento Financeiro** — movimento realizado que produz efeito sobre a Conta Financeira.
 
-## Resultado
+## Relações e cardinalidades
 
-O MER consolidou as entidades e os relacionamentos necessários à Versão 1, incluindo Usuário, Conta Financeira, Categoria, Recorrência, Compromisso Financeiro, Transferência e Lançamento Financeiro.
+- Usuário 1 — 1 Conta Financeira.
+- Usuário 1 — 0..N Categoria.
+- Usuário 1 — 0..N Recorrência.
+- Usuário 1 — 0..N Compromisso Financeiro.
+- Usuário 1 — 0..N Lançamento Financeiro.
+- Categoria 0..1 — 0..N Compromisso Financeiro.
+- Recorrência 0..1 — 0..N Compromisso Financeiro.
+- Compromisso Financeiro 0..1 — 0..N Lançamento Financeiro.
+- Conta Financeira 1 — 0..N Lançamento Financeiro.
 
-Entre as decisões refletidas no modelo:
+## Invariantes
 
-- a associação de Categoria ao Compromisso Financeiro é opcional;
-- Transferência é uma especialização de Compromisso Financeiro;
-- saldos são derivados dos lançamentos financeiros;
-- a modelagem considera somente o escopo ativo da V1, sem estrutura específica para o PIN futuro;
-- detalhes de persistência e integração física com o WordPress não pertencem ao MER.
+- A conta é provisionada automaticamente como **Minha Conta**.
+- O saldo não é entidade nem atributo armazenado; é derivado dos lançamentos ativos da conta.
+- Categoria é opcional no Compromisso.
+- Criar Compromisso não altera saldo.
+- Efetivar Compromisso origina Lançamento.
+- Desfazer efetivação remove o efeito financeiro preservando histórico.
+- Transferência não integra a V1.
+- Patrimônio Total não integra a V1.
 
-## Artefatos
+## Artefatos visuais anteriores
 
-- [MER — representação visual](artefatos/mer/sgfp-mer-conceitual.png)
-- [MER — arquivo editável do brModelo](artefatos/mer/sgfp-mer-conceitual.brM3)
+Arquivos gráficos/editáveis anteriores que exibam Transferência ou múltiplas contas são históricos da baseline anterior e não prevalecem sobre este documento até serem regenerados.
 
-Os artefatos acima constituem a representação validada da Etapa 6 e servem de entrada para as etapas posteriores de modelagem de dados.
+## Histórico
+- 14/09/2026: retirada de Transferência e múltiplas contas; relação Usuário–Conta alterada para 1:1.
