@@ -14,8 +14,7 @@ final class RecurrenceController
         private readonly MaterializeRecurrenceOccurrenceService $materializeService,
         private readonly SettleRecurrenceOccurrenceService $settleService,
         private readonly UndoRecurrenceOccurrenceSettlementService $undoService,
-    ) {
-    }
+    ) {}
 
     public function showOccurrence(\WP_REST_Request $request): \WP_REST_Response
     {
@@ -31,7 +30,6 @@ final class RecurrenceController
                 'category_id' => $commitment->categoryId,
                 'name' => $commitment->name,
                 'amount' => number_format($commitment->amount, 2, '.', ''),
-                'type' => $commitment->type->value,
                 'nature' => $commitment->nature->value,
                 'reference_month' => $commitment->referenceMonth->format('Y-m-d'),
                 'status' => $commitment->status->value,
@@ -41,7 +39,7 @@ final class RecurrenceController
             return new \WP_REST_Response(['error' => $e->getMessage()], 400);
         } catch (\RuntimeException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
         }
     }
@@ -49,10 +47,7 @@ final class RecurrenceController
     public function settleOccurrence(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $entry = $this->settleService->execute(
-                (int) $request['id'],
-                (string) $request['month'],
-            );
+            $entry = $this->settleService->execute((int) $request['id'], (string) $request['month']);
 
             return new \WP_REST_Response([
                 'entry_id' => $entry->id,
@@ -69,7 +64,7 @@ final class RecurrenceController
             return new \WP_REST_Response(['error' => $e->getMessage()], 400);
         } catch (\RuntimeException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
         }
     }
@@ -77,17 +72,13 @@ final class RecurrenceController
     public function undoOccurrence(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $this->undoService->execute(
-                (int) $request['id'],
-                (string) $request['month'],
-            );
-
+            $this->undoService->execute((int) $request['id'], (string) $request['month']);
             return new \WP_REST_Response(['status' => 'desfeito'], 200);
         } catch (\InvalidArgumentException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], 400);
         } catch (\RuntimeException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
         }
     }
