@@ -21,7 +21,8 @@ Leia, nesta ordem:
 13. `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
 14. `docs/api/README.md`;
 15. `docs/interface-web/README.md`;
-16. `HANDOFF.md` quando houver trabalho técnico em continuidade.
+16. `docs/governanca/status-implementacao-v1-2026-09-14.md`;
+17. `HANDOFF.md` quando houver trabalho técnico em continuidade.
 
 ## 2. Baseline vigente que deve ser confirmada
 
@@ -47,9 +48,10 @@ Leia, nesta ordem:
 ## 3. Estado de desenvolvimento
 
 - Etapas 5–9 possuem documentação revisada para a baseline de 14/09/2026.
-- A implementação da Etapa 10 existe, mas foi construída sobre a baseline anterior e precisa ser migrada.
-- A Etapa 11 está em andamento na branch `feat/stage-11-web-interface`.
-- O frontend e a API podem conter código de múltiplas contas, Transferências, Patrimônio ou backup por e-mail; isso é **legado a reconciliar**, não fonte para reverter a documentação.
+- A implementação da Etapa 10 foi reconciliada e validada na branch `feat/stage-9-10-backend`; acompanhar o Draft PR #12.
+- A Etapa 11 está em andamento na branch `feat/stage-11-web-interface` e ainda precisa ser reconciliada.
+- O frontend pode conter código de múltiplas contas, Transferências, Patrimônio ou backup por e-mail; isso é **legado a reconciliar**, não fonte para reverter a documentação.
+- Se a Etapa 11 revelar necessidade legítima de ajuste no backend, registrar, corrigir/testar na linha 9–10 e reintegrar de forma controlada.
 - `ISSUE-008` de rastreabilidade permanece pendente antes do fechamento da Etapa 12.
 
 ## 4. Regras de operação
@@ -67,7 +69,7 @@ Informe:
 - repositório/branch/HEAD;
 - estado do working tree;
 - baseline carregada;
-- divergências entre documentação e código;
+- divergências entre documentação, backend reconciliado e frontend em andamento;
 - próximo passo seguro.
 
 Não trate documentos históricos como estado vigente.
