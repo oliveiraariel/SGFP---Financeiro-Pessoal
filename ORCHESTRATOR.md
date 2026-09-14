@@ -146,20 +146,22 @@ A V1 continua sendo aplicação Web em PHP sobre WordPress, com plugin SGFP pró
 Antes de executar qualquer tarefa, o agente coordenador deverá ler:
 
 1. `project-manifest.yaml`
-2. `docs/governanca/continuidade-de-contexto.md`
-3. `docs/governanca/relatorio-de-consolidacao.md`
-4. `docs/projeto/plano-de-desenvolvimento.md`
-5. `docs/projeto/documento-de-visao.md`
+2. `docs/governanca/baseline-v1-simplificada-2026-09-14.md`
+3. `docs/governanca/status-implementacao-v1-2026-09-14.md`
+4. `docs/governanca/continuidade-de-contexto.md`
+5. `docs/governanca/relatorio-de-consolidacao.md`
+6. `docs/projeto/plano-de-desenvolvimento.md`
+7. `docs/projeto/documento-de-visao.md`
 
 Depois, deverá carregar somente os documentos necessários à tarefa:
 
-6. `docs/requisitos/levantamento/README.md` e módulos de negócio envolvidos;
-7. `docs/requisitos/srs/README.md` e seções do SRS envolvidas;
-8. `docs/casos-de-uso/README.md` e Casos de Uso relacionados;
-9. `docs/dominio/01-mapa-de-dominio.md` para qualquer tarefa da Etapa 6 em diante;
-10. `docs/modelagem-dados/` e seus artefatos validados para tarefas de Arquitetura, persistência, API ou qualquer alteração que dependa da estrutura de dados;
-11. artefatos das demais etapas somente quando a etapa correspondente já tiver sido iniciada e forem relevantes;
-12. `docs/projeto/roteiro-tecnico-de-implementacao.md` quando a tarefa envolver preparação técnica, Arquitetura, API, Interface, testes durante a implementação, ferramentas de desenvolvimento ou qualidade de código.
+8. `docs/requisitos/levantamento/README.md` e módulos de negócio envolvidos;
+9. `docs/requisitos/srs/README.md` e seções do SRS envolvidas;
+10. `docs/casos-de-uso/README.md` e Casos de Uso relacionados;
+11. `docs/dominio/01-mapa-de-dominio.md` para qualquer tarefa da Etapa 6 em diante;
+12. `docs/modelagem-dados/` e seus artefatos validados para tarefas de Arquitetura, persistência, API ou qualquer alteração que dependa da estrutura de dados;
+13. artefatos das demais etapas somente quando a etapa correspondente já tiver sido iniciada e forem relevantes;
+14. `docs/projeto/roteiro-tecnico-de-implementacao.md` quando a tarefa envolver preparação técnica, Arquitetura, API, Interface, testes durante a implementação, ferramentas de desenvolvimento ou qualidade de código.
 
 O roteiro técnico é um **documento auxiliar**. Ele detalha práticas, ferramentas e sequência didática, mas permanece subordinado ao Plano de Desenvolvimento, às fontes canônicas, aos gates oficiais e às decisões de arquitetura aprovadas.
 
