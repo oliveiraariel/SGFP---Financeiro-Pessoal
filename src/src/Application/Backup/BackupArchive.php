@@ -21,12 +21,14 @@ final class BackupArchive
         }
 
         $zip = new \ZipArchive();
+        $isOpen = false;
 
         try {
             $opened = $zip->open($temporary, \ZipArchive::OVERWRITE);
             if ($opened !== true) {
                 throw new \RuntimeException('Não foi possível criar o arquivo ZIP.');
             }
+            $isOpen = true;
 
             $manifest = json_encode([
                 'schema' => 'sgfp-backup-zip',
@@ -42,6 +44,7 @@ final class BackupArchive
             if (!$zip->close()) {
                 throw new \RuntimeException('Não foi possível finalizar o arquivo ZIP.');
             }
+            $isOpen = false;
 
             $content = file_get_contents($temporary);
             if ($content === false || $content === '') {
@@ -50,8 +53,12 @@ final class BackupArchive
 
             return $content;
         } finally {
-            if ($zip->status === \ZipArchive::ER_OK) {
-                $zip->close();
+            if ($isOpen) {
+                try {
+                    $zip->close();
+                } catch (\ValueError) {
+                    // O objeto já pode ter sido invalidado pelo driver ZIP.
+                }
             }
             @unlink($temporary);
         }
@@ -73,11 +80,13 @@ final class BackupArchive
         }
 
         $zip = new \ZipArchive();
+        $isOpen = false;
 
         try {
             if ($zip->open($temporary) !== true) {
                 throw new \InvalidArgumentException('Arquivo ZIP inválido.');
             }
+            $isOpen = true;
 
             $manifestRaw = $zip->getFromName(self::MANIFEST_NAME);
             $payload = $zip->getFromName(self::PAYLOAD_NAME);
@@ -97,8 +106,12 @@ final class BackupArchive
 
             return ['manifest' => $manifest, 'payload' => $payload];
         } finally {
-            if ($zip->status === \ZipArchive::ER_OK) {
-                $zip->close();
+            if ($isOpen) {
+                try {
+                    $zip->close();
+                } catch (\ValueError) {
+                    // O objeto já pode ter sido invalidado pelo driver ZIP.
+                }
             }
             @unlink($temporary);
         }
