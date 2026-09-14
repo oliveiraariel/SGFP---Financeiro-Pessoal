@@ -11,7 +11,6 @@ use SGFP\Application\Services\ValidateBackupService;
 use SGFP\Application\Services\RevalidateRestorationService;
 use SGFP\Application\Services\CapturePreRestorationSnapshotService;
 use SGFP\Application\Services\GetDashboardService;
-use SGFP\Application\Services\GetNetWorthService;
 use SGFP\Application\Services\ListAccountsService;
 use SGFP\Application\Services\ListCategoriesService;
 use SGFP\Application\Services\ListMovementsService;
@@ -100,7 +99,6 @@ final class Routes
 
         $reportingController = new ReportingController(
             new ListMovementsService($entryRepository, $userContext),
-            new GetNetWorthService($accountRepository, $entryRepository, $userContext),
             new GetDashboardService($accountRepository, $entryRepository, $commitmentRepository, $userContext)
         );
 
@@ -316,11 +314,6 @@ final class Routes
             ],
         ]);
 
-        register_rest_route(self::NAMESPACE, '/net-worth', [
-            'methods' => \WP_REST_Server::READABLE,
-            'callback' => [$reportingController, 'netWorth'],
-            'permission_callback' => [$reportingController, 'permissionCheck'],
-        ]);
 
         register_rest_route(self::NAMESPACE, '/dashboard', [
             'methods' => \WP_REST_Server::READABLE,

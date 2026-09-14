@@ -10,7 +10,6 @@ use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Application\Ports\EntryRepository;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Services\GetDashboardService;
-use SGFP\Application\Services\GetNetWorthService;
 use SGFP\Application\Services\ListMovementsService;
 use SGFP\Domain\Enums\AccountRole;
 use SGFP\Domain\Enums\CommitmentNature;
@@ -44,30 +43,6 @@ final class ReportingServicesTest extends TestCase
         $this->assertSame(100.0, $result[0]->amount);
     }
 
-    public function testNetWorthSumsActiveEntries(): void
-    {
-        $accountRepository = $this->createMock(AccountRepository::class);
-        $entryRepository = $this->createMock(EntryRepository::class);
-        $userContext = $this->createMock(UserContext::class);
-
-        $userContext->method('requireCapability');
-        $userContext->method('requireUserId')->willReturn(1);
-
-        $accountRepository->method('findAllByUser')->willReturn([
-            new Account(1, 1, 'Principal', AccountRole::PRINCIPAL, new \DateTimeImmutable()),
-        ]);
-
-        $entryRepository->method('findActiveEntriesByUser')->willReturn([
-            $this->makeEntry(1, 1000.0, EntryEffectType::ENTRADA, '2026-09-01'),
-            $this->makeEntry(1, 300.0, EntryEffectType::SAIDA, '2026-09-02'),
-        ]);
-
-        $service = new GetNetWorthService($accountRepository, $entryRepository, $userContext);
-        $result = $service->execute();
-
-        $this->assertSame('700.00', $result['accounts'][0]['balance']);
-        $this->assertSame('700.00', $result['net_worth']);
-    }
 
     public function testDashboardCalculatesExpectedClosingBalance(): void
     {
