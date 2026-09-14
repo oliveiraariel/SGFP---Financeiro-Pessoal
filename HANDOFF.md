@@ -10,8 +10,10 @@ Mudanças vigentes:
 - saldo derivado dos lançamentos da conta única;
 - backup ZIP local, sem e-mail;
 - reset do perfil e exclusão do login com dupla confirmação;
-- API antiga de múltiplas contas/transferências/net-worth/gzip-email precisa ser migrada;
-- frontend da Etapa 11 está em andamento e precisa ser reconciliado.
+- backend da Etapa 10 já reconciliado e validado na branch `feat/stage-9-10-backend` / Draft PR #12;
+- frontend da Etapa 11 está em andamento e precisa ser reconciliado com a baseline e com o backend atualizado.
+
+Para estado operacional atual, leia também `docs/governanca/status-implementacao-v1-2026-09-14.md`.
 
 Não use detalhes históricos abaixo para reintroduzir capacidades removidas da V1.
 
