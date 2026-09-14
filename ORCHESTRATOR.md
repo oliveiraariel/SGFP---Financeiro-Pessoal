@@ -234,18 +234,19 @@ Quando duas fontes canônicas divergirem:
 
 ## 7. Estado das pendências documentais
 
-A baseline funcional vigente registra:
+A decisão humana de 14/09/2026 estabeleceu uma baseline simplificada e substitui decisões anteriores incompatíveis:
 
-- `ISSUE-001`: resolvida — catálogo reconciliado de 21 identificadores funcionais (`RF-001` a `RF-021`), com 20 RFs ativos na V1 e `RF-019` preservado como futuro;
-- `ISSUE-002`: resolvida — cadastro, autenticação e senha formalizados como `RF-001`, `RF-002` e `RF-003`;
-- `ISSUE-003`: resolvida — exclusão de contas fora do escopo da V1;
-- `ISSUE-004`: resolvida — valor inicial da Conta Principal representado por Entrada; Conta Secundária recebe valor por Transferência; saldo não é armazenado;
-- `ISSUE-005`: resolvida — proteção por PIN retirada do escopo ativo da V1, com identificadores preservados para versão futura;
-- `ISSUE-006`: resolvida — PHP sobre WordPress, plugin próprio, infraestrutura REST e MySQL/MariaDB consolidados como restrição tecnológica da V1;
-- `ISSUE-007`: resolvida — preservação do estado anterior definida como cópia de segurança automática pré-restauração, permanecendo o mecanismo técnico para a etapa apropriada;
-- `ISSUE-008`: aberta — a matriz direta Regra de Negócio → Requisito ainda deverá ser materializada. Não bloqueia o início da Etapa 9, mas bloqueia o fechamento final da rastreabilidade da Etapa 12.
+- catálogo funcional atual: `RF-001` a `RF-023`, com 19 requisitos ativos;
+- `RF-012` a `RF-014` (Transferências) e `RF-019` (PIN) estão preservados como futuros/inativos;
+- relação Usuário–Conta Financeira é 1:1 na V1; a conta `Minha Conta` nasce no provisionamento inicial;
+- saldo é derivado dos lançamentos da conta única;
+- Patrimônio Total saiu da V1;
+- backup manual é ZIP para download local, sem entrega por e-mail;
+- reset do perfil financeiro e exclusão total da conta de acesso entram na V1 com dupla confirmação;
+- decisões históricas sobre Conta Principal/Conta Secundária, transferência e backup por e-mail estão superadas;
+- `ISSUE-008` (matriz direta Regra de Negócio → Requisito) permanece pendente.
 
-Os status, resoluções e evidências permanecem registrados em `project-manifest.yaml`, `docs/governanca/continuidade-de-contexto.md` e `docs/governanca/relatorio-de-consolidacao.md`.
+A fonte normativa é `docs/governanca/baseline-v1-simplificada-2026-09-14.md`. Implementação existente que ainda reflita a baseline anterior deve ser reconciliada, não usada para reverter a decisão.
 
 ## 8. Etapas e diretórios
 

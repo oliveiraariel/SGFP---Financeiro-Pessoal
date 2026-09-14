@@ -84,25 +84,19 @@ degradação controlada**, para as regras completas.
 
 ## Estado resumido
 
-- Catálogo funcional preservado: `RF-001` a `RF-021`.
-- Baseline ativa da V1: 20 requisitos funcionais; `RF-019` (proteção por PIN) está adiado para versão futura e não deve provocar renumeração dos itens posteriores.
-- `UC-018` e `CA-019.1` a `CA-019.5` permanecem igualmente preservados como artefatos futuros.
-- Requisitos não funcionais padronizados como `RNF-001` a `RNF-020`.
-- Etapa 5 — Mapa do Domínio: concluída e validada.
-- Etapas 6 — Modelagem Conceitual (MER), 7 — DER e 8 — Modelo Físico: concluídas e validadas.
-- Etapa 9 — Arquitetura da Aplicação: concluída e validada.
-- Etapa 10 — Desenvolvimento da API: concluída no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`; lint, testes manuais e verificações Git aprovados. PHPUnit e validação WordPress/MySQL/MariaDB real permanecem pendentes por limitação ambiental.
-- Etapa 11 — Interface Web: não iniciada.
-- Etapa 12 — Testes: futura, responsável pela consolidação formal dos testes.
-- A associação de Categoria ao Compromisso Financeiro é opcional na V1; o compromisso pode ser cadastrado e permanecer sem categoria.
-- Restrição tecnológica consolidada para a V1: aplicação Web em PHP sobre WordPress, com backend específico em plugin próprio, infraestrutura REST do WordPress e banco relacional compatível com MySQL ou MariaDB.
-- Sistema operacional, editor e extensões de desenvolvimento não constituem restrições do SGFP, salvo exigência formal posterior.
-- Ferramentas como Composer, clientes HTTP para API, PHPUnit e utilitários de qualidade podem ser adotadas conforme a necessidade e a etapa autorizada; sua presença no roteiro técnico não as transforma em requisitos do produto.
-- A proteção básica das operações e recursos da API contra acesso não autorizado faz parte da V1; mecanismos técnicos concretos pertencem às etapas de Arquitetura e Desenvolvimento da API.
-- A cópia de segurança ordinária da V1 é criada manualmente e enviada ao e-mail cadastrado. Antes de uma restauração confirmada, o SGFP deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior; se essa preservação falhar, a restauração será cancelada. Essa proteção pontual não caracteriza backup automático periódico ou contínuo.
-- `ISSUE-007`: resolvida pela decisão de cópia de segurança automática pré-restauração, sem antecipar o mecanismo técnico de preservação.
-- `ISSUE-008`: a matriz direta Regra de Negócio → Requisito ainda não foi materializada; não bloqueia o início da Etapa 9, mas deverá ser concluída antes do fechamento da rastreabilidade de testes.
-- MER, DER, Modelo Físico, Arquitetura e implementação da API estão validados; a Etapa 11 permanece não iniciada.
-- Testes e verificações podem acompanhar o desenvolvimento quando a etapa correspondente estiver autorizada; a Etapa 12 permanece responsável pela consolidação formal da estratégia, casos, evidências, rastreabilidade e resultados de teste.
+- Baseline funcional vigente: `RF-001` a `RF-023`; 19 requisitos ativos na V1.
+- `RF-012`, `RF-013` e `RF-014` (Transferências) estão fora da V1 e preservados para versão futura.
+- `RF-019` (PIN) permanece futuro.
+- Cada usuário possui exatamente uma Conta Financeira, criada automaticamente como **Minha Conta**.
+- Saldo é derivado dos Lançamentos Financeiros ativos da conta; não existe saldo armazenado.
+- Patrimônio Total não integra a V1.
+- Backup manual é local, entregue por download em arquivo ZIP; backup não depende de e-mail.
+- Restauração permanece integral e protegida por cópia pré-restauração recuperável.
+- A V1 inclui **Resetar perfil financeiro** (mantém login) e **Excluir conta de acesso** (remove dados SGFP + login WordPress), ambas com dupla confirmação por frase em caixa alta.
+- A associação de Categoria ao Compromisso Financeiro é opcional.
+- Plataforma: PHP sobre WordPress, plugin próprio, WordPress REST API e MySQL/MariaDB.
+- Etapa 10 possui implementação baseada na baseline anterior e deverá ser reconciliada.
+- Etapa 11 está em andamento na branch de interface e também deverá ser reconciliada com esta baseline.
+- Fonte normativa da simplificação: `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
 
 As regras operacionais completas deste projeto estão em `ORCHESTRATOR.md`.

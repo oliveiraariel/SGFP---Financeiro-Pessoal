@@ -1,6 +1,6 @@
 schema_version: "1.0"
-manifest_version: "2.8"
-updated_at: "2026-09-11"
+manifest_version: "3.0"
+updated_at: "2026-09-14"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -53,8 +53,15 @@ product_constraints:
     automatic_bank_integration: false
     pin_enabled: false
     api_requires_authenticated_authorized_access: true
-    backup_delivery: "registered_user_email"
-    backup_restore_input: "user_provided_backup_file"
+    account_model: "exactly_one_auto_provisioned_account_named_Minha_Conta"
+    balance_model: "derived_from_active_entries_of_unique_account"
+    transfers_enabled: false
+    net_worth_enabled: false
+    backup_delivery: "local_zip_download"
+    backup_restore_input: "user_provided_zip_backup_file"
+    reset_profile_enabled: true
+    delete_login_enabled: true
+    destructive_confirmation: "two_step_with_exact_uppercase_phrase"
   future:
     pin: "optional application lock during an already authenticated session; reset by confirming account password"
   future_capabilities_are_not_v1_requirements: true
@@ -100,7 +107,7 @@ development_guidance:
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "stage_10_completed_validated_stage_11_not_started"
+  current_state: "stage_11_in_progress_baseline_reconciliation_required"
   last_completed_stage:
     id: 10
     name: "Desenvolvimento da API"
@@ -108,8 +115,8 @@ workflow:
     id: 11
     name: "Desenvolvimento da Interface Web"
   current_stage_gate:
-    status: "not_started"
-    reason: "A Etapa 11 não foi iniciada. A Etapa 10 foi concluída e validada no commit 362c4b947bbfceb171c75c9a71b943d50d1cfe14."
+    status: "in_progress"
+    reason: "A Etapa 11 possui implementação em andamento; a decisão de 14/09/2026 exige reconciliar documentação, API e frontend com a baseline de conta única, backup local, reset e exclusão."
     blockers: []
 
 stages:

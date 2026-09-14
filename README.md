@@ -6,6 +6,13 @@ O sistema está sendo desenvolvido de forma incremental, com documentação pré
 
 Esta árvore representa a versão documental reorganizada do projeto, preparada tanto para navegação humana quanto para futura utilização por agentes e orchestrators.
 
+## Baseline V1 simplificada — 14/09/2026
+
+A V1 vigente adota **uma única Conta Financeira por usuário**, criada automaticamente como **Minha Conta**. O saldo é derivado dos lançamentos dessa conta. Transferências e Patrimônio Total saíram da V1. Backup manual é local em ZIP. Configurações incluem reset do perfil financeiro e exclusão definitiva do login, ambos com dupla confirmação.
+
+Consulte `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
+
+
 ## Objetivo do Projeto
 
 O SGFP tem como objetivo permitir que o usuário organize sua vida financeira por meio do controle de:
