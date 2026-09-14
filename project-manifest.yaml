@@ -107,7 +107,7 @@ development_guidance:
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "stage_11_in_progress_baseline_reconciliation_required"
+  current_state: "stage_11_in_progress_backend_reconciled_frontend_reconciliation_required"
   last_completed_stage:
     id: 10
     name: "Desenvolvimento da API"
@@ -116,7 +116,7 @@ workflow:
     name: "Desenvolvimento da Interface Web"
   current_stage_gate:
     status: "in_progress"
-    reason: "A Etapa 11 possui implementação em andamento; a decisão de 14/09/2026 exige reconciliar documentação, API e frontend com a baseline de conta única, backup local, reset e exclusão."
+    reason: "A Etapa 10 foi reconciliada e validada na branch feat/stage-9-10-backend (Draft PR #12). A Etapa 11 possui implementação em andamento e ainda precisa ser reconciliada com a baseline de conta única, backup local, reset e exclusão e com o backend atualizado."
     blockers: []
 
 stages:
@@ -167,12 +167,12 @@ stages:
 
   - id: 10
     name: "Desenvolvimento da API"
-    status: "completed_validated"
+    status: "completed_reconciled_validated"
     path: "src/"
 
   - id: 11
     name: "Desenvolvimento da Interface Web"
-    status: "not_started"
+    status: "in_progress"
     path: "docs/interface-web/"
 
   - id: 12
@@ -483,7 +483,7 @@ known_issues:
       - "docs/arquitetura/"
       - "docs/api/"
       - "docs/interface-web/"
-    resolution: "Conta única Minha Conta; saldo derivado; Transferências e Patrimônio fora da V1; backup ZIP local; reset do perfil e exclusão do login com dupla confirmação. Código das Etapas 10/11 deve ser reconciliado."
+    resolution: "Conta única Minha Conta; saldo derivado; Transferências e Patrimônio fora da V1; backup ZIP local; reset do perfil e exclusão do login com dupla confirmação. A Etapa 10 foi reconciliada e validada na branch feat/stage-9-10-backend / Draft PR #12; a Etapa 11 permanece em reconciliação."
 
 resolved_consolidation_notes:
   - topic: "use_cases_location"
