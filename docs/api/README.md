@@ -1,13 +1,25 @@
 # Etapa 10 — Desenvolvimento da API
 
-Implementar as regras de negócio e disponibilizar os recursos da aplicação por meio da API. **Status da revisão de encerramento (12/09/2026): concluída; Stage 10 fechada.**
+**Status histórico:** concluída sobre a baseline anterior.  
+**Status atual:** **reconciliação obrigatória** após a baseline V1 simplificada de 14/09/2026.
 
-## Resultado autoritativo da revisão final
+A implementação existente ainda contém capacidades que deixaram de fazer parte da V1 e, por isso, não deve ser tratada como fonte normativa.
 
-- Superfícies REST implementadas incluem contas, categorias, compromissos, transferências, recorrências, relatórios, tema, `POST /backups`, `POST /restore-validations` e `POST /restorations`.
-- Autorização e isolamento foram inspecionados: as rotas usam `permission_callback` com `use_sgfp`, os serviços exigem capability/usuário atual e os repositórios recebem o `userId` para escopo.
-- Backup manual implementa coleta transacional, lock por usuário, gzip e AEAD Sodium; validação implementa limite, proprietário, staging privado e hash.
-- `POST /restorations` agora valida novamente o token, cria o snapshot pré-restauração sob lock, substitui integralmente os dados e o tema numa transação InnoDB, verifica invariantes, consome o token uma única vez e só então limpa cache e tenta enviar o snapshot por e-mail.
-- Evidência: `git diff --check`, lint PHP completo e seis testes manuais passaram. PHPUnit/composer não foi executado porque `composer` não está disponível; a validação MySQL/WordPress real permanece pendente de ambiente.
+## Migrações necessárias
 
-**Gate Etapa 10:** aprovado para os contratos e implementação disponíveis neste ambiente. Stage 11 permanece não iniciada.
+- substituir múltiplas contas/roles por uma conta única provisionada como **Minha Conta**;
+- remover superfícies e serviços de Transferência da V1;
+- remover consulta de Patrimônio Total/net-worth da V1;
+- adaptar Compromisso/Lançamento para a conta única;
+- adaptar esquema/migrações de seis para cinco tabelas financeiras;
+- trocar backup gzip/e-mail por entrega local em ZIP, preservando proteção/integridade;
+- manter restauração integral e snapshot pré-restauração, sem envio por e-mail;
+- implementar RF-022 (Resetar perfil financeiro);
+- implementar RF-023 (Excluir conta de acesso).
+
+## Regra de precedência
+
+Enquanto a migração não ocorrer:
+**documentação normativa revisada > implementação antiga**.
+
+Não remover mecanismos de segurança/isolamento apenas para simplificar. A simplificação é funcional/estrutural, não redução de proteção.

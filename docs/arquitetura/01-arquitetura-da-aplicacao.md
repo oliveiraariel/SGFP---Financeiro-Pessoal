@@ -2,9 +2,9 @@
 
 **Etapa:** 9 — Arquitetura da Aplicação
 
-**Status:** baseline validada em 11/09/2026; gate integral da Etapa 9 aprovado; pronta para subsidiar a Etapa 10 — Desenvolvimento da API
+**Status:** baseline revisada em 14/09/2026; implementação das Etapas 10/11 requer reconciliação com esta revisão
 
-**Baseline:** `RF-001` a `RF-018`, `RF-020` e `RF-021` ativos; `RF-019` futuro
+**Baseline:** RF-001 a RF-023; RF-012 a RF-014 e RF-019 futuros/inativos
 **Data:** 10/09/2026
 
 ## 1. Finalidade, autoridade e limite
@@ -23,13 +23,13 @@ As regras de negócio, requisitos, Casos de Uso e o [Modelo Físico validado](..
 - tabelas próprias InnoDB compatíveis com MySQL/MariaDB para os dados financeiros;
 - isolamento por usuário em toda leitura e mutação privada;
 - integridade transacional para efeitos financeiros relacionados;
-- saldos, patrimônio e Dashboard sempre derivados;
+- saldo e Dashboard sempre derivados;
 - recorrência exclusivamente mensal e histórico anterior preservado;
-- backup ordinário manual e proteção automática somente antes de restauração confirmada.
+- uma Conta Financeira por usuário, provisionada automaticamente como `Minha Conta`;\n- backup ordinário manual por ZIP para download local e proteção automática pré-restauração;\n- reset do perfil e exclusão da conta de acesso com dupla confirmação.
 
 ### Fora desta arquitetura V1
 
-PIN, integração bancária, sincronização ou armazenamento externo obrigatório, relatórios específicos, anexos, aplicativo móvel, código do plugin, contrato OpenAPI final e interface Web. Não se define exclusão de usuário nem remoção automática dos dados na desinstalação.
+PIN, múltiplas contas, transferências, Patrimônio Total, integração bancária, sincronização/armazenamento externo obrigatório, relatórios específicos e aplicativo móvel.
 
 ## 3. Contexto e fronteiras de confiança
 
@@ -37,7 +37,7 @@ PIN, integração bancária, sincronização ou armazenamento externo obrigatór
 Navegador
    │ HTTPS + cookie de sessão + nonce REST
    ▼
-WordPress ── identidade, sessão, capabilities, REST e e-mail
+WordPress ── identidade, sessão, capabilities, REST e e-mail de recuperação
    │
    ▼
 Plugin SGFP ── casos de uso, autorização de recurso e regras financeiras
@@ -68,7 +68,7 @@ Application Service (caso de uso)
       ↓
 Políticas e valores de domínio necessários
       ↓
-Portas de saída (repositories, transação, relógio, e-mail, backup, log)
+Portas de saída (repositories, transação, relógio, backup, identidade WordPress, log)
       ↑
 Adaptadores WordPress / MySQL-MariaDB / filesystem
 ```
@@ -91,18 +91,17 @@ src/
   Bootstrap/                 ativação, compatibilidade, composição e hooks
   Rest/                      rotas, schemas, Controllers e ErrorMapper
   Application/
-    Accounts/               contas, saldo inicial, saldos e patrimônio
+    Accounts/               conta única, saldo inicial e saldo
     Categories/             categorias e desvinculação
     Commitments/            compromissos, efetivação e desfazimento
     Recurrences/            projeção e comandos sobre ocorrências mensais
-    Transfers/              transferências e seus dois efeitos
     Reporting/              movimentações e Dashboard
     Preferences/            tema do usuário
-    Backup/                 exportação, validação e restauração
+    Backup/                 ZIP local, validação e restauração
   Domain/                   políticas e Value Objects justificados
   Infrastructure/
     Persistence/            repositories, transações, locks e migrações
-    WordPress/              usuário atual, capability, e-mail e usermeta
+    WordPress/              usuário atual, capability, recuperação de senha e usermeta
     Backup/                 codec, proteção e storage privado
     Observability/          correlação e eventos técnicos
 tests/
@@ -192,41 +191,36 @@ Mapeamento: `400` formato inválido; `401` sem sessão; `403` capability insufic
 
 ### 7.2 Superfícies V1
 
-| Capacidade | Superfície relativa a `/sgfp/v1` | Regra de contrato |
+| Capacidade | Superfície relativa a `/sgfp/v1` | Regra |
 | --- | --- | --- |
-| Identidade/senha | handler WordPress adaptado para login/alteração/recuperação; `POST /onboarding` somente para completar provisionamento | login somente por e-mail + senha; falha de autenticação uniforme; alteração exige senha atual + confirmação; nenhuma credencial é persistida pelo SGFP |
-| Contas | `GET/POST /accounts`; `GET/PATCH /accounts/{id}` | o papel na criação depende da decisão humana registrada em 17.1; `PATCH` apenas renomeia; sem troca de papel ou `DELETE` na V1 |
-| Saldo inicial | `POST /accounts/{id}/initial-balance` | somente Principal; cria o lançamento técnico previsto no Modelo Físico |
-| Categorias | `GET/POST /categories`; `PATCH/DELETE /categories/{id}` | exclusão desvincula compromissos atomicamente |
-| Compromissos simples | `GET/POST /commitments`; `GET/PATCH/DELETE /commitments/{id}` | efetivado exige desfazimento antes de editar/excluir |
-| Efetivação simples | `POST /commitments/{id}/effectuation`; `POST /commitments/{id}/undo-effectuation` | comando idempotente sem duplicar efeito |
-| Transferências simples | `GET/POST /transfers`; `GET/PATCH/DELETE /transfers/{id}` | natureza derivada; não aceita secundária–secundária |
-| Efetivação de transferência | `POST /transfers/{id}/effectuation`; `POST /transfers/{id}/undo-effectuation` | resposta somente após os dois efeitos |
-| Ocorrências recorrentes | `GET/PATCH/DELETE /recurrences/{id}/occurrences/{month}` | `GET` projeta sem gravar; mutações exigem `scope=occurrence|series_from_month` |
-| Efetivação recorrente | `POST /recurrences/{id}/occurrences/{month}/effectuation`; `POST .../undo-effectuation` | comando materializa a ocorrência sob transação quando necessário |
-| Consultas | `GET /movements`; `GET /net-worth`; `GET /dashboard` | somente leitura, filtrada por período/conta aplicável |
-| Tema | `GET/PUT /preferences/theme` | apenas `light` ou `dark` |
-| Backup | `POST /backups`; `GET /backups/pre-restore`; `GET /backups/pre-restore/{id}/file` | manual por e-mail; listagem/arquivo somente do usuário atual |
-| Restauração | `POST /restore-validations`; `POST /restorations` | validar/resumir primeiro; confirmar por token depois |
+| Identidade/senha | fluxos WordPress + `POST /onboarding` quando necessário | login por e-mail/senha; provisionamento cria conta/categorias |
+| Conta | `GET /account`; `PATCH /account` | uma única conta; sem `POST` de conta adicional e sem `DELETE` isolado |
+| Saldo inicial | `POST /account/initial-balance` | cria lançamento `SALDO_INICIAL` na conta única |
+| Categorias | `GET/POST /categories`; `PATCH/DELETE /categories/{id}` | categoria opcional; exclusão desvincula compromissos |
+| Compromissos | `GET/POST /commitments`; `GET/PATCH/DELETE /commitments/{id}` | efetivado exige desfazimento para editar/excluir |
+| Efetivação | `POST /commitments/{id}/effectuation`; `POST .../undo-effectuation` | efeito somente via Lançamento |
+| Recorrências | rotas de ocorrência/série | periodicidade mensal; leitura não grava |
+| Consultas | `GET /movements`; `GET /dashboard` | saldo e projeções derivados; sem `/net-worth` |
+| Tema | `GET/PUT /preferences/theme` | `light|dark` |
+| Backup | `POST /backups` | retorna/download de ZIP local; sem e-mail |
+| Restauração | `POST /restore-validations`; `POST /restorations` | valida primeiro; substituição integral protegida |
+| Reset | `POST /profile-reset-validations`; `POST /profile-reset` | dupla confirmação + `RESETAR PERFIL` |
+| Excluir conta | `POST /account-deletion-validations`; `DELETE /account-access` | dupla confirmação + `EXCLUIR CONTA`; remove dados + login |
 
-Ao criar compromisso ou transferência recorrente, a resposta inclui `recurrence_id` e `month`. Consultas mensais retornam a mesma referência lógica para ocorrência já persistida ou apenas projetada. Cartão e parcelamento usam compromisso/recorrência; não ganham recurso próprio. Lançamentos não têm criação genérica: surgem de efetivação ou saldo inicial.
-
-O OpenAPI da Etapa 10 detalhará campos, limites e exemplos sem mudar essas superfícies ou regras sem revisão arquitetural.
+RF-012 a RF-014 não possuem superfície V1. A implementação atual que ainda expõe transferências ou múltiplas contas deverá ser removida/migrada.
 
 ### 7.3 Representações mínimas
 
 | Recurso | Campos públicos estáveis |
 | --- | --- |
-| conta | `id`, `name`, `role`, `created_at`; `balance` apenas como projeção |
+| conta | `id`, `name`, `created_at`; `balance` somente projeção |
 | categoria | `id`, `name`, `created_at` |
-| compromisso | `id`, `name`, `amount`, `nature`, `month`, `status`, `category_id` anulável e referência de recorrência anulável |
-| recorrência | `id`, `starts_in`, `months_count` anulável, `ended_in` anulável; periodicidade não é escolhível na V1 |
-| transferência | campos do compromisso mais `source_account_id` e `target_account_id`; `nature` é derivada e somente leitura |
+| compromisso | `id`, `name`, `amount`, `nature`, `month`, `status`, `category_id` anulável, recorrência anulável |
+| recorrência | `id`, `starts_in`, `months_count` anulável, `ended_in` anulável |
 | lançamento | `id`, `commitment_id` anulável, `account_id`, `origin`, `name`, `amount`, `effect`, `effective_at`, `description`, `state`, `undone_at` |
-| Dashboard | `month`, `opening_balance`, `expected_inflows`, `expected_outflows`, `expected_closing_balance` e compromissos componentes |
-| validação de restauração | token, expiração, origem/data da cópia e contagens; nunca caminho, chave ou conteúdo interno |
-
-Campos derivados ou somente leitura não são aceitos como autoridade em comandos. Obrigatoriedade por operação, comprimentos e exemplos pertencem ao OpenAPI, subordinado a estas representações e ao Modelo Físico.
+| Dashboard | `month`, `opening_balance`, `expected_inflows`, `expected_outflows`, `expected_closing_balance`, compromissos |
+| backup | arquivo ZIP autenticado/versionado |
+| validação de restauração | token, expiração, origem/data e resumo; nunca chave/conteúdo interno |
 
 ### 7.4 Fronteira com clientes
 
@@ -238,7 +232,7 @@ O navegador V1 opera na mesma origem WordPress com cookie e `X-WP-Nonce`; CORS a
 
 ### 8.1 Adaptação fiel
 
-Permanecem as seis estruturas oficiais: `CONTA_FINANCEIRA`, `CATEGORIA`, `RECORRENCIA`, `COMPROMISSO_FINANCEIRO`, `TRANSFERENCIA` e `LANCAMENTO_FINANCEIRO`, com colunas, FKs compostas, `CHECK`, índices e colunas geradas do Modelo Físico.
+Permanecem cinco estruturas financeiras oficiais: `CONTA_FINANCEIRA`, `CATEGORIA`, `RECORRENCIA`, `COMPROMISSO_FINANCEIRO` e `LANCAMENTO_FINANCEIRO`. `TRANSFERENCIA` foi retirada da V1. `CONTA_FINANCEIRA.FK_ID_USUARIO` é único.
 
 Na instalação real, nomes usam `$wpdb->prefix` mais prefixo lógico `sgfp_`; a tabela de usuários é obtida por `$wpdb->users`. Um `TableNames` central produz somente identificadores conhecidos. Valores sempre usam consultas preparadas. Posts, postmeta e usermeta não substituem as tabelas financeiras; usermeta permanece apenas para preferência de tema.
 
@@ -269,9 +263,9 @@ Constraints únicas defendem contra repetição concorrente. Deadlock/timeout se
 
 Todo Service mutável, o backup manual e a restauração adquirem o mesmo `UserOperationLock` antes da primeira operação de banco relativa ao usuário. A chave é calculada no servidor a partir do usuário efetivo; o lock possui espera de aquisição limitada, pertence à conexão única da unidade de trabalho e é liberado explicitamente. Falha, timeout ou perda da conexão/posse do lock encerram a operação sem nova tentativa implícita e sem alteração parcial.
 
-Para produzir um backup, depois de adquirir o lock, o `BackupService` inicia na mesma conexão uma transação somente leitura em `REPEATABLE READ` com snapshot consistente. Todas as consultas às seis tabelas InnoDB, filtradas pelo usuário, são consumidas pelo `BackupCodec` dentro dessa única visão; o tema SGFP também é lido enquanto o lock permanece retido. A transação de leitura só termina depois que o último registro lógico foi serializado no contêiner temporário protegido. Nenhum Repository do exportador pode abrir outra conexão ou executar uma leitura fora dessa transação.
+Para produzir um backup, depois de adquirir o lock, o `BackupService` inicia na mesma conexão uma transação somente leitura em `REPEATABLE READ` com snapshot consistente. Todas as consultas às cinco tabelas financeiras InnoDB, filtradas pelo usuário, são consumidas pelo `BackupCodec` dentro dessa única visão; o tema SGFP também é lido enquanto o lock permanece retido. A transação de leitura só termina depois que o último registro lógico foi serializado no contêiner temporário protegido. Nenhum Repository do exportador pode abrir outra conexão ou executar uma leitura fora dessa transação.
 
-Se uma mutação obtiver o lock primeiro, o backup começa apenas depois de seu commit e representa o estado posterior completo. Se o backup obtiver o lock primeiro, a mutação aguarda ou recebe conflito após o timeout e o contêiner representa integralmente o estado anterior. Assim, nenhuma cópia pode combinar registros de antes e depois da mesma mutação. A etapa de e-mail ocorre fora do lock e não altera o ponto temporal já capturado.
+Se uma mutação obtiver o lock primeiro, o backup começa apenas depois de seu commit e representa o estado posterior completo. Se o backup obtiver o lock primeiro, a mutação aguarda ou recebe conflito após o timeout e o contêiner representa integralmente o estado anterior. Assim, nenhuma cópia pode combinar registros de antes e depois da mesma mutação. A entrega do ZIP ao navegador ocorre depois da captura/validação e não altera o ponto temporal capturado.
 
 Na restauração, o mesmo lock permanece sob a mesma conexão desde a captura da cópia `pre_restore` até o commit ou rollback da substituição integral. A transação somente leitura da captura e a transação de escrita da restauração são distintas, mas não existe intervalo desbloqueado entre elas; portanto, nenhuma mutação pode ocorrer entre o estado preservado e o estado imediatamente substituído.
 
@@ -279,15 +273,13 @@ Na restauração, o mesmo lock permanece sob a mesma conexão desde a captura da
 
 ### 10.1 Compromisso e lançamento
 
-Compromisso padrão pendente incide sobre a Conta Principal. Efetivação bloqueia o compromisso, confirma `PENDENTE`, cria um lançamento `ATIVO` de mesma natureza e muda para `EFETIVADO` na mesma transação. Desfazimento bloqueia compromisso e efeito ativo, marca o lançamento `DESFEITO`, preenche `DESFEITO_EM` e retorna o compromisso a `PENDENTE`; o histórico não é apagado.
+Compromisso pendente incide sobre a Conta Financeira única. Criar o compromisso não altera saldo. A efetivação cria um Lançamento `ATIVO` de mesma natureza e muda o compromisso para `EFETIVADO` na mesma transação. O desfazimento marca o lançamento como `DESFEITO`, preenche `DESFEITO_EM` e retorna o compromisso a `PENDENTE`.
 
-Saldo inicial é comando próprio: apenas Conta Principal, `ORIGEM=SALDO_INICIAL`, `TIPO_EFEITO=ENTRADA`, no máximo um ativo por conta e valor inclusive negativo ou zero. Conta Secundária recebe composição inicial somente por transferência.
+Saldo inicial é comando próprio na conta única: `ORIGEM=SALDO_INICIAL`, `TIPO_EFEITO=ENTRADA`, no máximo um ativo por conta, valor positivo, zero ou negativo.
 
-### 10.2 Transferência
+### 10.2 Transferência — fora da V1
 
-Criação persiste `COMPROMISSO_FINANCEIRO(TIPO=TRANSFERENCIA)` e `TRANSFERENCIA` na mesma transação. O Service exige contas distintas do mesmo usuário e par Principal–Secundária. A natureza é derivada: Principal → Secundária é `SAIDA`; Secundária → Principal é `ENTRADA`.
-
-Efetivação gera atomicamente dois lançamentos ativos, de mesmo nome e valor: `SAIDA` na origem e `ENTRADA` no destino. Insuficiência de saldo não bloqueia. Desfazimento marca os dois efeitos como desfeitos e retorna o compromisso a pendente. Estado unilateral nunca é confirmado ao cliente.
+Não há fluxo arquitetural de Transferência na V1. RF-012 a RF-014 permanecem somente como possibilidade futura.
 
 ## 11. Recorrência mensal sem efeitos em consultas
 
@@ -304,53 +296,50 @@ Adota-se **snapshot mensal com projeção de leitura e materialização por coma
 9. quantidade determinada limita o último mês elegível; recorrência encerrada não reativa;
 10. ocorrência efetivada precisa ser desfeita antes de edição/exclusão; comandos sobre a série falham sem alteração se houver ocorrência efetivada no intervalo afetado.
 
-Para transferência recorrente, compromisso e especialização são projetados/materializados juntos. A estratégia atende planejamento futuro e `CA-011.4` sem cron, horizonte arbitrário ou escrita causada por `GET`.
+A estratégia atende planejamento futuro dos Compromissos recorrentes sem cron, horizonte arbitrário ou escrita causada por `GET`.
 
-## 12. Saldos, patrimônio e Dashboard
+## 12. Saldo e Dashboard
 
-Repositories de consulta calculam com `DECIMAL`, considerando somente lançamentos `ATIVO`:
+Repositories calculam com `DECIMAL`, considerando somente Lançamentos `ATIVO`:
 
 - saldo da conta = entradas menos saídas;
 - saldo de abertura = efeitos anteriores ao primeiro instante do mês;
-- patrimônio = soma dos saldos das contas do usuário;
 - saldo final previsto = saldo de abertura + entradas previstas − saídas previstas;
 - Dashboard = composição dessas projeções e compromissos do período.
 
-Os dois efeitos de uma transferência se anulam no patrimônio. Não existe tabela ou cache autoritativo de saldo/Dashboard. Cache futuro, se comprovadamente necessário, será descartável, escopado ao usuário e invalidado por toda mutação relevante.
+Não existe tabela/cache autoritativo de saldo. Patrimônio Total não integra a V1.
 
-## 13. Backup manual e restauração protegida
+## 13. Backup local, restauração, reset e exclusão
 
 ### 13.1 Formato e proteção
 
-O backup será um contêiner lógico versionado, produzido em streaming, contendo metadados, origem `manual|pre_restore`, usuário proprietário, tema e dados SGFP necessários. Referências internas não dependem dos IDs físicos. Credenciais, hashes de senha, cookies, nonces, logs e dados de outros usuários são excluídos.
-
-`BackupProtector` usa criptografia autenticada com Sodium e chave exclusiva do SGFP fornecida por configuração protegida fora do banco e do arquivo. `BackupStore` grava em diretório privado fora do document root, com nome imprevisível, permissões mínimas e troca atômica. O arquivo só é preservado após ser reaberto, autenticado, decifrado e validado.
-
-Essa escolha protege confidencialidade e integridade, mas vincula a restauração à disponibilidade da chave configurada. Custódia, cópia operacional e rotação da chave devem ser aprovadas no gate; sem esse procedimento, a implementação de `RF-021` não pode ser considerada recuperável.
-
-O catálogo privado, em option não autoload, guarda apenas identificador opaco, usuário, origem, data, versão, hash e localização interna. Arquivo e catálogo precisam ser confirmados; falha remove o artefato incompleto. Rotas de recuperação expõem apenas cópias `pre_restore` do usuário atual e mantêm o arquivo cifrado.
+O backup é um contêiner lógico versionado e protegido, entregue ao usuário dentro de **ZIP**. Credenciais, senha/hash, cookies, nonces, logs e dados de outros usuários são excluídos. O ZIP é embalagem; integridade/confidencialidade do conteúdo continuam sob `BackupProtector` (Sodium ou mecanismo equivalente aprovado).
 
 ### 13.2 Backup manual
 
-O Service adquire o `UserOperationLock`, abre a transação somente leitura com snapshot consistente definida na seção 9 e exporta, por streaming, todos os dados do usuário dentro dessa visão. Depois de finalizar, reabrir, autenticar, decifrar e validar o contêiner temporário protegido, encerra a transação e libera o lock; somente então solicita envio ao e-mail de `wp_users`. Falha de leitura, serialização, proteção ou validação encerra a transação, descarta o temporário incompleto e não envia uma cópia parcial.
-
-Sucesso do envio significa aceitação pelo transporte WordPress, não garantia de entrega externa. O temporário manual é removido após o fluxo; não há agendamento periódico. Retenção do lock não abrange o transporte de e-mail nem altera as decisões humanas ainda pendentes sobre limites de volume ou duração.
+Sob `UserOperationLock`, o Service captura snapshot consistente das cinco tabelas financeiras e preferências SGFP, serializa/protege, valida o artefato e então disponibiliza o ZIP para download autenticado pelo navegador. Não há envio por e-mail nem retenção periódica do backup manual no servidor.
 
 ### 13.3 Restauração
 
-1. receber arquivo em staging privado, com limites de bytes e registros e sem passar por uploads públicos;
-2. validar por streaming e formato próprio, sem `unserialize`, inclusão de PHP ou extração de caminhos; autenticar/decriptar e verificar versão, proprietário, schema, enums, referências e completude, sem mutar estado;
-3. retornar resumo e token opaco, curto, de uso único, ligado ao usuário, hash do arquivo e expiração;
-4. após confirmação, adquirir o lock do usuário na conexão da unidade de trabalho e revalidar token/arquivo;
-5. nessa conexão, abrir transação somente leitura com snapshot consistente, exportar o estado atual como `pre_restore` e encerrá-la somente após finalizar o contêiner lógico protegido;
-6. sem liberar o lock, preservar o contêiner, reabrir, autenticar, decifrar e validar; qualquer falha cancela antes de tocar nos dados atuais;
-7. ainda sob o mesmo lock, iniciar uma transação de escrita e substituir integralmente os dados SGFP e o tema do usuário, remapeando referências internas;
-8. verificar contagens, integridade e estado importado antes do commit; falha provoca rollback;
-9. após commit ou rollback, liberar o lock; no sucesso, invalidar caches WordPress e tentar enviar a cópia pré-restauração por e-mail. Falha isolada de e-mail é registrada e não reverte a restauração.
+1. receber ZIP em staging privado;
+2. validar tamanho, formato, proteção, versão, proprietário, schema e referências sem mutar dados;
+3. retornar resumo/token opaco;
+4. após confirmação, adquirir lock e revalidar;
+5. gerar e preservar cópia `pre_restore` recuperável antes de qualquer substituição;
+6. se a cópia falhar, cancelar;
+7. substituir integralmente dados SGFP e preferências em transação;
+8. verificar invariantes antes do commit;
+9. disponibilizar a cópia `pre_restore` para download local conforme política de retenção temporária.
 
-Não há mesclagem. Se a captura, proteção, persistência ou validação da cópia pré-restauração falhar, a transação de escrita não começa e o estado atual permanece inalterado. Se a substituição falhar, seu rollback preserva esse estado e a cópia `pre_restore` já validada pode permanecer como evidência recuperável. Perda do lock ou da conexão antes do commit causa cancelamento/rollback, nunca continuação em nova conexão.
+Não há mesclagem e não há dependência de e-mail.
 
-A cópia pré-restauração permanece no storage privado mesmo se o e-mail falhar. Conforme `DEC-004`, a V1 mantém uma única cópia por 24 horas ou até a próxima tentativa de restauração, o que ocorrer primeiro; o catálogo deve registrar e aplicar essa expiração sem permitir acesso cruzado. Falha isolada de e-mail não reverte a restauração.
+### 13.4 Reset do perfil
+
+Reset exige duas etapas, com frase final exata `RESETAR PERFIL`. Sob lock/transação, remove os dados SGFP e preferências e reprovisiona `Minha Conta` + categorias padrão. A identidade WordPress permanece.
+
+### 13.5 Exclusão da conta de acesso
+
+Exclusão exige duas etapas, com frase final exata `EXCLUIR CONTA`. O serviço remove dados SGFP em ordem segura e conclui a remoção da identidade/login WordPress. A operação somente pode ser reportada como concluída quando o acesso estiver efetivamente encerrado.
 
 ## 14. Observabilidade e privacidade
 
@@ -394,19 +383,20 @@ Testes podem acompanhar a Etapa 10. A Etapa 12 consolida estratégia, evidência
 
 ### Revisão funcional desta proposta
 
-| Baseline ativa | Cobertura arquitetural revisada |
+| Baseline ativa | Cobertura arquitetural |
 | --- | --- |
-| `RF-001`, `RF-002`, `RF-003` | fluxos WordPress, login exclusivamente por e-mail e senha, erro uniforme, alteração mediante senha atual e confirmação, provisionamento e contexto autenticado |
-| `RF-004`, `RF-005` | contas sem exclusão, saldo inicial e projeções derivadas |
-| `RF-006`, `RF-007`, `RF-008` | compromissos, efetivação/desfazimento e recorrência mensal |
-| `RF-009`, `RF-010`, `RF-011` | categorias opcionais, lançamentos e consulta sem escrita |
-| `RF-012`, `RF-013`, `RF-014` | transferências e dois efeitos atômicos, inclusive recorrentes |
-| `RF-015` e `RF-016` | cartão/parcelamento reutilizam compromissos e recorrência |
-| `RF-017` e `RF-018` | Dashboard e navegação por período como projeções |
-| `RF-020` | tema em `usermeta` do usuário atual |
-| `RF-021` | backup manual, e-mail e restauração integral protegida |
+| RF-001 a RF-003 | identidade WordPress, autenticação, senha e provisionamento |
+| RF-004, RF-005 | conta única, saldo inicial por lançamento e saldo derivado |
+| RF-006 a RF-011 | compromissos, recorrência, categorias, lançamentos e consultas |
+| RF-012 a RF-014 | **fora da V1** |
+| RF-015 a RF-018 | casos específicos, Dashboard e períodos |
+| RF-019 | **futuro** |
+| RF-020 | tema |
+| RF-021 | ZIP local + restauração integral protegida |
+| RF-022 | reset do perfil |
+| RF-023 | exclusão da conta de acesso |
 
-Não foi encontrada capacidade ativa sem componente ou superfície correspondente. `RF-019` permanece explicitamente fora da V1. A revisão preservou categoria opcional, ausência de exclusão de conta, saldo negativo permitido, histórico por desfazimento e ausência de escrita em consultas.
+A implementação antiga de múltiplas contas/transferências/net-worth/backup por e-mail é dívida de migração após esta revisão.
 
 ### Revisão de segurança desta proposta
 
@@ -431,20 +421,20 @@ Não foi identificado bloqueador de segurança para validar o desenho. As decis�
 | `ARQ-002` | REST → Controller → Service → portas/Repository | `DEP-004`, `RNF-015` |
 | `ARQ-003` | identidade/sessão WordPress; login somente por e-mail e senha, falha uniforme e troca protegida por senha atual e confirmação; usuário financeiro só do contexto | `RF-001` a `RF-003`; `UC-002`, `UC-003`; `RNF-001` a `RNF-003` |
 | `ARQ-004` | capability + autorização escopada por recurso | `RNF-001`, `RNF-003`, `RNF-004` |
-| `ARQ-005` | seis tabelas próprias prefixadas e fiéis ao Modelo Físico | Etapas 6–8, `DEP-002` |
+| `ARQ-005` | cinco tabelas financeiras; conta única por `UNIQUE(FK_ID_USUARIO)` | Etapas 6–8, `DEP-002` |
 | `ARQ-006` | migrador versionado com verificação de capacidade | `RNF-005`, `RNF-020` |
 | `ARQ-007` | unidade transacional por caso de uso crítico | `RNF-005`, `RNF-006` |
 | `ARQ-008` | lançamento ativo/desfeito preserva histórico | `RF-007`, `RF-010`, `RNF-007` |
-| `ARQ-009` | recorrência por projeção de leitura e materialização por comando | `RF-008`, `RF-014`, `RF-016`, `CA-011.4` |
-| `ARQ-010` | transferência confirma dois efeitos atômicos | `RF-012`, `RF-013`; `TRF-RN-001` a `TRF-RN-024` |
-| `ARQ-011` | saldo, patrimônio e Dashboard derivados | `RF-005`, `RF-017`, `RE-010` |
-| `ARQ-012` | backup lógico versionado e cifrado/autenticado | `RF-021`, `RNF-017`, `RNF-018` |
+| `ARQ-009` | recorrência por projeção de leitura e materialização por comando | `RF-008`, `RF-016`, `CA-011.4` |
+| `ARQ-010` | exatamente uma Conta Financeira por usuário | `RF-004`, `RE-005` |
+| `ARQ-011` | saldo e Dashboard derivados | `RF-005`, `RF-017`, `RE-010` |
+| `ARQ-012` | backup lógico protegido entregue em ZIP local | `RF-021`, `RNF-017`, `RNF-018` |
 | `ARQ-013` | storage privado recuperável antes da restauração | `CA-021.6`, `CA-021.9` a `CA-021.11` |
 | `ARQ-014` | lock por usuário e snapshot transacional impedem estado misto no backup e excluem mutações durante restauração | `RNF-005`, `RNF-006`; `CA-021.2`, `CA-021.5` a `CA-021.9` |
 | `ARQ-015` | erros estáveis e observabilidade redigida | `RNF-004`, `RNF-019` |
-| `ARQ-016` | provisionamento inicial idempotente | `RF-001`, `RF-009`, `CA-009.1` |
+| `ARQ-016` | provisionamento inicial idempotente de Minha Conta + categorias | `RF-001`, `RF-004`, `RF-009` |
 | `ARQ-017` | implantação V1 em WordPress single-site | `DEP-001`, `DEP-005`, `RNF-014` |
-| `ARQ-018` | lifecycle falha fechado e desinstalação preserva dados | integridade; gate Etapa 9 |
+| `ARQ-018` | reset e exclusão de acesso usam confirmação explícita e limpeza coordenada | `RF-022`, `RF-023` |
 | `ARQ-019` | navegador same-origin; REST como única fronteira SGFP | `DEP-004`, `RNF-001`, `RNF-020` |
 
 ## 17. Alternativas, riscos e decisões humanas registradas
@@ -453,13 +443,14 @@ As decisões abaixo foram tomadas em 11/09/2026 e incorporadas a esta baseline. 
 
 ### 17.1 Decisões registradas
 
-| ID | Tema | Decisão | Rastreabilidade |
-| --- | --- | --- | --- |
-| `DEC-001` | Conta Principal | A primeira conta criada torna-se automaticamente `PRINCIPAL`. Contas subsequentes são `SECUNDARIA`. Compromissos normais incidem na `PRINCIPAL` por padrão; transferências limitam-se ao par `PRINCIPAL`–`SECUNDARIA`. | Modelo Físico `CONTA_FINANCEIRA.PAPEL`; `RF-005`; `UC-005` |
-| `DEC-002` | Exclusão de usuário | Permitida com **dupla confirmação** e **apagamento total** da identidade WordPress e dos dados SGFP. A exclusão só ocorre após confirmação explícita de que o usuário está ciente da perda total dos dados. | `RF-001` a `RF-003`; integridade referencial do Modelo Físico (sem `ON DELETE CASCADE`) |
-| `DEC-003` | Matriz de compatibilidade | PHP **8.1+**, WordPress **6.4+**, MySQL **8.0.16+** ou MariaDB **10.6+**, WordPress single-site. Navegadores: 2 últimas versões de Chrome, Firefox, Safari e Edge; IE não suportado. | `RNF-001`, `RNF-003`, `RNF-014`, `DEP-001`, `DEP-005` |
-| `DEC-004` | Backup e restauração | Chave via variável de ambiente `SGFP_BACKUP_KEY` (fallback para KMS/secret manager). Formato JSON compactado com gzip. Cópia pré-restauração: **1 snapshot**, mantido por **24 horas** ou até a próxima tentativa de restauração. Limite de anexo por e-mail: **25 MB** (aviso em 20 MB). | `RF-021`, `RNF-017`, `RNF-018`; `CA-021.6` a `CA-021.11` |
-| `DEC-005` | Categorias iniciais | Conjunto mínimo criado automaticamente na primeira conta: **Receitas**: Salário, Investimentos, Outras Receitas; **Despesas**: Moradia, Alimentação, Transporte, Saúde, Educação, Lazer, Vestuário, Serviços, Impostos, Outras Despesas. | `RF-011`; `UC-011`; associação opcional a compromissos |
+| ID | Tema | Decisão |
+| --- | --- | --- |
+| DEC-001 | Conta | exatamente uma conta, criada como `Minha Conta`; renomeável; sem papel principal/secundária |
+| DEC-002 | Operações destrutivas | reset preserva login; exclusão remove dados + login; ambas com dupla confirmação |
+| DEC-003 | Compatibilidade | mantém matriz técnica previamente aprovada |
+| DEC-004 | Backup | ZIP local; conteúdo protegido/versionado; pre_restore temporário recuperável; sem e-mail |
+| DEC-005 | Categorias iniciais | conjunto padrão permanece provisionado por usuário |
+| DEC-006 | Transferências/Patrimônio | ambos fora da V1 |
 
 ### 17.2 Alternativas não adotadas
 
@@ -472,9 +463,9 @@ As decisões abaixo foram tomadas em 11/09/2026 e incorporadas a esta baseline. 
 | saldo | coluna/cache autoritativo | cria segunda fonte de verdade |
 | restauração | validar enquanto importa ou depender só do e-mail | viola atomicidade e recuperação prévia |
 | arquitetura | serviços distribuídos | complexidade operacional sem necessidade demonstrada |
-| Conta Principal | escolha explícita obrigatória na primeira conta | aumenta fricção sem ganho demonstrado na V1 |
+| múltiplas contas | manter Principal/Secundárias na V1 | complexidade removida pela decisão de conta única |
 | Exclusão de usuário | retenção/anonimização dos dados financeiros | exige política formal de privacidade fora do escopo V1 |
-| Backup | retenção longa ou múltiplos snapshots | aumenta espaço e complexidade operacional; 1 snapshot/24h é suficiente para proteção pré-restauração |
+| Backup | envio por e-mail | dependência desnecessária; V1 usa download local em ZIP |
 
 ## 18. Referências técnicas verificadas
 

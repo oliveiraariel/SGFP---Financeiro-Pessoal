@@ -10,7 +10,7 @@ A Arquitetura considera as restrições consolidadas da V1 — PHP sobre WordPre
 
 ## Artefato
 
-- [Arquitetura da Aplicação V1](01-arquitetura-da-aplicacao.md) — ciclo de vida do plugin, fronteiras de confiança, componentes, dependências, contratos REST, integração WordPress, persistência, concorrência, recorrência sem escrita em consultas, transferências, cálculos derivados, backup/restauração, observabilidade, revisões funcional e de segurança, riscos e decisões humanas registradas (`DEC-001` a `DEC-005`).
+- [Arquitetura da Aplicação V1](01-arquitetura-da-aplicacao.md) — arquitetura V1 revisada: conta única, compromissos/lançamentos, recorrência, backup ZIP local, restauração, reset/exclusão e segurança.
 
 ## Condição para avanço
 
