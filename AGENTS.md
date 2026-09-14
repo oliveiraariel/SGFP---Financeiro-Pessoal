@@ -4,8 +4,10 @@ Antes de qualquer tarefa neste repositório:
 
 1. Leia `ORCHESTRATOR.md`.
 2. Leia `project-manifest.yaml`.
-3. Leia `docs/governanca/continuidade-de-contexto.md`.
-4. Consulte somente os documentos necessários em `docs/`.
+3. Leia `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
+4. Leia `docs/governanca/status-implementacao-v1-2026-09-14.md`.
+5. Leia `docs/governanca/continuidade-de-contexto.md`.
+6. Consulte somente os documentos necessários em `docs/`.
 5. Para tarefas de modelagem, use `docs/dominio/01-mapa-de-dominio.md` como entrada da Etapa 5 já validada, sem tratá-lo como substituto das regras de negócio, requisitos ou Casos de Uso.
 6. Para tarefas que envolvam processo, sequência de etapas ou gates, consulte `docs/projeto/plano-de-desenvolvimento.md`.
 7. Para preparação técnica ou tarefas das Etapas 8 a 12, consulte `docs/projeto/roteiro-tecnico-de-implementacao.md` somente como guia auxiliar; ele não substitui fontes canônicas, decisões da etapa correspondente nem autoriza antecipar gates.
