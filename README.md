@@ -76,7 +76,7 @@ Os Casos de Uso também foram organizados individualmente para facilitar manuten
 
 As Etapas 5 — Mapa do Domínio, 6 — Modelagem Conceitual (MER), 7 — Modelo Entidade-Relacionamento (DER) e 8 — Modelo Físico foram concluídas e validadas.
 
-As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram concluídas e validadas. A implementação da Etapa 10 está registrada no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`; lint, testes manuais e verificações Git foram aprovados. PHPUnit e validação WordPress/MySQL/MariaDB real permanecem pendentes por limitação ambiental. A Etapa 11 não foi iniciada e a Etapa 12 permanece futura para consolidação formal dos testes.
+As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram concluídas originalmente sobre a baseline anterior. Em 14/09/2026, a documentação de requisitos, domínio, modelagem e arquitetura foi revisada para a baseline simplificada. A implementação da Etapa 10 agora requer reconciliação com essa baseline. A Etapa 11 — Interface Web está em andamento na branch `feat/stage-11-web-interface` e também requer reconciliação. A Etapa 12 permanece futura para consolidação formal dos testes.
 
 ## Estrutura do Repositório
 
@@ -124,7 +124,7 @@ Contém:
 
 ### `docs/dominio/`
 
-Reservado ao Mapa do Domínio.
+Contém o Mapa do Domínio vigente, revisado para a baseline simplificada.
 
 ### `docs/modelagem-dados/`
 
@@ -137,15 +137,15 @@ Contém a documentação e os artefatos validados da modelagem de dados:
 
 ### `docs/arquitetura/`
 
-Reservado para a documentação da arquitetura da aplicação.
+Contém a arquitetura da aplicação vigente e sua revisão de 14/09/2026.
 
 ### `docs/api/`
 
-Reservado para desenvolvimento e documentação da API.
+Contém a documentação da API implementada e o plano explícito de reconciliação com a nova baseline.
 
 ### `docs/interface-web/`
 
-Reservado para desenvolvimento da interface Web.
+Contém a documentação da Interface Web em andamento e seus alvos de reconciliação.
 
 ### `docs/testes/`
 
@@ -167,6 +167,8 @@ Os principais pontos de entrada para compreender o SGFP são:
 * `docs/modelagem-dados/01-modelagem-conceitual-mer.md`
 * `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`
 * `docs/modelagem-dados/03-modelo-fisico.md`
+* `docs/governanca/baseline-v1-simplificada-2026-09-14.md`
+* `docs/governanca/PROMPT-RETOMADA.md`
 * `docs/governanca/relatorio-de-consolidacao.md`
 
 ## Fonte de Verdade
@@ -203,7 +205,7 @@ Permanece aberta a `ISSUE-008`, referente à materialização da matriz direta R
 
 ## Tecnologias
 
-A arquitetura técnica será consolidada na etapa correspondente.
+A arquitetura técnica está consolidada documentalmente e foi revisada em 14/09/2026; a implementação deve ser reconciliada com essa baseline.
 
 Já estão definidos como direcionamentos da Versão 1:
 
