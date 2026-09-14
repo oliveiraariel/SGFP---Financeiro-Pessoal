@@ -10,18 +10,18 @@ Leia, nesta ordem:
 2. `ORCHESTRATOR.md`;
 3. `project-manifest.yaml`;
 4. `docs/governanca/baseline-v1-simplificada-2026-09-14.md`;
-5. `docs/governanca/continuidade-de-contexto.md`;
-6. `docs/requisitos/srs/03-requisitos-funcionais.md`;
-7. `docs/requisitos/srs/07-criterios-de-aceitacao.md`;
-8. `docs/casos-de-uso/catalogo.csv`;
-9. `docs/dominio/01-mapa-de-dominio.md`;
-10. `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
-11. `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`;
-12. `docs/modelagem-dados/03-modelo-fisico.md`;
-13. `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
-14. `docs/api/README.md`;
-15. `docs/interface-web/README.md`;
-16. `docs/governanca/status-implementacao-v1-2026-09-14.md`;
+5. `docs/governanca/status-implementacao-v1-2026-09-14.md`;
+6. `docs/governanca/continuidade-de-contexto.md`;
+7. `docs/requisitos/srs/03-requisitos-funcionais.md`;
+8. `docs/requisitos/srs/07-criterios-de-aceitacao.md`;
+9. `docs/casos-de-uso/catalogo.csv`;
+10. `docs/dominio/01-mapa-de-dominio.md`;
+11. `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
+12. `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`;
+13. `docs/modelagem-dados/03-modelo-fisico.md`;
+14. `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
+15. `docs/api/README.md`;
+16. `docs/interface-web/README.md`;
 17. `HANDOFF.md` quando houver trabalho técnico em continuidade.
 
 ## 2. Baseline vigente que deve ser confirmada
