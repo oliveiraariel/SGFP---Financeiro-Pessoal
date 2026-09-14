@@ -13,11 +13,16 @@ A decisão humana de 14/09/2026 simplificou a V1. Esta seção **prevalece sobre
 - restauração integral por ZIP com cópia pré-restauração recuperável;
 - RF-022/UC-023: Resetar perfil financeiro, preservando login, dupla confirmação + `RESETAR PERFIL`;
 - RF-023/UC-024: Excluir conta de acesso, removendo dados + login WordPress, dupla confirmação + `EXCLUIR CONTA`;
-- Etapa 10: implementação histórica concluída, agora precisa ser migrada à nova baseline;
-- Etapa 11: frontend em andamento e precisa ser reconciliado;
+- Etapa 10: backend reconciliado e validado na branch `feat/stage-9-10-backend`, registrado no Draft PR #12;
+- Etapa 11: frontend em andamento e ainda precisa ser reconciliado com a baseline e com o backend atualizado;
+- a branch 9–10 permanece aberta para ajustes legítimos descobertos durante a integração da Etapa 11;
 - documentos textuais de MER/DER/Modelo Físico de 14/09 prevalecem sobre imagens/binários antigos até regeneração.
 
-Fonte: `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
+Fontes atuais:
+- `docs/governanca/baseline-v1-simplificada-2026-09-14.md`;
+- `docs/governanca/status-implementacao-v1-2026-09-14.md`;
+- Draft PR #11 — reconciliação documental;
+- Draft PR #12 — reconciliação do backend 9–10.
 
 ---
 
