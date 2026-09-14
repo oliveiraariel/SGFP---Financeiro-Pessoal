@@ -21,6 +21,7 @@ use SGFP\Application\Services\UndoCommitmentSettlementService;
 use SGFP\Application\Services\ThemeService;
 use SGFP\Application\Services\ProvisionUserService;
 use SGFP\Application\Services\ResetProfileService;
+use SGFP\Application\Services\DeleteAccountService;
 use SGFP\Infrastructure\WordPress\WpAccountRepository;
 use SGFP\Infrastructure\WordPress\WpCategoryRepository;
 use SGFP\Infrastructure\WordPress\WpCommitmentRepository;
@@ -31,6 +32,7 @@ use SGFP\Infrastructure\WordPress\WpRecurrenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserPreferenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserOperationLock;
 use SGFP\Infrastructure\WordPress\WpUserDataPurger;
+use SGFP\Infrastructure\WordPress\WpUserIdentityDeleter;
 use SGFP\Application\Backup\BackupArchive;
 use SGFP\Application\Backup\BackupPayloadBuilder;
 use SGFP\Application\Backup\BackupProtector;
@@ -110,10 +112,19 @@ final class Routes
             new ThemeService(new WpUserPreferenceRepository(), $userContext)
         );
 
+        $userDataPurger = new WpUserDataPurger();
+
         $profileController = new ProfileController(
             new ResetProfileService(
-                new WpUserDataPurger(),
+                $userDataPurger,
                 new ProvisionUserService($accountRepository, $categoryRepository),
+                $transactionManager,
+                new WpUserOperationLock(),
+                $userContext,
+            ),
+            new DeleteAccountService(
+                $userDataPurger,
+                new WpUserIdentityDeleter(),
                 $transactionManager,
                 new WpUserOperationLock(),
                 $userContext,
@@ -379,6 +390,16 @@ final class Routes
         register_rest_route(self::NAMESPACE, '/profile-reset', [
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => [$profileController, 'reset'],
+            'permission_callback' => [$profileController, 'permissionCheck'],
+            'args' => [
+                'confirmation' => ['required' => true, 'type' => 'boolean'],
+                'phrase' => ['required' => true, 'type' => 'string'],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/account-access', [
+            'methods' => \WP_REST_Server::DELETABLE,
+            'callback' => [$profileController, 'deleteAccount'],
             'permission_callback' => [$profileController, 'permissionCheck'],
             'args' => [
                 'confirmation' => ['required' => true, 'type' => 'boolean'],
