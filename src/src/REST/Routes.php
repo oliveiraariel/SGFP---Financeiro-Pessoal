@@ -19,6 +19,8 @@ use SGFP\Application\Services\SetInitialBalanceService;
 use SGFP\Application\Services\SettleCommitmentService;
 use SGFP\Application\Services\UndoCommitmentSettlementService;
 use SGFP\Application\Services\ThemeService;
+use SGFP\Application\Services\ProvisionUserService;
+use SGFP\Application\Services\ResetProfileService;
 use SGFP\Infrastructure\WordPress\WpAccountRepository;
 use SGFP\Infrastructure\WordPress\WpCategoryRepository;
 use SGFP\Infrastructure\WordPress\WpCommitmentRepository;
@@ -28,6 +30,7 @@ use SGFP\Infrastructure\WordPress\WpUserContext;
 use SGFP\Infrastructure\WordPress\WpRecurrenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserPreferenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserOperationLock;
+use SGFP\Infrastructure\WordPress\WpUserDataPurger;
 use SGFP\Application\Backup\BackupArchive;
 use SGFP\Application\Backup\BackupPayloadBuilder;
 use SGFP\Application\Backup\BackupProtector;
@@ -44,6 +47,7 @@ use SGFP\REST\Controllers\ReportingController;
 use SGFP\REST\Controllers\ThemeController;
 use SGFP\REST\Controllers\BackupController;
 use SGFP\REST\Controllers\RestoreController;
+use SGFP\REST\Controllers\ProfileController;
 
 final class Routes
 {
@@ -104,6 +108,16 @@ final class Routes
 
         $themeController = new ThemeController(
             new ThemeService(new WpUserPreferenceRepository(), $userContext)
+        );
+
+        $profileController = new ProfileController(
+            new ResetProfileService(
+                new WpUserDataPurger(),
+                new ProvisionUserService($accountRepository, $categoryRepository),
+                $transactionManager,
+                new WpUserOperationLock(),
+                $userContext,
+            )
         );
 
         $preferenceRepository = new WpUserPreferenceRepository();
@@ -359,6 +373,16 @@ final class Routes
             'args' => [
                 'token' => ['required' => true, 'type' => 'string'],
                 'confirmation' => ['required' => true, 'type' => 'boolean'],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/profile-reset', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$profileController, 'reset'],
+            'permission_callback' => [$profileController, 'permissionCheck'],
+            'args' => [
+                'confirmation' => ['required' => true, 'type' => 'boolean'],
+                'phrase' => ['required' => true, 'type' => 'string'],
             ],
         ]);
 
