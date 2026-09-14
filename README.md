@@ -76,7 +76,7 @@ Os Casos de Uso também foram organizados individualmente para facilitar manuten
 
 As Etapas 5 — Mapa do Domínio, 6 — Modelagem Conceitual (MER), 7 — Modelo Entidade-Relacionamento (DER) e 8 — Modelo Físico foram concluídas e validadas.
 
-As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram concluídas originalmente sobre a baseline anterior. Em 14/09/2026, a documentação de requisitos, domínio, modelagem e arquitetura foi revisada para a baseline simplificada. A implementação da Etapa 10 agora requer reconciliação com essa baseline. A Etapa 11 — Interface Web está em andamento na branch `feat/stage-11-web-interface` e também requer reconciliação. A Etapa 12 permanece futura para consolidação formal dos testes.
+As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram concluídas originalmente sobre a baseline anterior. Em 14/09/2026, a documentação foi revisada para a baseline simplificada e o backend da Etapa 10 foi posteriormente reconciliado e validado na branch `feat/stage-9-10-backend`, documentado no Draft PR #12. A Etapa 11 — Interface Web está em andamento na branch `feat/stage-11-web-interface` e ainda requer reconciliação com a nova baseline e com o backend atualizado. A Etapa 12 permanece futura para consolidação formal dos testes.
 
 ## Estrutura do Repositório
 
@@ -141,7 +141,7 @@ Contém a arquitetura da aplicação vigente e sua revisão de 14/09/2026.
 
 ### `docs/api/`
 
-Contém a documentação da API implementada e o plano explícito de reconciliação com a nova baseline.
+Contém a documentação da API reconciliada com a nova baseline, incluindo o estado técnico validado da branch 9–10 e a referência ao Draft PR #12.
 
 ### `docs/interface-web/`
 
@@ -205,7 +205,7 @@ Permanece aberta a `ISSUE-008`, referente à materialização da matriz direta R
 
 ## Tecnologias
 
-A arquitetura técnica está consolidada documentalmente e foi revisada em 14/09/2026; a implementação deve ser reconciliada com essa baseline.
+A arquitetura técnica está consolidada documentalmente e foi revisada em 14/09/2026; o backend da Etapa 10 já foi reconciliado e validado, enquanto a Etapa 11 ainda precisa ser alinhada a essa baseline.
 
 Já estão definidos como direcionamentos da Versão 1:
 
