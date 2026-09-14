@@ -27,7 +27,7 @@ Resumo:
 - `dominio/` — Mapa do Domínio vigente.
 - `modelagem-dados/` — MER, DER, Modelo Físico e artefatos.
 - `arquitetura/` — arquitetura da aplicação revisada.
-- `api/` — documentação da API e reconciliação requerida.
+- `api/` — documentação da API reconciliada e seu estado de validação.
 - `interface-web/` — documentação da Etapa 11 em andamento.
 - `testes/` — preparação e futura consolidação formal da Etapa 12.
 - `governanca/` — baseline, continuidade, proveniência, inventário e controle documental.
@@ -35,11 +35,11 @@ Resumo:
 ## Estado de desenvolvimento
 
 - Etapas 5–9: documentação revisada para a baseline de 14/09/2026.
-- Etapa 10: implementação existente, construída sobre baseline anterior; requer migração/reconciliação.
-- Etapa 11: em andamento na branch `feat/stage-11-web-interface`; requer reconciliação.
+- Etapa 10: backend reconciliado e validado na branch `feat/stage-9-10-backend`, registrado no Draft PR #12.
+- Etapa 11: em andamento na branch `feat/stage-11-web-interface`; ainda requer reconciliação com a baseline e com o backend atualizado.
 - Etapa 12: futura para consolidação formal dos testes.
 
-A presença de código já implementado não torna a implementação antiga fonte normativa quando divergir da baseline vigente.
+A implementação validada da Etapa 10 não substitui as fontes normativas de negócio, mas representa o backend técnico reconciliado com elas. Código remanescente da Etapa 11 que reflita a baseline antiga deve ser tratado como legado a reconciliar.
 
 ## Governança
 
