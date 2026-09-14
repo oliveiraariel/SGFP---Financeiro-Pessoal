@@ -52,11 +52,11 @@ final class CreateCommitmentService
         $commitmentType = CommitmentType::tryFrom($type);
 
         if ($commitmentType === null) {
-            throw new \InvalidArgumentException('O tipo deve ser PADRAO ou TRANSFERENCIA.');
+            throw new \InvalidArgumentException('O tipo deve ser PADRAO.');
         }
 
         if ($commitmentType === CommitmentType::TRANSFERENCIA) {
-            throw new \InvalidArgumentException('Transferências devem ser criadas pelo fluxo próprio de transferência.');
+            throw new \InvalidArgumentException('Transferências não integram a V1.');
         }
 
         $commitmentNature = CommitmentNature::tryFrom($nature);

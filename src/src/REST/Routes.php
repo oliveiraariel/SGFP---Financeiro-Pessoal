@@ -6,7 +6,6 @@ namespace SGFP\REST;
 
 use SGFP\Application\Services\CreateCategoryService;
 use SGFP\Application\Services\CreateCommitmentService;
-use SGFP\Application\Services\CreateTransferService;
 use SGFP\Application\Services\CreateBackupService;
 use SGFP\Application\Services\ValidateBackupService;
 use SGFP\Application\Services\RevalidateRestorationService;
@@ -20,9 +19,7 @@ use SGFP\Application\Services\SeedCategoriesService;
 use SGFP\Application\Services\SetInitialBalanceService;
 use SGFP\Application\Services\SettleCommitmentService;
 use SGFP\Application\Services\UndoCommitmentSettlementService;
-use SGFP\Application\Services\SettleTransferService;
 use SGFP\Application\Services\ThemeService;
-use SGFP\Application\Services\UndoTransferSettlementService;
 use SGFP\Infrastructure\WordPress\WpAccountRepository;
 use SGFP\Infrastructure\WordPress\WpCategoryRepository;
 use SGFP\Infrastructure\WordPress\WpCommitmentRepository;
@@ -44,7 +41,6 @@ use SGFP\REST\Controllers\CommitmentController;
 use SGFP\REST\Controllers\RecurrenceController;
 use SGFP\REST\Controllers\ReportingController;
 use SGFP\REST\Controllers\ThemeController;
-use SGFP\REST\Controllers\TransferController;
 use SGFP\REST\Controllers\BackupController;
 use SGFP\REST\Controllers\RestoreController;
 
@@ -82,11 +78,6 @@ final class Routes
 
         $transferRepository = new WpTransferRepository();
 
-        $transferController = new TransferController(
-            new CreateTransferService($accountRepository, $commitmentRepository, $transferRepository, $transactionManager, $userContext),
-            new SettleTransferService($commitmentRepository, $transferRepository, $entryRepository, $transactionManager, $userContext),
-            new UndoTransferSettlementService($commitmentRepository, $transferRepository, $entryRepository, $transactionManager, $userContext)
-        );
 
         $recurrenceController = new RecurrenceController(
             new MaterializeRecurrenceOccurrenceService($recurrenceRepository, $commitmentRepository, $transactionManager, $userContext),
@@ -217,7 +208,7 @@ final class Routes
                 'type' => [
                     'required' => true,
                     'type' => 'string',
-                    'enum' => ['PADRAO', 'TRANSFERENCIA'],
+                    'enum' => ['PADRAO'],
                 ],
                 'nature' => [
                     'required' => true,
@@ -260,59 +251,6 @@ final class Routes
             ],
         ]);
 
-        register_rest_route(self::NAMESPACE, '/transfers', [
-            'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => [$transferController, 'create'],
-            'permission_callback' => [$transferController, 'permissionCheck'],
-            'args' => [
-                'name' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'sanitize_callback' => 'sanitize_text_field',
-                ],
-                'amount' => [
-                    'required' => true,
-                    'type' => 'string',
-                ],
-                'reference_month' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'pattern' => '^\d{4}-\d{2}$',
-                ],
-                'source_account_id' => [
-                    'required' => true,
-                    'type' => 'integer',
-                ],
-                'target_account_id' => [
-                    'required' => true,
-                    'type' => 'integer',
-                ],
-            ],
-        ]);
-
-        register_rest_route(self::NAMESPACE, '/transfers/(?P<id>\d+)/effectuation', [
-            'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => [$transferController, 'settle'],
-            'permission_callback' => [$transferController, 'permissionCheck'],
-            'args' => [
-                'id' => [
-                    'required' => true,
-                    'type' => 'integer',
-                ],
-            ],
-        ]);
-
-        register_rest_route(self::NAMESPACE, '/transfers/(?P<id>\d+)/undo-effectuation', [
-            'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => [$transferController, 'undo'],
-            'permission_callback' => [$transferController, 'permissionCheck'],
-            'args' => [
-                'id' => [
-                    'required' => true,
-                    'type' => 'integer',
-                ],
-            ],
-        ]);
 
         register_rest_route(self::NAMESPACE, '/recurrences/(?P<id>\d+)/occurrences/(?P<month>\d{4}-\d{2})', [
             'methods' => \WP_REST_Server::READABLE,
