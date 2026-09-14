@@ -14,6 +14,6 @@ A Arquitetura considera as restrições consolidadas da V1 — PHP sobre WordPre
 
 ## Condição para avanço
 
-O gate original da Etapa 9 foi aprovado em 11/09/2026. A Etapa 10 foi implementada sobre a baseline anterior e agora requer reconciliação com a revisão de 14/09/2026. A Etapa 11 — Interface Web está em andamento e também requer essa reconciliação.
+O gate original da Etapa 9 foi aprovado em 11/09/2026. A Etapa 10 foi reconciliada com a revisão de 14/09/2026 na branch `feat/stage-9-10-backend` e validada por lint, PHPUnit e integração WordPress + MySQL, conforme Draft PR #12. A Etapa 11 — Interface Web está em andamento e ainda requer reconciliação com essa arquitetura e com os contratos atualizados do backend.
 
 A pendência `ISSUE-008` continua não bloqueadora para a Etapa 9, mas deverá ser resolvida antes do fechamento integral da rastreabilidade na Etapa 12.
