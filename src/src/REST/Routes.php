@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SGFP\REST;
 
-use SGFP\Application\Services\CreateAccountService;
 use SGFP\Application\Services\CreateCategoryService;
 use SGFP\Application\Services\CreateCommitmentService;
 use SGFP\Application\Services\CreateTransferService;
@@ -24,7 +23,6 @@ use SGFP\Application\Services\UndoCommitmentSettlementService;
 use SGFP\Application\Services\SettleTransferService;
 use SGFP\Application\Services\ThemeService;
 use SGFP\Application\Services\UndoTransferSettlementService;
-use SGFP\Domain\Policies\AccountPolicy;
 use SGFP\Infrastructure\WordPress\WpAccountRepository;
 use SGFP\Infrastructure\WordPress\WpCategoryRepository;
 use SGFP\Infrastructure\WordPress\WpCommitmentRepository;
@@ -62,11 +60,9 @@ final class Routes
         $commitmentRepository = new WpCommitmentRepository();
         $entryRepository = new WpEntryRepository();
         $transactionManager = new WpTransactionManager();
-        $accountPolicy = new AccountPolicy($accountRepository);
         $seedCategories = new SeedCategoriesService($categoryRepository);
 
         $accountController = new AccountController(
-            new CreateAccountService($accountRepository, $userContext, $accountPolicy, $seedCategories),
             new ListAccountsService($accountRepository, $userContext),
             new SetInitialBalanceService($accountRepository, $entryRepository, $transactionManager, $userContext)
         );
@@ -143,24 +139,6 @@ final class Routes
             new WpRestorationTokenStore(),
             $userContext,
         ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext, new WpUserOperationLock(), $snapshotCapture, new WpRestorationTokenClaim(), new WpRestorationTokenStore(), new \SGFP\Application\Backup\StagedBackupDecoder(), new \SGFP\Application\Backup\RestorationImportPlanner(), $restorer));
-
-        register_rest_route(self::NAMESPACE, '/accounts', [
-            'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => [$accountController, 'create'],
-            'permission_callback' => [$accountController, 'permissionCheck'],
-            'args' => [
-                'name' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'sanitize_callback' => 'sanitize_text_field',
-                ],
-                'role' => [
-                    'required' => false,
-                    'type' => 'string',
-                    'enum' => ['PRINCIPAL', 'SECUNDARIA'],
-                ],
-            ],
-        ]);
 
         register_rest_route(self::NAMESPACE, '/accounts', [
             'methods' => \WP_REST_Server::READABLE,
