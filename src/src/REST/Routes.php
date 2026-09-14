@@ -28,8 +28,9 @@ use SGFP\Infrastructure\WordPress\WpUserContext;
 use SGFP\Infrastructure\WordPress\WpRecurrenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserPreferenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserOperationLock;
-use SGFP\Infrastructure\WordPress\WpTransferRepository;
 use SGFP\Application\Backup\BackupArchive;
+use SGFP\Application\Backup\BackupPayloadBuilder;
+use SGFP\Application\Backup\BackupProtector;
 use SGFP\Infrastructure\WordPress\WpBackupStore;
 use SGFP\Infrastructure\WordPress\WpRestorationTokenClaim;
 use SGFP\Infrastructure\WordPress\WpRestorationTokenStore;
@@ -76,8 +77,6 @@ final class Routes
             new UndoCommitmentSettlementService($commitmentRepository, $entryRepository, $transactionManager, $userContext)
         );
 
-        $transferRepository = new WpTransferRepository();
-
 
         $recurrenceController = new RecurrenceController(
             new MaterializeRecurrenceOccurrenceService($recurrenceRepository, $commitmentRepository, $transactionManager, $userContext),
@@ -107,28 +106,39 @@ final class Routes
             new ThemeService(new WpUserPreferenceRepository(), $userContext)
         );
 
-        $backupController = new BackupController(new CreateBackupService(
+        $preferenceRepository = new WpUserPreferenceRepository();
+        $backupPayloadBuilder = new BackupPayloadBuilder(
             $accountRepository,
             $categoryRepository,
             $commitmentRepository,
             $entryRepository,
             $recurrenceRepository,
-            new WpUserPreferenceRepository(),
+            $preferenceRepository,
+        );
+
+        $backupController = new BackupController(new CreateBackupService(
+            $backupPayloadBuilder,
             $transactionManager,
             $userContext,
             new WpUserOperationLock(),
+            new BackupProtector(),
             new BackupArchive(),
         ));
+
         $snapshotCapture = new CapturePreRestorationSnapshotService(
-            $accountRepository, $categoryRepository, $commitmentRepository, $entryRepository,
-            $recurrenceRepository, $transferRepository, new WpUserPreferenceRepository(),
-            $transactionManager, $userContext, new WpUserOperationLock(), new WpBackupStore()
+            $backupPayloadBuilder,
+            $transactionManager,
+            $userContext,
+            new WpUserOperationLock(),
+            new WpBackupStore(),
+            new BackupProtector(),
+            new BackupArchive(),
         );
         $restorer = new RestoreFromImportPlanService(new WpRestorationPersistence(), $transactionManager, new WpRestorationTokenClaim());
         $restoreController = new RestoreController(new ValidateBackupService(
             new WpRestorationTokenStore(),
             $userContext,
-        ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext, new WpUserOperationLock(), $snapshotCapture, new WpRestorationTokenClaim(), new WpRestorationTokenStore(), new \SGFP\Application\Backup\StagedBackupDecoder(), new \SGFP\Application\Backup\RestorationImportPlanner(), $restorer));
+        ), new RevalidateRestorationService($preferenceRepository, $userContext, new WpUserOperationLock(), $snapshotCapture, new WpRestorationTokenClaim(), new WpRestorationTokenStore(), new \SGFP\Application\Backup\StagedBackupDecoder(), new \SGFP\Application\Backup\RestorationImportPlanner(), $restorer));
 
         register_rest_route(self::NAMESPACE, '/accounts', [
             'methods' => \WP_REST_Server::READABLE,

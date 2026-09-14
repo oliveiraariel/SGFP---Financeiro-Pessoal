@@ -98,5 +98,9 @@ final class Plugin
         if (!extension_loaded('sodium')) {
             wp_die(esc_html__('SGFP requer a extensão PHP sodium.', 'sgfp'));
         }
+
+        if (!class_exists(\ZipArchive::class)) {
+            wp_die(esc_html__('SGFP requer a extensão PHP zip.', 'sgfp'));
+        }
     }
 }

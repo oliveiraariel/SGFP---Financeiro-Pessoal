@@ -24,7 +24,7 @@ final class RestoreController
             }
             $content = file_get_contents((string) $file['tmp_name']);
             if ($content === false) throw new \InvalidArgumentException('Não foi possível ler o arquivo.');
-            return new \WP_REST_Response($this->service->validate(trim($content)), 200);
+            return new \WP_REST_Response($this->service->validate($content), 200);
         } catch (\InvalidArgumentException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], 400);
         } catch (\RuntimeException $e) {
