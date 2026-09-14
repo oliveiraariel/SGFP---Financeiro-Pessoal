@@ -42,7 +42,7 @@ A alteração do nome da categoria não modificará os compromissos vinculados a
 
 As categorias terão apenas a função de organizar compromissos financeiros.
 
-Elas não representarão movimentações financeiras e não influenciarão diretamente os cálculos de saldo ou patrimônio.
+Elas não representarão movimentações financeiras e não influenciarão diretamente os cálculos de saldo.
 
 **RN-006**
 

@@ -127,3 +127,17 @@ Os aspectos relacionados à arquitetura, mecanismos concretos de autorização d
 **Data de Revisão**
 
 30/08/2026
+
+
+## Atualização de segurança — 14/09/2026
+
+### Operações destrutivas
+- **Resetar perfil financeiro** exige duas etapas de confirmação e a frase exata `RESETAR PERFIL`.
+- **Excluir conta** exige duas etapas de confirmação e a frase exata `EXCLUIR CONTA`.
+- Nenhuma dessas operações pode ser executada por clique único.
+- Exclusão de conta remove dados SGFP e identidade/login WordPress; reset preserva a identidade.
+
+### Backup local
+- Backup da V1 é entregue por download local em ZIP.
+- E-mail não é canal de entrega de backup.
+- O conteúdo do backup deve continuar protegido contra adulteração e acesso não autorizado.

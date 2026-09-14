@@ -6,7 +6,7 @@ O SGFP — Sistema de Gestão Financeira Pessoal é uma aplicação destinada ao
 
 ## 2.2 Objetivo do Sistema
 
-Permitir que o usuário organize contas, compromissos, categorias, recorrências, lançamentos e transferências, acompanhando a situação financeira de cada período e o impacto das movimentações nos saldos e no patrimônio.
+Permitir que o usuário organize sua Conta Financeira única, compromissos, categorias, recorrências e lançamentos, acompanhando a situação financeira de cada período e o impacto das movimentações no saldo.
 
 ## 2.3 Escopo da Versão 1
 
@@ -17,7 +17,6 @@ A Versão 1 contempla:
 - categorias;
 - recorrências mensais;
 - lançamentos financeiros;
-- transferências;
 - casos específicos de compromissos, como cartão de crédito e parcelamentos;
 - Dashboard;
 - configurações;

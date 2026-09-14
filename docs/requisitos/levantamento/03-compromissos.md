@@ -48,11 +48,8 @@ Nas transferências, a natureza será determinada pelo sentido da operação em 
 
 Haverá uma única conta definida como principal pelo usuário.
 
-Todos os compromissos financeiros incidirão sobre a conta principal.
+Todos os compromissos financeiros incidirão sobre a Conta Financeira única do usuário.
 
-As contas secundárias não receberão compromissos financeiros diretamente.
-
-As contas secundárias somente receberão movimentações de entrada e saída provenientes da conta principal.
 
 ### RN-006
 
@@ -69,7 +66,7 @@ Compromissos financeiros já pagos não poderão ser alterados diretamente.
 
 Para realizar qualquer alteração, o usuário deverá primeiro desfazer o pagamento.
 
-Ao desfazer o pagamento, a movimentação financeira correspondente será desfeita e o saldo da conta principal será recalculado.
+Ao desfazer o pagamento, a movimentação financeira correspondente será desfeita e o saldo da Conta Financeira será recalculado.
 
 Após isso, o compromisso voltará ao estado pendente e poderá ser editado normalmente.
 
@@ -98,11 +95,9 @@ Essa funcionalidade permitirá representar situações em que determinado compro
 - Todo compromisso financeiro possuirá obrigatoriamente um valor.
 - Todo compromisso financeiro será classificado como Entrada ou Saída.
 - Nos compromissos padrão, a natureza será definida pelo usuário.
-- Nas transferências, a natureza será determinada pelo sentido da operação em relação à Conta Principal: Principal → Secundária = Saída; Secundária → Principal = Entrada.
-- Haverá uma única conta principal.
-- Todos os compromissos financeiros incidirão sobre a conta principal.
-- Contas secundárias não receberão compromissos financeiros diretamente.
-- Contas secundárias somente receberão movimentações de entrada e saída provenientes da conta principal.
+- Transferências não integram a V1.
+- Haverá exatamente uma Conta Financeira por usuário.
+- Todos os compromissos financeiros incidirão sobre a Conta Financeira única do usuário.
 - Compromissos pendentes poderão ser alterados ou removidos.
 - Compromissos pagos ficarão protegidos contra alterações e exclusões.
 - Para alterar ou remover um compromisso pago será necessário desfazer previamente o pagamento.
@@ -119,7 +114,7 @@ Essa funcionalidade permitirá representar situações em que determinado compro
 - Exclusão apenas do mês atual ou dos meses seguintes para compromissos recorrentes.
 - Proteção contra alteração de compromissos já pagos.
 - Possibilidade de desfazer um pagamento para permitir alterações.
-- Recalcular automaticamente o saldo da conta principal após desfazer um pagamento.
+- Recalcular automaticamente o saldo da Conta Financeira após desfazer um pagamento.
 
 ## Funcionalidades Previstas para Versões Futuras
 

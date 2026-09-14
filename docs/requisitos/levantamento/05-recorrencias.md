@@ -56,7 +56,7 @@ Um compromisso recorrente que já tenha sido pago não poderá ter seu valor alt
 
 Para realizar a alteração, o usuário deverá primeiro desfazer o pagamento.
 
-Ao desfazer o pagamento, a movimentação financeira correspondente será desfeita e o saldo da conta principal será recalculado.
+Ao desfazer o pagamento, a movimentação financeira correspondente será desfeita e o saldo da Conta Financeira será recalculado.
 
 **RN-011**
 
