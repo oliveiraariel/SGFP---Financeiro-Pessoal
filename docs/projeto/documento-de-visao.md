@@ -51,7 +51,9 @@ Serão desenvolvidos:
 - recuperação de senha por e-mail;
 - criação manual de cópia de segurança local em ZIP;
 - restauração integral por arquivo ZIP;
-- preservação do estado imediatamente anterior por cópia pré-restauração recuperável;\n- reset do perfil financeiro com preservação do login;\n- exclusão definitiva da conta de acesso com dupla confirmação;
+- preservação do estado imediatamente anterior por cópia pré-restauração recuperável;
+- reset do perfil financeiro com preservação do login;
+- exclusão definitiva da conta de acesso com dupla confirmação;
 - API REST;
 - interface Web.
 

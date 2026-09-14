@@ -733,7 +733,8 @@ Principais atualizações:
 1. Formalização do uso de PHP sobre WordPress na Versão 1.
 2. Definição do backend específico do SGFP como plugin próprio, utilizando a infraestrutura REST do WordPress.
 3. Manutenção da autenticação da Versão 1 exclusivamente por e-mail e senha.
-4. Transferência da proteção opcional por PIN para versão futura.\n7. Simplificação de 14/09/2026: conta única, Transferências e Patrimônio fora da V1, backup local ZIP, reset e exclusão de acesso.
+4. Transferência da proteção opcional por PIN para versão futura.
+7. Simplificação de 14/09/2026: conta única, Transferências e Patrimônio fora da V1, backup local ZIP, reset e exclusão de acesso.
 5. Consolidação futura do PIN como mecanismo de bloqueio rápido durante uma sessão já autenticada, sem substituir a autenticação principal.
 6. Retirada da recuperação de PIN por e-mail do escopo planejado.
 7. Preservação dos identificadores RF-019 e UC-018 como itens futuros, sem renumeração dos requisitos e casos de uso posteriores.

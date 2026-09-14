@@ -25,7 +25,9 @@ As regras de negócio, requisitos, Casos de Uso e o [Modelo Físico validado](..
 - integridade transacional para efeitos financeiros relacionados;
 - saldo e Dashboard sempre derivados;
 - recorrência exclusivamente mensal e histórico anterior preservado;
-- uma Conta Financeira por usuário, provisionada automaticamente como `Minha Conta`;\n- backup ordinário manual por ZIP para download local e proteção automática pré-restauração;\n- reset do perfil e exclusão da conta de acesso com dupla confirmação.
+- uma Conta Financeira por usuário, provisionada automaticamente como `Minha Conta`;
+- backup ordinário manual por ZIP para download local e proteção automática pré-restauração;
+- reset do perfil e exclusão da conta de acesso com dupla confirmação.
 
 ### Fora desta arquitetura V1
 

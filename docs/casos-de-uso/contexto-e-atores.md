@@ -86,7 +86,9 @@ Este ator representa uma dependência de comunicação necessária a determinada
 | UC-019 | Gerenciar tema da aplicação | Usuário | Alterar a apresentação visual |
 | UC-020 | Criar cópia de segurança | Usuário | Gerar uma cópia dos dados |
 | UC-021 | Restaurar cópia de segurança | Usuário | Restaurar o estado a partir de uma cópia |
-| UC-022 | Consultar patrimônio total — **Versão futura** | Usuário | Identificador preservado; fora da V1 |\n| UC-023 | Resetar perfil financeiro | Usuário | Apagar dados SGFP preservando o login |\n| UC-024 | Excluir conta de acesso | Usuário | Excluir dados SGFP e o login WordPress |
+| UC-022 | Consultar patrimônio total — **Versão futura** | Usuário | Identificador preservado; fora da V1 |
+| UC-023 | Resetar perfil financeiro | Usuário | Apagar dados SGFP preservando o login |
+| UC-024 | Excluir conta de acesso | Usuário | Excluir dados SGFP e o login WordPress |
 
 ## 5. Regras Gerais para os Casos de Uso
 
