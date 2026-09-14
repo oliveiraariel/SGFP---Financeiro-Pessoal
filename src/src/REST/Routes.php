@@ -29,6 +29,7 @@ use SGFP\Infrastructure\WordPress\WpRecurrenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserPreferenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserOperationLock;
 use SGFP\Infrastructure\WordPress\WpTransferRepository;
+use SGFP\Application\Backup\BackupArchive;
 use SGFP\Infrastructure\WordPress\WpBackupStore;
 use SGFP\Infrastructure\WordPress\WpRestorationTokenClaim;
 use SGFP\Infrastructure\WordPress\WpRestorationTokenStore;
@@ -112,11 +113,11 @@ final class Routes
             $commitmentRepository,
             $entryRepository,
             $recurrenceRepository,
-            $transferRepository,
             new WpUserPreferenceRepository(),
             $transactionManager,
             $userContext,
             new WpUserOperationLock(),
+            new BackupArchive(),
         ));
         $snapshotCapture = new CapturePreRestorationSnapshotService(
             $accountRepository, $categoryRepository, $commitmentRepository, $entryRepository,
