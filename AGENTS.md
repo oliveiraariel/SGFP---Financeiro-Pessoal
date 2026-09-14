@@ -8,18 +8,18 @@ Antes de qualquer tarefa neste repositório:
 4. Leia `docs/governanca/status-implementacao-v1-2026-09-14.md`.
 5. Leia `docs/governanca/continuidade-de-contexto.md`.
 6. Consulte somente os documentos necessários em `docs/`.
-5. Para tarefas de modelagem, use `docs/dominio/01-mapa-de-dominio.md` como entrada da Etapa 5 já validada, sem tratá-lo como substituto das regras de negócio, requisitos ou Casos de Uso.
-6. Para tarefas que envolvam processo, sequência de etapas ou gates, consulte `docs/projeto/plano-de-desenvolvimento.md`.
-7. Para preparação técnica ou tarefas das Etapas 8 a 12, consulte `docs/projeto/roteiro-tecnico-de-implementacao.md` somente como guia auxiliar; ele não substitui fontes canônicas, decisões da etapa correspondente nem autoriza antecipar gates.
-8. Respeite os gates definidos no projeto.
-9. Não resolva silenciosamente conflitos de negócio.
-10. Não antecipe MER, DER, Modelo Físico, arquitetura ou implementação além da etapa autorizada.
-11. Preserve identificadores e rastreabilidade.
-12. Não altere regras de negócio sem base documental ou decisão humana.
-13. Não transforme ferramentas, sistema operacional, editor ou extensões de desenvolvimento em restrições do produto sem decisão formal.
-14. Trate `docs/modelagem-dados/` e seus artefatos validados como referência oficial das Etapas 6 a 8; SQLs, modelos ou estruturas auxiliares não devem substituir esses artefatos.
-15. Para alterações relevantes, utilize branch ou worktree isolada.
-16. Antes de concluir, valide consistência documental e Git.
+7. Para tarefas de modelagem, use `docs/dominio/01-mapa-de-dominio.md` como entrada da Etapa 5 já validada, sem tratá-lo como substituto das regras de negócio, requisitos ou Casos de Uso.
+8. Para tarefas que envolvam processo, sequência de etapas ou gates, consulte `docs/projeto/plano-de-desenvolvimento.md`.
+9. Para preparação técnica ou tarefas das Etapas 8 a 12, consulte `docs/projeto/roteiro-tecnico-de-implementacao.md` somente como guia auxiliar; ele não substitui fontes canônicas, decisões da etapa correspondente nem autoriza antecipar gates.
+10. Respeite os gates definidos no projeto.
+11. Não resolva silenciosamente conflitos de negócio.
+12. Não antecipe MER, DER, Modelo Físico, arquitetura ou implementação além da etapa autorizada.
+13. Preserve identificadores e rastreabilidade.
+14. Não altere regras de negócio sem base documental ou decisão humana.
+15. Não transforme ferramentas, sistema operacional, editor ou extensões de desenvolvimento em restrições do produto sem decisão formal.
+16. Trate `docs/modelagem-dados/` e seus artefatos validados como referência oficial das Etapas 6 a 8; SQLs, modelos ou estruturas auxiliares não devem substituir esses artefatos.
+17. Para alterações relevantes, utilize branch ou worktree isolada.
+18. Antes de concluir, valide consistência documental e Git.
 
 ## Roteamento obrigatório de execução
 
@@ -97,8 +97,8 @@ degradação controlada**, para as regras completas.
 - A V1 inclui **Resetar perfil financeiro** (mantém login) e **Excluir conta de acesso** (remove dados SGFP + login WordPress), ambas com dupla confirmação por frase em caixa alta.
 - A associação de Categoria ao Compromisso Financeiro é opcional.
 - Plataforma: PHP sobre WordPress, plugin próprio, WordPress REST API e MySQL/MariaDB.
-- Etapa 10 possui implementação baseada na baseline anterior e deverá ser reconciliada.
-- Etapa 11 está em andamento na branch de interface e também deverá ser reconciliada com esta baseline.
+- Etapa 10 está reconciliada e validada na branch `feat/stage-9-10-backend`, registrada no Draft PR #12.
+- Etapa 11 está em andamento na branch de interface e ainda deverá ser reconciliada com esta baseline e com o backend atualizado.
 - Fonte normativa da simplificação: `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
 
 As regras operacionais completas deste projeto estão em `ORCHESTRATOR.md`.
