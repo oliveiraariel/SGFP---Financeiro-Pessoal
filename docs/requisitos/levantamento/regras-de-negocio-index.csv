@@ -162,13 +162,13 @@ DSH-RN-016,Dashboard,RN-016,,docs/requisitos/levantamento/09-dashboard.md
 DSH-RN-017,Dashboard,RN-017,,docs/requisitos/levantamento/09-dashboard.md
 DSH-RN-018,Dashboard,RN-018,,docs/requisitos/levantamento/09-dashboard.md
 DSH-RN-019,Dashboard,RN-019,,docs/requisitos/levantamento/09-dashboard.md
-CFG-RN-001,Configurações,RN-001,PIN Opcional,docs/requisitos/levantamento/10-configuracoes.md
-CFG-RN-002,Configurações,RN-002,Solicitação do PIN,docs/requisitos/levantamento/10-configuracoes.md
-CFG-RN-003,Configurações,RN-003,Alteração do PIN,docs/requisitos/levantamento/10-configuracoes.md
-CFG-RN-004,Configurações,RN-004,Desativação do PIN,docs/requisitos/levantamento/10-configuracoes.md
-CFG-RN-005,Configurações,RN-005,Limite de Tentativas do PIN,docs/requisitos/levantamento/10-configuracoes.md
-CFG-RN-006,Configurações,RN-006,Redefinição do PIN — Futuro,docs/requisitos/levantamento/10-configuracoes.md
-CFG-RN-007,Configurações,RN-007,Natureza do PIN — Futuro,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-001,Configurações — PIN Versão Futura,RN-001,PIN Opcional,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-002,Configurações — PIN Versão Futura,RN-002,Solicitação do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-003,Configurações — PIN Versão Futura,RN-003,Alteração do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-004,Configurações — PIN Versão Futura,RN-004,Desativação do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-005,Configurações — PIN Versão Futura,RN-005,Limite de Tentativas do PIN,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-006,Configurações — PIN Versão Futura,RN-006,Redefinição do PIN — Futuro,docs/requisitos/levantamento/10-configuracoes.md
+CFG-RN-007,Configurações — PIN Versão Futura,RN-007,Natureza do PIN — Futuro,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-008,Configurações,RN-008,Tema da Aplicação,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-009,Configurações,RN-009,Criação de Cópia de Segurança,docs/requisitos/levantamento/10-configuracoes.md
 CFG-RN-010,Configurações,RN-010,Entrega Local do Backup,docs/requisitos/levantamento/10-configuracoes.md

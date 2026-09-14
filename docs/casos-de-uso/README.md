@@ -13,4 +13,4 @@ A Etapa 4 foi reorganizada para evitar um único arquivo Markdown excessivamente
 
 **Baseline funcional reconciliada.**
 
-Os identificadores de requisitos permanecem preservados de RF-001 a RF-021. A Versão 1 possui 20 requisitos funcionais ativos; RF-019 e UC-018 foram adiados para versão futura sem renumeração. A proveniência histórica do catálogo anterior de 25 RFs permanece registrada em `docs/governanca/proveniencia.csv` e no relatório de consolidação.
+O catálogo vigente preserva RF-001 a RF-023 e a V1 possui 19 requisitos funcionais ativos. RF-012 a RF-014 e RF-019 são futuros/inativos. Entre os Casos de Uso, UC-013 (Transferências), UC-018 (PIN) e UC-022 (Patrimônio Total) permanecem futuros/inativos; UC-023 e UC-024 representam Reset do perfil e Exclusão da conta de acesso. A proveniência histórica permanece registrada em `docs/governanca/proveniencia.csv` e no relatório de consolidação.

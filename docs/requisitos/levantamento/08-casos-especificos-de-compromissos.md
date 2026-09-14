@@ -16,7 +16,7 @@ Na Versão 1, Cartão de Crédito e Parcelamentos serão tratados como formas es
 
 **RN-001**
 
-O cartão de crédito não será tratado como uma conta secundária.
+O cartão de crédito não será tratado como uma Conta Financeira independente.
 
 **RN-002**
 
@@ -123,7 +123,7 @@ Os compromissos parcelados seguirão as mesmas regras de efetivação, desfazime
 
 ## **Decisões Tomadas**
 
-- Cartão de Crédito não será uma conta secundária.
+- Cartão de Crédito não será uma Conta Financeira independente.
 - Cartão de Crédito será tratado como um compromisso financeiro de Saída.
 - O usuário poderá registrar a fatura no mês que considerar adequado para sua organização financeira.
 - O sistema não exigirá informações sobre data de fechamento ou vencimento do cartão na Versão 1.

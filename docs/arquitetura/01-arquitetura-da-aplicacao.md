@@ -256,8 +256,6 @@ São atômicos:
 
 - desvincular compromissos e excluir categoria;
 - efetivar/desfazer compromisso e sincronizar `STATUS`/lançamento;
-- criar/alterar compromisso de transferência e sua especialização;
-- efetivar ou desfazer simultaneamente os dois efeitos de transferência;
 - materializar e alterar ocorrência/recorrência;
 - substituir integralmente tabelas SGFP e tema do usuário numa restauração.
 
@@ -353,7 +351,7 @@ Logs não contêm senha, nonce, cookie, chave, arquivo, payload integral, descri
 
 ### Runtime
 
-- WordPress: REST, usuários, sessão, capability, usermeta e e-mail;
+- WordPress: REST, usuários, sessão, capability, usermeta e e-mail de recuperação de senha;
 - PHP com JSON e Sodium;
 - MySQL ou MariaDB com InnoDB e capacidades do Modelo Físico;
 - HTTPS e storage privado gravável.
@@ -369,9 +367,8 @@ Versões mínimas, navegadores, carga esperada, latência máxima e disponibilid
 - Service/política: invariantes, autorização e transação com portas substituídas;
 - Repository/migração: MySQL e MariaDB reais, constraints, locks e concorrência;
 - recorrência: projeção sem escrita, idempotência, pivô, quantidade, sucessor e preservação do passado;
-- transferência: nenhum efeito unilateral, inclusive sob falha injetada;
 - segurança: usuário cruzado, nonce, capability, enumeração e payload malformado;
-- backup: round-trip, adulteração, chave errada, proprietário divergente, storage/e-mail falho, rollback e snapshot sob mutação concorrente;
+- backup: round-trip, adulteração, chave errada, proprietário divergente, falha de storage/download, rollback e snapshot sob mutação concorrente;
 - restauração: lock concorrente, cópia prévia obrigatória, perda do lock/conexão e substituição integral.
 
 Para comprovar `CA-021.2` e `ARQ-014`, a Etapa 10 deverá executar testes de integração com banco real e duas conexões independentes, usando barreiras controláveis em vez de depender de temporização:
@@ -379,7 +376,7 @@ Para comprovar `CA-021.2` e `ARQ-014`, a Etapa 10 deverá executar testes de int
 1. pausar o backup entre leituras de relações vinculadas, tentar uma mutação completa na segunda conexão e demonstrar, por restauração/round-trip, que a cópia contém somente o estado anterior enquanto a mutação espera ou recebe conflito;
 2. confirmar a mutação antes da aquisição do lock pelo backup e demonstrar que a cópia contém somente o estado posterior completo;
 3. durante uma restauração, tentar mutar depois da captura `pre_restore` e antes do commit, comprovando que a mutação não atravessa o lock e que a cópia corresponde exatamente ao estado substituído;
-4. injetar falhas na leitura, serialização, proteção, persistência, reabertura/validação e substituição, além de perda da conexão, verificando descarte do temporário incompleto, ausência de e-mail parcial, cancelamento ou rollback e inexistência de estado misto.
+4. injetar falhas na leitura, serialização, proteção, persistência, reabertura/validação e substituição, além de perda da conexão, verificando descarte do temporário incompleto, ausência de ZIP parcial apresentado como válido, cancelamento ou rollback e inexistência de estado misto.
 
 Testes podem acompanhar a Etapa 10. A Etapa 12 consolida estratégia, evidências e rastreabilidade; `ISSUE-008` permanece não bloqueadora agora e obrigatória antes de seu fechamento.
 
