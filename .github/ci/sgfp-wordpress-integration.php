@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use SGFP\Infrastructure\Database\SchemaMigrator;
 use SGFP\Infrastructure\Database\TableNames;
 
