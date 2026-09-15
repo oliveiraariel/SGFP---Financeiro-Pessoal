@@ -28,6 +28,7 @@ final class CreateCommitmentService
         string $nature,
         string $referenceMonth,
         ?int $recurrenceMonthsCount = null,
+        ?string $recurrenceStart = null,
     ): Commitment {
         $userId = $this->userContext->requireUserId();
         $this->userContext->requireCapability('use_sgfp');
@@ -63,6 +64,13 @@ final class CreateCommitmentService
             if ($recurrenceMonthsCount <= 0) {
                 throw new \InvalidArgumentException('A quantidade de meses deve ser maior que zero ou omitida.');
             }
+
+            if (!in_array($recurrenceStart, ['CURRENT', 'NEXT'], true)) {
+                throw new \InvalidArgumentException('O início da recorrência deve ser CURRENT ou NEXT.');
+            }
+
+            $now = new \DateTimeImmutable('first day of this month');
+            $month = $recurrenceStart === 'NEXT' ? $now->modify('+1 month') : $now;
 
             $recurrence = $this->recurrenceRepository->save(
                 Recurrence::create($userId, $month, $recurrenceMonthsCount, new \DateTimeImmutable())

@@ -12,7 +12,16 @@ final class AccountController
     public function __construct(
         private readonly \SGFP\Application\Services\ListAccountsService $listService,
         private readonly SetInitialBalanceService $setInitialBalanceService,
+        private readonly \SGFP\Application\Services\RenameAccountService $renameService,
     ) {
+    }
+
+    public function rename(\WP_REST_Request $request): \WP_REST_Response
+    {
+        try { $account = $this->renameService->execute((int) $request['id'], (string) $request['name']); return new \WP_REST_Response(['id'=>$account->id,'name'=>$account->name,'created_at'=>$account->createdAt->format('c')], 200); }
+        catch (\InvalidArgumentException $e) { return new \WP_REST_Response(['error'=>$e->getMessage()], 400); }
+        catch (\RuntimeException $e) { return new \WP_REST_Response(['error'=>$e->getMessage()], $e->getCode() ?: 500); }
+        catch (\Throwable) { return new \WP_REST_Response(['error'=>'Erro interno.'], 500); }
     }
 
     public function list(): \WP_REST_Response

@@ -70,12 +70,14 @@ final class Routes
 
         $accountController = new AccountController(
             new ListAccountsService($accountRepository, $userContext),
-            new SetInitialBalanceService($accountRepository, $entryRepository, $transactionManager, $userContext)
+            new SetInitialBalanceService($accountRepository, $entryRepository, $transactionManager, $userContext),
+            new \SGFP\Application\Services\RenameAccountService($accountRepository, $userContext)
         );
 
         $categoryController = new CategoryController(
             new CreateCategoryService($categoryRepository, $userContext),
             new ListCategoriesService($categoryRepository, $userContext)
+            , new \SGFP\Application\Services\RenameCategoryService($categoryRepository, $userContext), new \SGFP\Application\Services\DeleteCategoryService($categoryRepository, $userContext)
         );
 
         $recurrenceRepository = new WpRecurrenceRepository();
@@ -205,6 +207,20 @@ final class Routes
             ],
         ]);
 
+        register_rest_route(self::NAMESPACE, '/accounts/(?P<id>\d+)', [
+            'methods' => \WP_REST_Server::EDITABLE, 'callback' => [$accountController, 'rename'], 'permission_callback' => [$accountController, 'permissionCheck'],
+            'args' => ['id' => ['required'=>true,'type'=>'integer'], 'name'=>['required'=>true,'type'=>'string','sanitize_callback'=>'sanitize_text_field']],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/account', [
+            'methods' => \WP_REST_Server::EDITABLE, 'callback' => function (\WP_REST_Request $request) use ($accountController, $accountRepository, $userContext): \WP_REST_Response {
+                $account = $accountRepository->findByUser($userContext->requireUserId());
+                if ($account === null) return new \WP_REST_Response(['error'=>'Conta não encontrada.'],404);
+                $request['id'] = $account->id; return $accountController->rename($request);
+            }, 'permission_callback' => [$accountController, 'permissionCheck'],
+            'args' => ['name'=>['required'=>true,'type'=>'string','sanitize_callback'=>'sanitize_text_field']],
+        ]);
+
         register_rest_route(self::NAMESPACE, '/categories', [
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => [$categoryController, 'create'],
@@ -216,6 +232,15 @@ final class Routes
                     'sanitize_callback' => 'sanitize_text_field',
                 ],
             ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/categories/(?P<id>\d+)', [
+            'methods' => \WP_REST_Server::EDITABLE, 'callback' => [$categoryController, 'rename'], 'permission_callback' => [$categoryController, 'permissionCheck'],
+            'args' => ['id'=>['required'=>true,'type'=>'integer'], 'name'=>['required'=>true,'type'=>'string','sanitize_callback'=>'sanitize_text_field']],
+        ]);
+        register_rest_route(self::NAMESPACE, '/categories/(?P<id>\d+)', [
+            'methods' => \WP_REST_Server::DELETABLE, 'callback' => [$categoryController, 'delete'], 'permission_callback' => [$categoryController, 'permissionCheck'],
+            'args' => ['id'=>['required'=>true,'type'=>'integer']],
         ]);
 
         register_rest_route(self::NAMESPACE, '/categories', [
@@ -255,6 +280,11 @@ final class Routes
                 'recurrence_months_count' => [
                     'required' => false,
                     'type' => 'integer',
+                ],
+                'recurrence_start' => [
+                    'required' => false,
+                    'type' => 'string',
+                    'enum' => ['CURRENT', 'NEXT'],
                 ],
             ],
         ]);

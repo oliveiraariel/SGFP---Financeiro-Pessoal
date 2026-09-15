@@ -30,6 +30,7 @@ final class CommitmentController
                 $dto->nature,
                 $dto->referenceMonth,
                 $dto->recurrenceMonthsCount,
+                $dto->recurrenceStart,
             );
 
             return new \WP_REST_Response([
@@ -55,7 +56,10 @@ final class CommitmentController
     public function settle(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $entry = $this->settleService->execute((int) $request['id']);
+            $entry = $this->settleService->execute(
+                (int) $request['id'],
+                isset($request['settled_at']) ? (string) $request['settled_at'] : null,
+            );
 
             return new \WP_REST_Response([
                 'entry_id' => $entry->id,

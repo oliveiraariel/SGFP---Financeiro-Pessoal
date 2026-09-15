@@ -75,17 +75,22 @@ final class ValidateBackupService
         $token = bin2hex(random_bytes(32));
         $expiresAt = time() + 900;
 
-        $this->tokens->store(
-            $userId,
-            hash('sha256', $token),
-            $expiresAt,
-            json_encode([
-                'expires_at' => $expiresAt,
-                'origin' => $validated->metadata['origin'],
-                'hash' => hash('sha256', $stored),
-                'path' => $path,
-            ], JSON_THROW_ON_ERROR)
-        );
+        try {
+            $this->tokens->store(
+                $userId,
+                hash('sha256', $token),
+                $expiresAt,
+                json_encode([
+                    'expires_at' => $expiresAt,
+                    'origin' => $validated->metadata['origin'],
+                    'hash' => hash('sha256', $stored),
+                    'path' => $path,
+                ], JSON_THROW_ON_ERROR)
+            );
+        } catch (\Throwable $e) {
+            @unlink($path);
+            throw $e;
+        }
 
         return [
             'token' => $token,

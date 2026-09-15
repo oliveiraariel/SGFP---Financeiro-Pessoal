@@ -13,6 +13,7 @@ final class CreateCommitmentRequest
         public readonly string $nature,
         public readonly string $referenceMonth,
         public readonly ?int $recurrenceMonthsCount,
+        public readonly ?string $recurrenceStart,
     ) {}
 
     public static function fromRequest(\WP_REST_Request $request): self
@@ -24,6 +25,7 @@ final class CreateCommitmentRequest
             (string) ($request['nature'] ?? ''),
             (string) ($request['reference_month'] ?? ''),
             isset($request['recurrence_months_count']) ? (int) $request['recurrence_months_count'] : null,
+            isset($request['recurrence_start']) ? (string) $request['recurrence_start'] : null,
         );
     }
 

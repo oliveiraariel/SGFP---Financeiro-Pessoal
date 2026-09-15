@@ -22,4 +22,9 @@ final class Account
     {
         return new self($id, $this->userId, $this->name, $this->createdAt);
     }
+
+    public function renamed(string $name): self
+    {
+        return new self($this->id, $this->userId, $name, $this->createdAt);
+    }
 }

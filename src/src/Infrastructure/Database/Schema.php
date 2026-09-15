@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS {$account} (
     CONSTRAINT fk_conta_usuario FOREIGN KEY (fk_id_usuario) REFERENCES {$usersTable}(ID),
     CONSTRAINT uq_conta_usuario UNIQUE (fk_id_usuario),
     CONSTRAINT uq_conta_id_usuario UNIQUE (id_conta, fk_id_usuario)
-) {$charset};
+) ENGINE=InnoDB {$charset};
 
 CREATE TABLE IF NOT EXISTS {$category} (
     id_categoria BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS {$category} (
     CONSTRAINT fk_categoria_usuario FOREIGN KEY (fk_id_usuario) REFERENCES {$usersTable}(ID),
     CONSTRAINT uq_categoria_nome_usuario UNIQUE (fk_id_usuario, nome),
     CONSTRAINT uq_categoria_id_usuario UNIQUE (id_categoria, fk_id_usuario)
-) {$charset};
+) ENGINE=InnoDB {$charset};
 
 CREATE TABLE IF NOT EXISTS {$recurrence} (
     id_recorrencia BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS {$recurrence} (
     CONSTRAINT ck_recorrencia_encerramento_mes CHECK (encerrada_no_mes IS NULL OR DAY(encerrada_no_mes) = 1),
     CONSTRAINT ck_recorrencia_encerramento_data CHECK (encerrada_no_mes IS NULL OR encerrada_no_mes >= inicio_mes),
     CONSTRAINT uq_recorrencia_id_usuario UNIQUE (id_recorrencia, fk_id_usuario)
-) {$charset};
+) ENGINE=InnoDB {$charset};
 
 CREATE TABLE IF NOT EXISTS {$commitment} (
     id_compromisso BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS {$commitment} (
     KEY idx_comp_categoria_usuario (fk_id_categoria, fk_id_usuario),
     KEY idx_comp_recorrencia_usuario (fk_id_recorrencia, fk_id_usuario),
     KEY idx_comp_status_usuario (fk_id_usuario, status)
-) {$charset};
+) ENGINE=InnoDB {$charset};
 
 CREATE TABLE IF NOT EXISTS {$entry} (
     id_lancamento BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS {$entry} (
     KEY idx_lanc_compromisso_usuario (fk_id_compromisso, fk_id_usuario),
     KEY idx_lanc_conta_usuario (fk_id_conta, fk_id_usuario),
     KEY idx_lanc_estado_usuario (fk_id_usuario, estado)
-) {$charset};
+) ENGINE=InnoDB {$charset};
 SQL;
     }
 }

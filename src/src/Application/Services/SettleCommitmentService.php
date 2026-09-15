@@ -22,7 +22,7 @@ final class SettleCommitmentService
         private readonly UserContext $userContext,
     ) {}
 
-    public function execute(int $commitmentId): Entry
+    public function execute(int $commitmentId, ?string $settledAt = null): Entry
     {
         $userId = $this->userContext->requireUserId();
         $this->userContext->requireCapability('use_sgfp');
@@ -42,11 +42,11 @@ final class SettleCommitmentService
                 throw new \InvalidArgumentException('Conta Financeira não encontrada.');
             }
 
-            $now = new \DateTimeImmutable();
+            $settledDate = $settledAt === null ? new \DateTimeImmutable() : new \DateTimeImmutable($settledAt);
             $settledCommitment = $this->commitmentRepository->save($commitment->settle());
 
             return $this->entryRepository->save(
-                Entry::fromCommitment($settledCommitment, $account->id, $now)
+                Entry::fromCommitment($settledCommitment, $account->id, $settledDate)
             );
         });
     }

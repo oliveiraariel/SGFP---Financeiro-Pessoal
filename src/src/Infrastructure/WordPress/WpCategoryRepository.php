@@ -105,6 +105,22 @@ final class WpCategoryRepository implements CategoryRepository
         }
     }
 
+    public function rename(int $id, int $userId, string $name): Category
+    {
+        $category = $this->findById($id, $userId);
+        if ($category === null) throw new \RuntimeException('Categoria não encontrada.', 404);
+        $result = $this->save($category->renamed($name));
+        return $result;
+    }
+
+    public function delete(int $id, int $userId): void
+    {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare('UPDATE ' . TableNames::commitment() . ' SET fk_id_categoria = NULL WHERE fk_id_categoria = %d AND fk_id_usuario = %d', $id, $userId));
+        $result = $wpdb->delete(TableNames::category(), ['id_categoria' => $id, 'fk_id_usuario' => $userId], ['%d', '%d']);
+        if ($result === false) throw new \RuntimeException('Falha ao excluir categoria: ' . $wpdb->last_error);
+    }
+
     private function mapRow(array $row): Category
     {
         return new Category(

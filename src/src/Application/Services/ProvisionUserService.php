@@ -29,7 +29,11 @@ final class ProvisionUserService
             );
         }
 
-        $this->categoryRepository->seedDefaults($userId);
+        try {
+            $this->categoryRepository->seedDefaults($userId);
+        } catch (\Throwable $e) {
+            throw new \RuntimeException('Falha ao provisionar categorias: ' . $e->getMessage(), 0, $e);
+        }
 
         return $account;
     }

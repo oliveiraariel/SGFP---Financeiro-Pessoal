@@ -12,8 +12,13 @@ final class CategoryController
     public function __construct(
         private readonly CreateCategoryService $createService,
         private readonly ListCategoriesService $listService,
+        private readonly \SGFP\Application\Services\RenameCategoryService $renameService,
+        private readonly \SGFP\Application\Services\DeleteCategoryService $deleteService,
     ) {
     }
+
+    public function rename(\WP_REST_Request $request): \WP_REST_Response { try { $c=$this->renameService->execute((int)$request['id'],(string)$request['name']); return new \WP_REST_Response(['id'=>$c->id,'name'=>$c->name,'created_at'=>$c->createdAt->format('c')],200); } catch (\InvalidArgumentException $e) { return new \WP_REST_Response(['error'=>$e->getMessage()],400); } catch (\RuntimeException $e) { return new \WP_REST_Response(['error'=>$e->getMessage()],$e->getCode()?:500); } catch (\Throwable) { return new \WP_REST_Response(['error'=>'Erro interno.'],500); } }
+    public function delete(\WP_REST_Request $request): \WP_REST_Response { try { $this->deleteService->execute((int)$request['id']); return new \WP_REST_Response(null,204); } catch (\RuntimeException $e) { return new \WP_REST_Response(['error'=>$e->getMessage()],$e->getCode()?:500); } catch (\Throwable) { return new \WP_REST_Response(['error'=>'Erro interno.'],500); } }
 
     public function create(\WP_REST_Request $request): \WP_REST_Response
     {

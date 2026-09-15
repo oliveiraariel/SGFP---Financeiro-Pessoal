@@ -76,9 +76,15 @@ final class CreateCommitmentServiceTest extends TestCase
         );
 
         $result = (new CreateCommitmentService($commitments, $categories, $recurrences, $context))
-            ->execute(null, 'Mensalidade', 200.0, 'SAIDA', '2026-09', 12);
+            ->execute(null, 'Mensalidade', 200.0, 'SAIDA', '2026-09', 12, 'CURRENT');
 
         $this->assertSame(20, $result->id);
+    }
+
+    public function testRequiresExplicitStartForRecurrentCommitment(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->service()->execute(null, 'Mensalidade', 200.0, 'SAIDA', '2026-09', 12);
     }
 
     private function service(): CreateCommitmentService

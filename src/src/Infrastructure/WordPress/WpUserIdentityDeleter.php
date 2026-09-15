@@ -18,6 +18,12 @@ final class WpUserIdentityDeleter implements UserIdentityDeleter
             require_once ABSPATH . 'wp-admin/includes/user.php';
         }
 
+        // Retry idempotente: a etapa já satisfeita não deve falhar.
+        if (!get_user_by('id', $userId)) {
+            wp_clear_auth_cookie();
+            return;
+        }
+
         if (!wp_delete_user($userId)) {
             throw new \RuntimeException('Não foi possível excluir a identidade WordPress.');
         }

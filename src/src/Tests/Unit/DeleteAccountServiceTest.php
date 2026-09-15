@@ -57,10 +57,38 @@ final class DeleteAccountServiceTest extends TestCase
         $transactions->method('transactional')->willReturnCallback(fn (callable $action) => $action());
 
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(409);
+        $this->expectExceptionMessage('Exclusão incompleta');
 
         (new DeleteAccountService(
             $purger, $identity, $transactions, $lock, $context
         ))->execute(true, DeleteAccountService::CONFIRMATION_PHRASE);
+    }
+
+    public function testIdentityIsCalledOnlyAfterTransactionalPurgeHasReturned(): void
+    {
+        $events = [];
+        $purger = $this->createMock(UserDataPurger::class);
+        $identity = $this->createMock(UserIdentityDeleter::class);
+        $transactions = $this->createMock(TransactionManager::class);
+        $context = $this->createStub(UserContext::class);
+        $lock = $this->createStub(UserOperationLock::class);
+        $context->method('requireUserId')->willReturn(7);
+        $purger->expects($this->once())->method('purgeSgfpData')->willReturnCallback(
+            function () use (&$events): void { $events[] = 'purge'; }
+        );
+        $transactions->method('transactional')->willReturnCallback(function (callable $action) use (&$events): void {
+            $action();
+            $events[] = 'commit';
+        });
+        $identity->expects($this->once())->method('delete')->willReturnCallback(
+            function () use (&$events): void { $events[] = 'identity'; }
+        );
+
+        (new DeleteAccountService($purger, $identity, $transactions, $lock, $context))
+            ->execute(true, DeleteAccountService::CONFIRMATION_PHRASE);
+
+        $this->assertSame(['purge', 'commit', 'identity'], $events);
     }
 
     private function serviceForValidation(): DeleteAccountService

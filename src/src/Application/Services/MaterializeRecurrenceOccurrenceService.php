@@ -35,6 +35,17 @@ final class MaterializeRecurrenceOccurrenceService
             throw new \RuntimeException('Recorrência não encontrada.', 404);
         }
 
+        $start = $recurrence->startsIn->modify('first day of this month');
+        if ($monthDate < $start) {
+            throw new \InvalidArgumentException('O mês da ocorrência não pode ser anterior ao início da recorrência.');
+        }
+        if ($recurrence->monthsCount !== null && $monthDate >= $start->modify('+' . $recurrence->monthsCount . ' months')) {
+            throw new \InvalidArgumentException('O mês da ocorrência excede a duração da recorrência.');
+        }
+        if ($recurrence->endedIn !== null && $monthDate > $recurrence->endedIn->modify('first day of this month')) {
+            throw new \InvalidArgumentException('O mês da ocorrência é posterior ao encerramento da recorrência.');
+        }
+
         $existing = $this->commitmentRepository->findByRecurrenceIdAndMonth($recurrenceId, $monthFormatted, $userId);
         if ($existing !== null) {
             return $existing;

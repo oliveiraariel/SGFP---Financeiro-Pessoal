@@ -44,9 +44,15 @@ final class Plugin
 
     public function registerCapabilities(): void
     {
-        $role = get_role('administrator');
-        if ($role !== null && !$role->has_cap('use_sgfp')) {
-            $role->add_cap('use_sgfp');
+        foreach (['subscriber', 'administrator', 'contributor', 'author', 'editor'] as $roleName) {
+            $role = get_role($roleName);
+            if ($role !== null && !$role->has_cap('sgfp_access')) {
+                $role->add_cap('sgfp_access');
+            }
+            // Backward-compatible alias used by services from the API baseline.
+            if ($role !== null && !$role->has_cap('use_sgfp')) {
+                $role->add_cap('use_sgfp');
+            }
         }
     }
 
@@ -59,6 +65,7 @@ final class Plugin
             );
 
             $service->execute($userId);
+            update_user_meta($userId, '_sgfp_provisioned', '1');
         } catch (\Throwable $e) {
             error_log(sprintf(
                 '[SGFP] Falha ao provisionar usuário %d: %s',

@@ -17,4 +17,8 @@ interface CategoryRepository
     public function existsByName(int $userId, string $name): bool;
 
     public function seedDefaults(int $userId): void;
+
+    public function rename(int $id, int $userId, string $name): Category;
+
+    public function delete(int $id, int $userId): void;
 }

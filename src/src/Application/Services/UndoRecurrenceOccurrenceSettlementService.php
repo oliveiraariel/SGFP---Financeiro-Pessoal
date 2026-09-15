@@ -13,7 +13,6 @@ use SGFP\Application\Ports\UserContext;
 final class UndoRecurrenceOccurrenceSettlementService
 {
     public function __construct(
-        private readonly MaterializeRecurrenceOccurrenceService $materializeService,
         private readonly CommitmentRepository $commitmentRepository,
         private readonly EntryRepository $entryRepository,
         private readonly TransactionManager $transactionManager,
@@ -26,7 +25,17 @@ final class UndoRecurrenceOccurrenceSettlementService
         $this->userContext->requireCapability('use_sgfp');
         $this->userContext->requireUserId();
 
-        $commitment = $this->materializeService->execute($recurrenceId, $month);
+        $userId = $this->userContext->requireUserId();
+        $monthDate = \DateTimeImmutable::createFromFormat('!Y-m', $month);
+        if ($monthDate === false) {
+            throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM.');
+        }
+        $commitment = $this->commitmentRepository->findByRecurrenceIdAndMonth(
+            $recurrenceId, $monthDate->format('Y-m-d'), $userId
+        );
+        if ($commitment === null) {
+            throw new \RuntimeException('Ocorrência não encontrada.', 404);
+        }
 
         $undoService = new UndoCommitmentSettlementService(
             $this->commitmentRepository,

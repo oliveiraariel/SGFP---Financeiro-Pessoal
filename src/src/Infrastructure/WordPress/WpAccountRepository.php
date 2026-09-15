@@ -79,6 +79,13 @@ final class WpAccountRepository implements AccountRepository
         return array_map([$this, 'mapRow'], is_array($rows) ? $rows : []);
     }
 
+    public function rename(int $id, int $userId, string $name): Account
+    {
+        $account = $this->findById($id, $userId);
+        if ($account === null) throw new \RuntimeException('Conta não encontrada.', 404);
+        return $this->save($account->renamed($name));
+    }
+
     private function mapRow(array $row): Account
     {
         return new Account(

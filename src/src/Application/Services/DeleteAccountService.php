@@ -38,10 +38,21 @@ final class DeleteAccountService
         $this->lock->acquire($userId);
 
         try {
+            // A identidade WordPress não participa da transação SQL do SGFP.
+            // Depois do COMMIT, uma falha deixa a exclusão explicitamente
+            // incompleta e pode ser retomada sem recriar os dados removidos.
             $this->transactions->transactional(function () use ($userId): void {
                 $this->purger->purgeSgfpData($userId);
-                $this->identityDeleter->delete($userId);
             });
+            try {
+                $this->identityDeleter->delete($userId);
+            } catch (\Throwable $e) {
+                throw new \RuntimeException(
+                    'Exclusão incompleta: os dados SGFP foram removidos, mas a identidade WordPress não foi excluída. Tente novamente.',
+                    409,
+                    $e
+                );
+            }
         } finally {
             $this->lock->release($userId);
         }

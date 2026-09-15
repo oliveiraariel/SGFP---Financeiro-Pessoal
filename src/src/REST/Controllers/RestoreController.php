@@ -22,7 +22,15 @@ final class RestoreController
             if (!is_array($file) || ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
                 throw new \InvalidArgumentException('Arquivo de backup não informado.');
             }
-            $content = file_get_contents((string) $file['tmp_name']);
+            $tmpName = (string) ($file['tmp_name'] ?? '');
+            $size = (int) ($file['size'] ?? -1);
+            if ($tmpName === '' || !is_uploaded_file($tmpName)) {
+                throw new \InvalidArgumentException('Arquivo de backup inválido.');
+            }
+            if ($size < 0 || $size > 26214400) {
+                throw new \InvalidArgumentException('Arquivo de backup excede o limite permitido.');
+            }
+            $content = file_get_contents($tmpName);
             if ($content === false) throw new \InvalidArgumentException('Não foi possível ler o arquivo.');
             return new \WP_REST_Response($this->service->validate($content), 200);
         } catch (\InvalidArgumentException $e) {

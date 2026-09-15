@@ -48,18 +48,12 @@ final class CapturePreRestorationSnapshotService
             throw new \RuntimeException('O usuário do snapshot não corresponde ao usuário autenticado.');
         }
 
-        $payload = $this->transactions->transactional(
-            fn (): array => $this->payloadBuilder->build($userId, self::ORIGIN)
-        );
+        return $this->transactions->transactional(function () use ($userId): array {
+            $payload = $this->payloadBuilder->build($userId, self::ORIGIN);
+            $json = json_encode($payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
+            $zipContent = $this->archive->pack($this->protector->protect($json));
 
-        $json = json_encode($payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
-        $zipContent = $this->archive->pack($this->protector->protect($json));
-
-        return $this->store->persist(
-            $userId,
-            $zipContent,
-            self::ORIGIN,
-            time() + 86400
-        );
+            return $this->store->persist($userId, $zipContent, self::ORIGIN, time() + 86400);
+        });
     }
 }

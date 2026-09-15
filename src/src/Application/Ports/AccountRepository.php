@@ -16,4 +16,6 @@ interface AccountRepository
 
     /** @return Account[] */
     public function findAllByUser(int $userId): array;
+
+    public function rename(int $id, int $userId, string $name): Account;
 }
