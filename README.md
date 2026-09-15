@@ -1,5 +1,7 @@
 # SGFP — Sistema de Gestão Financeira Pessoal
 
+[Português (Brasil)](README.md) | [English](README.en.md)
+
 O **SGFP — Sistema de Gestão Financeira Pessoal** é um projeto acadêmico voltado ao planejamento, organização e acompanhamento das finanças pessoais.
 
 O sistema está sendo desenvolvido de forma incremental, com documentação prévia das regras de negócio, requisitos, casos de uso, domínio, modelagem de dados, arquitetura, implementação e testes.
@@ -81,79 +83,44 @@ As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram
 ## Estrutura do Repositório
 
 ```text
-docs/projeto/
-docs/requisitos/
-docs/casos-de-uso/
-docs/dominio/
-docs/modelagem-dados/
-docs/arquitetura/
-docs/api/
-docs/interface-web/
-docs/testes/
-docs/governanca/
+SGFP---Financeiro-Pessoal/
+├── README.md
+├── AGENTS.md
+├── ORCHESTRATOR.md
+├── HANDOFF.md
+├── project-manifest.yaml
+│
+├── docs/
+│   ├── projeto/
+│   ├── requisitos/
+│   ├── casos-de-uso/
+│   ├── dominio/
+│   ├── modelagem-dados/
+│   ├── arquitetura/
+│   ├── api/
+│   ├── interface-web/
+│   ├── testes/
+│   └── governanca/
+│
+└── src/                         # pacote do plugin WordPress SGFP
+    ├── sgfp.php                # arquivo principal do plugin
+    ├── composer.json
+    ├── composer.lock
+    ├── phpunit.xml.dist
+    └── src/                    # código-fonte PHP carregado por PSR-4
+        ├── Activation.php
+        ├── Deactivation.php
+        ├── Plugin.php
+        ├── Application/
+        ├── Domain/
+        ├── Infrastructure/
+        ├── REST/
+        └── Tests/
 ```
 
-### `docs/projeto/`
+O diretório `src/` na raiz do repositório contém o pacote do plugin WordPress. O ponto de entrada reconhecido pelo WordPress é `src/sgfp.php`; o diretório interno `src/src/` contém o código-fonte PHP organizado por responsabilidades.
 
-Contém os documentos de orientação geral do projeto:
-
-* Documento de Visão;
-* Plano de Desenvolvimento.
-
-### `docs/requisitos/`
-
-Contém:
-
-* levantamento de requisitos por módulo;
-* regras de negócio;
-* Especificação de Requisitos de Software;
-* requisitos funcionais;
-* requisitos não funcionais;
-* restrições;
-* critérios de aceitação;
-* rastreabilidade.
-
-### `docs/casos-de-uso/`
-
-Contém:
-
-* contexto e atores;
-* catálogo de Casos de Uso;
-* Casos de Uso individualizados;
-* referências de rastreabilidade.
-
-### `docs/dominio/`
-
-Contém o Mapa do Domínio vigente, revisado para a baseline simplificada.
-
-### `docs/modelagem-dados/`
-
-Contém a documentação e os artefatos validados da modelagem de dados:
-
-* Modelagem Conceitual (MER);
-* DER / Modelo Relacional;
-* Modelo Físico;
-* arquivos visuais e editáveis mantidos em `docs/modelagem-dados/artefatos/`.
-
-### `docs/arquitetura/`
-
-Contém a arquitetura da aplicação vigente e sua revisão de 14/09/2026.
-
-### `docs/api/`
-
-Contém a documentação da API reconciliada com a nova baseline, incluindo o estado técnico validado da branch 9–10 e a referência ao Draft PR #12.
-
-### `docs/interface-web/`
-
-Contém a documentação da Interface Web em andamento e seus alvos de reconciliação.
-
-### `docs/testes/`
-
-Reservado para estratégia, casos e resultados de testes.
-
-### `docs/governanca/`
-
-Contém os documentos relacionados à reorganização, proveniência e controle documental do projeto.
+A descrição das responsabilidades de cada diretório e camada está em `docs/arquitetura/01-arquitetura-da-aplicacao.md`.
 
 ## Documentação Principal
 
@@ -203,21 +170,23 @@ A divergência histórica do catálogo de requisitos funcionais já foi reconcil
 
 Permanece aberta a `ISSUE-008`, referente à materialização da matriz direta Regra de Negócio → Requisito. Essa pendência não bloqueia o início da Arquitetura, mas deverá ser concluída antes do fechamento final da rastreabilidade de testes.
 
-## Tecnologias
+## Tecnologias e Ferramentas
 
-A arquitetura técnica está consolidada documentalmente e foi revisada em 14/09/2026; o backend da Etapa 10 já foi reconciliado e validado, enquanto a Etapa 11 ainda precisa ser alinhada a essa baseline.
+| Finalidade | Tecnologia / Ferramenta |
+| --- | --- |
+| Linguagem principal | PHP 8.1+ |
+| Plataforma | WordPress |
+| API | WordPress REST API (`sgfp/v1`) |
+| Banco de dados | MySQL / MariaDB (InnoDB) |
+| Dependências | Composer |
+| Autoload | PSR-4 |
+| Testes automatizados | PHPUnit |
+| Análise estática | PHPStan |
+| Padrões de código | PHP_CodeSniffer (PHPCS) |
+| Controle de versão | Git / GitHub |
+| Ambiente de desenvolvimento | Linux Mint + VS Code |
 
-Já estão definidos como direcionamentos da Versão 1:
-
-* aplicação Web;
-* WordPress como plataforma da V1;
-* PHP;
-* plugin próprio do SGFP para o backend;
-* API REST própria do SGFP sobre a infraestrutura REST do WordPress;
-* MySQL ou MariaDB como banco de dados relacional;
-* autenticação da V1 por e-mail e senha utilizando os mecanismos do WordPress.
-
-A proteção opcional por PIN foi adiada para versão futura. Ela não integra a autenticação da V1 e, quando implementada, servirá apenas para bloqueio rápido da aplicação durante uma sessão já autenticada.
+O papel de cada tecnologia na arquitetura e no processo de desenvolvimento está detalhado em `docs/arquitetura/01-arquitetura-da-aplicacao.md`.
 
 ## Contexto Acadêmico
 
