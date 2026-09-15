@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace SGFP\REST\Controllers;
 
 use SGFP\Application\Services\GetDashboardService;
-use SGFP\Application\Services\GetNetWorthService;
 use SGFP\Application\Services\ListMovementsService;
 
 final class ReportingController
 {
     public function __construct(
         private readonly ListMovementsService $listMovementsService,
-        private readonly GetNetWorthService $getNetWorthService,
         private readonly GetDashboardService $getDashboardService,
     ) {
     }
@@ -48,18 +46,6 @@ final class ReportingController
         }
     }
 
-    public function netWorth(): \WP_REST_Response
-    {
-        try {
-            $result = $this->getNetWorthService->execute();
-
-            return new \WP_REST_Response($result, 200);
-        } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable $e) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
-        }
-    }
 
     public function dashboard(\WP_REST_Request $request): \WP_REST_Response
     {

@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace SGFP\REST;
 
-use SGFP\Application\Services\CreateAccountService;
 use SGFP\Application\Services\CreateCategoryService;
 use SGFP\Application\Services\CreateCommitmentService;
-use SGFP\Application\Services\CreateTransferService;
 use SGFP\Application\Services\CreateBackupService;
 use SGFP\Application\Services\ValidateBackupService;
 use SGFP\Application\Services\RevalidateRestorationService;
 use SGFP\Application\Services\CapturePreRestorationSnapshotService;
 use SGFP\Application\Services\GetDashboardService;
-use SGFP\Application\Services\GetNetWorthService;
 use SGFP\Application\Services\ListAccountsService;
 use SGFP\Application\Services\ListCategoriesService;
 use SGFP\Application\Services\ListMovementsService;
+use SGFP\Application\Services\MaterializeRecurrenceOccurrenceService;
+use SGFP\Application\Services\SettleRecurrenceOccurrenceService;
+use SGFP\Application\Services\UndoRecurrenceOccurrenceSettlementService;
 use SGFP\Application\Services\SeedCategoriesService;
 use SGFP\Application\Services\SetInitialBalanceService;
 use SGFP\Application\Services\SettleCommitmentService;
 use SGFP\Application\Services\UndoCommitmentSettlementService;
-use SGFP\Application\Services\SettleTransferService;
 use SGFP\Application\Services\ThemeService;
-use SGFP\Application\Services\UndoTransferSettlementService;
-use SGFP\Domain\Policies\AccountPolicy;
+use SGFP\Application\Services\ProvisionUserService;
+use SGFP\Application\Services\ResetProfileService;
+use SGFP\Application\Services\DeleteAccountService;
 use SGFP\Infrastructure\WordPress\WpAccountRepository;
 use SGFP\Infrastructure\WordPress\WpCategoryRepository;
 use SGFP\Infrastructure\WordPress\WpCommitmentRepository;
@@ -34,7 +34,11 @@ use SGFP\Infrastructure\WordPress\WpUserContext;
 use SGFP\Infrastructure\WordPress\WpRecurrenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserPreferenceRepository;
 use SGFP\Infrastructure\WordPress\WpUserOperationLock;
-use SGFP\Infrastructure\WordPress\WpTransferRepository;
+use SGFP\Infrastructure\WordPress\WpUserDataPurger;
+use SGFP\Infrastructure\WordPress\WpUserIdentityDeleter;
+use SGFP\Application\Backup\BackupArchive;
+use SGFP\Application\Backup\BackupPayloadBuilder;
+use SGFP\Application\Backup\BackupProtector;
 use SGFP\Infrastructure\WordPress\WpBackupStore;
 use SGFP\Infrastructure\WordPress\WpRestorationTokenClaim;
 use SGFP\Infrastructure\WordPress\WpRestorationTokenStore;
@@ -46,9 +50,9 @@ use SGFP\REST\Controllers\CommitmentController;
 use SGFP\REST\Controllers\RecurrenceController;
 use SGFP\REST\Controllers\ReportingController;
 use SGFP\REST\Controllers\ThemeController;
-use SGFP\REST\Controllers\TransferController;
 use SGFP\REST\Controllers\BackupController;
 use SGFP\REST\Controllers\RestoreController;
+use SGFP\REST\Controllers\ProfileController;
 
 final class Routes
 {
@@ -62,11 +66,9 @@ final class Routes
         $commitmentRepository = new WpCommitmentRepository();
         $entryRepository = new WpEntryRepository();
         $transactionManager = new WpTransactionManager();
-        $accountPolicy = new AccountPolicy($accountRepository);
         $seedCategories = new SeedCategoriesService($categoryRepository);
 
         $accountController = new AccountController(
-            new CreateAccountService($accountRepository, $userContext, $accountPolicy, $seedCategories),
             new ListAccountsService($accountRepository, $userContext),
             new SetInitialBalanceService($accountRepository, $entryRepository, $transactionManager, $userContext)
         );
@@ -84,13 +86,6 @@ final class Routes
             new UndoCommitmentSettlementService($commitmentRepository, $entryRepository, $transactionManager, $userContext)
         );
 
-        $transferRepository = new WpTransferRepository();
-
-        $transferController = new TransferController(
-            new CreateTransferService($accountRepository, $commitmentRepository, $transferRepository, $transactionManager, $userContext),
-            new SettleTransferService($commitmentRepository, $transferRepository, $entryRepository, $transactionManager, $userContext),
-            new UndoTransferSettlementService($commitmentRepository, $transferRepository, $entryRepository, $transactionManager, $userContext)
-        );
 
         $recurrenceController = new RecurrenceController(
             new MaterializeRecurrenceOccurrenceService($recurrenceRepository, $commitmentRepository, $transactionManager, $userContext),
@@ -113,7 +108,6 @@ final class Routes
 
         $reportingController = new ReportingController(
             new ListMovementsService($entryRepository, $userContext),
-            new GetNetWorthService($accountRepository, $entryRepository, $userContext),
             new GetDashboardService($accountRepository, $entryRepository, $commitmentRepository, $userContext)
         );
 
@@ -121,46 +115,58 @@ final class Routes
             new ThemeService(new WpUserPreferenceRepository(), $userContext)
         );
 
-        $backupController = new BackupController(new CreateBackupService(
+        $userDataPurger = new WpUserDataPurger();
+
+        $profileController = new ProfileController(
+            new ResetProfileService(
+                $userDataPurger,
+                new ProvisionUserService($accountRepository, $categoryRepository),
+                $transactionManager,
+                new WpUserOperationLock(),
+                $userContext,
+            ),
+            new DeleteAccountService(
+                $userDataPurger,
+                new WpUserIdentityDeleter(),
+                $transactionManager,
+                new WpUserOperationLock(),
+                $userContext,
+            )
+        );
+
+        $preferenceRepository = new WpUserPreferenceRepository();
+        $backupPayloadBuilder = new BackupPayloadBuilder(
             $accountRepository,
             $categoryRepository,
             $commitmentRepository,
             $entryRepository,
             $recurrenceRepository,
-            $transferRepository,
-            new WpUserPreferenceRepository(),
+            $preferenceRepository,
+        );
+
+        $backupController = new BackupController(new CreateBackupService(
+            $backupPayloadBuilder,
             $transactionManager,
             $userContext,
             new WpUserOperationLock(),
+            new BackupProtector(),
+            new BackupArchive(),
         ));
+
         $snapshotCapture = new CapturePreRestorationSnapshotService(
-            $accountRepository, $categoryRepository, $commitmentRepository, $entryRepository,
-            $recurrenceRepository, $transferRepository, new WpUserPreferenceRepository(),
-            $transactionManager, $userContext, new WpUserOperationLock(), new WpBackupStore()
+            $backupPayloadBuilder,
+            $transactionManager,
+            $userContext,
+            new WpUserOperationLock(),
+            new WpBackupStore(),
+            new BackupProtector(),
+            new BackupArchive(),
         );
         $restorer = new RestoreFromImportPlanService(new WpRestorationPersistence(), $transactionManager, new WpRestorationTokenClaim());
         $restoreController = new RestoreController(new ValidateBackupService(
             new WpRestorationTokenStore(),
             $userContext,
-        ), new RevalidateRestorationService(new WpUserPreferenceRepository(), $userContext, new WpUserOperationLock(), $snapshotCapture, new WpRestorationTokenClaim(), new WpRestorationTokenStore(), new \SGFP\Application\Backup\StagedBackupDecoder(), new \SGFP\Application\Backup\RestorationImportPlanner(), $restorer));
-
-        register_rest_route(self::NAMESPACE, '/accounts', [
-            'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => [$accountController, 'create'],
-            'permission_callback' => [$accountController, 'permissionCheck'],
-            'args' => [
-                'name' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'sanitize_callback' => 'sanitize_text_field',
-                ],
-                'role' => [
-                    'required' => false,
-                    'type' => 'string',
-                    'enum' => ['PRINCIPAL', 'SECUNDARIA'],
-                ],
-            ],
-        ]);
+        ), new RevalidateRestorationService($preferenceRepository, $userContext, new WpUserOperationLock(), $snapshotCapture, new WpRestorationTokenClaim(), new WpRestorationTokenStore(), new \SGFP\Application\Backup\StagedBackupDecoder(), new \SGFP\Application\Backup\RestorationImportPlanner(), $restorer));
 
         register_rest_route(self::NAMESPACE, '/accounts', [
             'methods' => \WP_REST_Server::READABLE,
@@ -236,11 +242,6 @@ final class Routes
                     'required' => true,
                     'type' => 'number',
                 ],
-                'type' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'enum' => ['PADRAO', 'TRANSFERENCIA'],
-                ],
                 'nature' => [
                     'required' => true,
                     'type' => 'string',
@@ -282,59 +283,6 @@ final class Routes
             ],
         ]);
 
-        register_rest_route(self::NAMESPACE, '/transfers', [
-            'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => [$transferController, 'create'],
-            'permission_callback' => [$transferController, 'permissionCheck'],
-            'args' => [
-                'name' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'sanitize_callback' => 'sanitize_text_field',
-                ],
-                'amount' => [
-                    'required' => true,
-                    'type' => 'string',
-                ],
-                'reference_month' => [
-                    'required' => true,
-                    'type' => 'string',
-                    'pattern' => '^\d{4}-\d{2}$',
-                ],
-                'source_account_id' => [
-                    'required' => true,
-                    'type' => 'integer',
-                ],
-                'target_account_id' => [
-                    'required' => true,
-                    'type' => 'integer',
-                ],
-            ],
-        ]);
-
-        register_rest_route(self::NAMESPACE, '/transfers/(?P<id>\d+)/effectuation', [
-            'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => [$transferController, 'settle'],
-            'permission_callback' => [$transferController, 'permissionCheck'],
-            'args' => [
-                'id' => [
-                    'required' => true,
-                    'type' => 'integer',
-                ],
-            ],
-        ]);
-
-        register_rest_route(self::NAMESPACE, '/transfers/(?P<id>\d+)/undo-effectuation', [
-            'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => [$transferController, 'undo'],
-            'permission_callback' => [$transferController, 'permissionCheck'],
-            'args' => [
-                'id' => [
-                    'required' => true,
-                    'type' => 'integer',
-                ],
-            ],
-        ]);
 
         register_rest_route(self::NAMESPACE, '/recurrences/(?P<id>\d+)/occurrences/(?P<month>\d{4}-\d{2})', [
             'methods' => \WP_REST_Server::READABLE,
@@ -400,11 +348,6 @@ final class Routes
             ],
         ]);
 
-        register_rest_route(self::NAMESPACE, '/net-worth', [
-            'methods' => \WP_REST_Server::READABLE,
-            'callback' => [$reportingController, 'netWorth'],
-            'permission_callback' => [$reportingController, 'permissionCheck'],
-        ]);
 
         register_rest_route(self::NAMESPACE, '/dashboard', [
             'methods' => \WP_REST_Server::READABLE,
@@ -444,6 +387,26 @@ final class Routes
             'args' => [
                 'token' => ['required' => true, 'type' => 'string'],
                 'confirmation' => ['required' => true, 'type' => 'boolean'],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/profile-reset', [
+            'methods' => \WP_REST_Server::CREATABLE,
+            'callback' => [$profileController, 'reset'],
+            'permission_callback' => [$profileController, 'permissionCheck'],
+            'args' => [
+                'confirmation' => ['required' => true, 'type' => 'boolean'],
+                'phrase' => ['required' => true, 'type' => 'string'],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/account-access', [
+            'methods' => \WP_REST_Server::DELETABLE,
+            'callback' => [$profileController, 'deleteAccount'],
+            'permission_callback' => [$profileController, 'permissionCheck'],
+            'args' => [
+                'confirmation' => ['required' => true, 'type' => 'boolean'],
+                'phrase' => ['required' => true, 'type' => 'string'],
             ],
         ]);
 

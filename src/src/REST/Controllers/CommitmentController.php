@@ -15,8 +15,7 @@ final class CommitmentController
         private readonly CreateCommitmentService $createService,
         private readonly SettleCommitmentService $settleService,
         private readonly UndoCommitmentSettlementService $undoService,
-    ) {
-    }
+    ) {}
 
     public function create(\WP_REST_Request $request): \WP_REST_Response
     {
@@ -28,7 +27,6 @@ final class CommitmentController
                 $dto->categoryId,
                 $dto->name,
                 $dto->amount,
-                $dto->type,
                 $dto->nature,
                 $dto->referenceMonth,
                 $dto->recurrenceMonthsCount,
@@ -40,7 +38,6 @@ final class CommitmentController
                 'recurrence_id' => $commitment->recurrenceId,
                 'name' => $commitment->name,
                 'amount' => $commitment->amount,
-                'type' => $commitment->type->value,
                 'nature' => $commitment->nature->value,
                 'reference_month' => $commitment->referenceMonth->format('Y-m'),
                 'status' => $commitment->status->value,
@@ -50,7 +47,7 @@ final class CommitmentController
             return new \WP_REST_Response(['error' => $e->getMessage()], 400);
         } catch (\RuntimeException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
         }
     }
@@ -75,7 +72,7 @@ final class CommitmentController
             return new \WP_REST_Response(['error' => $e->getMessage()], 400);
         } catch (\RuntimeException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
         }
     }
@@ -84,11 +81,10 @@ final class CommitmentController
     {
         try {
             $this->undoService->execute((int) $request['id']);
-
             return new \WP_REST_Response(['status' => 'desfeito'], 200);
         } catch (\RuntimeException $e) {
             return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
         }
     }

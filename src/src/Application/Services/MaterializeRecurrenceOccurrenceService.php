@@ -17,8 +17,7 @@ final class MaterializeRecurrenceOccurrenceService
         private readonly CommitmentRepository $commitmentRepository,
         private readonly TransactionManager $transactionManager,
         private readonly UserContext $userContext,
-    ) {
-    }
+    ) {}
 
     public function execute(int $recurrenceId, string $month): Commitment
     {
@@ -29,8 +28,8 @@ final class MaterializeRecurrenceOccurrenceService
         if ($monthDate === false) {
             throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM.');
         }
-        $monthFormatted = $monthDate->format('Y-m-d');
 
+        $monthFormatted = $monthDate->format('Y-m-d');
         $recurrence = $this->recurrenceRepository->findById($recurrenceId, $userId);
         if ($recurrence === null) {
             throw new \RuntimeException('Recorrência não encontrada.', 404);
@@ -47,19 +46,16 @@ final class MaterializeRecurrenceOccurrenceService
         }
 
         return $this->transactionManager->transactional(function () use ($userId, $base, $recurrenceId, $monthDate) {
-            $occurrence = Commitment::create(
+            return $this->commitmentRepository->save(Commitment::create(
                 $userId,
                 $base->categoryId,
                 $base->name,
                 $base->amount,
-                $base->type,
                 $base->nature,
                 $monthDate,
                 new \DateTimeImmutable(),
                 $recurrenceId,
-            );
-
-            return $this->commitmentRepository->save($occurrence);
+            ));
         });
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SGFP\Application\Backup;
 
-/** Validated, immutable input to a future restoration operation. */
 final class StagedBackup
 {
     public function __construct(
@@ -14,16 +13,17 @@ final class StagedBackup
         public readonly array $categories,
         public readonly array $recurrences,
         public readonly array $commitments,
-        public readonly array $transfers,
         public readonly array $entries,
     ) {}
 
     public function counts(): array
     {
-        return array_map('count', [
-            'accounts' => $this->accounts, 'categories' => $this->categories,
-            'recurrences' => $this->recurrences, 'commitments' => $this->commitments,
-            'transfers' => $this->transfers, 'entries' => $this->entries,
-        ]);
+        return [
+            'accounts' => count($this->accounts),
+            'categories' => count($this->categories),
+            'recurrences' => count($this->recurrences),
+            'commitments' => count($this->commitments),
+            'entries' => count($this->entries),
+        ];
     }
 }

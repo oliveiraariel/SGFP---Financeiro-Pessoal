@@ -10,7 +10,6 @@ use SGFP\Application\Ports\EntryRepository;
 use SGFP\Application\Ports\TransactionManager;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Domain\Enums\CommitmentStatus;
-use SGFP\Domain\Enums\CommitmentType;
 use SGFP\Domain\Models\Entry;
 
 final class SettleCommitmentService
@@ -21,8 +20,7 @@ final class SettleCommitmentService
         private readonly AccountRepository $accountRepository,
         private readonly TransactionManager $transactionManager,
         private readonly UserContext $userContext,
-    ) {
-    }
+    ) {}
 
     public function execute(int $commitmentId): Entry
     {
@@ -35,28 +33,21 @@ final class SettleCommitmentService
             if ($commitment === null) {
                 throw new \InvalidArgumentException('Compromisso não encontrado.');
             }
-
-            if ($commitment->type === CommitmentType::TRANSFERENCIA) {
-                throw new \InvalidArgumentException('Transferências devem ser efetivadas pelo fluxo próprio de transferência.');
-            }
-
             if ($commitment->status !== CommitmentStatus::PENDENTE) {
                 throw new \InvalidArgumentException('O compromisso só pode ser efetivado se estiver pendente.');
             }
 
-            $principalAccount = $this->accountRepository->findPrincipal($userId);
-
-            if ($principalAccount === null || $principalAccount->id === null) {
-                throw new \InvalidArgumentException('Conta principal não encontrada.');
+            $account = $this->accountRepository->findByUser($userId);
+            if ($account === null || $account->id === null) {
+                throw new \InvalidArgumentException('Conta Financeira não encontrada.');
             }
 
             $now = new \DateTimeImmutable();
-            $settledCommitment = $commitment->settle();
-            $this->commitmentRepository->save($settledCommitment);
+            $settledCommitment = $this->commitmentRepository->save($commitment->settle());
 
-            $entry = Entry::fromCommitment($settledCommitment, $principalAccount->id, $now);
-
-            return $this->entryRepository->save($entry);
+            return $this->entryRepository->save(
+                Entry::fromCommitment($settledCommitment, $account->id, $now)
+            );
         });
     }
 }

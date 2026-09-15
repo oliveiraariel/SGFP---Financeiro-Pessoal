@@ -12,11 +12,8 @@ interface AccountRepository
 
     public function findById(int $id, int $userId): ?Account;
 
+    public function findByUser(int $userId): ?Account;
+
+    /** @return Account[] */
     public function findAllByUser(int $userId): array;
-
-    public function findPrincipal(int $userId): ?Account;
-
-    public function hasPrincipal(int $userId): bool;
-
-    public function countByUser(int $userId): int;
 }

@@ -10,12 +10,10 @@ final class CreateCommitmentRequest
         public readonly ?int $categoryId,
         public readonly string $name,
         public readonly float $amount,
-        public readonly string $type,
         public readonly string $nature,
         public readonly string $referenceMonth,
         public readonly ?int $recurrenceMonthsCount,
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(\WP_REST_Request $request): self
     {
@@ -23,7 +21,6 @@ final class CreateCommitmentRequest
             isset($request['category_id']) ? (int) $request['category_id'] : null,
             (string) ($request['name'] ?? ''),
             (float) ($request['amount'] ?? 0),
-            (string) ($request['type'] ?? ''),
             (string) ($request['nature'] ?? ''),
             (string) ($request['reference_month'] ?? ''),
             isset($request['recurrence_months_count']) ? (int) $request['recurrence_months_count'] : null,
