@@ -187,6 +187,7 @@ Permanece aberta a `ISSUE-008`, referente à materialização da matriz direta R
 | Ambiente de desenvolvimento | Linux Mint + VS Code |
 
 O papel de cada tecnologia na arquitetura e no processo de desenvolvimento está detalhado em `docs/arquitetura/01-arquitetura-da-aplicacao.md`.
+
 ## Contexto Acadêmico
 
 Projeto desenvolvido no contexto do curso de **Banco de Dados da FATEC**, envolvendo conhecimentos de:
