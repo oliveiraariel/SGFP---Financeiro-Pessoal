@@ -120,67 +120,7 @@ SGFP---Financeiro-Pessoal/
 
 O diretório `src/` na raiz do repositório contém o pacote do plugin WordPress. O ponto de entrada reconhecido pelo WordPress é `src/sgfp.php`; o diretório interno `src/src/` contém o código-fonte PHP organizado por responsabilidades.
 
-### `docs/projeto/`
-
-Contém os documentos de orientação geral do projeto:
-
-* Documento de Visão;
-* Plano de Desenvolvimento.
-
-### `docs/requisitos/`
-
-Contém:
-
-* levantamento de requisitos por módulo;
-* regras de negócio;
-* Especificação de Requisitos de Software;
-* requisitos funcionais;
-* requisitos não funcionais;
-* restrições;
-* critérios de aceitação;
-* rastreabilidade.
-
-### `docs/casos-de-uso/`
-
-Contém:
-
-* contexto e atores;
-* catálogo de Casos de Uso;
-* Casos de Uso individualizados;
-* referências de rastreabilidade.
-
-### `docs/dominio/`
-
-Contém o Mapa do Domínio vigente, revisado para a baseline simplificada.
-
-### `docs/modelagem-dados/`
-
-Contém a documentação e os artefatos validados da modelagem de dados:
-
-* Modelagem Conceitual (MER);
-* DER / Modelo Relacional;
-* Modelo Físico;
-* arquivos visuais e editáveis mantidos em `docs/modelagem-dados/artefatos/`.
-
-### `docs/arquitetura/`
-
-Contém a arquitetura da aplicação vigente e sua revisão de 14/09/2026.
-
-### `docs/api/`
-
-Contém a documentação da API reconciliada com a nova baseline, incluindo o estado técnico validado da branch 9–10 e a referência ao Draft PR #12.
-
-### `docs/interface-web/`
-
-Contém a documentação da Interface Web em andamento e seus alvos de reconciliação.
-
-### `docs/testes/`
-
-Reservado para estratégia, casos e resultados de testes.
-
-### `docs/governanca/`
-
-Contém os documentos relacionados à reorganização, proveniência e controle documental do projeto.
+A descrição das responsabilidades de cada diretório e camada está em `docs/arquitetura/01-arquitetura-da-aplicacao.md`.
 
 ## Documentação Principal
 
@@ -232,24 +172,21 @@ Permanece aberta a `ISSUE-008`, referente à materialização da matriz direta R
 
 ## Tecnologias e Ferramentas
 
-A arquitetura técnica está consolidada documentalmente e foi revisada em 14/09/2026; o backend da Etapa 10 já foi reconciliado e validado, enquanto a Etapa 11 ainda precisa ser alinhada a essa baseline.
-
 | Finalidade | Tecnologia / Ferramenta |
 | --- | --- |
 | Linguagem principal | PHP 8.1+ |
-| Plataforma da aplicação | WordPress |
-| API | WordPress REST API com namespace próprio `sgfp/v1` |
-| Banco de dados | MySQL / MariaDB com InnoDB |
-| Gerenciamento de dependências | Composer |
+| Plataforma | WordPress |
+| API | WordPress REST API (`sgfp/v1`) |
+| Banco de dados | MySQL / MariaDB (InnoDB) |
+| Dependências | Composer |
 | Autoload | PSR-4 |
 | Testes automatizados | PHPUnit |
 | Análise estática | PHPStan |
-| Padrões e inspeção de código | PHP_CodeSniffer (PHPCS) |
+| Padrões de código | PHP_CodeSniffer (PHPCS) |
 | Controle de versão | Git / GitHub |
-| Ambiente de desenvolvimento utilizado | Linux Mint + VS Code |
+| Ambiente de desenvolvimento | Linux Mint + VS Code |
 
-O backend é implementado como plugin próprio do SGFP. A autenticação da V1 utiliza os mecanismos do WordPress por e-mail e senha. A proteção opcional por PIN foi adiada para versão futura e não integra a autenticação da V1.
-
+O papel de cada tecnologia na arquitetura e no processo de desenvolvimento está detalhado em `docs/arquitetura/01-arquitetura-da-aplicacao.md`.
 ## Contexto Acadêmico
 
 Projeto desenvolvido no contexto do curso de **Banco de Dados da FATEC**, envolvendo conhecimentos de:
