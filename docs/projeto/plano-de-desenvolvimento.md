@@ -388,7 +388,7 @@ Objetivo relacionado a cadastro, autenticação, isolamento dos dados e recupera
 
 ### **2. Contas**
 
-Objetivo relacionado ao gerenciamento das contas financeiras, movimentações, saldos, transferências e patrimônio.
+Objetivo relacionado ao gerenciamento da Conta Financeira única, movimentações e saldo.
 
 ### **3. Compromissos**
 
@@ -418,11 +418,9 @@ Objetivo relacionado às movimentações financeiras efetivamente realizadas e a
 
 O lançamento financeiro representa a movimentação efetivamente realizada, enquanto o compromisso representa a obrigação ou previsão anterior à efetivação.
 
-### **7. Transferências**
+### **7. Transferências — fora da V1**
 
-Objetivo relacionado à movimentação de valores entre contas pertencentes ao usuário.
-
-As transferências utilizarão o mesmo mecanismo de compromisso e efetivação utilizado nas demais movimentações financeiras.
+O módulo é preservado apenas como histórico/possível versão futura. A V1 possui exatamente uma Conta Financeira por usuário e não expõe Transferências.
 
 ### **8. Casos Específicos de Compromissos Financeiros**
 
@@ -444,7 +442,7 @@ O Dashboard não será tratado como uma entidade do domínio.
 
 Objetivo relacionado às preferências e à preservação dos dados disponibilizadas ao usuário.
 
-Na Versão 1, permanecem como definições consolidadas o tema da aplicação, a criação manual de cópias de segurança e a restauração de dados. Como proteção específica da restauração, o sistema deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior antes da substituição dos dados atuais. Essa proteção pontual não caracteriza backup automático periódico ou contínuo. A proteção opcional por PIN foi retirada do escopo da Versão 1 e permanece registrada como funcionalidade prevista para versão futura.
+Na Versão 1, permanecem como definições consolidadas o tema, backup manual local em ZIP, restauração por ZIP, reset do perfil financeiro e exclusão definitiva da conta de acesso. Como proteção específica da restauração, o sistema deverá gerar e preservar em condição recuperável uma cópia automática do estado imediatamente anterior antes da substituição dos dados atuais. Essa proteção pontual não caracteriza backup automático periódico ou contínuo. Backup por e-mail não integra mais a V1. A proteção opcional por PIN foi retirada do escopo da Versão 1 e permanece registrada como funcionalidade prevista para versão futura.
 
 ### **11. Relatórios**
 
@@ -736,6 +734,7 @@ Principais atualizações:
 2. Definição do backend específico do SGFP como plugin próprio, utilizando a infraestrutura REST do WordPress.
 3. Manutenção da autenticação da Versão 1 exclusivamente por e-mail e senha.
 4. Transferência da proteção opcional por PIN para versão futura.
+7. Simplificação de 14/09/2026: conta única, Transferências e Patrimônio fora da V1, backup local ZIP, reset e exclusão de acesso.
 5. Consolidação futura do PIN como mecanismo de bloqueio rápido durante uma sessão já autenticada, sem substituir a autenticação principal.
 6. Retirada da recuperação de PIN por e-mail do escopo planejado.
 7. Preservação dos identificadores RF-019 e UC-018 como itens futuros, sem renumeração dos requisitos e casos de uso posteriores.

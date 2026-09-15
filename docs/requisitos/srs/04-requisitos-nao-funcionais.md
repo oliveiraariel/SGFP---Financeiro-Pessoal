@@ -28,7 +28,7 @@ O sistema deverá preservar a consistência dos dados financeiros, evitando info
 
 Operações que produzam alterações relacionadas entre diferentes registros deverão manter esses registros consistentes entre si.
 
-Essa exigência é especialmente relevante para efetivações, desfazimentos de efetivação e transferências.
+Essa exigência é especialmente relevante para efetivações, desfazimentos de efetivação, reset de perfil e exclusão de conta.
 
 ## **RNF-007 — Preservação do Histórico Financeiro**
 
@@ -36,7 +36,7 @@ O sistema deverá preservar os registros financeiros já realizados, evitando qu
 
 ## **RNF-008 — Confiabilidade dos Cálculos Financeiros**
 
-Os cálculos relacionados a saldos, entradas, saídas, transferências e demais valores financeiros deverão produzir resultados consistentes a partir dos dados registrados no sistema.
+Os cálculos relacionados a saldo, entradas, saídas e demais valores financeiros deverão produzir resultados consistentes a partir dos dados registrados no sistema.
 
 ## **RNF-009 — Integridade dos Valores Monetários**
 

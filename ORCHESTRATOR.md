@@ -1,9 +1,9 @@
 # ORCHESTRATOR.md — Contrato Operacional para Agentes
 
 **Projeto:** SGFP — Sistema de Gestão Financeira Pessoal  
-**Versão deste documento:** 2.7
+**Versão deste documento:** 2.8
 **Status:** Governança operacional vigente  
-**Última atualização:** 13/09/2026
+**Última atualização:** 14/09/2026
 
 ## 1. Finalidade
 
@@ -111,73 +111,57 @@ A execução direta sem autorização humana explícita continua proibida.
 
 ## 3. Estado atual do projeto
 
-O catálogo funcional preserva 21 identificadores de `RF-001` a `RF-021`.
+A baseline normativa vigente é a decisão humana consolidada em **14/09/2026** e registrada em:
 
-A baseline ativa da V1 possui 20 requisitos funcionais. `RF-019 — Gerenciar proteção por PIN` foi adiado para versão futura, sem renumeração dos requisitos posteriores. `UC-018` e `CA-019.1` a `CA-019.5` permanecem igualmente preservados como artefatos futuros.
+- `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
 
-A **Etapa 5 — Mapa do Domínio** foi concluída e validada no artefato:
+Estado funcional:
 
-- `docs/dominio/01-mapa-de-dominio.md`
+- catálogo: `RF-001` a `RF-023`;
+- **19 RFs ativos na V1**;
+- `RF-012`, `RF-013`, `RF-014` (Transferências) e `RF-019` (PIN) preservados como futuros/inativos;
+- exatamente uma Conta Financeira por usuário, provisionada automaticamente como **Minha Conta**;
+- saldo derivado dos Lançamentos Financeiros ativos da conta;
+- Transferências e Patrimônio Total fora da V1;
+- backup manual local em ZIP; e-mail não é meio de entrega de backup;
+- restauração integral por ZIP, com cópia pré-restauração recuperável;
+- `RF-022`: Resetar perfil financeiro, mantendo o login;
+- `RF-023`: Excluir conta de acesso, removendo dados SGFP e identidade/login WordPress.
 
-O Mapa do Domínio organiza os conceitos, responsabilidades e relações conceituais do SGFP sem antecipar cardinalidades, entidades definitivas, estruturas lógicas, estruturas físicas, arquitetura ou implementação.
+As Etapas 5–9 foram revisadas documentalmente para refletir essa baseline. A implementação da Etapa 10 foi reconciliada com a V1 simplificada na branch `feat/stage-9-10-backend` e validada por lint, PHPUnit e integração WordPress + MySQL; o trabalho está documentado no Draft PR #12. A Etapa 11 possui frontend em andamento na branch `feat/stage-11-web-interface` e ainda requer reconciliação com essa baseline e com o backend atualizado.
 
-As etapas de modelagem de dados foram concluídas e validadas:
+Os artefatos binários/visuais antigos de MER/DER que ainda mostrem múltiplas contas ou Transferência são históricos até serem regenerados; os documentos textuais revisados e o Modelo Físico SQL de 14/09/2026 prevalecem.
 
-- **Etapa 6 — Modelagem Conceitual (MER)**;
-- **Etapa 7 — Modelo Entidade-Relacionamento (DER)**;
-- **Etapa 8 — Modelo Físico**.
+A associação de Categoria ao Compromisso continua opcional.
 
-Os documentos de referência estão em `docs/modelagem-dados/`, com os artefatos editáveis e visuais mantidos em `docs/modelagem-dados/artefatos/`.
-
-A etapa corrente é:
-
-**Etapa 10 — Desenvolvimento da API, concluída e validada**
-
-A proposta arquitetural foi produzida, tecnicamente corrigida após revisão e **validada em 11/09/2026**. As cinco decisões humanas necessárias foram registradas e incorporadas em `docs/arquitetura/01-arquitetura-da-aplicacao.md` (`DEC-001` a `DEC-005`). O gate integral da Etapa 9 está **aprovado**.
-
-A Etapa 10 foi concluída no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`. Lint, testes manuais e verificações Git foram aprovados; PHPUnit e validação WordPress/MySQL/MariaDB real permanecem pendentes por limitação ambiental. A Etapa 11 — Desenvolvimento da Interface Web não foi iniciada e a Etapa 12 permanece futura para consolidação formal dos testes.
-
-A associação de Categoria ao Compromisso Financeiro é opcional na V1; um compromisso pode ser cadastrado e permanecer sem categoria.
-
-As pendências e decisões de governança relevantes ao estado atual permanecem registradas no `project-manifest.yaml` e nos documentos de continuidade. Em especial:
-
-- `ISSUE-001` a `ISSUE-007` estão resolvidas conforme a baseline vigente;
-- `ISSUE-008` permanece aberta como pendência de rastreabilidade, não bloqueia o início da Etapa 9 e deverá ser concluída antes do fechamento formal da rastreabilidade de testes na Etapa 12.
-
-Os gates das Etapas 6, 7 e 8 foram satisfeitos.
-
-A partir do estado atual:
-
-- a proposta da Etapa 9 constitui baseline validada em `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
-- a Etapa 10 — Desenvolvimento da API foi concluída e validada no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`;
-- a Etapa 11 — Desenvolvimento da Interface Web permanece não iniciada, condicionada aos contratos aprovados;
-- a modelagem validada somente deverá ser alterada quando houver motivo documentado e análise de impacto.
+`ISSUE-008` permanece aberta apenas como pendência da matriz direta Regra de Negócio → Requisito antes do fechamento final da rastreabilidade da Etapa 12.
 
 ### Restrição tecnológica vigente
 
-A Versão 1 será uma aplicação Web em PHP sobre WordPress. O WordPress fornecerá identidade, autenticação, sessão e infraestrutura REST; o backend específico do SGFP será implementado em plugin próprio. MySQL ou MariaDB será utilizado como banco relacional compatível com a plataforma.
+A V1 continua sendo aplicação Web em PHP sobre WordPress, com plugin SGFP próprio, WordPress REST API, identidade/autenticação WordPress e MySQL/MariaDB.
 
-Essa decisão tecnológica não autoriza antecipar detalhes de arquitetura que pertencem à Etapa 9.
 
 ## 4. Ordem mínima de leitura
 
 Antes de executar qualquer tarefa, o agente coordenador deverá ler:
 
 1. `project-manifest.yaml`
-2. `docs/governanca/continuidade-de-contexto.md`
-3. `docs/governanca/relatorio-de-consolidacao.md`
-4. `docs/projeto/plano-de-desenvolvimento.md`
-5. `docs/projeto/documento-de-visao.md`
+2. `docs/governanca/baseline-v1-simplificada-2026-09-14.md`
+3. `docs/governanca/status-implementacao-v1-2026-09-14.md`
+4. `docs/governanca/continuidade-de-contexto.md`
+5. `docs/governanca/relatorio-de-consolidacao.md`
+6. `docs/projeto/plano-de-desenvolvimento.md`
+7. `docs/projeto/documento-de-visao.md`
 
 Depois, deverá carregar somente os documentos necessários à tarefa:
 
-6. `docs/requisitos/levantamento/README.md` e módulos de negócio envolvidos;
-7. `docs/requisitos/srs/README.md` e seções do SRS envolvidas;
-8. `docs/casos-de-uso/README.md` e Casos de Uso relacionados;
-9. `docs/dominio/01-mapa-de-dominio.md` para qualquer tarefa da Etapa 6 em diante;
-10. `docs/modelagem-dados/` e seus artefatos validados para tarefas de Arquitetura, persistência, API ou qualquer alteração que dependa da estrutura de dados;
-11. artefatos das demais etapas somente quando a etapa correspondente já tiver sido iniciada e forem relevantes;
-12. `docs/projeto/roteiro-tecnico-de-implementacao.md` quando a tarefa envolver preparação técnica, Arquitetura, API, Interface, testes durante a implementação, ferramentas de desenvolvimento ou qualidade de código.
+8. `docs/requisitos/levantamento/README.md` e módulos de negócio envolvidos;
+9. `docs/requisitos/srs/README.md` e seções do SRS envolvidas;
+10. `docs/casos-de-uso/README.md` e Casos de Uso relacionados;
+11. `docs/dominio/01-mapa-de-dominio.md` para qualquer tarefa da Etapa 6 em diante;
+12. `docs/modelagem-dados/` e seus artefatos validados para tarefas de Arquitetura, persistência, API ou qualquer alteração que dependa da estrutura de dados;
+13. artefatos das demais etapas somente quando a etapa correspondente já tiver sido iniciada e forem relevantes;
+14. `docs/projeto/roteiro-tecnico-de-implementacao.md` quando a tarefa envolver preparação técnica, Arquitetura, API, Interface, testes durante a implementação, ferramentas de desenvolvimento ou qualidade de código.
 
 O roteiro técnico é um **documento auxiliar**. Ele detalha práticas, ferramentas e sequência didática, mas permanece subordinado ao Plano de Desenvolvimento, às fontes canônicas, aos gates oficiais e às decisões de arquitetura aprovadas.
 
@@ -234,18 +218,19 @@ Quando duas fontes canônicas divergirem:
 
 ## 7. Estado das pendências documentais
 
-A baseline funcional vigente registra:
+A decisão humana de 14/09/2026 estabeleceu uma baseline simplificada e substitui decisões anteriores incompatíveis:
 
-- `ISSUE-001`: resolvida — catálogo reconciliado de 21 identificadores funcionais (`RF-001` a `RF-021`), com 20 RFs ativos na V1 e `RF-019` preservado como futuro;
-- `ISSUE-002`: resolvida — cadastro, autenticação e senha formalizados como `RF-001`, `RF-002` e `RF-003`;
-- `ISSUE-003`: resolvida — exclusão de contas fora do escopo da V1;
-- `ISSUE-004`: resolvida — valor inicial da Conta Principal representado por Entrada; Conta Secundária recebe valor por Transferência; saldo não é armazenado;
-- `ISSUE-005`: resolvida — proteção por PIN retirada do escopo ativo da V1, com identificadores preservados para versão futura;
-- `ISSUE-006`: resolvida — PHP sobre WordPress, plugin próprio, infraestrutura REST e MySQL/MariaDB consolidados como restrição tecnológica da V1;
-- `ISSUE-007`: resolvida — preservação do estado anterior definida como cópia de segurança automática pré-restauração, permanecendo o mecanismo técnico para a etapa apropriada;
-- `ISSUE-008`: aberta — a matriz direta Regra de Negócio → Requisito ainda deverá ser materializada. Não bloqueia o início da Etapa 9, mas bloqueia o fechamento final da rastreabilidade da Etapa 12.
+- catálogo funcional atual: `RF-001` a `RF-023`, com 19 requisitos ativos;
+- `RF-012` a `RF-014` (Transferências) e `RF-019` (PIN) estão preservados como futuros/inativos;
+- relação Usuário–Conta Financeira é 1:1 na V1; a conta `Minha Conta` nasce no provisionamento inicial;
+- saldo é derivado dos lançamentos da conta única;
+- Patrimônio Total saiu da V1;
+- backup manual é ZIP para download local, sem entrega por e-mail;
+- reset do perfil financeiro e exclusão total da conta de acesso entram na V1 com dupla confirmação;
+- decisões históricas sobre Conta Principal/Conta Secundária, transferência e backup por e-mail estão superadas;
+- `ISSUE-008` (matriz direta Regra de Negócio → Requisito) permanece pendente.
 
-Os status, resoluções e evidências permanecem registrados em `project-manifest.yaml`, `docs/governanca/continuidade-de-contexto.md` e `docs/governanca/relatorio-de-consolidacao.md`.
+A fonte normativa é `docs/governanca/baseline-v1-simplificada-2026-09-14.md`. O backend reconciliado da Etapa 10 está na branch `feat/stage-9-10-backend` / Draft PR #12. Qualquer implementação restante que ainda reflita a baseline anterior — especialmente na Etapa 11 — deve ser reconciliada, não usada para reverter a decisão.
 
 ## 8. Etapas e diretórios
 
@@ -274,7 +259,7 @@ Os agentes devem respeitar a sequência estabelecida no Plano de Desenvolvimento
 
 Regras essenciais:
 
-- no estado atual, os gates das Etapas 5 a 10 já foram satisfeitos; a Etapa 11 permanece não iniciada;
+- as Etapas 5–9 possuem baseline documental revisada; a Etapa 10 está reconciliada e validada na branch `feat/stage-9-10-backend` / PR #12; a Etapa 11 está em andamento e ainda requer reconciliação;
 - a Etapa 5 somente é considerada concluída com `docs/dominio/01-mapa-de-dominio.md` validado;
 - a Modelagem Conceitual (MER) pode iniciar somente após a validação do Mapa do Domínio;
 - não criar DER antes da validação do MER;
@@ -404,7 +389,7 @@ Exemplos:
 - alteração de UC pode afetar critérios, interface e testes;
 - alteração de contrato da API pode afetar interface e testes.
 
-A divergência histórica entre os catálogos de 19 e 25 RFs foi reconciliada em um catálogo preservado de 21 identificadores. A V1 atual possui 20 RFs ativos e mantém RF-019 como requisito futuro; o histórico da migração permanece na governança.
+A divergência histórica entre os catálogos de 19 e 25 RFs foi reconciliada inicialmente em 21 identificadores. A decisão de 14/09/2026 estabeleceu o catálogo vigente RF-001 a RF-023, com 19 ativos e RF-012 a RF-014 e RF-019 futuros/inativos. O histórico anterior permanece na governança.
 
 ## 13. Identificadores
 
@@ -560,11 +545,17 @@ Caso seja necessária auditoria sobre o material bruto original, deve-se utiliza
 
 ## 21. Histórico de atualização
 
+### Versão 2.8 — 14/09/2026
+
+- registro da reconciliação e validação do backend da Etapa 10 com a V1 simplificada na branch `feat/stage-9-10-backend`;
+- referência ao Draft PR #12 como trilha de implementação e ao PR #11 como trilha documental;
+- definição de que a principal reconciliação restante está na Etapa 11/frontend, sem congelar a branch 9–10 para ajustes legítimos descobertos durante a integração.
+
 ### Versão 2.6 — 11/09/2026
 
 - registro das cinco decisões humanas (`DEC-001` a `DEC-005`) e aprovação do gate integral da Etapa 9;
 - atualização da arquitetura para baseline validada, subsidiária da Etapa 10;
-- manutenção da Etapa 11 como não iniciada e condicionada aos contratos aprovados;
+- reconciliação da Etapa 11 em andamento com a baseline simplificada;
 - preservação da `ISSUE-008` como pendência não bloqueadora desta etapa.
 
 ### Versão 2.4 — 05/09/2026

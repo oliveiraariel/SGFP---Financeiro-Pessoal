@@ -10,7 +10,7 @@
 
 O projeto consiste no desenvolvimento de um Sistema de Gestão Financeira Pessoal com o objetivo de auxiliar usuários no planejamento, organização e acompanhamento de suas finanças.
 
-O sistema não possui integração com instituições bancárias ou outros serviços externos na Versão 1. Todas as movimentações financeiras serão registradas manualmente pelo usuário, permitindo controle sobre compromissos financeiros, lançamentos financeiros, transferências entre contas e evolução do patrimônio financeiro.
+O sistema não possui integração com instituições bancárias ou outros serviços externos na Versão 1. Todas as movimentações financeiras serão registradas manualmente pelo usuário, permitindo controle sobre compromissos financeiros, lançamentos financeiros e evolução do saldo da Conta Financeira única.
 
 O foco principal do projeto é oferecer uma ferramenta simples de utilizar, porém suficientemente organizada para representar a realidade financeira do usuário.
 
@@ -18,7 +18,7 @@ O sistema será desenvolvido seguindo os princípios da Engenharia de Software, 
 
 ### 2. Objetivo Geral
 
-Desenvolver uma aplicação capaz de auxiliar pessoas na organização de suas finanças pessoais, permitindo controlar compromissos financeiros, lançamentos financeiros, contas financeiras, transferências, recorrências e patrimônio, oferecendo uma visão clara da situação financeira atual e do planejamento dos meses seguintes.
+Desenvolver uma aplicação capaz de auxiliar pessoas na organização de suas finanças pessoais, permitindo controlar compromissos financeiros, lançamentos financeiros, Conta Financeira única e recorrências, oferecendo uma visão clara da situação financeira atual e do planejamento dos meses seguintes.
 
 ### 3. Público-Alvo
 
@@ -45,14 +45,15 @@ Serão desenvolvidos:
 - categorias personalizáveis;
 - lançamentos recorrentes;
 - efetivação de compromissos por meio de lançamentos financeiros;
-- transferências entre contas;
 - controle básico de cartão de crédito;
 - controle de parcelamentos;
 - dashboard inicial;
 - recuperação de senha por e-mail;
-- criação manual de cópia de segurança;
-- restauração de cópia de segurança;
-- preservação do estado imediatamente anterior por meio de cópia de segurança automática pré-restauração, criada antes da substituição dos dados atuais;
+- criação manual de cópia de segurança local em ZIP;
+- restauração integral por arquivo ZIP;
+- preservação do estado imediatamente anterior por cópia pré-restauração recuperável;
+- reset do perfil financeiro com preservação do login;
+- exclusão definitiva da conta de acesso com dupla confirmação;
 - API REST;
 - interface Web.
 
@@ -117,9 +118,7 @@ Exemplos:
 
 Cada conta possuirá seu próprio saldo.
 
-O patrimônio total do usuário corresponderá à soma dos saldos de todas as contas.
-
-Transferências entre contas pertencentes ao usuário modificarão apenas os saldos das contas envolvidas, sem alterar o patrimônio total.
+A V1 possuirá exatamente uma Conta Financeira por usuário. O saldo será derivado dos Lançamentos Financeiros ativos dessa conta. Patrimônio Total e Transferências ficam fora do escopo ativo da V1.
 
 Os compromissos financeiros representarão obrigações ou previsões financeiras.
 

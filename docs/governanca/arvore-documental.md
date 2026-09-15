@@ -1,79 +1,105 @@
 # Árvore Documental Canônica
 
+**Atualizada em:** 14/09/2026
+
+A lista abaixo representa os principais artefatos documentais canônicos da baseline vigente. Arquivos históricos permanecem preservados no repositório, mas não prevalecem sobre estes artefatos.
+
 ```text
-docs/projeto/documento-de-visao.md
-docs/projeto/plano-de-desenvolvimento.md
-docs/requisitos/levantamento/01-usuarios.md
-docs/requisitos/levantamento/02-contas.md
-docs/requisitos/levantamento/03-compromissos.md
-docs/requisitos/levantamento/04-categorias.md
-docs/requisitos/levantamento/05-recorrencias.md
-docs/requisitos/levantamento/06-lancamentos-financeiros.md
-docs/requisitos/levantamento/07-transferencias.md
-docs/requisitos/levantamento/08-casos-especificos-de-compromissos.md
-docs/requisitos/levantamento/09-dashboard.md
-docs/requisitos/levantamento/10-configuracoes.md
-docs/requisitos/levantamento/11-relatorios.md
-docs/requisitos/levantamento/12-arquivos.md
-docs/requisitos/levantamento/13-seguranca.md
-docs/requisitos/levantamento/14-integracoes.md
-docs/requisitos/levantamento/README.md
-docs/requisitos/levantamento/regras-de-negocio-index.csv
-docs/requisitos/srs/01-introducao.md
-docs/requisitos/srs/02-descricao-geral.md
-docs/requisitos/srs/03-requisitos-funcionais.md
-docs/requisitos/srs/04-requisitos-nao-funcionais.md
-docs/requisitos/srs/05-regras-de-negocio-referencia.md
-docs/requisitos/srs/06-restricoes-e-dependencias.md
-docs/requisitos/srs/07-criterios-de-aceitacao.md
-docs/requisitos/srs/08-rastreabilidade.md
-docs/requisitos/srs/README.md
-docs/requisitos/srs/requisitos-index.csv
-docs/casos-de-uso/README.md
-docs/casos-de-uso/casos/uc-001-cadastrar-usuario.md
-docs/casos-de-uso/casos/uc-002-autenticar-usuario.md
-docs/casos-de-uso/casos/uc-003-alterar-senha.md
-docs/casos-de-uso/casos/uc-004-recuperar-senha.md
-docs/casos-de-uso/casos/uc-005-gerenciar-contas-financeiras.md
-docs/casos-de-uso/casos/uc-006-informar-saldo-inicial.md
-docs/casos-de-uso/casos/uc-007-gerenciar-compromissos-financeiros.md
-docs/casos-de-uso/casos/uc-008-configurar-recorrencia.md
-docs/casos-de-uso/casos/uc-009-efetivar-compromisso-financeiro.md
-docs/casos-de-uso/casos/uc-010-desfazer-efetivacao.md
-docs/casos-de-uso/casos/uc-011-gerenciar-categorias.md
-docs/casos-de-uso/casos/uc-012-consultar-movimentacoes-financeiras.md
-docs/casos-de-uso/casos/uc-013-gerenciar-transferencias.md
-docs/casos-de-uso/casos/uc-014-gerenciar-cartao-de-credito.md
-docs/casos-de-uso/casos/uc-015-gerenciar-parcelamentos.md
-docs/casos-de-uso/casos/uc-016-consultar-dashboard-financeiro.md
-docs/casos-de-uso/casos/uc-017-navegar-entre-periodos-financeiros.md
-docs/casos-de-uso/casos/uc-018-gerenciar-protecao-por-pin.md
-docs/casos-de-uso/casos/uc-019-gerenciar-tema-da-aplicacao.md
-docs/casos-de-uso/casos/uc-020-criar-copia-de-seguranca.md
-docs/casos-de-uso/casos/uc-021-restaurar-copia-de-seguranca.md
-docs/casos-de-uso/casos/uc-022-consultar-patrimonio-total.md
-docs/casos-de-uso/catalogo.csv
-docs/casos-de-uso/contexto-e-atores.md
-docs/casos-de-uso/rastreabilidade-e-referencias-originais.md
-docs/dominio/README.md
-docs/modelagem-dados/01-modelagem-conceitual-mer.md
-docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md
-docs/modelagem-dados/03-modelo-fisico.md
-docs/arquitetura/README.md
-docs/api/README.md
-docs/interface-web/README.md
-docs/testes/README.md
-docs/governanca/arvore-documental.md
-docs/governanca/inventario-fonte.csv
-docs/governanca/proveniencia.csv
-docs/governanca/relatorio-de-consolidacao.md
-98-historico/configuracoes-versao-anterior.md
-98-historico/documento-de-visao-v1.0.md
-98-historico/plano-de-desenvolvimento-v1.0.md
-98-historico/plano-de-desenvolvimento-v1.1.md
-98-historico/plano-de-desenvolvimento-v1.2.md
-98-historico/plano-de-desenvolvimento-v1.3-export-notion.md
+AGENTS.md
 ORCHESTRATOR.md
 README.md
 project-manifest.yaml
+
+docs/README.md
+
+docs/projeto/
+  documento-de-visao.md
+  plano-de-desenvolvimento.md
+  roteiro-tecnico-de-implementacao.md
+
+docs/requisitos/levantamento/
+  README.md
+  01-usuarios.md
+  02-contas.md
+  03-compromissos.md
+  04-categorias.md
+  05-recorrencias.md
+  06-lancamentos-financeiros.md
+  07-transferencias.md              # preservado para versão futura
+  08-casos-especificos-de-compromissos.md
+  09-dashboard.md
+  10-configuracoes.md
+  11-relatorios.md
+  12-arquivos.md
+  13-seguranca.md
+  14-integracoes.md
+  regras-de-negocio-index.csv
+
+docs/requisitos/srs/
+  README.md
+  01-introducao.md
+  02-descricao-geral.md
+  03-requisitos-funcionais.md
+  04-requisitos-nao-funcionais.md
+  05-regras-de-negocio-referencia.md
+  06-restricoes-e-dependencias.md
+  07-criterios-de-aceitacao.md
+  08-rastreabilidade.md
+  requisitos-index.csv
+
+docs/casos-de-uso/
+  README.md
+  catalogo.csv
+  contexto-e-atores.md
+  rastreabilidade-e-referencias-originais.md
+  casos/
+    uc-001 ... uc-024
+    uc-013-gerenciar-transferencias.md      # futuro/inativo
+    uc-018-gerenciar-protecao-por-pin.md   # futuro/inativo
+    uc-022-consultar-patrimonio-total.md   # futuro/inativo
+    uc-023-resetar-perfil-financeiro.md
+    uc-024-excluir-conta-acesso.md
+
+docs/dominio/
+  README.md
+  01-mapa-de-dominio.md
+
+docs/modelagem-dados/
+  01-modelagem-conceitual-mer.md
+  02-modelo-entidade-relacionamento-der.md
+  03-modelo-fisico.md
+  artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql
+
+docs/arquitetura/
+  README.md
+  01-arquitetura-da-aplicacao.md
+
+docs/api/
+  README.md
+
+docs/interface-web/
+  README.md
+
+docs/testes/
+  README.md
+
+docs/governanca/
+  baseline-v1-simplificada-2026-09-14.md
+  PROMPT-RETOMADA.md
+  continuidade-de-contexto.md
+  arvore-documental.md
+  inventario-fonte.csv
+  proveniencia.csv
+  relatorio-de-consolidacao.md
 ```
+
+## Precedência
+
+Para estado vigente, a leitura deve começar por:
+
+1. `project-manifest.yaml`;
+2. `docs/governanca/baseline-v1-simplificada-2026-09-14.md`;
+3. `ORCHESTRATOR.md`;
+4. fontes normativas da etapa afetada.
+
+`HANDOFF.md`, o relatório de consolidação, proveniência e inventários preservam histórico e devem ser interpretados dentro desse contexto.

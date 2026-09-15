@@ -6,7 +6,7 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 2.4
+**Versão:** 3.0
 
 **Baseline:** catálogo preservado com 21 requisitos funcionais; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
 
@@ -40,26 +40,24 @@ Esta seção define condições observáveis e verificáveis para validar os req
 - **CA-003.4:** Link expirado ou já utilizado não deverá permitir nova recuperação.
 - **CA-003.5:** A recuperação não deverá revelar a senha anterior.
 
-### RF-004 — Gerenciar contas financeiras
+### RF-004 — Gerenciar Conta Financeira única
 
-- **CA-004.1:** O usuário deverá conseguir criar uma conta financeira.
-- **CA-004.2:** O sistema deverá permitir múltiplas contas do mesmo usuário.
-- **CA-004.3:** O usuário deverá conseguir visualizar suas contas.
-- **CA-004.4:** O usuário deverá conseguir renomear uma conta sem alterar seu histórico.
-- **CA-004.5:** O sistema deverá respeitar a existência de uma única conta principal.
-- **CA-004.6:** O sistema deverá respeitar a distinção entre conta principal e contas secundárias.
-- **CA-004.7:** A V1 não deverá disponibilizar exclusão de contas financeiras.
+- **CA-004.1:** Após cadastro válido, o usuário deverá possuir exatamente uma Conta Financeira com nome inicial **Minha Conta**.
+- **CA-004.2:** O usuário deverá conseguir visualizar sua conta.
+- **CA-004.3:** O usuário deverá conseguir renomear a conta sem alterar o histórico.
+- **CA-004.4:** O sistema deverá impedir conta adicional.
+- **CA-004.5:** A conta não poderá ser excluída isoladamente.
+- **CA-004.6:** Reset deverá reprovisionar a conta.
+- **CA-004.7:** O SGFP não deverá considerar provisionamento concluído sem a conta única.
 
-### RF-005 — Consultar saldos das contas e patrimônio total
+### RF-005 — Consultar saldo da conta
 
-- **CA-005.1:** O sistema deverá calcular e apresentar o saldo de cada conta a partir dos movimentos registrados.
-- **CA-005.2:** Entrada efetivada deverá aumentar o saldo aplicável.
-- **CA-005.3:** Saída efetivada deverá reduzir o saldo aplicável.
-- **CA-005.4:** O patrimônio total deverá ser calculado a partir dos saldos das contas.
-- **CA-005.5:** Transferência entre contas próprias não deverá alterar o patrimônio total.
-- **CA-005.6:** O saldo poderá ser positivo, zero ou negativo conforme as regras de negócio.
-- **CA-005.7:** Saldos não deverão depender de atributo independente de saldo inicial.
-- **CA-005.8:** O valor inicial de uma conta secundária deverá ser representado por transferência com a conta principal, sem Entrada direta para sua composição inicial.
+- **CA-005.1:** Saldo = lançamentos ativos da conta.
+- **CA-005.2:** Saldo não é atributo armazenado.
+- **CA-005.3:** Sem efeitos financeiros, saldo derivado = R$ 0,00.
+- **CA-005.4:** Valor inicial usa `SALDO_INICIAL`.
+- **CA-005.5:** Efetivação/desfazimento altera/reverte corretamente o saldo.
+- **CA-005.6:** Patrimônio Total não é apresentado separadamente na V1.
 
 ### RF-006 — Gerenciar compromissos financeiros
 
@@ -109,10 +107,10 @@ Esta seção define condições observáveis e verificáveis para validar os req
 - **CA-010.3:** O lançamento deverá conter informações suficientes para identificar a movimentação realizada.
 - **CA-010.4:** O lançamento deverá registrar a data de efetivação.
 - **CA-010.5:** O lançamento poderá possuir descrição complementar quando aplicável.
-- **CA-010.6:** O valor inicial da conta principal deverá ser representado por lançamento de Entrada quando informado.
+- **CA-010.6:** O valor inicial da Conta Financeira única deverá ser representado por lançamento de Entrada quando informado.
 - **CA-010.7:** Informações financeiras de períodos anteriores deverão ser registradas por lançamentos conforme as funcionalidades aplicáveis.
 - **CA-010.8:** Não deverá existir saldo inicial armazenado como atributo independente da conta.
-- **CA-010.9:** O registro do valor inicial da conta principal deverá utilizar um lançamento de Entrada; essa regra não deverá ser aplicada como Entrada direta a contas secundárias.
+- **CA-010.9:** O registro do valor inicial deverá utilizar um Lançamento de origem `SALDO_INICIAL`; a V1 não possui contas adicionais.
 
 ### RF-011 — Consultar movimentações financeiras
 
@@ -121,31 +119,9 @@ Esta seção define condições observáveis e verificáveis para validar os req
 - **CA-011.3:** O usuário deverá conseguir consultar o histórico do período selecionado.
 - **CA-011.4:** A consulta não deverá alterar dados financeiros.
 
-### RF-012 — Gerenciar transferências entre contas
+### RF-012 a RF-014 — Transferências — Versão Futura
 
-- **CA-012.1:** O usuário deverá conseguir informar origem, destino e valor.
-- **CA-012.2:** Origem e destino não poderão ser a mesma conta.
-- **CA-012.3:** A transferência deverá ocorrer entre contas do mesmo usuário.
-- **CA-012.4:** Transferência não efetivada não deverá alterar saldos.
-- **CA-012.5:** O usuário deverá conseguir alterar transferência não efetivada.
-- **CA-012.6:** O usuário deverá conseguir excluir transferência não efetivada.
-- **CA-012.7:** Transferência efetivada não deverá ser alterada ou excluída diretamente.
-
-### RF-013 — Efetivar e desfazer transferências
-
-- **CA-013.1:** O usuário deverá conseguir efetivar transferência válida.
-- **CA-013.2:** A efetivação deverá diminuir o saldo da origem.
-- **CA-013.3:** A efetivação deverá aumentar o saldo do destino.
-- **CA-013.4:** A operação deverá aparecer no histórico das duas contas.
-- **CA-013.5:** O desfazimento deverá reverter os dois efeitos financeiros.
-- **CA-013.6:** O desfazimento deverá manter origem, destino e históricos consistentes.
-- **CA-013.7:** A insuficiência de saldo não deverá impedir a efetivação, conforme regra existente.
-
-### RF-014 — Gerenciar transferências recorrentes
-
-- **CA-014.1:** O usuário deverá conseguir configurar transferência recorrente.
-- **CA-014.2:** A transferência recorrente deverá seguir as regras mensais.
-- **CA-014.3:** O usuário deverá conseguir alterar, excluir ou encerrar recorrências conforme as regras.
+A V1 não deverá disponibilizar criação, efetivação, desfazimento ou recorrência de transferências enquanto possuir uma única Conta Financeira por usuário.
 
 ### RF-015 — Gerenciar compromissos de cartão de crédito
 
@@ -197,19 +173,35 @@ Os critérios abaixo permanecem registrados para preservar a rastreabilidade do 
 
 ### RF-021 — Gerenciar cópias de segurança e restauração
 
-- **CA-021.1:** O usuário deverá conseguir solicitar manualmente uma cópia de segurança.
-- **CA-021.2:** A cópia deverá representar o estado dos dados no momento da criação.
-- **CA-021.3:** O usuário deverá conseguir fornecer uma cópia válida para restauração.
-- **CA-021.4:** A restauração deverá informar e confirmar a substituição dos dados atuais.
-- **CA-021.5:** A restauração deverá substituir os dados pelos dados representados na cópia.
-- **CA-021.6:** Antes de substituir os dados atuais, após a validação da cópia escolhida e a confirmação do usuário, o sistema deverá gerar e preservar em condição recuperável uma cópia de segurança correspondente ao estado imediatamente anterior à restauração.
-- **CA-021.7:** A V1 não deverá realizar mesclagem de dados.
-- **CA-021.8:** A cópia de segurança criada manualmente deverá ser enviada ao endereço de e-mail cadastrado no perfil do usuário.
-- **CA-021.9:** Se a cópia pré-restauração não puder ser gerada e preservada com sucesso em condição recuperável, a restauração não deverá ser executada e os dados atuais deverão permanecer inalterados.
-- **CA-021.10:** A cópia pré-restauração deverá ser compatível com o mesmo processo de restauração das cópias manuais e deverá ser identificável como de origem pré-restauração.
-- **CA-021.11:** O sistema deverá tentar enviar a cópia pré-restauração ao e-mail cadastrado; a falha isolada dessa entrega não deverá impedir a restauração quando a cópia já estiver preservada de forma recuperável.
+- **CA-021.1:** Solicitar backup manual.
+- **CA-021.2:** Entrega em ZIP para download local.
+- **CA-021.3:** Conteúdo versionado e íntegro.
+- **CA-021.4:** Selecionar ZIP válido para restauração.
+- **CA-021.5:** Avisar e confirmar substituição integral.
+- **CA-021.6:** Gerar cópia pré-restauração recuperável.
+- **CA-021.7:** Não realizar mesclagem.
+- **CA-021.8:** Falha da cópia pré-restauração cancela a restauração.
+- **CA-021.9:** Cópia pré-restauração usa o mesmo formato lógico e pode ser baixada.
+- **CA-021.10:** Backup/restauração não dependem de e-mail.
+- **CA-021.11:** Cópias devem ser protegidas contra acesso não autorizado/adulteração.
 
-## 3. Critérios de Aceitação dos Requisitos Não Funcionais
+### RF-022 — Resetar perfil financeiro
+
+- **CA-022.1:** Usuário autenticado pode iniciar reset.
+- **CA-022.2:** Duas etapas de confirmação.
+- **CA-022.3:** Frase final exata **RESETAR PERFIL**.
+- **CA-022.4:** Apaga dados SGFP e reprovisiona estado inicial.
+- **CA-022.5:** Login WordPress permanece válido.
+
+### RF-023 — Excluir conta de acesso
+
+- **CA-023.1:** Usuário autenticado pode iniciar exclusão.
+- **CA-023.2:** Duas etapas de confirmação.
+- **CA-023.3:** Frase final exata **EXCLUIR CONTA**.
+- **CA-023.4:** Remove dados SGFP e identidade/login WordPress.
+- **CA-023.5:** Login excluído não acessa mais o portal.
+
+## 3.## 3. Critérios de Aceitação dos Requisitos Não Funcionais
 
 ### RNF-001 — Segurança
 
@@ -237,7 +229,7 @@ Os critérios abaixo permanecem registrados para preservar a rastreabilidade do 
 ### RNF-006 — Consistência das Operações
 
 - **CA-NF-006.1:** Efetivações deverão manter consistência entre compromisso, lançamento e saldo.
-- **CA-NF-006.2:** Transferências deverão manter consistência entre origem, destino e registros.
+- **CA-NF-006.2:** Reset e exclusão não deverão ser apresentados como sucesso quando deixarem estado parcialmente removido.
 
 ### RNF-007 — Preservação do Histórico Financeiro
 
@@ -305,7 +297,9 @@ As restrições deverão ser verificadas por inspeção documental e, quando pro
 
 - A V1 não deverá realizar integração bancária ou financeira externa, conforme RE-002, RE-003 e RE-007.
 - As recorrências da V1 deverão utilizar exclusivamente periodicidade mensal, conforme RE-004 e as regras do módulo de Recorrência.
-- Deverá existir exatamente uma conta principal por usuário, conforme RE-005.
+- Deverá existir exatamente uma Conta Financeira por usuário, conforme RE-005.
+- Transferências e Patrimônio Total ficam fora da V1, conforme RE-006 e RE-007.
+- Reset e exclusão exigem dupla confirmação, conforme RE-019.
 - O Dashboard deverá ser uma visão derivada e consolidada, sem manter dados financeiros independentes, conforme RE-010.
 - Funcionalidades fora do escopo da V1 não deverão ser disponibilizadas, conforme RE-001 e as restrições específicas da V1. O RF-019 e seus critérios CA-019.1 a CA-019.5 permanecem documentados exclusivamente para versão futura.
 
@@ -336,6 +330,10 @@ Cada caso de teste deverá referenciar, quando aplicável:
 Os critérios deverão respeitar as regras de negócio consolidadas no Levantamento de Requisitos. As regras não são duplicadas nesta seção.
 
 ## 7. Histórico de atualização
+
+### Versão 3.0 — 14/09/2026
+
+Alinhou conta única, retirada de transferências/patrimônio, backup ZIP local e RF-022/RF-023.
 
 ### Versão 2.4 - 04/09/2026
 

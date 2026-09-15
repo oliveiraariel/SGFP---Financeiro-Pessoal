@@ -4,9 +4,9 @@
 
 **Sigla:** SGFP
 **Documento:** Casos de Uso
-**Versão:** 1.1
+**Versão:** 2.0
 **Etapa:** 4 — Casos de Uso
-**Data:** 23/08/2026
+**Data:** 14/09/2026
 
 ## 1. Objetivo do Documento
 
@@ -69,15 +69,15 @@ Este ator representa uma dependência de comunicação necessária a determinada
 | UC-002 | Autenticar usuário | Usuário | Acessar o sistema mediante credenciais |
 | UC-003 | Alterar senha | Usuário | Modificar a senha atual |
 | UC-004 | Recuperar senha | Usuário | Recuperar o acesso mediante e-mail |
-| UC-005 | Gerenciar contas financeiras | Usuário | Criar, consultar e renomear contas |
-| UC-006 | Informar saldo inicial | Usuário | Registrar o saldo real inicial da conta principal |
+| UC-005 | Gerenciar Conta Financeira | Usuário | Consultar e renomear a conta única |
+| UC-006 | Informar saldo inicial | Usuário | Registrar a posição inicial da conta única por lançamento |
 | UC-007 | Gerenciar compromissos financeiros | Usuário | Cadastrar, consultar, alterar e excluir compromissos |
 | UC-008 | Configurar recorrência | Usuário | Definir a recorrência mensal de uma operação |
 | UC-009 | Efetivar compromisso financeiro | Usuário | Confirmar que a movimentação ocorreu |
 | UC-010 | Desfazer efetivação | Usuário | Reverter a efetivação de um compromisso |
 | UC-011 | Gerenciar categorias | Usuário | Criar, alterar, excluir e associar categorias |
 | UC-012 | Consultar movimentações financeiras | Usuário | Consultar lançamentos e histórico financeiro |
-| UC-013 | Gerenciar transferências | Usuário | Criar e administrar transferências entre contas |
+| UC-013 | Gerenciar transferências — **Versão futura** | Usuário | Identificador preservado; fora da V1 |
 | UC-014 | Gerenciar cartão de crédito | Usuário | Controlar compromissos referentes a faturas |
 | UC-015 | Gerenciar parcelamentos | Usuário | Representar e controlar compromissos parcelados |
 | UC-016 | Consultar Dashboard financeiro | Usuário | Visualizar a situação financeira do período |
@@ -86,7 +86,9 @@ Este ator representa uma dependência de comunicação necessária a determinada
 | UC-019 | Gerenciar tema da aplicação | Usuário | Alterar a apresentação visual |
 | UC-020 | Criar cópia de segurança | Usuário | Gerar uma cópia dos dados |
 | UC-021 | Restaurar cópia de segurança | Usuário | Restaurar o estado a partir de uma cópia |
-| UC-022 | Consultar patrimônio total | Usuário | Visualizar o patrimônio total calculado |
+| UC-022 | Consultar patrimônio total — **Versão futura** | Usuário | Identificador preservado; fora da V1 |
+| UC-023 | Resetar perfil financeiro | Usuário | Apagar dados SGFP preservando o login |
+| UC-024 | Excluir conta de acesso | Usuário | Excluir dados SGFP e o login WordPress |
 
 ## 5. Regras Gerais para os Casos de Uso
 
@@ -106,6 +108,6 @@ Quando um fluxo depender de uma regra específica, será feita referência ao m�
 
 ### 5.4 Estado Financeiro
 
-As operações que alterarem compromissos, efetivações, lançamentos ou transferências deverão produzir os efeitos financeiros definidos pelas regras de negócio.
+As operações que alterarem compromissos, efetivações ou lançamentos deverão produzir os efeitos financeiros definidos pelas regras de negócio. Transferências não integram a V1.
 
 ## 6. Especificação dos Casos de Uso

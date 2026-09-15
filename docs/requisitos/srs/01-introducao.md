@@ -10,7 +10,7 @@ A ERS servirá como referência para a equipe durante as etapas de análise, mod
 
 O SGFP será um sistema destinado ao **controle financeiro pessoal**, permitindo ao usuário registrar, organizar e acompanhar suas informações financeiras.
 
-A Versão 1 terá como foco o gerenciamento manual das informações pelo usuário, contemplando contas financeiras, compromissos, categorias, recorrências, lançamentos, transferências e o acompanhamento da situação financeira por meio do Dashboard.
+A Versão 1 terá como foco o gerenciamento manual das informações pelo usuário, contemplando Conta Financeira única, compromissos, categorias, recorrências, lançamentos e o acompanhamento da situação financeira por meio do Dashboard.
 
 A Versão 1 não contemplará integrações com bancos ou outros serviços financeiros externos.
 

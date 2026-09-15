@@ -1,265 +1,90 @@
 # RESTRIÇÕES E DEPENDÊNCIAS
 
-## Sistema de Gestão Financeira Pessoal
+**Sistema:** SGFP  
+**Versão:** 2.0  
+**Data:** 14/09/2026
 
-**Sigla:** SGFP
+## 1. Restrições da V1
 
-**Documento:** Especificação de Requisitos de Software (ERS)
+### RE-001 — Escopo
+Somente capacidades declaradas ativas na baseline V1 podem ser implementadas como V1.
 
-**Versão:** 1.3
-
-**Subetapa:** Etapa 3 — Especificação de Requisitos
-
-**Data:** 30/08/2026
-
-## 1. Objetivo
-
-Esta seção registra as principais restrições e dependências identificadas para a Versão 1 do SGFP.
-
-As restrições representam condições que limitam ou orientam o desenvolvimento da solução.
-
-As dependências representam recursos, serviços, ambientes ou condições externas dos quais o funcionamento do sistema dependerá.
-
-Os itens aqui registrados não deverão antecipar decisões que pertençam às etapas posteriores de arquitetura, modelagem ou implementação, salvo quando já houver decisão consolidada no projeto.
-
-## 2. Restrições
-
-### RE-001 — Escopo da Versão 1
-
-A Versão 1 deverá respeitar o escopo definido no Documento de Visão e no Levantamento de Requisitos.
-
-Funcionalidades planejadas para versões futuras não deverão ser incorporadas à Versão 1 sem decisão posterior de alteração de escopo.
-
-### RE-002 — Inserção Manual de Dados Financeiros
-
-Na Versão 1, as informações financeiras serão inseridas manualmente pelo usuário.
-
-Não haverá integração automática com instituições financeiras para obtenção de movimentações.
+### RE-002 — Inserção Manual de Dados
+Não haverá integração bancária automática.
 
 ### RE-003 — Ausência de Integrações Financeiras Externas
+A V1 não sincroniza automaticamente dados com bancos ou instituições financeiras.
 
-A Versão 1 não possuirá integração com bancos, instituições financeiras ou outros serviços externos destinados à obtenção ou sincronização automática de dados financeiros.
+### RE-004 — Recorrência Mensal
+Recorrências da V1 são exclusivamente mensais.
 
-A API REST própria da aplicação não será considerada uma integração externa.
+### RE-005 — Conta Financeira Única
+Cada usuário possuirá exatamente uma Conta Financeira, provisionada automaticamente com nome inicial **Minha Conta**.
 
-### RE-004 — Periodicidade das Recorrências
+### RE-006 — Transferências Fora da V1
+Transferências entre contas não integram a V1. RF-012 a RF-014 permanecem apenas como identificadores futuros.
 
-Na Versão 1, as recorrências serão exclusivamente mensais.
+### RE-007 — Patrimônio Total Fora da V1
+A V1 não apresenta Patrimônio Total separado do saldo da conta única.
 
-Não serão contempladas recorrências semanais, quinzenais, diárias ou com outros intervalos.
+### RE-008 — Cartão de Crédito
+A V1 representa pagamento de fatura como compromisso de Saída, sem controle detalhado de compras/limite.
 
-### RE-005 — Conta Principal
-
-O sistema deverá possuir uma única conta definida como principal.
-
-Os compromissos financeiros normais incidirão sobre essa conta.
-
-### RE-006 — Contas Secundárias
-
-As contas classificadas como secundárias serão utilizadas para movimentações decorrentes de transferências.
-
-As regras específicas de movimentação entre conta principal e contas secundárias deverão ser respeitadas.
-
-### RE-007 — Transferências
-
-As transferências ocorrerão somente entre contas pertencentes ao mesmo usuário.
-
-Na Versão 1, as transferências deverão respeitar as regras definidas para conta principal e contas secundárias, não sendo tratadas como movimentações externas.
-
-### RE-008 — Cartão de Crédito na Versão 1
-
-O sistema não realizará, na Versão 1, controle individual de compras realizadas no cartão de crédito, composição automática de fatura, controle de limite ou controle específico de fechamento e vencimento.
-
-O pagamento da fatura será representado por compromisso financeiro de Saída.
-
-### RE-009 — Parcelamentos na Versão 1
-
-Parcelamentos não serão tratados como entidade financeira independente.
-
-Serão representados por meio dos mecanismos de compromissos financeiros e recorrências já definidos.
+### RE-009 — Parcelamentos
+Parcelamentos usam compromissos e recorrências; não constituem entidade independente.
 
 ### RE-010 — Dashboard
-
-O Dashboard não possuirá dados financeiros independentes.
-
-Seus valores deverão ser obtidos a partir dos dados existentes no sistema.
+Dashboard é visão derivada, sem persistência financeira própria.
 
 ### RE-011 — Relatórios
-
-Na Versão 1, não serão definidos ou implementados relatórios financeiros específicos.
+Relatórios financeiros específicos permanecem fora da V1.
 
 ### RE-012 — Backup Automático
+Não haverá backup automático periódico/contínuo. A única geração automática é a cópia de segurança pré-restauração exigida para proteção do estado atual.
 
-A Versão 1 não realizará backup automático periódico, contínuo ou independente de uma restauração.
+### RE-013 — Autenticação
+A V1 usa e-mail e senha via WordPress; provedores externos ficam fora do escopo.
 
-A criação ordinária de cópias de segurança será realizada manualmente pelo usuário. Como medida de segurança específica do processo de restauração, o sistema deverá gerar automaticamente uma cópia do estado imediatamente anterior antes de substituir os dados atuais, conforme as regras do módulo Configurações.
+### RE-014 — Armazenamento Externo
+Não haverá sincronização ou armazenamento externo obrigatório.
 
-Essa exceção pré-restauração não caracteriza política de backup automático periódico.
+### RE-015 — Anexos
+Anexação de arquivos a compromissos fica fora da V1.
 
-### RE-013 — Autenticação por Provedores Externos
+### RE-016 — Plataforma
+Aplicação Web em PHP/WordPress, plugin SGFP próprio e WordPress REST API.
 
-A Versão 1 utilizará autenticação por e-mail e senha.
+### RE-017 — Separação Domínio/Implementação
+Requisitos não determinam automaticamente classes/tabelas além do que a modelagem consolidar.
 
-Login utilizando Google, Apple/iCloud ou outros provedores externos permanecerá fora do escopo da versão inicial.
+### RE-018 — Critérios Quantitativos
+Desempenho, capacidade e compatibilidade quantitativa permanecem a definir quando houver base técnica.
 
-### RE-014 — Sincronização e Armazenamento Externo
+### RE-019 — Operações Destrutivas
+Reset do perfil e exclusão da conta exigem duas etapas de confirmação com frase final em caixa alta definida nos requisitos. Nenhuma dessas ações pode ocorrer por clique único.
 
-A Versão 1 não realizará sincronização em nuvem nem utilizará serviços externos de armazenamento como parte obrigatória da funcionalidade financeira.
+## 2. Dependências
 
-### RE-015 — Anexação de Arquivos
-
-A anexação de imagens ou outros arquivos aos compromissos não fará parte do escopo da Versão 1.
-
-### RE-016 — Plataforma da Versão 1
-
-A primeira versão será desenvolvida como aplicação Web utilizando PHP sobre WordPress.
-
-A solução utilizará uma API REST própria do SGFP apoiada na infraestrutura REST do WordPress, conforme estabelecido no Documento de Visão e no Plano de Desenvolvimento.
-
-O backend específico do SGFP será implementado em plugin próprio.
-
-### RE-017 — Separação entre Domínio e Implementação
-
-As definições desta ERS não deverão determinar automaticamente entidades, classes, tabelas ou outros componentes de implementação.
-
-Essas decisões serão realizadas nas etapas posteriores de modelagem e arquitetura.
-
-### RE-018 — Critérios Técnicos Ainda Não Definidos
-
-A Versão 1 ainda não possui valores quantitativos formalmente definidos para aspectos como:
-
-- tempo máximo de resposta;
-- disponibilidade mínima;
-- capacidade máxima de usuários;
-- capacidade máxima de dados;
-- navegadores e versões suportados;
-- critérios técnicos detalhados de responsividade.
-
-Esses critérios deverão ser definidos posteriormente quando houver base técnica suficiente para estabelecê-los.
-
-## 3. Dependências
-
-### DEP-001 — Ambiente de Execução Web
-
-O funcionamento da aplicação dependerá de um ambiente capaz de executar PHP e WordPress e de disponibilizar a aplicação Web definida para a Versão 1.
-
-Os detalhes técnicos de instalação, servidor Web, versões suportadas, configuração e disponibilização serão definidos na etapa de Arquitetura da Aplicação.
+### DEP-001 — Ambiente Web
+PHP e WordPress.
 
 ### DEP-002 — Banco de Dados
-
-O sistema dependerá de banco de dados relacional compatível com a plataforma WordPress, utilizando MySQL ou MariaDB na implementação da Versão 1.
-
-A estrutura definitiva das tabelas próprias do SGFP, chaves, restrições, índices e demais decisões físicas será definida nas etapas de Modelagem e Arquitetura.
-
-Os dados de identidade e autenticação que forem responsabilidade do WordPress não deverão ser duplicados desnecessariamente nas tabelas próprias do SGFP.
+MySQL ou MariaDB compatível com WordPress e tabelas próprias do SGFP.
 
 ### DEP-003 — Serviço de E-mail
-
-A Versão 1 depende de um meio de envio de e-mail ao endereço cadastrado do usuário para duas funcionalidades distintas:
-
-- recuperação de senha, utilizando o fluxo fornecido pelo WordPress;
-- entrega da cópia de segurança criada manualmente pelo usuário e tentativa de entrega da cópia pré-restauração, conforme RF-021 e as regras do módulo Configurações.
-
-O serviço ou tecnologia concreta de entrega de e-mail utilizado no ambiente será definido posteriormente.
-
-A proteção por PIN foi adiada para versão futura e não possuirá mecanismo próprio de recuperação por e-mail.
+E-mail é dependência da **recuperação de senha do WordPress**. Backup/restauração não dependem de envio por e-mail na V1.
 
 ### DEP-004 — API REST
+A interface Web depende da API REST SGFP protegida por autenticação/autorização.
 
-A interface Web dependerá da API REST própria da aplicação para acesso às funcionalidades e aos dados disponibilizados pelo sistema.
+### DEP-005 — Download/Upload de Arquivo
+O navegador deverá permitir baixar o backup ZIP e selecionar um ZIP válido para restauração.
 
-A API será desenvolvida antes da implementação da interface Web, conforme o Plano de Desenvolvimento.
+## 3. Observações
+- Backup manual é local por download.
+- A cópia pré-restauração pode usar armazenamento privado temporário de implementação, mas deverá permanecer recuperável e disponibilizável ao usuário; isso não constitui armazenamento externo obrigatório.
+- Identidade/login pertencem ao WordPress; dados financeiros permanecem nas estruturas SGFP.
 
-As operações e os recursos protegidos da API deverão respeitar os requisitos de autenticação, autorização e isolamento dos dados definidos para a Versão 1. Os mecanismos técnicos concretos serão definidos na Etapa 9 — Arquitetura da Aplicação e detalhados na Etapa 10 — Desenvolvimento da API.
-
-### DEP-005 — Infraestrutura de Disponibilização
-
-A utilização do sistema dependerá da infraestrutura necessária para disponibilizar a aplicação Web e seus componentes.
-
-A definição da infraestrutura pertence à etapa de Arquitetura e não será antecipada nesta especificação.
-
-## 4. Dependências que Não Constituem Integrações Externas de Negócio
-
-As seguintes dependências não caracterizam, por si só, integrações financeiras externas:
-
-- API REST própria do SGFP;
-- banco de dados utilizado pela própria aplicação;
-- serviço utilizado para envio de e-mails de recuperação de senha e entrega de cópias de segurança;
-- infraestrutura necessária para execução e disponibilização do sistema.
-
-A existência dessas dependências não altera a decisão de que a Versão 1 não possuirá integração com instituições bancárias ou outros serviços externos de negócio.
-
-## 5. Relação com Outros Documentos
-
-As restrições e dependências desta seção deverão ser interpretadas em conjunto com:
-
-- Documento de Visão;
-- Levantamento de Requisitos;
-- Requisitos Funcionais;
-- Requisitos Não Funcionais;
-- Plano de Desenvolvimento do Projeto.
-
-As regras de negócio não serão reproduzidas nesta seção.
-
-Quando uma restrição depender de uma regra específica, esta deverá ser consultada no Levantamento de Requisitos.
-
-## 6. Impacto nas Etapas Posteriores
-
-As restrições e dependências identificadas nesta seção deverão ser consideradas nas etapas seguintes:
-
-### Casos de Uso
-
-As restrições que afetarem a interação do usuário deverão ser refletidas nos fluxos, pré-condições e exceções dos casos de uso.
-
-### Modelagem do Domínio
-
-As restrições de negócio deverão ser consideradas na análise dos conceitos e responsabilidades do domínio.
-
-### Modelagem de Dados
-
-As restrições de integridade e persistência identificadas posteriormente deverão ser traduzidas em estruturas e mecanismos apropriados.
-
-### Arquitetura
-
-As dependências técnicas, limitações de infraestrutura e requisitos de qualidade ainda não quantificados deverão ser refinados durante a definição da arquitetura.
-
-### Implementação
-
-A implementação deverá respeitar as restrições consolidadas nas etapas anteriores.
-
-### Testes
-
-As restrições deverão ser utilizadas como base para a definição dos cenários de teste correspondentes.
-
-## 7. Situação da Subetapa
-
-Esta subetapa consolida as restrições e dependências conhecidas na Versão 1 sem antecipar decisões técnicas ainda não definidas.
-
-Novas restrições ou dependências poderão ser registradas posteriormente caso decisões tomadas nas etapas seguintes produzam impacto sobre os requisitos do sistema.
-
-## 8. Histórico de Atualização
-
-### Versão 1.3 — 30/08/2026
-
-Atualizou a restrição de backup automático para distinguir backup periódico ou contínuo, que permanece fora da V1, da cópia automática pré-restauração exigida como proteção do estado atual. Também alinhou a dependência de e-mail à tentativa de entrega dessa cópia, sem tornar o sucesso do envio condição para a restauração quando a preservação recuperável já tiver sido concluída.
-
-### Versão 1.2 — 30/08/2026
-
-Saneamento documental após auditoria da baseline: a dependência de e-mail da V1 passa a abranger tanto a recuperação de senha quanto a entrega das cópias de segurança; a dependência da API REST explicita a obrigação já existente de proteção contra acesso não autorizado, sem antecipar os mecanismos técnicos da arquitetura.
-
-### Versão 1.1 — 30/08/2026
-
-Atualização para refletir a utilização de PHP sobre WordPress na Versão 1, o banco relacional MySQL/MariaDB compatível com a plataforma, a delegação de identidade/autenticação ao WordPress e o adiamento da proteção por PIN para versão futura. A dependência de e-mail da V1 passa a se aplicar à recuperação de senha, e não à recuperação de PIN.
-
-### Versão 1.0 — 23/08/2026
-
-Primeira consolidação da subetapa **Restrições e Dependências** da Etapa 3 — Especificação de Requisitos.
-
-Foram registrados:
-
-- restrições de escopo da Versão 1;
-- limitações funcionais já decididas;
-- restrições relacionadas a recorrência, contas, transferências e casos específicos;
-- restrições relacionadas a integrações externas;
-- dependências de infraestrutura, banco de dados, API e serviço de e-mail;
-- critérios técnicos que ainda permanecem pendentes de definição.
+## Histórico
+### Versão 2.0 — 14/09/2026
+Adotou conta única, retirou transferências e patrimônio da V1, removeu dependência de e-mail para backup e acrescentou confirmações destrutivas.

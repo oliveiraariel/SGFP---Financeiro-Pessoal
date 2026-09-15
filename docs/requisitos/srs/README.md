@@ -15,6 +15,6 @@ Esta pasta reúne as subetapas vigentes da **Etapa 3 — Especificação de Requ
 
 ## Fonte normativa atual de RFs
 
-O catálogo `03-requisitos-funcionais.md` preserva **21 identificadores funcionais de RF-001 a RF-021**. Na Versão 1 permanecem ativos 20 requisitos; **RF-019 — Gerenciar proteção por PIN** foi adiado para versão futura sem renumeração dos identificadores posteriores.
+O catálogo `03-requisitos-funcionais.md` preserva **23 identificadores funcionais de RF-001 a RF-023**. Na Versão 1 permanecem ativos **19 requisitos**. `RF-012`, `RF-013` e `RF-014` (Transferências) e `RF-019` (PIN) permanecem preservados como futuros/inativos. `RF-022` e `RF-023` formalizam, respectivamente, Resetar perfil financeiro e Excluir conta de acesso.
 
-O catálogo anterior de 19 RFs e o catálogo derivado de 25 RFs permanecem como proveniência da reconciliação, não como referências normativas atuais.
+Os catálogos anteriores de 19, 21 e 25 RFs permanecem apenas como proveniência histórica da reconciliação, não como referências normativas atuais.

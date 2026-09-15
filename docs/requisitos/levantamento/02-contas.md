@@ -2,92 +2,59 @@
 
 ## Objetivo do Módulo
 
-Definir como o sistema representará as contas financeiras do usuário, estabelecendo regras para criação, movimentação, saldo, transferências e patrimônio.
+Definir a Conta Financeira única do usuário e sua relação com saldo e lançamentos na V1 simplificada.
 
 ## Regras de Negócio
 
-### RN-001
+### RN-001 — Conta Única
+Cada usuário possuirá exatamente uma Conta Financeira na V1.
 
-Na primeira utilização do sistema não existirão contas financeiras cadastradas.
+### RN-002 — Criação Automática
+A conta será criada automaticamente no provisionamento inicial do usuário.
 
-### RN-002
+### RN-003 — Nome Inicial
+A conta será criada com o nome **Minha Conta**.
 
-O patrimônio inicial do usuário será igual a R$ 0,00.
+### RN-004 — Renomeação
+O usuário poderá renomear sua Conta Financeira sem alterar lançamentos ou histórico.
 
-### RN-003
+### RN-005 — Saldo Derivado
+A conta não armazenará saldo como atributo. Seu saldo será calculado a partir dos Lançamentos Financeiros ativos associados a ela.
 
-As contas financeiras serão criadas manualmente pelo usuário.
+### RN-006 — Posição Inicial
+Enquanto não houver lançamento com efeito financeiro, o saldo derivado será R$ 0,00.
 
-### RN-004
+Quando o usuário precisar representar o valor real existente no início da utilização, o SGFP registrará um Lançamento Financeiro de origem `SALDO_INICIAL` na Conta Financeira.
 
-Todas as movimentações financeiras serão registradas manualmente pelo usuário.
+### RN-007 — Proibição de Contas Adicionais
+A V1 não permitirá criar segunda conta, conta secundária ou alterar papel de conta.
 
-### RN-005
+### RN-008 — Sem Exclusão Isolada
+A Conta Financeira não poderá ser excluída isoladamente. Ela será removida apenas no reset total dos dados SGFP ou na exclusão da conta de acesso, sendo recriada automaticamente após o reset do perfil financeiro.
 
-Ao criar uma conta, ela será criada sem saldo armazenado.
+### RN-009 — Transferências Fora da V1
+Transferências entre contas não fazem parte do escopo ativo da V1, pois cada usuário possui apenas uma conta.
 
-Quando for necessário representar o valor financeiro existente no início da utilização, a conta principal receberá um lançamento de Entrada correspondente. Uma conta secundária não receberá Entrada direta para composição inicial; seu valor deverá chegar por transferência entre a conta principal e a conta secundária.
-
-### RN-006
-
-O saldo de uma conta será sempre calculado a partir dos movimentos financeiros registrados nela.
-
-O sistema não armazenará saldo inicial como atributo da conta.
-
-### RN-007
-
-O usuário poderá criar quantas contas financeiras desejar.
-
-### RN-008
-
-Cada conta possuirá apenas um nome definido pelo usuário.
-
-O sistema não exigirá informações como banco, agência, número da conta ou tipo da conta.
-
-### RN-009
-
-O nome de uma conta poderá ser alterado a qualquer momento.
-
-Essa alteração não modificará os lançamentos já existentes nem o histórico financeiro da conta.
-
-### RN-010
-
-O sistema será utilizado como ferramenta de controle financeiro pessoal.
-
-As informações cadastrais da instituição financeira não serão obrigatórias para o funcionamento da aplicação.
+### RN-010 — Patrimônio Total Fora da V1
+A V1 não apresentará Patrimônio Total como conceito separado. Com uma única conta, o valor seria redundante com o saldo da Conta Financeira.
 
 ## Funcionalidades da Versão 1
-
-- Criar contas financeiras.
-- Renomear contas existentes.
-- Manter múltiplas contas financeiras.
-- Registrar movimentações em cada conta.
-- Calcular automaticamente o saldo de cada conta.
-- Calcular automaticamente o patrimônio total do usuário.
-- Registrar o valor inicial da conta principal por meio de um lançamento de Entrada.
-- Receber valor em conta secundária por transferência com a conta principal, sem Entrada direta para composição inicial.
+- Provisionar automaticamente uma conta por usuário.
+- Visualizar a conta.
+- Renomear a conta.
+- Consultar o saldo derivado dos lançamentos.
+- Registrar o valor inicial por Lançamento Financeiro quando necessário.
 
 ## Funcionalidades Previstas para Versões Futuras
-
-- Cadastro opcional de informações bancárias, como instituição financeira, agência e número da conta.
-- Associação de logotipos das instituições financeiras.
-- Integração com serviços bancários, caso seja definida em futuras versões do projeto.
+- Múltiplas contas.
+- Transferências entre contas.
+- Patrimônio total agregado entre múltiplas contas.
+- Dados bancários opcionais e integrações externas.
 
 ## Decisões Tomadas
+- Relação Usuário–Conta é 1:1 na V1.
+- Não existem papéis PRINCIPAL/SECUNDARIA.
+- Saldo permanece derivado; não existe coluna/atributo independente de saldo.
+- O valor inicial é um lançamento, não atributo da conta.
 
-- O sistema iniciará sem contas financeiras cadastradas.
-- O usuário criará manualmente todas as suas contas.
-- O valor inicial da conta principal será registrado como um lançamento de Entrada.
-- O valor inicial de uma conta secundária será representado por transferência com a conta principal.
-- O saldo de cada conta será sempre calculado automaticamente a partir dos lançamentos registrados.
-- O usuário poderá criar quantas contas desejar.
-- O nome das contas poderá ser alterado sem comprometer o histórico financeiro.
-- O sistema não dependerá de informações bancárias para realizar o controle financeiro.
-
-## Questões Pendentes
-
-Nenhuma.
-
-**Data de Revisão**
-
-13 / 08 / 2026
+**Data de Revisão:** 14/09/2026

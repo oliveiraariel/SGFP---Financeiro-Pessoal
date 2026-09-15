@@ -1,14 +1,41 @@
 -- ============================================================
--- SGFP - MODELO FISICO V7
+-- SGFP - MODELO FISICO V8
 -- MYSQL / MARIADB + WORDPRESS
--- Revisao: 05/09/2026
+-- Revisao: 14/09/2026
+-- Baseline: V1 simplificada
 -- ============================================================
 --
 -- BASELINE FUNCIONAL CONSIDERADA
 --
--- - Catalogo preservado: RF-001 a RF-021.
--- - V1 ativa: 20 requisitos funcionais.
--- - RF-019 (PIN): adiado para versao futura.
+-- - Catalogo vigente: RF-001 a RF-023.
+-- - V1 ativa: 19 requisitos funcionais.
+-- - RF-012, RF-013 e RF-014 (TRANSFERENCIAS): versao futura.
+-- - RF-019 (PIN): versao futura.
+-- - RF-022: RESETAR PERFIL FINANCEIRO.
+-- - RF-023: EXCLUIR CONTA DE ACESSO.
+--
+-- PRINCIPAIS DECISOES DA V1
+--
+-- 1. CADA USUARIO POSSUI EXATAMENTE UMA CONTA FINANCEIRA.
+--    A APLICACAO A PROVISIONA AUTOMATICAMENTE COM O NOME
+--    INICIAL "Minha Conta".
+--
+-- 2. NAO EXISTEM CONTA PRINCIPAL, CONTA SECUNDARIA, PAPEL DE
+--    CONTA OU TROCA DE CONTA PRINCIPAL NA V1.
+--
+-- 3. SALDO NAO E ARMAZENADO NA CONTA. ELE E SEMPRE DERIVADO
+--    DOS LANCAMENTOS FINANCEIROS ATIVOS DA CONTA.
+--
+-- 4. TRANSFERENCIAS E PATRIMONIO TOTAL NAO INTEGRAM A V1.
+--
+-- 5. BACKUP/RESTAURACAO SAO PROCESSOS DA APLICACAO.
+--    O BACKUP MANUAL E ENTREGUE LOCALMENTE EM ARQUIVO ZIP.
+--    NAO HA TABELA FINANCEIRA ESPECIFICA PARA BACKUP.
+--
+-- 6. RESET DO PERFIL E EXCLUSAO DA CONTA DE ACESSO SAO
+--    OPERACOES DA APLICACAO. O RESET MANTEM wp_users; A
+--    EXCLUSAO DE ACESSO REMOVE OS DADOS SGFP E O LOGIN.
+-- ============================================================
 --
 -- DIRETRIZES DE INTEGRACAO COM WORDPRESS
 --
@@ -19,31 +46,26 @@
 --    FK_ID_USUARIO REPRESENTA wp_users.ID (BIGINT UNSIGNED).
 --
 -- 3. ESTE MODELO DECLARA FOREIGN KEYS PARA wp_users(ID),
---    ASSUMINDO O PREFIXO PADRAO "wp_".
---    NA IMPLEMENTACAO REAL DO PLUGIN, O NOME DA TABELA DE
---    USUARIOS DEVE SER OBTIDO PELO WORDPRESS (EX.: $wpdb->users)
---    E O DDL AJUSTADO CASO O PREFIXO DA INSTALACAO SEJA OUTRO.
+--    ASSUMINDO O PREFIXO PADRAO "wp_" SOMENTE PARA FINS
+--    DIDATICOS. NA IMPLEMENTACAO REAL DO PLUGIN, A TABELA
+--    DE USUARIOS DEVE SER OBTIDA PELO WORDPRESS, POR EXEMPLO
+--    POR $wpdb->users.
 --
--- 4. AS FOREIGN KEYS PARA wp_users(ID) EXIGEM QUE A TABELA
---    DE USUARIOS E AS TABELAS DO SGFP UTILIZEM ENGINE
+-- 4. AS FOREIGN KEYS PARA wp_users(ID) EXIGEM ENGINE
 --    COMPATIVEL COM INTEGRIDADE REFERENCIAL (INNODB).
---    NAO FOI DEFINIDO ON DELETE CASCADE: A EXCLUSAO DE USUARIO
---    DEVE SER TRATADA EXPLICITAMENTE PELA APLICACAO.
 --
--- 5. O BACKEND DEVE SEMPRE OBTER FK_ID_USUARIO DA SESSAO DO
---    WORDPRESS. O CLIENTE NAO DEVE INFORMAR UM FK_ID_USUARIO
---    ARBITRARIO PARA OPERACOES PRIVADAS.
+-- 5. NAO FOI DEFINIDO ON DELETE CASCADE PARA wp_users.
+--    RESET E EXCLUSAO DE ACESSO DEVEM SER ORQUESTRADOS
+--    EXPLICITAMENTE PELA APLICACAO, EM ORDEM SEGURA.
 --
--- 6. O TEMA CLARO/ESCURO SERA PREFERENCIA DO USUARIO NO
+-- 6. O BACKEND DEVE SEMPRE OBTER FK_ID_USUARIO DA SESSAO DO
+--    WORDPRESS. O CLIENTE NAO DEVE INFORMAR FK_ID_USUARIO
+--    ARBITRARIO COMO AUTORIDADE PARA OPERACOES PRIVADAS.
+--
+-- 7. O TEMA CLARO/ESCURO E PREFERENCIA DO USUARIO NO
 --    WORDPRESS (wp_usermeta). NAO HA TABELA SGFP PARA TEMA.
 --
--- 7. O PIN NAO FAZ PARTE DA V1. NAO EXISTEM TABELAS,
---    COLUNAS, TOKENS OU MECANISMOS DE PERSISTENCIA DE PIN
---    NESTE MODELO.
---
--- 8. BACKUP E RESTAURACAO SAO PROCESSOS DA APLICACAO.
---    NAO E NECESSARIA TABELA PROPRIA NA V1 APENAS PARA
---    REPRESENTAR A COPIA DE SEGURANCA.
+-- 8. O PIN NAO FAZ PARTE DA V1.
 --
 -- 9. AS CATEGORIAS INICIAIS NAO SAO GLOBAIS. SAO CRIADAS
 --    INDIVIDUALMENTE PARA CADA NOVO USUARIO E DEPOIS PODEM
@@ -51,8 +73,7 @@
 --
 -- 10. CONVENCAO DIDATICA DE NOMENCLATURA:
 --     TODA COLUNA QUE ATUA COMO CHAVE ESTRANGEIRA RECEBE
---     O PREFIXO FK_, POR EXEMPLO: FK_ID_USUARIO,
---     FK_ID_CATEGORIA, FK_ID_CONTA E FK_ID_COMPROMISSO.
+--     O PREFIXO FK_.
 -- ============================================================
 
 
@@ -62,66 +83,53 @@
 -- ============================================================
 
 DROP TABLE IF EXISTS LANCAMENTO_FINANCEIRO;
+
+-- Limpeza de legado da V7. TRANSFERENCIA nao sera recriada.
 DROP TABLE IF EXISTS TRANSFERENCIA;
+
 DROP TABLE IF EXISTS COMPROMISSO_FINANCEIRO;
 DROP TABLE IF EXISTS RECORRENCIA;
 DROP TABLE IF EXISTS CATEGORIA;
 DROP TABLE IF EXISTS CONTA_FINANCEIRA;
 
+
 -- ============================================================
 -- CONTA FINANCEIRA
 -- ============================================================
 --
+-- - Cada usuario possui exatamente UMA conta na V1.
+-- - A aplicacao cria essa conta automaticamente no
+--   provisionamento inicial do usuario.
+-- - Nome inicial: "Minha Conta".
+-- - O usuario pode renomear a conta.
 -- - A conta nao armazena saldo.
--- - O saldo e sempre derivado dos lancamentos ativos.
--- - Um usuario pode ter varias contas, mas no maximo uma
---   conta com papel PRINCIPAL.
--- - A V1 nao contempla exclusao de contas.
+-- - O saldo e sempre derivado dos lancamentos ATIVOS.
+-- - A conta nao pode ser excluida isoladamente na V1.
+--
+-- O UNIQUE(FK_ID_USUARIO) garante NO MAXIMO uma conta por
+-- usuario no banco. A existencia obrigatoria da conta e uma
+-- invariavel de provisionamento da aplicacao.
 -- ============================================================
 
 CREATE TABLE CONTA_FINANCEIRA(
     ID_CONTA BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     FK_ID_USUARIO BIGINT UNSIGNED NOT NULL,
-    NOME VARCHAR(120) NOT NULL,
-    PAPEL VARCHAR(12) NOT NULL,
+    NOME VARCHAR(120) NOT NULL DEFAULT 'Minha Conta',
     CRIADA_EM DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    /*
-       Coluna tecnica gerada para garantir no maximo uma
-       conta PRINCIPAL por usuario.
-
-       PRINCIPAL  -> FK_ID_USUARIO
-       SECUNDARIA -> NULL
-
-       UNIQUE permite varios NULL, mas somente uma ocorrencia
-       do mesmo FK_ID_USUARIO nao nulo.
-    */
-    ID_USUARIO_PRINCIPAL BIGINT UNSIGNED
-        GENERATED ALWAYS AS (
-            CASE
-                WHEN PAPEL = 'PRINCIPAL' THEN FK_ID_USUARIO
-                ELSE NULL
-            END
-        ) STORED,
 
     CONSTRAINT FK_CONTA_USUARIO
         FOREIGN KEY(FK_ID_USUARIO)
         REFERENCES wp_users(ID),
 
-    CONSTRAINT CK_CONTA_PAPEL
-        CHECK(PAPEL IN ('PRINCIPAL', 'SECUNDARIA')),
-
-    CONSTRAINT UQ_CONTA_PRINCIPAL_USUARIO
-        UNIQUE(ID_USUARIO_PRINCIPAL),
+    CONSTRAINT UQ_CONTA_USUARIO
+        UNIQUE(FK_ID_USUARIO),
 
     /*
        Chave alternativa usada pelas FKs compostas para
        garantir pertencimento ao mesmo usuario.
     */
     CONSTRAINT UQ_CONTA_ID_USUARIO
-        UNIQUE(ID_CONTA, FK_ID_USUARIO),
-
-    KEY IDX_CONTA_USUARIO(FK_ID_USUARIO)
+        UNIQUE(ID_CONTA, FK_ID_USUARIO)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
@@ -131,11 +139,13 @@ CREATE TABLE CONTA_FINANCEIRA(
 -- CATEGORIA
 -- ============================================================
 --
--- A associacao de Categoria ao Compromisso Financeiro e opcional.
--- FK_ID_CATEGORIA pode permanecer NULL desde o cadastro.
--- Excluir uma categoria nao exclui compromissos anteriormente associados.
+-- - Categorias pertencem ao usuario, nao a conta.
+-- - Categorias iniciais sao provisionadas por usuario.
+-- - A associacao ao Compromisso Financeiro e opcional.
+-- - FK_ID_CATEGORIA pode permanecer NULL desde o cadastro.
+-- - Excluir categoria nao exclui compromissos associados.
 --
--- A operacao de exclusao deve ocorrer em transacao:
+-- A exclusao deve ocorrer na aplicacao, em transacao:
 -- 1. desvincular a categoria dos compromissos do usuario;
 -- 2. excluir a categoria.
 -- ============================================================
@@ -154,7 +164,9 @@ CREATE TABLE CATEGORIA(
         UNIQUE(FK_ID_USUARIO, NOME),
 
     CONSTRAINT UQ_CATEGORIA_ID_USUARIO
-        UNIQUE(ID_CATEGORIA, FK_ID_USUARIO)
+        UNIQUE(ID_CATEGORIA, FK_ID_USUARIO),
+
+    KEY IDX_CATEGORIA_USUARIO(FK_ID_USUARIO)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
@@ -164,16 +176,13 @@ CREATE TABLE CATEGORIA(
 -- RECORRENCIA
 -- ============================================================
 --
--- A V1 possui apenas recorrencia mensal.
--- INICIO_MES e ENCERRADA_NO_MES usam sempre o primeiro dia
--- do mes como representacao fisica do periodo mes/ano.
---
--- QUANTIDADE_MESES NULL = recorrencia sem termino definido.
--- ENCERRADA_NO_MES       = encerramento antecipado/manual.
---
--- A estrategia de materializacao das ocorrencias futuras e
--- responsabilidade da aplicacao e deve preservar os meses
--- anteriores.
+-- - A V1 possui apenas recorrencia mensal.
+-- - INICIO_MES e ENCERRADA_NO_MES usam sempre o primeiro dia
+--   do mes como representacao fisica do periodo mes/ano.
+-- - QUANTIDADE_MESES NULL = recorrencia sem termino definido.
+-- - ENCERRADA_NO_MES = encerramento antecipado/manual.
+-- - A estrategia de materializacao das ocorrencias futuras e
+--   responsabilidade da aplicacao.
 -- ============================================================
 
 CREATE TABLE RECORRENCIA(
@@ -224,23 +233,16 @@ CREATE TABLE RECORRENCIA(
 -- COMPROMISSO FINANCEIRO
 -- ============================================================
 --
--- TIPO = PADRAO
---   - representa previsao de ENTRADA ou SAIDA;
---   - NATUREZA e obrigatoria.
---
--- TIPO = TRANSFERENCIA
---   - utiliza o mesmo ciclo de compromisso/efetivacao;
---   - nao representa uma entrada ou saida patrimonial isolada;
---   - NATUREZA e obrigatoria e representa o efeito da transferencia
---     sob a perspectiva da Conta Principal:
---       PRINCIPAL  -> SECUNDARIA = SAIDA
---       SECUNDARIA -> PRINCIPAL  = ENTRADA
---   - os efeitos SAIDA/ENTRADA aparecem nos dois lancamentos
---     criados quando a transferencia e efetivada.
---
--- STATUS e mantido por simplicidade de consulta. A aplicacao
--- deve atualizar compromisso e lancamentos na mesma transacao
--- para impedir divergencia de estado.
+-- - Todo compromisso da V1 representa previsao de ENTRADA
+--   ou SAIDA.
+-- - NATUREZA e obrigatoria.
+-- - Nao existe TIPO=TRANSFERENCIA na V1.
+-- - Criar compromisso NAO altera o saldo.
+-- - O efeito financeiro ocorre somente quando o compromisso
+--   e efetivado e origina um LANCAMENTO_FINANCEIRO.
+-- - STATUS e mantido por simplicidade de consulta.
+-- - Compromisso efetivado deve ser desfeito antes de editar
+--   ou excluir, conforme as regras da aplicacao.
 -- ============================================================
 
 CREATE TABLE COMPROMISSO_FINANCEIRO(
@@ -252,8 +254,6 @@ CREATE TABLE COMPROMISSO_FINANCEIRO(
 
     NOME VARCHAR(180) NOT NULL,
     VALOR DECIMAL(14,2) NOT NULL,
-
-    TIPO VARCHAR(15) NOT NULL,
     NATUREZA VARCHAR(7) NOT NULL,
 
     MES_REFERENCIA DATE NOT NULL,
@@ -273,12 +273,9 @@ CREATE TABLE COMPROMISSO_FINANCEIRO(
         FOREIGN KEY(FK_ID_RECORRENCIA, FK_ID_USUARIO)
         REFERENCES RECORRENCIA(ID_RECORRENCIA, FK_ID_USUARIO),
 
-    /* Valor zero e permitido pelas regras da V1. */
+    /* Valor zero continua permitido pelas regras da V1. */
     CONSTRAINT CK_COMPROMISSO_VALOR
         CHECK(VALOR >= 0),
-
-    CONSTRAINT CK_COMPROMISSO_TIPO
-        CHECK(TIPO IN ('PADRAO', 'TRANSFERENCIA')),
 
     CONSTRAINT CK_COMPROMISSO_NATUREZA
         CHECK(NATUREZA IN ('ENTRADA', 'SAIDA')),
@@ -316,97 +313,24 @@ CREATE TABLE COMPROMISSO_FINANCEIRO(
 
 
 -- ============================================================
--- TRANSFERENCIA
--- ============================================================
---
--- A transferencia especializa os dados de um compromisso do
--- TIPO = TRANSFERENCIA.
---
--- A camada de Service deve validar, antes de persistir:
--- - o compromisso e do tipo TRANSFERENCIA;
--- - uma das contas e PRINCIPAL e a outra e SECUNDARIA;
--- - nao existem transferencias diretas SECUNDARIA -> SECUNDARIA;
--- - a NATUREZA corresponde ao fluxo visto pela Conta Principal:
---       PRINCIPAL  -> SECUNDARIA = SAIDA;
---       SECUNDARIA -> PRINCIPAL  = ENTRADA.
---
--- As FKs compostas garantem que compromisso, origem e destino
--- pertencem ao mesmo usuario.
--- ============================================================
-
-CREATE TABLE TRANSFERENCIA(
-    FK_ID_COMPROMISSO BIGINT UNSIGNED PRIMARY KEY,
-    FK_ID_USUARIO BIGINT UNSIGNED NOT NULL,
-
-    FK_ID_CONTA_ORIGEM BIGINT UNSIGNED NOT NULL,
-    FK_ID_CONTA_DESTINO BIGINT UNSIGNED NOT NULL,
-
-    CONSTRAINT FK_TRANSFERENCIA_USUARIO
-        FOREIGN KEY(FK_ID_USUARIO)
-        REFERENCES wp_users(ID),
-
-    CONSTRAINT FK_TRANSFERENCIA_COMPROMISSO
-        FOREIGN KEY(FK_ID_COMPROMISSO, FK_ID_USUARIO)
-        REFERENCES COMPROMISSO_FINANCEIRO(
-            ID_COMPROMISSO,
-            FK_ID_USUARIO
-        ),
-
-    CONSTRAINT FK_TRANSFERENCIA_ORIGEM
-        FOREIGN KEY(FK_ID_CONTA_ORIGEM, FK_ID_USUARIO)
-        REFERENCES CONTA_FINANCEIRA(
-            ID_CONTA,
-            FK_ID_USUARIO
-        ),
-
-    CONSTRAINT FK_TRANSFERENCIA_DESTINO
-        FOREIGN KEY(FK_ID_CONTA_DESTINO, FK_ID_USUARIO)
-        REFERENCES CONTA_FINANCEIRA(
-            ID_CONTA,
-            FK_ID_USUARIO
-        ),
-
-    CONSTRAINT CK_TRANSFERENCIA_CONTAS_DIFERENTES
-        CHECK(FK_ID_CONTA_ORIGEM <> FK_ID_CONTA_DESTINO),
-
-    KEY IDX_TRANSFERENCIA_USUARIO(FK_ID_USUARIO),
-    KEY IDX_TRANSFERENCIA_ORIGEM_USUARIO(
-        FK_ID_CONTA_ORIGEM,
-        FK_ID_USUARIO
-    ),
-    KEY IDX_TRANSFERENCIA_DESTINO_USUARIO(
-        FK_ID_CONTA_DESTINO,
-        FK_ID_USUARIO
-    )
-) ENGINE=InnoDB
-  DEFAULT CHARSET=utf8mb4
-  COLLATE=utf8mb4_unicode_ci;
-
-
--- ============================================================
 -- LANCAMENTO FINANCEIRO
 -- ============================================================
 --
 -- Um lancamento representa uma movimentacao REALIZADA.
 --
 -- ORIGEM = COMPROMISSO
---   - lancamento criado pela efetivacao de um compromisso;
---   - ID_COMPROMISSO e obrigatorio;
---   - VALOR deve ser >= 0, pois o sentido e dado por
---     TIPO_EFEITO (ENTRADA/SAIDA).
+--   - criado pela efetivacao de um compromisso;
+--   - FK_ID_COMPROMISSO e obrigatorio;
+--   - VALOR deve ser >= 0;
+--   - TIPO_EFEITO define ENTRADA ou SAIDA.
 --
 -- ORIGEM = SALDO_INICIAL
---   - lancamento direto da conta principal usado apenas para
---     representar o valor existente no inicio da utilizacao;
---   - ID_COMPROMISSO permanece NULL;
+--   - representa o valor existente na Conta Financeira no
+--     inicio da utilizacao;
+--   - FK_ID_COMPROMISSO permanece NULL;
 --   - TIPO_EFEITO obrigatoriamente ENTRADA;
 --   - VALOR pode ser positivo, zero ou negativo, conforme
---     UC-006 e as regras de Contas/Lancamentos.
---
--- Transferencia efetivada:
---   - gera DOIS lancamentos com o mesmo ID_COMPROMISSO;
---   - SAIDA na origem;
---   - ENTRADA no destino.
+--     UC-006.
 --
 -- O desfazimento preserva o registro historico, alterando
 -- ESTADO para DESFEITO e preenchendo DESFEITO_EM.
@@ -433,9 +357,8 @@ CREATE TABLE LANCAMENTO_FINANCEIRO(
     DESFEITO_EM DATETIME,
 
     /*
-       Colunas tecnicas para impedir duplicacao de um efeito
-       ATIVO do mesmo compromisso na mesma conta, preservando
-       quantos registros DESFEITOS forem necessarios.
+       Impede mais de um efeito ATIVO do mesmo compromisso.
+       Registros DESFEITOS continuam preservados no historico.
     */
     ID_COMPROMISSO_ATIVO BIGINT UNSIGNED
         GENERATED ALWAYS AS (
@@ -443,16 +366,6 @@ CREATE TABLE LANCAMENTO_FINANCEIRO(
                 WHEN ORIGEM = 'COMPROMISSO'
                      AND ESTADO = 'ATIVO'
                 THEN FK_ID_COMPROMISSO
-                ELSE NULL
-            END
-        ) STORED,
-
-    ID_CONTA_COMPROMISSO_ATIVA BIGINT UNSIGNED
-        GENERATED ALWAYS AS (
-            CASE
-                WHEN ORIGEM = 'COMPROMISSO'
-                     AND ESTADO = 'ATIVO'
-                THEN FK_ID_CONTA
                 ELSE NULL
             END
         ) STORED,
@@ -532,11 +445,8 @@ CREATE TABLE LANCAMENTO_FINANCEIRO(
             )
         ),
 
-    CONSTRAINT UQ_LANCAMENTO_EFEITO_ATIVO
-        UNIQUE(
-            ID_COMPROMISSO_ATIVO,
-            ID_CONTA_COMPROMISSO_ATIVA
-        ),
+    CONSTRAINT UQ_LANCAMENTO_COMPROMISSO_ATIVO
+        UNIQUE(ID_COMPROMISSO_ATIVO),
 
     CONSTRAINT UQ_LANCAMENTO_SALDO_INICIAL_ATIVO
         UNIQUE(ID_CONTA_SALDO_INICIAL_ATIVO),
@@ -557,43 +467,40 @@ CREATE TABLE LANCAMENTO_FINANCEIRO(
 -- REGRAS QUE PERMANECEM NA CAMADA DE APLICACAO
 -- ============================================================
 --
+-- PROVISIONAMENTO INICIAL
+-- - WordPress cria a identidade do usuario;
+-- - SGFP cria exatamente uma Conta Financeira "Minha Conta";
+-- - SGFP cria as categorias padrao do usuario;
+-- - o provisionamento somente e considerado concluido quando
+--   o estado inicial obrigatorio estiver consistente.
+--
 -- CONTA
--- - a primeira utilizacao inicia sem contas;
--- - quando existir controle financeiro, o usuario define uma
---   unica conta principal;
--- - saldo = soma dos lancamentos ATIVOS da conta;
--- - a V1 nao permite exclusao de contas.
+-- - existe exatamente uma conta por usuario na V1;
+-- - a conta pode ser renomeada;
+-- - nao pode ser criada conta adicional;
+-- - nao pode ser excluida isoladamente;
+-- - saldo = soma dos lancamentos ATIVOS da conta.
 --
 -- CATEGORIA
--- - a associacao ao compromisso e opcional desde o cadastro;
+-- - a associacao ao compromisso e opcional;
 -- - FK_ID_CATEGORIA pode permanecer NULL;
 -- - ao excluir categoria, desvincular compromissos e excluir
---   a categoria na mesma transacao.
+--   a categoria na mesma unidade transacional.
 --
 -- COMPROMISSO
--- - compromisso PADRAO incide sobre a conta PRINCIPAL;
+-- - todo compromisso possui NATUREZA ENTRADA ou SAIDA;
+-- - criar compromisso nao altera saldo;
+-- - efetivacao cria um LANCAMENTO_FINANCEIRO ATIVO;
 -- - compromisso efetivado deve ser desfeito antes de editar
 --   ou excluir;
--- - STATUS e lancamentos devem ser atualizados em transacao.
---
--- TRANSFERENCIA
--- - compromisso relacionado deve ser TIPO = TRANSFERENCIA;
--- - origem/destino devem formar PRINCIPAL <-> SECUNDARIA;
--- - NATUREZA deve ser determinada pela perspectiva da Conta Principal:
---       PRINCIPAL  -> SECUNDARIA = SAIDA;
---       SECUNDARIA -> PRINCIPAL  = ENTRADA;
--- - efetivacao cria dois lancamentos atomicos:
---       SAIDA   na origem;
---       ENTRADA no destino;
--- - desfazimento desfaz os dois lancamentos atomicamente;
--- - saldo insuficiente nao bloqueia transferencia na V1.
+-- - STATUS e lancamento devem ser atualizados de forma
+--   consistente pela camada de Service.
 --
 -- SALDO INICIAL
--- - permitido apenas para a conta PRINCIPAL;
 -- - usa ORIGEM = SALDO_INICIAL e TIPO_EFEITO = ENTRADA;
 -- - pode ser positivo, zero ou negativo;
--- - conta secundaria recebe valor inicial somente por
---   transferencia com a conta principal.
+-- - pertence a unica Conta Financeira do usuario;
+-- - no maximo um saldo inicial ATIVO por conta.
 --
 -- RECORRENCIA
 -- - periodicidade mensal;
@@ -601,6 +508,35 @@ CREATE TABLE LANCAMENTO_FINANCEIRO(
 --   o mes atual e os seguintes;
 -- - periodos anteriores permanecem preservados;
 -- - recorrencia encerrada nao e reativada.
+--
+-- BACKUP / RESTAURACAO
+-- - backup manual local em ZIP e processo da aplicacao;
+-- - nenhuma tabela financeira adicional e necessaria;
+-- - restauracao e integral, sem merge;
+-- - antes da substituicao, a aplicacao deve gerar uma copia
+--   pre-restauracao recuperavel.
+--
+-- RESETAR PERFIL FINANCEIRO
+-- - exige dupla confirmacao e a frase exata RESETAR PERFIL;
+-- - preserva a identidade/login WordPress;
+-- - remove os dados SGFP em ordem segura;
+-- - reprovisiona Minha Conta e categorias padrao;
+-- - restaura preferencias SGFP aos valores padrao.
+--
+-- EXCLUIR CONTA DE ACESSO
+-- - exige dupla confirmacao e a frase exata EXCLUIR CONTA;
+-- - remove os dados SGFP em ordem segura;
+-- - depois remove a identidade/login correspondente no
+--   WordPress;
+-- - nao deve ser reportada como concluida se o login ainda
+--   permanecer ativo.
+--
+-- ORDEM SUGERIDA PARA LIMPEZA DOS DADOS SGFP DE UM USUARIO
+-- 1. LANCAMENTO_FINANCEIRO;
+-- 2. COMPROMISSO_FINANCEIRO;
+-- 3. RECORRENCIA;
+-- 4. CATEGORIA;
+-- 5. CONTA_FINANCEIRA.
 --
 -- USUARIO / WORDPRESS
 -- - FK_ID_USUARIO vem da autenticacao WordPress;
@@ -611,10 +547,8 @@ CREATE TABLE LANCAMENTO_FINANCEIRO(
 
 
 -- ============================================================
--- CONSULTAS CONCEITUAIS DE SALDO
+-- CONSULTA CONCEITUAL DE SALDO
 -- ============================================================
---
--- Saldo de uma conta:
 --
 -- SELECT COALESCE(SUM(
 --     CASE
@@ -624,15 +558,13 @@ CREATE TABLE LANCAMENTO_FINANCEIRO(
 -- ), 0) AS SALDO
 -- FROM LANCAMENTO_FINANCEIRO
 -- WHERE FK_ID_USUARIO = <USUARIO_WORDPRESS_AUTENTICADO>
---   AND FK_ID_CONTA = <CONTA>
+--   AND FK_ID_CONTA = <CONTA_UNICA>
 --   AND ESTADO = 'ATIVO';
 --
 -- O mesmo calculo aceita saldo inicial negativo, pois o
--- lançamento SALDO_INICIAL e do tipo ENTRADA e seu VALOR pode
+-- lancamento SALDO_INICIAL e do tipo ENTRADA e seu VALOR pode
 -- ser negativo conforme UC-006.
 --
--- Patrimonio total:
--- soma dos saldos de todas as contas do mesmo usuario.
--- Transferencias nao alteram o patrimonio porque produzem
--- uma SAIDA e uma ENTRADA de mesmo valor em contas proprias.
+-- PATRIMONIO TOTAL NAO INTEGRA A V1.
+-- TRANSFERENCIAS NAO INTEGRAM A V1.
 -- ============================================================

@@ -6,17 +6,22 @@ O sistema está sendo desenvolvido de forma incremental, com documentação pré
 
 Esta árvore representa a versão documental reorganizada do projeto, preparada tanto para navegação humana quanto para futura utilização por agentes e orchestrators.
 
+## Baseline V1 simplificada — 14/09/2026
+
+A V1 vigente adota **uma única Conta Financeira por usuário**, criada automaticamente como **Minha Conta**. O saldo é derivado dos lançamentos dessa conta. Transferências e Patrimônio Total saíram da V1. Backup manual é local em ZIP. Configurações incluem reset do perfil financeiro e exclusão definitiva do login, ambos com dupla confirmação.
+
+Consulte `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
+
+
 ## Objetivo do Projeto
 
 O SGFP tem como objetivo permitir que o usuário organize sua vida financeira por meio do controle de:
 
-* contas financeiras;
+* Conta Financeira única;
 * compromissos de entrada e saída;
 * categorias;
 * recorrências;
 * lançamentos financeiros;
-* transferências;
-* patrimônio;
 * planejamento mensal;
 * configurações pessoais.
 
@@ -27,21 +32,22 @@ A primeira versão será uma aplicação Web em PHP sobre WordPress, utilizando 
 Entre as principais características previstas para a V1 estão:
 
 * cadastro e autenticação de usuário;
-* gerenciamento de contas financeiras;
+* gerenciamento da Conta Financeira única;
 * registro manual das informações financeiras;
 * controle de compromissos financeiros;
 * categorização;
 * recorrências mensais;
 * efetivação de compromissos em lançamentos;
-* transferências entre contas;
 * tratamento básico de cartão de crédito e parcelamentos;
 * Dashboard financeiro;
 * tema claro e escuro;
-* criação e restauração manual de cópias de segurança.
+* backup local em ZIP e restauração por arquivo;
+* reset do perfil financeiro;
+* exclusão definitiva da conta de acesso.
 
 Não haverá integração bancária automática na Versão 1.
 
-O catálogo funcional preserva os identificadores RF-001 a RF-021. A V1 possui **20 requisitos funcionais ativos**; RF-019 — proteção por PIN — está adiado para versão futura, sem renumeração dos requisitos posteriores.
+O catálogo funcional vigente vai de RF-001 a RF-023. A V1 possui **19 requisitos funcionais ativos**. RF-012, RF-013, RF-014 (Transferências) e RF-019 (PIN) permanecem preservados como futuros/inativos.
 
 ## Metodologia de Desenvolvimento
 
@@ -70,7 +76,7 @@ Os Casos de Uso também foram organizados individualmente para facilitar manuten
 
 As Etapas 5 — Mapa do Domínio, 6 — Modelagem Conceitual (MER), 7 — Modelo Entidade-Relacionamento (DER) e 8 — Modelo Físico foram concluídas e validadas.
 
-As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram concluídas e validadas. A implementação da Etapa 10 está registrada no commit `362c4b947bbfceb171c75c9a71b943d50d1cfe14`; lint, testes manuais e verificações Git foram aprovados. PHPUnit e validação WordPress/MySQL/MariaDB real permanecem pendentes por limitação ambiental. A Etapa 11 não foi iniciada e a Etapa 12 permanece futura para consolidação formal dos testes.
+As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram concluídas originalmente sobre a baseline anterior. Em 14/09/2026, a documentação foi revisada para a baseline simplificada e o backend da Etapa 10 foi posteriormente reconciliado e validado na branch `feat/stage-9-10-backend`, documentado no Draft PR #12. A Etapa 11 — Interface Web está em andamento na branch `feat/stage-11-web-interface` e ainda requer reconciliação com a nova baseline e com o backend atualizado. A Etapa 12 permanece futura para consolidação formal dos testes.
 
 ## Estrutura do Repositório
 
@@ -118,7 +124,7 @@ Contém:
 
 ### `docs/dominio/`
 
-Reservado ao Mapa do Domínio.
+Contém o Mapa do Domínio vigente, revisado para a baseline simplificada.
 
 ### `docs/modelagem-dados/`
 
@@ -131,15 +137,15 @@ Contém a documentação e os artefatos validados da modelagem de dados:
 
 ### `docs/arquitetura/`
 
-Reservado para a documentação da arquitetura da aplicação.
+Contém a arquitetura da aplicação vigente e sua revisão de 14/09/2026.
 
 ### `docs/api/`
 
-Reservado para desenvolvimento e documentação da API.
+Contém a documentação da API reconciliada com a nova baseline, incluindo o estado técnico validado da branch 9–10 e a referência ao Draft PR #12.
 
 ### `docs/interface-web/`
 
-Reservado para desenvolvimento da interface Web.
+Contém a documentação da Interface Web em andamento e seus alvos de reconciliação.
 
 ### `docs/testes/`
 
@@ -161,6 +167,8 @@ Os principais pontos de entrada para compreender o SGFP são:
 * `docs/modelagem-dados/01-modelagem-conceitual-mer.md`
 * `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`
 * `docs/modelagem-dados/03-modelo-fisico.md`
+* `docs/governanca/baseline-v1-simplificada-2026-09-14.md`
+* `docs/governanca/PROMPT-RETOMADA.md`
 * `docs/governanca/relatorio-de-consolidacao.md`
 
 ## Fonte de Verdade
@@ -197,7 +205,7 @@ Permanece aberta a `ISSUE-008`, referente à materialização da matriz direta R
 
 ## Tecnologias
 
-A arquitetura técnica será consolidada na etapa correspondente.
+A arquitetura técnica está consolidada documentalmente e foi revisada em 14/09/2026; o backend da Etapa 10 já foi reconciliado e validado, enquanto a Etapa 11 ainda precisa ser alinhada a essa baseline.
 
 Já estão definidos como direcionamentos da Versão 1:
 

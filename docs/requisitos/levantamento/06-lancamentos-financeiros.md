@@ -20,11 +20,11 @@ Um compromisso financeiro não será considerado efetivado enquanto o usuário n
 
 **RN-003**
 
-A efetivação de uma Saída deverá diminuir o saldo da conta principal.
+A efetivação de uma Saída deverá diminuir o saldo da Conta Financeira única.
 
 **RN-004**
 
-A efetivação de uma Entrada deverá aumentar o saldo da conta principal.
+A efetivação de uma Entrada deverá aumentar o saldo da Conta Financeira única.
 
 **RN-005**
 
@@ -62,7 +62,7 @@ Para modificar um compromisso que já tenha sido efetivado, o usuário deverá p
 
 **RN-013**
 
-Ao desfazer uma efetivação, o valor correspondente deixará de produzir efeito sobre o saldo da conta principal.
+Ao desfazer uma efetivação, o valor correspondente deixará de produzir efeito sobre o saldo da Conta Financeira única.
 
 **RN-014**
 
@@ -74,7 +74,7 @@ Quando o usuário alterar o valor de um compromisso recorrente após desfazer su
 
 **RN-016**
 
-Após realizar a alteração, o usuário poderá efetivar novamente o compromisso, fazendo com que o novo valor produza efeito sobre o saldo da conta principal.
+Após realizar a alteração, o usuário poderá efetivar novamente o compromisso, fazendo com que o novo valor produza efeito sobre o saldo da Conta Financeira única.
 
 **RN-017**
 
@@ -82,11 +82,11 @@ Compromissos classificados como Entrada e Saída seguirão as mesmas regras de e
 
 **RN-018**
 
-A efetivação de um compromisso classificado como Entrada aumentará o saldo da conta principal.
+A efetivação de um compromisso classificado como Entrada aumentará o saldo da Conta Financeira única.
 
 **RN-019**
 
-A efetivação de um compromisso classificado como Saída diminuirá o saldo da conta principal.
+A efetivação de um compromisso classificado como Saída diminuirá o saldo da Conta Financeira única.
 
 **RN-020**
 
@@ -96,7 +96,7 @@ Compromissos classificados como Entrada poderão possuir recorrência sem térmi
 
 O usuário poderá desfazer a efetivação de uma Entrada ou Saída seguindo o mesmo procedimento.
 
-No caso de uma Entrada, desfazer a efetivação fará com que o valor correspondente deixe de compor o saldo da conta principal.
+No caso de uma Entrada, desfazer a efetivação fará com que o valor correspondente deixe de compor o saldo da Conta Financeira única.
 
 **RN-022**
 
@@ -106,25 +106,25 @@ Esse vínculo permitirá ao sistema identificar qual compromisso foi efetivado e
 
 **RN-023**
 
-A conta principal será criada com saldo padrão de R$ 0,00.
+A Conta Financeira única será criada com saldo padrão de R$ 0,00.
 
 **RN-024**
 
-O usuário poderá informar o saldo real existente em sua conta principal no momento em que iniciar a utilização do sistema, caso esse saldo seja diferente de R$ 0,00.
+O usuário poderá informar o saldo real existente em sua Conta Financeira única no momento em que iniciar a utilização do sistema, caso esse saldo seja diferente de R$ 0,00.
 
 O saldo informado será registrado pelo sistema por meio de um lançamento de entrada, mantendo o saldo da conta baseado nos lançamentos registrados.
 
 **RN-025**
 
-O lançamento de Entrada que representa o valor inicial da conta principal será utilizado como ponto de partida para os cálculos das movimentações financeiras posteriores.
+O lançamento de Entrada que representa o valor inicial da Conta Financeira única será utilizado como ponto de partida para os cálculos das movimentações financeiras posteriores.
 
 **RN-026**
 
-O saldo da conta principal poderá assumir valores positivos, zero ou negativos.
+O saldo da Conta Financeira única poderá assumir valores positivos, zero ou negativos.
 
 **RN-027**
 
-As entradas e saídas efetivadas serão aplicadas ao saldo a partir do lançamento de Entrada que representa o valor inicial da conta principal, quando este existir.
+As entradas e saídas efetivadas serão aplicadas ao saldo a partir do lançamento de Entrada que representa o valor inicial da Conta Financeira única, quando este existir.
 
 **RN-028**
 
@@ -148,7 +148,7 @@ Para excluir um compromisso efetivado no mês corrente, o usuário deverá prime
 
 **RN-033**
 
-Ao desfazer a efetivação, o valor correspondente deixará de produzir efeito sobre o saldo da conta principal, retornando o saldo ao estado anterior à efetivação.
+Ao desfazer a efetivação, o valor correspondente deixará de produzir efeito sobre o saldo da Conta Financeira única, retornando o saldo ao estado anterior à efetivação.
 
 **RN-034**
 

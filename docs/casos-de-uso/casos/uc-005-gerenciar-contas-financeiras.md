@@ -1,46 +1,22 @@
-## UC-005 — Gerenciar contas financeiras
+## UC-005 — Gerenciar Conta Financeira
 
-**Objetivo**
-
-Permitir que o usuário mantenha suas contas financeiras.
-
-**Ator principal**
-
-Usuário.
+**Objetivo**  
+Consultar e renomear a Conta Financeira única.
 
 **Pré-condições**
-
-O usuário deverá estar autenticado.
-
-**Gatilho**
-
-O usuário acessa a área de contas.
+- Usuário autenticado.
+- Conta provisionada no cadastro.
 
 **Fluxo principal**
+1. O usuário acessa a área de Conta.
+2. O sistema apresenta a única Conta Financeira e seu saldo derivado.
+3. O usuário poderá alterar o nome da conta.
+4. O sistema salva o novo nome sem alterar lançamentos ou histórico.
 
-1. O usuário acessa as contas financeiras.
-2. O sistema apresenta as contas existentes.
-3. O usuário poderá criar uma nova conta.
-4. O sistema registra a conta sem saldo inicial próprio.
-5. O usuário poderá alterar o nome de uma conta.
-6. O sistema atualiza o nome sem modificar o histórico financeiro associado.
-7. O sistema atualiza a apresentação das contas.
+**Regras**
+- A V1 não permite conta adicional.
+- A conta não pode ser excluída isoladamente.
+- Reset reprovisiona a conta; exclusão do acesso remove-a com os demais dados.
 
-**Fluxos alternativos e exceções**
-
-* O usuário poderá possuir múltiplas contas.
-* Deverá existir apenas uma conta principal.
-* As contas secundárias obedecerão às regras específicas de movimentação definidas no levantamento.
-* O valor inicial de uma conta secundária deverá chegar por transferência com a conta principal, sem Entrada direta para composição inicial.
-
-**Pós-condições**
-
-As contas existentes estarão atualizadas de acordo com a operação realizada.
-
-**Requisitos relacionados**
-
+**Requisitos relacionados**  
 RF-004, RF-005.
-
-**Regras de negócio relacionadas**
-
-Regras do módulo Contas referentes a criação, nomenclatura, conta principal, contas secundárias e saldo.

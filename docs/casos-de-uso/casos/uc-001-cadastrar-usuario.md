@@ -1,44 +1,30 @@
 ## UC-001 — Cadastrar usuário
 
-**Objetivo**
+**Objetivo**  
+Criar o acesso inicial ao SGFP e provisionar o estado mínimo válido do novo usuário.
 
-Permitir que uma pessoa crie seu acesso inicial ao SGFP.
-
-**Ator principal**
-
+**Ator principal**  
 Usuário.
 
-**Pré-condições**
-
+**Pré-condições**  
 Nenhuma autenticação é necessária.
 
-**Gatilho**
-
-O usuário solicita o cadastro inicial.
-
 **Fluxo principal**
+1. O usuário acessa o cadastro.
+2. Informa os dados solicitados.
+3. O sistema valida as informações.
+4. WordPress cria a identidade/login.
+5. O SGFP cria automaticamente a Conta Financeira única com nome **Minha Conta**.
+6. O SGFP cria as categorias padrão vinculadas ao usuário.
+7. O sistema conclui o provisionamento e disponibiliza o acesso.
 
-1. O usuário acessa a opção de cadastro.
-2. O sistema solicita os dados necessários para o cadastro.
-3. O usuário informa os dados solicitados.
-4. O sistema valida as informações.
-5. O sistema cria o cadastro do usuário.
-6. O sistema cria os dados iniciais previstos para o novo usuário, incluindo seu conjunto inicial de categorias, já vinculados ao usuário correspondente.
-7. O sistema disponibiliza o acesso mediante as credenciais cadastradas.
+**Exceções**
+- Dados inválidos devem ser corrigidos.
+- E-mail já cadastrado impede duplicação.
+- Se o provisionamento da conta/categorias falhar, o cadastro não deverá ser apresentado como concluído.
 
-**Fluxos alternativos e exceções**
+**Pós-condições**  
+O usuário possui identidade WordPress, exatamente uma Conta Financeira e categorias padrão.
 
-* Se os dados obrigatórios forem inválidos, o sistema deverá informar o problema e permitir a correção.
-* Se o e-mail já estiver cadastrado, o sistema deverá impedir a criação de um novo acesso utilizando o mesmo identificador e informar a situação.
-
-**Pós-condições**
-
-O usuário estará cadastrado, terá seus dados iniciais provisionados e estará apto a realizar a autenticação.
-
-**Requisitos relacionados**
-
+**Requisitos relacionados**  
 RF-001.
-
-**Regras de negócio relacionadas**
-
-Regras do módulo Usuários referentes a cadastro e identificação do usuário.
