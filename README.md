@@ -83,17 +83,42 @@ As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram
 ## Estrutura do Repositório
 
 ```text
-docs/projeto/
-docs/requisitos/
-docs/casos-de-uso/
-docs/dominio/
-docs/modelagem-dados/
-docs/arquitetura/
-docs/api/
-docs/interface-web/
-docs/testes/
-docs/governanca/
+SGFP---Financeiro-Pessoal/
+├── README.md
+├── AGENTS.md
+├── ORCHESTRATOR.md
+├── HANDOFF.md
+├── project-manifest.yaml
+│
+├── docs/
+│   ├── projeto/
+│   ├── requisitos/
+│   ├── casos-de-uso/
+│   ├── dominio/
+│   ├── modelagem-dados/
+│   ├── arquitetura/
+│   ├── api/
+│   ├── interface-web/
+│   ├── testes/
+│   └── governanca/
+│
+└── src/                         # pacote do plugin WordPress SGFP
+    ├── sgfp.php                # arquivo principal do plugin
+    ├── composer.json
+    ├── composer.lock
+    ├── phpunit.xml.dist
+    └── src/                    # código-fonte PHP carregado por PSR-4
+        ├── Activation.php
+        ├── Deactivation.php
+        ├── Plugin.php
+        ├── Application/
+        ├── Domain/
+        ├── Infrastructure/
+        ├── REST/
+        └── Tests/
 ```
+
+O diretório `src/` na raiz do repositório contém o pacote do plugin WordPress. O ponto de entrada reconhecido pelo WordPress é `src/sgfp.php`; o diretório interno `src/src/` contém o código-fonte PHP organizado por responsabilidades.
 
 ### `docs/projeto/`
 
@@ -205,21 +230,25 @@ A divergência histórica do catálogo de requisitos funcionais já foi reconcil
 
 Permanece aberta a `ISSUE-008`, referente à materialização da matriz direta Regra de Negócio → Requisito. Essa pendência não bloqueia o início da Arquitetura, mas deverá ser concluída antes do fechamento final da rastreabilidade de testes.
 
-## Tecnologias
+## Tecnologias e Ferramentas
 
 A arquitetura técnica está consolidada documentalmente e foi revisada em 14/09/2026; o backend da Etapa 10 já foi reconciliado e validado, enquanto a Etapa 11 ainda precisa ser alinhada a essa baseline.
 
-Já estão definidos como direcionamentos da Versão 1:
+| Finalidade | Tecnologia / Ferramenta |
+| --- | --- |
+| Linguagem principal | PHP 8.1+ |
+| Plataforma da aplicação | WordPress |
+| API | WordPress REST API com namespace próprio `sgfp/v1` |
+| Banco de dados | MySQL / MariaDB com InnoDB |
+| Gerenciamento de dependências | Composer |
+| Autoload | PSR-4 |
+| Testes automatizados | PHPUnit |
+| Análise estática | PHPStan |
+| Padrões e inspeção de código | PHP_CodeSniffer (PHPCS) |
+| Controle de versão | Git / GitHub |
+| Ambiente de desenvolvimento utilizado | Linux Mint + VS Code |
 
-* aplicação Web;
-* WordPress como plataforma da V1;
-* PHP;
-* plugin próprio do SGFP para o backend;
-* API REST própria do SGFP sobre a infraestrutura REST do WordPress;
-* MySQL ou MariaDB como banco de dados relacional;
-* autenticação da V1 por e-mail e senha utilizando os mecanismos do WordPress.
-
-A proteção opcional por PIN foi adiada para versão futura. Ela não integra a autenticação da V1 e, quando implementada, servirá apenas para bloqueio rápido da aplicação durante uma sessão já autenticada.
+O backend é implementado como plugin próprio do SGFP. A autenticação da V1 utiliza os mecanismos do WordPress por e-mail e senha. A proteção opcional por PIN foi adiada para versão futura e não integra a autenticação da V1.
 
 ## Contexto Acadêmico
 
