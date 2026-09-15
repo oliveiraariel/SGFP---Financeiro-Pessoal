@@ -128,6 +128,7 @@ A implementação e sua verificação utilizam ferramentas do ecossistema PHP e 
 | Linux Mint + VS Code | Ambiente de desenvolvimento | Ambiente utilizado para implementação, execução local, terminal, Git e edição do projeto. |
 
 As ferramentas de análise e teste complementam, mas não substituem, os testes de integração em uma instalação WordPress real com MySQL/MariaDB.
+
 ### 4.2 Estrutura física do repositório e do plugin
 
 O repositório acadêmico reúne documentação, governança e implementação. O plugin propriamente dito está localizado no diretório `src/` da raiz do repositório.
