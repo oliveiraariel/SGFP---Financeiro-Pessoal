@@ -1,5 +1,7 @@
 # SGFP — Sistema de Gestão Financeira Pessoal
 
+[Português (Brasil)](README.md) | [English](README.en.md)
+
 O **SGFP — Sistema de Gestão Financeira Pessoal** é um projeto acadêmico voltado ao planejamento, organização e acompanhamento das finanças pessoais.
 
 O sistema está sendo desenvolvido de forma incremental, com documentação prévia das regras de negócio, requisitos, casos de uso, domínio, modelagem de dados, arquitetura, implementação e testes.
