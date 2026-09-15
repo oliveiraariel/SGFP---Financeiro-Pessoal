@@ -109,9 +109,78 @@ src/
 tests/
 ```
 
+### 4.1 Tecnologias e ferramentas utilizadas
+
+A implementação e sua verificação utilizam ferramentas do ecossistema PHP e da plataforma WordPress. Python não integra a aplicação SGFP nem sua suíte de testes.
+
+| Finalidade | Tecnologia / Ferramenta |
+| --- | --- |
+| Linguagem principal | PHP 8.1+ |
+| Plataforma | WordPress |
+| API | WordPress REST API, com namespace próprio `sgfp/v1` |
+| Persistência | MySQL / MariaDB com InnoDB |
+| Dependências | Composer |
+| Autoload | PSR-4, namespace raiz `SGFP\` |
+| Testes automatizados | PHPUnit 10 |
+| Análise estática | PHPStan |
+| Padrões e inspeção de código | PHP_CodeSniffer (PHPCS) |
+| Controle de versão | Git / GitHub |
+| Ambiente de desenvolvimento utilizado | Linux Mint + VS Code |
+
+Composer separa dependências de runtime e desenvolvimento. PHPUnit executa os testes automatizados; PHPStan realiza análise estática; PHP_CodeSniffer fornece verificação de padrões de código. Essas ferramentas apoiam o desenvolvimento, mas não substituem os testes de integração em WordPress e MySQL/MariaDB reais.
+
+### 4.2 Estrutura física do repositório e do plugin
+
+O repositório acadêmico reúne documentação, governança e implementação. O plugin propriamente dito está localizado no diretório `src/` da raiz do repositório.
+
+```text
+SGFP---Financeiro-Pessoal/
+├── README.md
+├── AGENTS.md
+├── ORCHESTRATOR.md
+├── HANDOFF.md
+├── project-manifest.yaml
+│
+├── docs/
+│   ├── projeto/
+│   ├── requisitos/
+│   ├── casos-de-uso/
+│   ├── dominio/
+│   ├── modelagem-dados/
+│   ├── arquitetura/
+│   ├── api/
+│   ├── interface-web/
+│   ├── testes/
+│   └── governanca/
+│
+└── src/                         # pacote do plugin WordPress SGFP
+    ├── sgfp.php                # ponto de entrada do plugin
+    ├── composer.json
+    ├── composer.lock
+    ├── phpunit.xml.dist
+    └── src/                    # código-fonte PHP mapeado por PSR-4
+        ├── Activation.php
+        ├── Deactivation.php
+        ├── Plugin.php
+        ├── Application/
+        ├── Domain/
+        ├── Infrastructure/
+        ├── REST/
+        └── Tests/
+```
+
+O primeiro `src/` delimita o pacote instalável do plugin dentro do repositório acadêmico. O segundo, `src/src/`, é o diretório de código-fonte referenciado pelo `composer.json`. O arquivo `src/sgfp.php` contém o cabeçalho reconhecido pelo WordPress, carrega o autoloader do Composer e inicia `SGFP\Plugin`.
+
+Responsabilidades principais:
+
+- `Application/`: casos de uso, Services e portas de saída;
+- `Domain/`: modelos, enums e regras de domínio justificadas;
+- `Infrastructure/`: persistência, schema, integrações e adaptadores WordPress;
+- `REST/`: registro de rotas, Controllers, DTOs e fronteira HTTP;
+- `Tests/`: testes automatizados do plugin.
 O namespace raiz será `SGFP\`. Composer/PSR-4 será usado para autoload; o artefato instalável deverá incluir dependências de runtime. A estrutura é guia de responsabilidade, não autorização para gerar classes vazias.
 
-### 4.1 Bootstrap e ciclo de vida
+### 4.3 Bootstrap e ciclo de vida
 
 `sgfp.php` será um ponto de entrada mínimo: verifica o contexto WordPress, carrega o autoloader e registra callbacks de ciclo de vida. O `Bootstrap` compõe adaptadores em `plugins_loaded` e registra rotas somente em `rest_api_init`; incluir o arquivo principal não executa regra financeira.
 
