@@ -72,3 +72,4 @@ credentials/
 # OpenClaw — artefatos locais adicionais
 /DREAMS.md
 /openclaw-workspace-state.json.migrated.*
+.phpunit.cache/
