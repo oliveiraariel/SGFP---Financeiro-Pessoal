@@ -234,7 +234,9 @@ Composer é ferramenta de construção e autoload, não requisito de execução 
 
 ### 6.1 Identidade, autenticação e sessão
 
-- cadastro, identidade, armazenamento de credenciais, sessão e recuperação reutilizam as APIs e os mecanismos do WordPress; o SGFP não cria repositório, hash ou credencial paralelos;
+- cadastro, identidade, armazenamento de credenciais, sessão e recuperação reutilizam as APIs e os mecanismos do WordPress; o SGFP não cria repositório, hash, credencial ou tabela própria de usuário paralelos;
+- `wp_users.ID` é a identidade técnica do usuário no SGFP; as tabelas financeiras usam `fk_id_usuario` diretamente contra `wp_users(ID)`;
+- a entrada da aplicação reutiliza os fluxos nativos do WordPress para login, cadastro quando habilitado pela instalação e recuperação de senha; qualquer onboarding SGFP é reparo/provisionamento de identidade WordPress existente, não cadastro paralelo;
 - o formulário/handler de autenticação da V1 aceita **exclusivamente e-mail e senha**. Nome de usuário WordPress, PIN e provedores externos não são alternativas de login expostas ou aceitas pelo SGFP;
 - o adaptador de identidade valida o formato do e-mail, resolve a identidade WordPress pelo e-mail e delega a verificação da senha ao WordPress. Falha de formato, e-mail inexistente, senha incorreta ou conta não autenticável produz para o cliente a mesma mensagem e o mesmo resultado de acesso não autenticado, sem indicar qual credencial falhou;
 - a alteração de senha ocorre diretamente na aplicação para usuário autenticado e somente prossegue após o WordPress validar a **senha atual** e o usuário fornecer a **confirmação obrigatória da alteração**. Senha atual incorreta ou confirmação ausente não altera a credencial;
@@ -243,9 +245,11 @@ Composer é ferramenta de construção e autoload, não requisito de execução 
 - cada rota possui `permission_callback`; operações financeiras exigem usuário autenticado, provisionamento confirmado e capability própria do SGFP, enquanto `onboarding` exige sessão e nonce válidos;
 - `CurrentUserContext` obtém `wp_users.ID`; `FK_ID_USUARIO` nunca é aceito do payload, query ou path como autoridade;
 - tema claro/escuro usa chave própria em `wp_usermeta`;
-- um hook de cadastro chama provisionamento idempotente da capability `sgfp_access` e das categorias iniciais;
+- o hook `user_register` chama provisionamento idempotente da Conta `Minha Conta`, categorias iniciais e capability oficial `use_sgfp`; `wp_login` pode repetir o reparo de forma idempotente quando necessário;
 - um marcador próprio em `usermeta` só confirma o provisionamento depois das categorias. Ele permite distinguir falha de provisionamento do estado legítimo em que o usuário excluiu todas as categorias;
-- usuários WordPress preexistentes ou incompletos usam `POST /onboarding`, que exige sessão/nonce, mas ainda não a capability SGFP; todas as demais rotas exigem `sgfp_access` e o marcador confirmado.
+- usuários WordPress preexistentes ou incompletos podem usar `POST /onboarding` como reparo/provisionamento, com sessão/nonce válidos; todas as demais rotas financeiras exigem a capability oficial `use_sgfp` e o marcador confirmado;
+- `sgfp_access` é legado: pode ser consultada apenas para migração idempotente de usuário antigo para `use_sgfp`, mas não autoriza manager, REST ou Services por si só;
+- o manager e seus assets só são entregues ao estado autorizado: usuário autenticado + `_sgfp_provisioned` confirmado + `current_user_can('use_sgfp')`; estados anônimo e não autorizado/não provisionado recebem superfícies de entrada/reparo, não o shell gerencial.
 
 O cadastro WordPress e o provisionamento SGFP não formam uma única transação entre subsistemas. Falha no provisionamento não invalida silenciosamente o usuário: não concede acesso financeiro, é registrada e pode ser reparada pela repetição idempotente. `permission_callback` somente autoriza; não provisiona nem produz outros efeitos colaterais. A Etapa 10 deverá manter o handler de autenticação separado dos Services financeiros e verificar seu comportamento por interface pública, inclusive o erro uniforme e as condições da alteração de senha.
 
