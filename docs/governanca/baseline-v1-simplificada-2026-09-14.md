@@ -73,6 +73,19 @@ Após cadastro válido:
 
 Não deve existir usuário SGFP ativo sem sua conta única provisionada.
 
+## 7.1 Identidade, cadastro e autorização da aplicação
+
+A decisão complementar de 16/09/2026 está registrada em [decisao-identidade-acesso-v1-2026-09-16.md](decisao-identidade-acesso-v1-2026-09-16.md) e integra esta baseline.
+
+- O cadastro WordPress é o cadastro da aplicação SGFP.
+- Não existe tabela própria de usuário SGFP; `wp_users.ID` é a identidade utilizada pelas tabelas financeiras.
+- Login, cadastro (quando habilitado) e recuperação de senha reutilizam os fluxos nativos do WordPress.
+- O provisionamento SGFP é disparado após a criação da identidade e deve ser idempotente; `wp_login` pode reparar provisionamento incompleto sem duplicar conta ou seed.
+- A capability oficial única da V1 é `use_sgfp`.
+- `sgfp_access` é legado de migração e não autoriza runtime por si só.
+- O manager completo só é disponibilizado a usuário autenticado, provisionado e autorizado por `use_sgfp`.
+- O frontend deve distinguir estados anônimo, não autorizado/não provisionado e autorizado.
+
 ## 8. Efeito sobre a baseline anterior
 
 Esta decisão substitui explicitamente:

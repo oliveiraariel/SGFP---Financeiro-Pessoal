@@ -18,12 +18,12 @@ O usuário solicita acesso ao sistema.
 
 **Fluxo principal**
 
-1. O sistema apresenta a tela de autenticação.
-2. O usuário informa e-mail e senha.
-3. O sistema valida as credenciais.
-4. O sistema autentica o usuário.
-5. O sistema carrega as informações pertencentes ao usuário.
-6. O sistema apresenta a aplicação.
+1. O sistema direciona o usuário ao fluxo nativo de autenticação do WordPress usado como entrada do SGFP.
+2. O usuário informa e-mail e senha conforme a regra da V1.
+3. O WordPress valida as credenciais e estabelece a sessão.
+4. O SGFP identifica o usuário por `wp_users.ID` e verifica provisionamento/autorização.
+5. Se necessário, o provisionamento idempotente de reparo pode ser executado sem duplicar conta ou dados iniciais.
+6. O usuário autorizado retorna ao gestor SGFP; usuário não provisionado/não autorizado não recebe o manager completo.
 
 **Fluxos alternativos e exceções**
 

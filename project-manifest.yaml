@@ -1,6 +1,6 @@
 schema_version: "1.0"
 manifest_version: "3.0"
-updated_at: "2026-09-14"
+updated_at: "2026-09-16"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -46,7 +46,11 @@ product_constraints:
     web_platform: "WordPress"
     backend_extension_model: "custom_plugin"
     architecture_direction: "WordPress REST API + SGFP custom REST endpoints"
-    identity_and_authentication: "WordPress users; email + password"
+    identity_and_authentication: "WordPress-native identity/session/registration/recovery; V1 login rule email + password"
+    user_identity_source: "wp_users.ID"
+    own_user_table: false
+    sgfp_runtime_capability: "use_sgfp"
+    legacy_capability_migration_only: "sgfp_access"
     database_family: "relational"
     database_implementation: "MySQL_or_MariaDB"
     financial_data_entry: "manual"
@@ -245,6 +249,11 @@ canonical_sources:
     path: "docs/modelagem-dados/03-modelo-fisico.md"
     authority: "validated_data_model"
     sql_artifact: "docs/modelagem-dados/artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql"
+
+  identity_access_decision:
+    path: "docs/governanca/decisao-identidade-acesso-v1-2026-09-16.md"
+    authority: "human_decision_current"
+    note: "WordPress é a identidade/cadastro da aplicação; wp_users.ID é a identidade SGFP; use_sgfp é a capability única de runtime; sgfp_access é apenas legado de migração; frontend distingue anônimo, não provisionado/não autorizado e autorizado."
 
   application_architecture:
     path: "docs/arquitetura/01-arquitetura-da-aplicacao.md"

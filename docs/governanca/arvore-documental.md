@@ -1,6 +1,6 @@
 # Árvore Documental Canônica
 
-**Atualizada em:** 14/09/2026
+**Atualizada em:** 16/09/2026
 
 A lista abaixo representa os principais artefatos documentais canônicos da baseline vigente. Arquivos históricos permanecem preservados no repositório, mas não prevalecem sobre estes artefatos.
 
@@ -85,6 +85,7 @@ docs/testes/
 
 docs/governanca/
   baseline-v1-simplificada-2026-09-14.md
+  decisao-identidade-acesso-v1-2026-09-16.md
   PROMPT-RETOMADA.md
   continuidade-de-contexto.md
   arvore-documental.md
@@ -99,7 +100,8 @@ Para estado vigente, a leitura deve começar por:
 
 1. `project-manifest.yaml`;
 2. `docs/governanca/baseline-v1-simplificada-2026-09-14.md`;
-3. `ORCHESTRATOR.md`;
-4. fontes normativas da etapa afetada.
+3. `docs/governanca/decisao-identidade-acesso-v1-2026-09-16.md` para identidade, cadastro, capability e estados de entrada;
+4. `ORCHESTRATOR.md`;
+5. fontes normativas da etapa afetada.
 
 `HANDOFF.md`, o relatório de consolidação, proveniência e inventários preservam histórico e devem ser interpretados dentro desse contexto.

@@ -57,7 +57,8 @@ A exclusão é distinta do reset do perfil financeiro e encerra o acesso ao port
 - Sincronização em nuvem.
 
 ## Decisões Tomadas
-- WordPress fornece identidade, autenticação, sessão e credenciais.
+- WordPress fornece identidade, cadastro, autenticação, sessão, credenciais e recuperação de senha; o SGFP não mantém tabela própria de usuário nem identidade paralela.
+- O identificador de usuário utilizado pelo SGFP é o `wp_users.ID`, referenciado diretamente pelas estruturas de dados financeiras.
 - Cada usuário possui exatamente uma Conta Financeira na V1.
 - O nome inicial da conta é **Minha Conta**.
 - A conta e as categorias padrão são criadas no provisionamento inicial.
