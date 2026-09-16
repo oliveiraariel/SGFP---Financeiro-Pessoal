@@ -10,19 +10,20 @@ Leia, nesta ordem:
 2. `ORCHESTRATOR.md`;
 3. `project-manifest.yaml`;
 4. `docs/governanca/baseline-v1-simplificada-2026-09-14.md`;
-5. `docs/governanca/status-implementacao-v1-2026-09-14.md`;
-6. `docs/governanca/continuidade-de-contexto.md`;
-7. `docs/requisitos/srs/03-requisitos-funcionais.md`;
-8. `docs/requisitos/srs/07-criterios-de-aceitacao.md`;
-9. `docs/casos-de-uso/catalogo.csv`;
-10. `docs/dominio/01-mapa-de-dominio.md`;
-11. `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
-12. `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`;
-13. `docs/modelagem-dados/03-modelo-fisico.md`;
-14. `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
-15. `docs/api/README.md`;
-16. `docs/interface-web/README.md`;
-17. `HANDOFF.md` quando houver trabalho técnico em continuidade.
+5. `docs/governanca/decisao-identidade-acesso-v1-2026-09-16.md`;
+6. `docs/governanca/status-implementacao-v1-2026-09-14.md`;
+7. `docs/governanca/continuidade-de-contexto.md`;
+8. `docs/requisitos/srs/03-requisitos-funcionais.md`;
+9. `docs/requisitos/srs/07-criterios-de-aceitacao.md`;
+10. `docs/casos-de-uso/catalogo.csv`;
+11. `docs/dominio/01-mapa-de-dominio.md`;
+12. `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
+13. `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`;
+14. `docs/modelagem-dados/03-modelo-fisico.md`;
+15. `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
+16. `docs/api/README.md`;
+17. `docs/interface-web/README.md`;
+18. `HANDOFF.md` quando houver trabalho técnico em continuidade.
 
 ## 2. Baseline vigente que deve ser confirmada
 
@@ -44,6 +45,11 @@ Leia, nesta ordem:
 - Reset do perfil financeiro mantém o login e exige `RESETAR PERFIL`;
 - Exclusão da conta de acesso remove dados + login WordPress e exige `EXCLUIR CONTA`;
 - ambas as operações destrutivas exigem duas etapas de confirmação.
+- WordPress é a única fonte de identidade/cadastro/sessão/recuperação; não existe tabela própria de usuário SGFP;
+- `wp_users.ID` é o identificador usado pelas tabelas SGFP;
+- `use_sgfp` é a capability oficial única de runtime; `sgfp_access` é legado de migração, não autorização alternativa;
+- o frontend distingue anônimo, não provisionado/não autorizado e autorizado; manager/assets só no estado autenticado + provisionado + `use_sgfp`;
+- login, cadastro quando habilitado e recuperação usam os fluxos nativos do WordPress, com retorno ao gestor quando aplicável.
 
 ## 3. Estado de desenvolvimento
 
