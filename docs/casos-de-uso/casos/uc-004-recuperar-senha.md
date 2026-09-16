@@ -18,8 +18,8 @@ O usuário solicita recuperação de senha.
 
 **Fluxo principal**
 
-1. O usuário solicita a recuperação.
-2. O sistema solicita o endereço de e-mail cadastrado.
+1. O usuário acessa o fluxo nativo de recuperação de senha do WordPress disponibilizado pela entrada do SGFP.
+2. O WordPress solicita o endereço de e-mail cadastrado.
 3. O usuário informa o e-mail.
 4. O sistema verifica a solicitação.
 5. O sistema aciona o mecanismo de recuperação de senha disponibilizado pelo WordPress.
@@ -27,7 +27,7 @@ O usuário solicita recuperação de senha.
 7. O usuário segue o fluxo de recuperação apresentado pela plataforma.
 8. O sistema permite a definição de uma nova senha conforme o mecanismo do WordPress.
 9. O usuário informa a nova senha.
-10. O sistema confirma a operação.
+10. O fluxo WordPress confirma a operação e permite retornar à entrada/autenticação do SGFP.
 
 **Fluxos alternativos e exceções**
 
