@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace SGFP;
 
 use SGFP\Application\Services\ProvisionUserService;
+use SGFP\Frontend\Frontend;
+use SGFP\Frontend\WordPressLogin;
 use SGFP\Infrastructure\WordPress\WpAccountRepository;
 use SGFP\Infrastructure\WordPress\WpCategoryRepository;
 use SGFP\REST\Routes;
@@ -25,8 +27,14 @@ final class Plugin
 
     private function register(): void
     {
+        $frontend = new Frontend();
+        (new WordPressLogin())->register();
+
         add_action('init', [$this, 'registerCapabilities']);
         add_action('rest_api_init', [new Routes(), 'register']);
+        add_action('template_redirect', [$frontend, 'redirectAnonymousVisitor'], 0);
+        add_action('wp_enqueue_scripts', [$frontend, 'enqueue']);
+        add_shortcode('sgfp_app', [$frontend, 'render']);
 
         /*
          * Provisionamento principal: imediatamente após o WordPress
@@ -46,10 +54,6 @@ final class Plugin
     {
         foreach (['subscriber', 'administrator', 'contributor', 'author', 'editor'] as $roleName) {
             $role = get_role($roleName);
-            if ($role !== null && !$role->has_cap('sgfp_access')) {
-                $role->add_cap('sgfp_access');
-            }
-            // Backward-compatible alias used by services from the API baseline.
             if ($role !== null && !$role->has_cap('use_sgfp')) {
                 $role->add_cap('use_sgfp');
             }
@@ -58,6 +62,17 @@ final class Plugin
 
     public function provisionUser(int $userId): void
     {
+        if ($userId <= 0) {
+            return;
+        }
+
+        $lockKey = 'sgfp_provision_user_' . $userId;
+        $lockAcquired = !function_exists('wp_cache_add') || wp_cache_add($lockKey, '1', 'sgfp', 30);
+
+        if (!$lockAcquired) {
+            return;
+        }
+
         try {
             $service = new ProvisionUserService(
                 new WpAccountRepository(),
@@ -65,18 +80,27 @@ final class Plugin
             );
 
             $service->execute($userId);
+
+            $user = function_exists('get_user_by') ? get_user_by('id', $userId) : false;
+            if ($user instanceof \WP_User && !$user->has_cap('use_sgfp')) {
+                $user->add_cap('use_sgfp');
+            }
+
             update_user_meta($userId, '_sgfp_provisioned', '1');
         } catch (\Throwable $e) {
-            error_log(sprintf(
-                '[SGFP] Falha ao provisionar usuário %d: %s',
-                $userId,
-                $e->getMessage()
-            ));
+            error_log(sprintf('[SGFP] Falha ao provisionar usuário %d.', $userId));
+        } finally {
+            if (function_exists('wp_cache_delete')) {
+                wp_cache_delete($lockKey, 'sgfp');
+            }
         }
     }
 
     public function provisionUserOnLogin(string $userLogin, \WP_User $user): void
     {
+        // Existing users may carry the pre-V1 capability. The migration is
+        // completed by provisionUser only after the account and categories
+        // have been successfully ensured.
         $this->provisionUser((int) $user->ID);
     }
 

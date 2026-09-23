@@ -42,7 +42,7 @@ final class BackupPayloadBuilder
                 'origin' => $origin,
                 'created_at' => gmdate('c'),
             ],
-            'theme' => $this->preferences->get('theme', $userId) ?: 'light',
+            'theme' => $this->preferences->get('theme', $userId) ?: 'dark',
             'accounts' => array_map([$this, 'accountRecord'], $accounts),
             'categories' => array_map([$this, 'categoryRecord'], $this->categories->findAllByUser($userId)),
             'recurrences' => array_map([$this, 'recurrenceRecord'], $this->recurrences->findAllByUser($userId)),

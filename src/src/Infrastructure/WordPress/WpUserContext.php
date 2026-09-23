@@ -27,7 +27,27 @@ final class WpUserContext implements UserContext
 
     public function hasCapability(string $capability): bool
     {
+        if ($capability === 'use_sgfp') {
+            return self::canAccessSgfp();
+        }
+
         return current_user_can($capability);
+    }
+
+    public static function canAccessSgfp(): bool
+    {
+        $userId = get_current_user_id();
+
+        return $userId > 0
+            && current_user_can('use_sgfp')
+            && get_user_meta($userId, '_sgfp_provisioned', true) === '1';
+    }
+
+    public static function canRecoverAccountDeletion(): bool
+    {
+        $userId = get_current_user_id();
+        $pending = $userId > 0 ? get_user_meta($userId, '_sgfp_account_deletion_pending', true) : null;
+        return $userId > 0 && is_array($pending) && (int) ($pending['user_id'] ?? 0) === $userId;
     }
 
     public function requireCapability(string $capability): void

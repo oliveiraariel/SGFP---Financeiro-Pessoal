@@ -24,11 +24,11 @@ final class CreateCommitmentService
     public function execute(
         ?int $categoryId,
         string $name,
-        float $amount,
+        string $amount,
         string $nature,
-        string $referenceMonth,
+        string $commitmentDate,
         ?int $recurrenceMonthsCount = null,
-        ?string $recurrenceStart = null,
+        bool $recurrenceEnabled = false,
     ): Commitment {
         $userId = $this->userContext->requireUserId();
         $this->userContext->requireCapability('use_sgfp');
@@ -40,8 +40,8 @@ final class CreateCommitmentService
         if ($this->stringLength($normalizedName) > 180) {
             throw new \InvalidArgumentException('O nome deve ter no máximo 180 caracteres.');
         }
-        if ($amount < 0) {
-            throw new \InvalidArgumentException('O valor deve ser maior ou igual a zero.');
+        if (preg_match('/^(?:0|[1-9]\d*)\.\d{2}$/', $amount) !== 1 || preg_match('/^0+\.00$/', $amount) === 1) {
+            throw new \InvalidArgumentException('O valor deve usar duas casas decimais e ser maior que zero.');
         }
 
         $commitmentNature = CommitmentNature::tryFrom($nature);
@@ -49,10 +49,12 @@ final class CreateCommitmentService
             throw new \InvalidArgumentException('A natureza deve ser ENTRADA ou SAIDA.');
         }
 
-        $month = \DateTimeImmutable::createFromFormat('!Y-m', $referenceMonth);
+        $format = preg_match('/^\d{4}-\d{2}-\d{2}$/', $commitmentDate) === 1 ? '!Y-m-d' : null;
+        $month = $format === null ? false : \DateTimeImmutable::createFromFormat($format, $commitmentDate);
         $errors = \DateTimeImmutable::getLastErrors();
-        if ($month === false || ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))) {
-            throw new \InvalidArgumentException('O mês de referência deve estar no formato YYYY-MM.');
+        if ($month === false || ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0)) ||
+            $month->format('Y-m-d') !== $commitmentDate) {
+            throw new \InvalidArgumentException('A data do compromisso deve estar no formato YYYY-MM-DD.');
         }
 
         if ($categoryId !== null && $this->categoryRepository->findById($categoryId, $userId) === null) {
@@ -60,20 +62,13 @@ final class CreateCommitmentService
         }
 
         $recurrenceId = null;
-        if ($recurrenceMonthsCount !== null) {
-            if ($recurrenceMonthsCount <= 0) {
-                throw new \InvalidArgumentException('A quantidade de meses deve ser maior que zero ou omitida.');
-            }
-
-            if (!in_array($recurrenceStart, ['CURRENT', 'NEXT'], true)) {
-                throw new \InvalidArgumentException('O início da recorrência deve ser CURRENT ou NEXT.');
-            }
-
-            $now = new \DateTimeImmutable('first day of this month');
-            $month = $recurrenceStart === 'NEXT' ? $now->modify('+1 month') : $now;
-
+        if ($recurrenceEnabled && $recurrenceMonthsCount !== null && $recurrenceMonthsCount <= 0) {
+            throw new \InvalidArgumentException('A quantidade de meses deve ser maior que zero ou omitida.');
+        }
+        if ($recurrenceEnabled) {
+            $recurrenceStartDate = $month->modify('first day of this month');
             $recurrence = $this->recurrenceRepository->save(
-                Recurrence::create($userId, $month, $recurrenceMonthsCount, new \DateTimeImmutable())
+                Recurrence::create($userId, $recurrenceStartDate, $recurrenceMonthsCount, new \DateTimeImmutable())
             );
             $recurrenceId = $recurrence->id;
         }

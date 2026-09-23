@@ -31,7 +31,7 @@ final class WpEntryRepository implements EntryRepository
             'desfeito_em' => $entry->undoneAt?->format('Y-m-d H:i:s'),
         ];
 
-        $format = ['%d', '%d', '%d', '%s', '%s', '%f', '%s', '%s', '%s', '%s', '%s'];
+        $format = ['%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'];
 
         if ($entry->id === null) {
             $result = $wpdb->insert(TableNames::entry(), $data, $format);
@@ -59,7 +59,7 @@ final class WpEntryRepository implements EntryRepository
         global $wpdb;
 
         $row = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM " . TableNames::entry() . " WHERE fk_id_compromisso = %d AND fk_id_usuario = %d",
+            "SELECT * FROM " . TableNames::entry() . " WHERE fk_id_compromisso = %d AND fk_id_usuario = %d ORDER BY (estado = 'ATIVO') DESC, id_lancamento DESC LIMIT 1",
             $commitmentId,
             $userId
         ), ARRAY_A);
@@ -102,11 +102,15 @@ final class WpEntryRepository implements EntryRepository
 
         $rows = $wpdb->get_results($wpdb->prepare(
             "SELECT * FROM " . TableNames::entry()
-            . " WHERE fk_id_usuario = %d AND estado = 'ATIVO' ORDER BY data_efetivacao DESC",
+            . " WHERE fk_id_usuario = %d AND estado = 'ATIVO' ORDER BY data_efetivacao DESC, id_lancamento DESC",
             $userId
         ), ARRAY_A);
 
-        return array_map([$this, 'mapRow'], $rows ?: []);
+        if ($rows === false) {
+            throw new \RuntimeException('Falha ao consultar movimentos.');
+        }
+
+        return array_map([$this, 'mapRow'], $rows);
     }
 
     public function findAllByUser(int $userId): array
@@ -119,6 +123,10 @@ final class WpEntryRepository implements EntryRepository
             $userId
         ), ARRAY_A);
 
+        if ($rows === false) {
+            throw new \RuntimeException('Falha ao consultar movimentos.');
+        }
+
         return array_map([$this, 'mapRow'], $rows ?: []);
     }
 
@@ -128,13 +136,17 @@ final class WpEntryRepository implements EntryRepository
 
         $rows = $wpdb->get_results($wpdb->prepare(
             "SELECT * FROM " . TableNames::entry()
-            . " WHERE fk_id_usuario = %d AND estado = 'ATIVO' AND data_efetivacao >= %s AND data_efetivacao <= %s ORDER BY data_efetivacao DESC",
+            . " WHERE fk_id_usuario = %d AND estado = 'ATIVO' AND data_efetivacao >= %s AND data_efetivacao <= %s ORDER BY data_efetivacao DESC, id_lancamento DESC",
             $userId,
             $start->format('Y-m-d H:i:s'),
             $end->format('Y-m-d H:i:s')
         ), ARRAY_A);
 
-        return array_map([$this, 'mapRow'], $rows ?: []);
+        if ($rows === false) {
+            throw new \RuntimeException('Falha ao consultar movimentos.');
+        }
+
+        return array_map([$this, 'mapRow'], $rows);
     }
 
     private function mapRow(array $row): Entry
@@ -146,7 +158,7 @@ final class WpEntryRepository implements EntryRepository
             $row['fk_id_compromisso'] !== null ? (int) $row['fk_id_compromisso'] : null,
             EntryOrigin::from($row['origem']),
             $row['nome'],
-            (float) $row['valor'],
+            (string) $row['valor'],
             EntryEffectType::from($row['tipo_efeito']),
             new \DateTimeImmutable($row['data_efetivacao']),
             $row['descricao'],

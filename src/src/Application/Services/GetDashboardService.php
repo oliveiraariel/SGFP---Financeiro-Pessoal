@@ -10,6 +10,7 @@ use SGFP\Application\Ports\EntryRepository;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Domain\Enums\CommitmentNature;
 use SGFP\Domain\Enums\EntryEffectType;
+use SGFP\Domain\Models\Decimal;
 
 final class GetDashboardService
 {
@@ -26,11 +27,10 @@ final class GetDashboardService
         $this->userContext->requireCapability('use_sgfp');
         $userId = $this->userContext->requireUserId();
 
-        $monthStart = new \DateTimeImmutable($month . '-01');
+        $monthStart = self::parseMonth($month);
         $monthEnd = $monthStart->modify('last day of this month 23:59:59');
         $previousEnd = $monthStart->modify('-1 second');
 
-        $accounts = $this->accountRepository->findAllByUser($userId);
         $allEntries = $this->entryRepository->findActiveEntriesByUser($userId);
         $monthEntries = $this->entryRepository->findActiveEntriesByUserAndPeriod($userId, $monthStart, $monthEnd);
         $pendingCommitments = $this->commitmentRepository->findPendingCommitmentsByUserAndPeriod(
@@ -39,54 +39,59 @@ final class GetDashboardService
             $monthEnd->format('Y-m-d')
         );
 
-        $openingBalance = 0.0;
-        $realizedInflows = 0.0;
-        $realizedOutflows = 0.0;
-        $expectedInflows = 0.0;
-        $expectedOutflows = 0.0;
+        $openingBalance = $realizedInflows = $realizedOutflows = $expectedInflows = $expectedOutflows = 0;
 
-        foreach ($accounts as $account) {
-            foreach ($allEntries as $entry) {
-                if ($entry->accountId !== $account->id || $entry->settledAt > $previousEnd) {
-                    continue;
-                }
-                $openingBalance += $entry->effectType === EntryEffectType::ENTRADA ? $entry->amount : -$entry->amount;
+        foreach ($allEntries as $entry) {
+            if ($entry->settledAt <= $previousEnd) {
+                $openingBalance += ($entry->effectType === EntryEffectType::ENTRADA ? 1 : -1) * Decimal::cents($entry->amount);
             }
         }
 
         foreach ($monthEntries as $entry) {
             if ($entry->effectType === EntryEffectType::ENTRADA) {
-                $realizedInflows += $entry->amount;
+                $realizedInflows += Decimal::cents($entry->amount);
             } else {
-                $realizedOutflows += $entry->amount;
+                $realizedOutflows -= Decimal::cents($entry->amount);
             }
         }
 
         foreach ($pendingCommitments as $commitment) {
             if ($commitment->nature === CommitmentNature::ENTRADA) {
-                $expectedInflows += $commitment->amount;
+                $expectedInflows += Decimal::cents($commitment->amount);
             } else {
-                $expectedOutflows += $commitment->amount;
+                $expectedOutflows -= Decimal::cents($commitment->amount);
             }
         }
 
-        $expectedClosingBalance = $openingBalance + $realizedInflows - $realizedOutflows + $expectedInflows - $expectedOutflows;
+        $currentBalance = $openingBalance + $realizedInflows + $realizedOutflows;
+        $expectedClosingBalance = $currentBalance + $expectedInflows + $expectedOutflows;
 
         return [
             'month' => $month,
-            'opening_balance' => number_format($openingBalance, 2, '.', ''),
-            'realized_inflows' => number_format($realizedInflows, 2, '.', ''),
-            'realized_outflows' => number_format($realizedOutflows, 2, '.', ''),
-            'expected_inflows' => number_format($expectedInflows, 2, '.', ''),
-            'expected_outflows' => number_format($expectedOutflows, 2, '.', ''),
-            'expected_closing_balance' => number_format($expectedClosingBalance, 2, '.', ''),
+            'opening_balance' => Decimal::formatCents($openingBalance),
+            'realized_inflows' => Decimal::formatCents($realizedInflows),
+            'realized_outflows' => Decimal::formatCents($realizedOutflows),
+            'current_balance' => Decimal::formatCents($currentBalance),
+            'expected_inflows' => Decimal::formatCents($expectedInflows),
+            'expected_outflows' => Decimal::formatCents($expectedOutflows),
+            'expected_closing_balance' => Decimal::formatCents($expectedClosingBalance),
             'pending_commitments' => array_map(fn ($c) => [
                 'id' => $c->id,
                 'name' => $c->name,
-                'amount' => number_format($c->amount, 2, '.', ''),
+                'amount' => $c->amount,
                 'nature' => $c->nature->value,
-                'reference_month' => $c->referenceMonth->format('Y-m-d'),
+                'reference_month' => $c->referenceMonth->format('Y-m-01'),
             ], $pendingCommitments),
         ];
+    }
+
+    private static function parseMonth(string $month): \DateTimeImmutable
+    {
+        $format = preg_match('/^\d{4}-\d{2}-01$/', $month) === 1 ? '!Y-m-d' : null;
+        $date = $format === null ? false : \DateTimeImmutable::createFromFormat($format, $month);
+        if ($date === false || $date->format('Y-m-d') !== $month) {
+            throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM-01.');
+        }
+        return $date;
     }
 }

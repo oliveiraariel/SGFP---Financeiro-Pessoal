@@ -15,7 +15,7 @@ final class Commitment
         public readonly ?int $categoryId,
         public readonly ?int $recurrenceId,
         public readonly string $name,
-        public readonly float $amount,
+        public readonly string $amount,
         public readonly CommitmentNature $nature,
         public readonly \DateTimeImmutable $referenceMonth,
         public readonly CommitmentStatus $status,
@@ -26,7 +26,7 @@ final class Commitment
         int $userId,
         ?int $categoryId,
         string $name,
-        float $amount,
+        string $amount,
         CommitmentNature $nature,
         \DateTimeImmutable $referenceMonth,
         \DateTimeImmutable $now,
@@ -75,6 +75,15 @@ final class Commitment
             $this->referenceMonth,
             CommitmentStatus::PENDENTE,
             $this->createdAt,
+        );
+    }
+
+    public function delete(): self
+    {
+        return new self(
+            $this->id, $this->userId, $this->categoryId, $this->recurrenceId,
+            $this->name, $this->amount, $this->nature, $this->referenceMonth,
+            CommitmentStatus::EXCLUIDO, $this->createdAt,
         );
     }
 

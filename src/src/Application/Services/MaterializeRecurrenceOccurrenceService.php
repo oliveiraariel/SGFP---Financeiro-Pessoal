@@ -24,9 +24,10 @@ final class MaterializeRecurrenceOccurrenceService
         $this->userContext->requireCapability('use_sgfp');
         $userId = $this->userContext->requireUserId();
 
-        $monthDate = \DateTimeImmutable::createFromFormat('!Y-m', $month);
-        if ($monthDate === false) {
-            throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM.');
+        $format = preg_match('/^\d{4}-\d{2}-01$/', $month) === 1 ? '!Y-m-d' : null;
+        $monthDate = $format === null ? false : \DateTimeImmutable::createFromFormat($format, $month);
+        if ($monthDate === false || $monthDate->format('Y-m' . ($format === '!Y-m-d' ? '-d' : '')) !== $month) {
+            throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM-01.');
         }
 
         $monthFormatted = $monthDate->format('Y-m-d');
@@ -35,7 +36,14 @@ final class MaterializeRecurrenceOccurrenceService
             throw new \RuntimeException('Recorrência não encontrada.', 404);
         }
 
-        $start = $recurrence->startsIn->modify('first day of this month');
+        $base = $this->commitmentRepository->findFirstByRecurrenceId($recurrenceId, $userId);
+        if ($base === null) {
+            throw new \RuntimeException('Ocorrência base da recorrência não encontrada.', 404);
+        }
+
+        // O primeiro mês da série é o mês de referência do compromisso criado,
+        // e não o mês corrente do servidor usado no provisionamento da recorrência.
+        $start = $base->referenceMonth->modify('first day of this month');
         if ($monthDate < $start) {
             throw new \InvalidArgumentException('O mês da ocorrência não pode ser anterior ao início da recorrência.');
         }
@@ -51,19 +59,22 @@ final class MaterializeRecurrenceOccurrenceService
             return $existing;
         }
 
-        $base = $this->commitmentRepository->findFirstByRecurrenceId($recurrenceId, $userId);
-        if ($base === null) {
-            throw new \RuntimeException('Ocorrência base da recorrência não encontrada.', 404);
-        }
+        $day = (int) $base->referenceMonth->format('d');
+        $lastDay = (int) $monthDate->format('t');
+        $occurrenceDate = $monthDate->setDate(
+            (int) $monthDate->format('Y'),
+            (int) $monthDate->format('m'),
+            min($day, $lastDay),
+        );
 
-        return $this->transactionManager->transactional(function () use ($userId, $base, $recurrenceId, $monthDate) {
+        return $this->transactionManager->transactional(function () use ($userId, $base, $recurrenceId, $occurrenceDate) {
             return $this->commitmentRepository->save(Commitment::create(
                 $userId,
                 $base->categoryId,
                 $base->name,
                 $base->amount,
                 $base->nature,
-                $monthDate,
+                $occurrenceDate,
                 new \DateTimeImmutable(),
                 $recurrenceId,
             ));

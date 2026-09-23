@@ -6,6 +6,7 @@ namespace SGFP\Application\Services;
 
 use SGFP\Application\Backup\BackupArchive;
 use SGFP\Application\Backup\BackupProtector;
+use SGFP\Application\Backup\PrivateBackupDirectory;
 use SGFP\Application\Backup\RestorationImportPlanner;
 use SGFP\Application\Backup\StagedBackupDecoder;
 use SGFP\Application\Ports\RestorationTokenClaim;
@@ -28,6 +29,7 @@ final class RevalidateRestorationService
         private readonly ?RestoreFromImportPlanService $restorer = null,
         private readonly BackupArchive $archive = new BackupArchive(),
         private readonly BackupProtector $protector = new BackupProtector(),
+        private readonly PrivateBackupDirectory $stagingDirectory = new PrivateBackupDirectory(),
     ) {}
 
     public function prepare(string $token): array
@@ -132,12 +134,10 @@ final class RevalidateRestorationService
         }
 
         $path = (string) ($metadata['path'] ?? '');
-        $directory = rtrim((string) (getenv('SGFP_BACKUP_DIR') ?: ''), DIRECTORY_SEPARATOR);
-        $realDirectory = $directory === '' ? '' : realpath($directory);
+        $realDirectory = $this->stagingDirectory->resolve();
         $realPath = $path === '' ? false : realpath($path);
 
-        if ($realDirectory === ''
-            || $realPath === false
+        if ($realPath === false
             || !str_starts_with($realPath, $realDirectory . DIRECTORY_SEPARATOR)
             || !is_file($realPath)) {
             throw new \InvalidArgumentException('O arquivo de restauração não está disponível.');
@@ -185,9 +185,11 @@ final class RevalidateRestorationService
         }
 
         return [
+            // The archive remains in the private backup store. REST responses
+            // expose only safe metadata; binary content needs a separate,
+            // explicitly authorized download flow.
             'filename' => 'sgfp-pre-restore-' . gmdate('Ymd-His') . '.zip',
             'content_type' => 'application/zip',
-            'content_base64' => base64_encode($content),
             'sha256' => hash('sha256', $content),
             'expires_at' => (int) ($snapshot['expires_at'] ?? 0),
             'origin' => 'pre_restore',

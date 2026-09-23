@@ -10,7 +10,7 @@ use SGFP\Application\Ports\UserPreferenceRepository;
 final class ThemeService
 {
     private const KEY = 'theme';
-    private const DEFAULT_THEME = 'light';
+    private const DEFAULT_THEME = 'dark';
     private const ALLOWED_THEMES = ['light', 'dark'];
 
     public function __construct(

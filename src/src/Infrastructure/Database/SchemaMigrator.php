@@ -14,6 +14,7 @@ final class SchemaMigrator
         '1.0.0' => 'migrateTo100',
         '1.1.0' => 'migrateTo110',
         '1.2.0' => 'migrateTo120',
+        '1.3.0' => 'migrateTo130',
     ];
 
     public static function migrate(): void
@@ -172,6 +173,13 @@ final class SchemaMigrator
             self::run("ALTER TABLE {$entry}
                 ADD CONSTRAINT uq_lancamento_compromisso_ativo UNIQUE (id_compromisso_ativo)", $version);
         }
+    }
+
+    private static function migrateTo130(string $version): void
+    {
+        // Compromissos now preserve the daily due date; only recurrence
+        // boundaries remain month-based.
+        self::dropCheckIfExists(TableNames::commitment(), 'ck_compromisso_mes', $version);
     }
 
     private static function assertLegacyDataCanBeCollapsed(string $commitment, string $entry): void

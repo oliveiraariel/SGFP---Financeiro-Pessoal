@@ -71,7 +71,6 @@ CREATE TABLE IF NOT EXISTS {$commitment} (
         REFERENCES {$recurrence}(id_recorrencia, fk_id_usuario),
     CONSTRAINT ck_compromisso_valor CHECK (valor >= 0),
     CONSTRAINT ck_compromisso_natureza CHECK (natureza IN ('ENTRADA', 'SAIDA')),
-    CONSTRAINT ck_compromisso_mes CHECK (DAY(mes_referencia) = 1),
     CONSTRAINT ck_compromisso_status CHECK (status IN ('PENDENTE', 'EFETIVADO', 'EXCLUIDO')),
     CONSTRAINT uq_compromisso_recorrencia_mes UNIQUE (fk_id_recorrencia, mes_referencia),
     CONSTRAINT uq_compromisso_id_usuario UNIQUE (id_compromisso, fk_id_usuario),

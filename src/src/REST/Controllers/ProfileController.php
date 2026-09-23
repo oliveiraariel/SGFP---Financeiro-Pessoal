@@ -17,13 +17,8 @@ final class ProfileController
     public function reset(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $confirmation = $request->get_param('confirmation');
-            if (!is_bool($confirmation)) {
-                throw new \InvalidArgumentException('A confirmação deve ser booleana.');
-            }
-
             $account = $this->resetService->execute(
-                $confirmation,
+                (string) $request->get_param('token'),
                 (string) $request->get_param('phrase')
             );
 
@@ -35,24 +30,19 @@ final class ProfileController
                 ],
             ], 200);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
     public function deleteAccount(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $confirmation = $request->get_param('confirmation');
-            if (!is_bool($confirmation)) {
-                throw new \InvalidArgumentException('A confirmação deve ser booleana.');
-            }
-
             $this->deleteAccountService->execute(
-                $confirmation,
+                (string) $request->get_param('token'),
                 (string) $request->get_param('phrase')
             );
 
@@ -60,16 +50,39 @@ final class ProfileController
                 'status' => 'account_deleted',
             ], 200);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
+    public function retryDeleteAccount(\WP_REST_Request $request): \WP_REST_Response
+    {
+        try {
+            $this->deleteAccountService->executeRetry((string) $request->get_param('token'), (string) $request->get_param('phrase'));
+            return new \WP_REST_Response(['status' => 'account_deleted'], 200);
+        } catch (\InvalidArgumentException $e) {
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
+        } catch (\RuntimeException $e) {
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
+        }
+    }
+
+    public function beginReset(): \WP_REST_Response { return new \WP_REST_Response(['token' => $this->resetService->begin()], 200); }
+    public function beginDelete(): \WP_REST_Response { return new \WP_REST_Response(['token' => $this->deleteAccountService->begin()], 200); }
+    public function beginDeleteRetry(): \WP_REST_Response { return new \WP_REST_Response(['token' => $this->deleteAccountService->beginRetry()], 200); }
+
     public function permissionCheck(): bool
     {
-        return current_user_can('use_sgfp');
+        return \SGFP\Infrastructure\WordPress\WpUserContext::canAccessSgfp();
+    }
+
+    public function recoveryPermissionCheck(): bool
+    {
+        return \SGFP\Infrastructure\WordPress\WpUserContext::canRecoverAccountDeletion();
     }
 }

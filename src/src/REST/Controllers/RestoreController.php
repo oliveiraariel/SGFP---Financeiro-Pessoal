@@ -34,11 +34,11 @@ final class RestoreController
             if ($content === false) throw new \InvalidArgumentException('Não foi possível ler o arquivo.');
             return new \WP_REST_Response($this->service->validate($content), 200);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
@@ -51,13 +51,13 @@ final class RestoreController
             }
             return new \WP_REST_Response($this->revalidation->confirm((string) $request->get_param('token'), $confirmation), 200);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
-    public function permissionCheck(): bool { return current_user_can('use_sgfp'); }
+    public function permissionCheck(): bool { return \SGFP\Infrastructure\WordPress\WpUserContext::canAccessSgfp(); }
 }

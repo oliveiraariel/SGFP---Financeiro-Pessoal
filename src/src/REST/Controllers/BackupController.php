@@ -15,21 +15,21 @@ final class BackupController
         try {
             $backup = $this->service->create();
 
-            return new \WP_REST_Response([
-                'filename' => $backup['filename'],
-                'content_type' => $backup['content_type'],
-                'content_base64' => $backup['content'],
-                'sha256' => $backup['sha256'],
-            ], 201);
+            $response = new \WP_REST_Response($backup['content'], 200);
+            $response->header('Content-Type', $backup['content_type']);
+            $response->header('Content-Disposition', 'attachment; filename="' . $backup['filename'] . '"');
+            $response->header('Content-Length', (string) strlen($backup['content']));
+            $response->header('X-SGFP-Backup-SHA256', $backup['sha256']);
+            return $response;
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
     public function permissionCheck(): bool
     {
-        return current_user_can('use_sgfp');
+        return \SGFP\Infrastructure\WordPress\WpUserContext::canAccessSgfp();
     }
 }

@@ -23,12 +23,11 @@ final class UndoRecurrenceOccurrenceSettlementService
     public function execute(int $recurrenceId, string $month): void
     {
         $this->userContext->requireCapability('use_sgfp');
-        $this->userContext->requireUserId();
-
         $userId = $this->userContext->requireUserId();
-        $monthDate = \DateTimeImmutable::createFromFormat('!Y-m', $month);
-        if ($monthDate === false) {
-            throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM.');
+        $format = preg_match('/^\d{4}-\d{2}-01$/', $month) === 1 ? '!Y-m-d' : null;
+        $monthDate = $format === null ? false : \DateTimeImmutable::createFromFormat($format, $month);
+        if ($monthDate === false || $monthDate->format('Y-m' . ($format === '!Y-m-d' ? '-d' : '')) !== $month) {
+            throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM-01.');
         }
         $commitment = $this->commitmentRepository->findByRecurrenceIdAndMonth(
             $recurrenceId, $monthDate->format('Y-m-d'), $userId

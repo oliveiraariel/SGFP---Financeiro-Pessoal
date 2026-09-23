@@ -24,7 +24,7 @@ final class SetInitialBalanceService
 
     public function execute(
         int $accountId,
-        float $amount,
+        string $amount,
         ?string $name,
         ?string $description,
         ?\DateTimeImmutable $effectiveMonth,

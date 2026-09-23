@@ -29,18 +29,18 @@ final class RecurrenceController
                 'recurrence_id' => $commitment->recurrenceId,
                 'category_id' => $commitment->categoryId,
                 'name' => $commitment->name,
-                'amount' => number_format($commitment->amount, 2, '.', ''),
+                'amount' => $commitment->amount,
                 'nature' => $commitment->nature->value,
-                'reference_month' => $commitment->referenceMonth->format('Y-m-d'),
+                'commitment_date' => $commitment->referenceMonth->format('Y-m-d'),
                 'status' => $commitment->status->value,
                 'created_at' => $commitment->createdAt->format('c'),
             ], 200);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
@@ -55,17 +55,17 @@ final class RecurrenceController
                 'account_id' => $entry->accountId,
                 'origin' => $entry->origin->value,
                 'name' => $entry->name,
-                'amount' => number_format($entry->amount, 2, '.', ''),
+                'amount' => $entry->amount,
                 'effect_type' => $entry->effectType->value,
                 'state' => $entry->state->value,
                 'settled_at' => $entry->settledAt->format('c'),
             ], 201);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
@@ -75,16 +75,16 @@ final class RecurrenceController
             $this->undoService->execute((int) $request['id'], (string) $request['month']);
             return new \WP_REST_Response(['status' => 'desfeito'], 200);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
-        } catch (\Throwable) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
     public function permissionCheck(): bool
     {
-        return current_user_can('use_sgfp');
+        return \SGFP\Infrastructure\WordPress\WpUserContext::canAccessSgfp();
     }
 }

@@ -17,7 +17,7 @@ final class Entry
         public readonly ?int $commitmentId,
         public readonly EntryOrigin $origin,
         public readonly string $name,
-        public readonly float $amount,
+        public readonly string $amount,
         public readonly EntryEffectType $effectType,
         public readonly \DateTimeImmutable $settledAt,
         public readonly ?string $description,
@@ -81,6 +81,25 @@ final class Entry
             EntryState::DESFEITO,
             $this->createdAt,
             $now,
+        );
+    }
+
+    public function withSettlement(Commitment $commitment, \DateTimeImmutable $settledAt): self
+    {
+        return new self(
+            $this->id,
+            $this->userId,
+            $this->accountId,
+            $this->commitmentId,
+            $this->origin,
+            $commitment->name,
+            $commitment->amount,
+            EntryEffectType::fromCommitmentNature($commitment->nature),
+            $settledAt,
+            $this->description,
+            EntryState::ATIVO,
+            $this->createdAt,
+            null,
         );
     }
 }

@@ -32,12 +32,12 @@ final class UndoCommitmentSettlementService
         }
 
         if ($commitment->status !== CommitmentStatus::EFETIVADO) {
-            throw new \RuntimeException('O compromisso deve estar efetivado para ser desfeito.', 409);
+            return;
         }
 
         $entry = $this->entryRepository->findByCommitmentId($commitmentId, $userId);
         if ($entry === null || $entry->state !== EntryState::ATIVO) {
-            throw new \RuntimeException('Efeito do compromisso não encontrado ou já desfeito.', 409);
+            return;
         }
 
         $now = new \DateTimeImmutable();

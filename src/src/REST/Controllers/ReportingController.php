@@ -28,7 +28,9 @@ final class ReportingController
                 'commitment_id' => $entry->commitmentId,
                 'origin' => $entry->origin->value,
                 'name' => $entry->name,
-                'amount' => number_format($entry->amount, 2, '.', ''),
+                'amount' => $entry->effectType->value === 'SAIDA'
+                    ? '-' . ltrim($entry->amount, '+-')
+                    : $entry->amount,
                 'effect' => $entry->effectType->value,
                 'effective_at' => $entry->settledAt->format('c'),
                 'description' => $entry->description,
@@ -38,11 +40,11 @@ final class ReportingController
 
             return new \WP_REST_Response(['items' => $data], 200);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
         } catch (\Throwable $e) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
@@ -52,22 +54,22 @@ final class ReportingController
         try {
             $month = isset($request['month']) ? (string) $request['month'] : null;
 
-            if ($month === null || !preg_match('/^\d{4}-\d{2}$/', $month)) {
-                return new \WP_REST_Response(['error' => 'O parâmetro month deve estar no formato YYYY-MM.'], 400);
+            if ($month === null || !preg_match('/^\d{4}-\d{2}-01$/', $month)) {
+                return \SGFP\REST\PublicError::fromCode(400, 'VALIDATION_ERROR');
             }
 
             $result = $this->getDashboardService->execute($month);
 
             return new \WP_REST_Response($result, 200);
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
         } catch (\Throwable $e) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
     public function permissionCheck(): bool
     {
-        return current_user_can('use_sgfp');
+        return \SGFP\Infrastructure\WordPress\WpUserContext::canAccessSgfp();
     }
 }

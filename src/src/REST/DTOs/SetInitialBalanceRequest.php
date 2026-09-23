@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SGFP\REST\DTOs;
 
+use SGFP\Domain\Models\Decimal;
+
 final class SetInitialBalanceRequest
 {
     public function __construct(
@@ -30,18 +32,23 @@ final class SetInitialBalanceRequest
             throw new \InvalidArgumentException('O campo amount é obrigatório.');
         }
 
-        if (!is_numeric($this->amount)) {
-            throw new \InvalidArgumentException('O campo amount deve ser um valor numérico.');
+        try {
+            Decimal::normalize($this->amount, true);
+        } catch (\InvalidArgumentException) {
+            throw new \InvalidArgumentException('O campo amount deve ser um decimal válido com duas casas.');
         }
 
-        if ($this->effectiveMonth !== null && !preg_match('/^\d{4}-\d{2}$/', $this->effectiveMonth)) {
-            throw new \InvalidArgumentException('O campo effective_month deve estar no formato YYYY-MM.');
+        if ($this->effectiveMonth !== null) {
+            $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $this->effectiveMonth);
+            if ($date === false || $date->format('Y-m-d') !== $this->effectiveMonth || !preg_match('/^\d{4}-\d{2}-01$/', $this->effectiveMonth)) {
+                throw new \InvalidArgumentException('O campo effective_month deve ser uma data válida no formato YYYY-MM-01.');
+            }
         }
     }
 
-    public function toFloat(): float
+    public function toDecimal(): string
     {
-        return (float) $this->amount;
+        return Decimal::normalize($this->amount ?? '', true);
     }
 
     public function toEffectiveMonth(): ?\DateTimeImmutable
@@ -50,6 +57,6 @@ final class SetInitialBalanceRequest
             return null;
         }
 
-        return new \DateTimeImmutable($this->effectiveMonth . '-01');
+        return new \DateTimeImmutable($this->effectiveMonth);
     }
 }

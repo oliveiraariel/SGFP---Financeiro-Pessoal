@@ -6,6 +6,7 @@ namespace SGFP\Application\Services;
 
 use SGFP\Application\Backup\BackupArchive;
 use SGFP\Application\Backup\BackupProtector;
+use SGFP\Application\Backup\PrivateBackupDirectory;
 use SGFP\Application\Backup\StagedBackupDecoder;
 use SGFP\Application\Ports\RestorationTokenStore;
 use SGFP\Application\Ports\UserContext;
@@ -20,6 +21,7 @@ final class ValidateBackupService
         private readonly StagedBackupDecoder $decoder = new StagedBackupDecoder(),
         private readonly BackupArchive $archive = new BackupArchive(),
         private readonly BackupProtector $protector = new BackupProtector(),
+        private readonly PrivateBackupDirectory $stagingDirectory = new PrivateBackupDirectory(),
     ) {}
 
     /** @return array{token:string,version:int,origin:string,created_at:string,counts:array<string,int>} */
@@ -42,10 +44,7 @@ final class ValidateBackupService
 
         $validated = $this->decoder->decode($payload, $userId);
 
-        $directory = rtrim((string) (getenv('SGFP_BACKUP_DIR') ?: ''), DIRECTORY_SEPARATOR);
-        if ($directory === '' || !is_dir($directory) || !is_writable($directory)) {
-            throw new \RuntimeException('O staging privado de backups não está configurado.');
-        }
+        $directory = $this->stagingDirectory->resolve();
 
         $temporary = tempnam($directory, 'sgfp-');
         $filename = bin2hex(random_bytes(24)) . '.zip';

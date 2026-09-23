@@ -31,11 +31,11 @@ final class UndoCommitmentSettlementServiceTest extends TestCase
         $tx->method('transactional')->willReturnCallback(fn (callable $action) => $action());
 
         $commitment = new Commitment(
-            10, 1, null, null, 'Salário', 1000.0, CommitmentNature::ENTRADA,
+            10, 1, null, null, 'Salário', '1000.00', CommitmentNature::ENTRADA,
             new \DateTimeImmutable('2026-09-01'), CommitmentStatus::EFETIVADO, new \DateTimeImmutable()
         );
         $entry = new Entry(
-            100, 1, 1, 10, EntryOrigin::COMPROMISSO, 'Salário', 1000.0,
+            100, 1, 1, 10, EntryOrigin::COMPROMISSO, 'Salário', '1000.00',
             EntryEffectType::ENTRADA, new \DateTimeImmutable(), null,
             EntryState::ATIVO, new \DateTimeImmutable(), null
         );

@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace SGFP\Infrastructure\WordPress;
 
+use SGFP\Application\Backup\PrivateBackupDirectory;
 use SGFP\Application\Ports\BackupStore;
 
 final class WpBackupStore implements BackupStore
 {
+    public function __construct(private readonly PrivateBackupDirectory $directory = new PrivateBackupDirectory()) {}
+
     public function persist(int $userId, string $content, string $origin, int $expiresAt): array
     {
-        $directory = rtrim((string) (getenv('SGFP_BACKUP_DIR') ?: ''), DIRECTORY_SEPARATOR);
-
-        if ($directory === '' || !is_dir($directory) || !is_writable($directory)) {
-            throw new \RuntimeException('O armazenamento privado de backups não está configurado.');
-        }
+        $directory = $this->directory->resolve();
 
         $temporary = tempnam($directory, 'sgfp-');
         $filename = bin2hex(random_bytes(24)) . '.zip';

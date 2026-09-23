@@ -26,7 +26,7 @@ final class WpCommitmentRepository implements CommitmentRepository
             'mes_referencia' => $commitment->referenceMonth->format('Y-m-d'),
             'status' => $commitment->status->value,
         ];
-        $format = ['%d', '%d', '%d', '%s', '%f', '%s', '%s', '%s'];
+        $format = ['%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s'];
 
         if ($commitment->id === null) {
             $result = $wpdb->insert(TableNames::commitment(), $data, $format);
@@ -75,10 +75,12 @@ final class WpCommitmentRepository implements CommitmentRepository
     public function findByRecurrenceIdAndMonth(int $recurrenceId, string $month, int $userId): ?Commitment
     {
         global $wpdb;
+        $start = new \DateTimeImmutable($month);
+        $end = $start->modify('+1 month');
         $row = $wpdb->get_row($wpdb->prepare(
             'SELECT * FROM ' . TableNames::commitment()
-            . ' WHERE fk_id_recorrencia = %d AND mes_referencia = %s AND fk_id_usuario = %d',
-            $recurrenceId, $month, $userId
+            . ' WHERE fk_id_recorrencia = %d AND mes_referencia >= %s AND mes_referencia < %s AND fk_id_usuario = %d',
+            $recurrenceId, $start->format('Y-m-d'), $end->format('Y-m-d'), $userId
         ), ARRAY_A);
         return is_array($row) ? $this->mapRow($row) : null;
     }
@@ -114,7 +116,7 @@ final class WpCommitmentRepository implements CommitmentRepository
             $row['fk_id_categoria'] !== null ? (int) $row['fk_id_categoria'] : null,
             $row['fk_id_recorrencia'] !== null ? (int) $row['fk_id_recorrencia'] : null,
             (string) $row['nome'],
-            (float) $row['valor'],
+            (string) $row['valor'],
             CommitmentNature::from((string) $row['natureza']),
             new \DateTimeImmutable((string) $row['mes_referencia']),
             CommitmentStatus::from((string) $row['status']),

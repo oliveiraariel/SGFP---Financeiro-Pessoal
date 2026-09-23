@@ -20,9 +20,9 @@ final class ThemeController
 
             return new \WP_REST_Response(['theme' => $theme], 200);
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
         } catch (\Throwable $e) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
@@ -35,16 +35,16 @@ final class ThemeController
 
             return new \WP_REST_Response(['theme' => $updatedTheme], 200);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
         } catch (\Throwable $e) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
     public function permissionCheck(): bool
     {
-        return current_user_can('use_sgfp');
+        return \SGFP\Infrastructure\WordPress\WpUserContext::canAccessSgfp();
     }
 }

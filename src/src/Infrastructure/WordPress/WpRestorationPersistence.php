@@ -207,7 +207,7 @@ final class WpRestorationPersistence implements RestorationPersistence
                     'mes_referencia' => $record['referenceMonth'],
                     'status' => $record['status'],
                 ],
-                'formats' => ['%d', '%d', '%d', '%s', '%f', '%s', '%s', '%s'],
+                'formats' => ['%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s'],
             ],
             'entries' => [
                 'values' => [
@@ -223,7 +223,7 @@ final class WpRestorationPersistence implements RestorationPersistence
                     'estado' => $record['state'],
                     'desfeito_em' => $record['undoneAt'] ?? null,
                 ],
-                'formats' => ['%d', '%d', '%d', '%s', '%s', '%f', '%s', '%s', '%s', '%s', '%s'],
+                'formats' => ['%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'],
             ],
             default => throw new \InvalidArgumentException('Seção de restauração inválida.'),
         };

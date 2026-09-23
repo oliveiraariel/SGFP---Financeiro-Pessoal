@@ -47,6 +47,15 @@ final class BackupProtector
     private function key(): string
     {
         $value = getenv('SGFP_BACKUP_KEY') ?: '';
+
+        // A normal WordPress installation already has a site-private secret
+        // that remains outside of the database: its configured salts.  Use it
+        // only when an operator did not provide the explicit deployment key,
+        // so a manual backup is not made unavailable by an omitted env var.
+        if ($value === '' && function_exists('wp_salt')) {
+            $value = (string) wp_salt('auth');
+        }
+
         if ($value === '') {
             throw new \RuntimeException('A chave de proteção do backup não está configurada.');
         }

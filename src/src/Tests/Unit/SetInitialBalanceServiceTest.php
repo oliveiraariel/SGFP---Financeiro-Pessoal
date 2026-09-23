@@ -33,7 +33,7 @@ final class SetInitialBalanceServiceTest extends TestCase
         );
 
         $result = (new SetInitialBalanceService($accounts, $entries, $tx, $context))
-            ->execute(10, 1500.0, null, null, null);
+            ->execute(10, '1500.00', null, null, null);
 
         $this->assertSame(100, $result->id);
         $this->assertSame(10, $result->accountId);
@@ -53,7 +53,7 @@ final class SetInitialBalanceServiceTest extends TestCase
         $existing = new Entry(
             99, 1, 10, null,
             \SGFP\Domain\Enums\EntryOrigin::SALDO_INICIAL,
-            'Saldo inicial', 500.0,
+            'Saldo inicial', '500.00',
             \SGFP\Domain\Enums\EntryEffectType::ENTRADA,
             new \DateTimeImmutable(), null,
             EntryState::ATIVO, new \DateTimeImmutable(), null
@@ -64,9 +64,29 @@ final class SetInitialBalanceServiceTest extends TestCase
         );
 
         $result = (new SetInitialBalanceService($accounts, $entries, $this->transactionManager(), $context))
-            ->execute(10, 2000.0, null, null, null);
+            ->execute(10, '2000.00', null, null, null);
 
         $this->assertSame(101, $result->id);
+    }
+
+    public function testInitialBalanceLookupDistinguishesConfiguredState(): void
+    {
+        $entries = $this->createMock(EntryRepository::class);
+        $configured = new Entry(
+            99, 1, 10, null,
+            \SGFP\Domain\Enums\EntryOrigin::SALDO_INICIAL,
+            'Saldo inicial', '500.00',
+            \SGFP\Domain\Enums\EntryEffectType::ENTRADA,
+            new \DateTimeImmutable(), null,
+            EntryState::ATIVO, new \DateTimeImmutable(), null
+        );
+
+        $entries->expects($this->exactly(2))
+            ->method('findActiveInitialBalanceByAccount')
+            ->willReturnOnConsecutiveCalls(null, $configured);
+
+        $this->assertNull($entries->findActiveInitialBalanceByAccount(10, 1));
+        $this->assertSame($configured, $entries->findActiveInitialBalanceByAccount(10, 1));
     }
 
     private function transactionManager(): TransactionManager

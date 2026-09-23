@@ -20,13 +20,56 @@ final class ResetProfileServiceTest extends TestCase
     public function testRequiresFirstConfirmation(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->serviceForValidation()->execute(false, ResetProfileService::CONFIRMATION_PHRASE);
+        $this->serviceForValidation()->execute('', ResetProfileService::CONFIRMATION_PHRASE);
     }
 
     public function testRequiresExactUppercasePhrase(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->serviceForValidation()->execute(true, 'Resetar Perfil');
+        $this->serviceForValidation()->execute('', 'Resetar Perfil');
+    }
+
+    public function testMissingTokenIsRejectedBeforeDestructiveWork(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->serviceForValidation()->execute('', ResetProfileService::CONFIRMATION_PHRASE);
+    }
+
+    public function testExpiredTokenIsRejected(): void
+    {
+        $this->expectExceptionMessage('inválida, expirada ou já consumida');
+        $this->serviceWithMeta(['hash' => hash('sha256', 'token'), 'expires_at' => 99], 100)
+            ->execute('token', ResetProfileService::CONFIRMATION_PHRASE);
+    }
+
+    public function testWrongUserTokenIsRejected(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->serviceWithMeta(['hash' => hash('sha256', 'other-user-token'), 'expires_at' => 200], 100)
+            ->execute('token', ResetProfileService::CONFIRMATION_PHRASE);
+    }
+
+    public function testPhraseFailureDoesNotConsumeValidToken(): void
+    {
+        $meta = ['hash' => hash('sha256', 'token'), 'expires_at' => 200];
+        $deleted = 0;
+        $service = $this->serviceWithMeta($meta, 100, static function () use (&$deleted): void { $deleted++; });
+
+        try {
+            $service->execute('token', 'RESETAR PERFIL ');
+        } catch (\InvalidArgumentException) {
+        }
+
+        $this->assertSame(0, $deleted);
+    }
+
+    public function testConsumedTokenIsRejectedOnReplay(): void
+    {
+        $service = $this->serviceWithMeta(['hash' => hash('sha256', 'token'), 'expires_at' => 200], 100);
+        $this->expectException(\InvalidArgumentException::class);
+
+        $service->execute('token', ResetProfileService::CONFIRMATION_PHRASE);
+        $service->execute('token', ResetProfileService::CONFIRMATION_PHRASE);
     }
 
     public function testPurgesAndReprovisionsInsideLockAndTransaction(): void
@@ -51,9 +94,11 @@ final class ResetProfileServiceTest extends TestCase
 
         $provisioner = new ProvisionUserService($accounts, $categories);
 
+        $meta = ['hash' => hash('sha256', 'token'), 'expires_at' => 100];
         $result = (new ResetProfileService(
-            $purger, $provisioner, $transactions, $lock, $context
-        ))->execute(true, ResetProfileService::CONFIRMATION_PHRASE);
+            $purger, $provisioner, $transactions, $lock, $context,
+            static fn () => $meta, static function () {}, static function () {}, static fn () => 50
+        ))->execute('token', ResetProfileService::CONFIRMATION_PHRASE);
 
         $this->assertSame(10, $result->id);
         $this->assertSame('Minha Conta', $result->name);
@@ -67,9 +112,38 @@ final class ResetProfileServiceTest extends TestCase
         return new ResetProfileService(
             $this->createStub(UserDataPurger::class),
             new ProvisionUserService($accounts, $categories),
-            $this->createStub(TransactionManager::class),
+            $this->transactionManagerExecutingActions(),
             $this->createStub(UserOperationLock::class),
             $this->createStub(UserContext::class),
+            static fn () => null, static function () {}, static function () {}, static fn () => 1
         );
+    }
+
+    private function serviceWithMeta(array $meta, int $now, ?\Closure $delete = null): ResetProfileService
+    {
+        $accounts = $this->createStub(AccountRepository::class);
+        $accounts->method('findByUser')->willReturn(null);
+        $accounts->method('save')->willReturnCallback(static fn (Account $account): Account => $account->withId(10));
+        $categories = $this->createStub(CategoryRepository::class);
+        $context = $this->createStub(UserContext::class);
+        $context->method('requireUserId')->willReturn(7);
+        return new ResetProfileService(
+            $this->createStub(UserDataPurger::class),
+            new ProvisionUserService($accounts, $categories),
+            $this->transactionManagerExecutingActions(),
+            $this->createStub(UserOperationLock::class),
+            $context,
+            static function () use (&$meta) { return $meta; },
+            static function () {},
+            $delete ?? static function () use (&$meta): void { $meta = null; },
+            static fn () => $now,
+        );
+    }
+
+    private function transactionManagerExecutingActions(): TransactionManager
+    {
+        $transactions = $this->createStub(TransactionManager::class);
+        $transactions->method('transactional')->willReturnCallback(static fn (callable $action) => $action());
+        return $transactions;
     }
 }

@@ -39,7 +39,7 @@ final class RevalidateRestorationServiceTest extends TestCase
         $service->confirm(str_repeat('a', 64), false);
     }
 
-    public function testReturnsPreRestoreZipForLocalDownload(): void
+    public function testReturnsPreRestoreZipMetadataWithoutExposingBinaryContent(): void
     {
         putenv('SGFP_BACKUP_KEY=test-key');
 
@@ -81,11 +81,9 @@ final class RevalidateRestorationServiceTest extends TestCase
 
         $this->assertSame('confirmation_accepted', $result['status']);
         $this->assertSame('application/zip', $result['snapshot']['content_type']);
-
-        $snapshotZip = base64_decode($result['snapshot']['content_base64'], true);
-        $this->assertIsString($snapshotZip);
-        $this->assertNotSame('', $snapshotZip);
-        $this->assertSame(hash('sha256', $snapshotZip), $result['snapshot']['sha256']);
+        $this->assertArrayHasKey('sha256', $result['snapshot']);
+        $this->assertArrayNotHasKey('content_base64', $result['snapshot']);
+        $this->assertArrayNotHasKey('content', $result['snapshot']);
 
         @unlink($path);
     }

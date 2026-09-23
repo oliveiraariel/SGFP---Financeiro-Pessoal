@@ -13,6 +13,8 @@ use SGFP\Application\Ports\UserOperationLock;
 
 final class CreateBackupService
 {
+    private const MAX_BYTES = 26214400;
+
     public function __construct(
         private readonly BackupPayloadBuilder $payloadBuilder,
         private readonly TransactionManager $transactions,
@@ -40,10 +42,17 @@ final class CreateBackupService
         $json = json_encode($payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
         $zipContent = $this->archive->pack($this->protector->protect($json));
 
+        if (strlen($zipContent) > self::MAX_BYTES) {
+            throw new \RuntimeException('O backup excede o limite permitido.', 413);
+        }
+
         return [
             'filename' => 'sgfp-backup-' . gmdate('Ymd-His') . '.zip',
             'content_type' => 'application/zip',
-            'content' => base64_encode($zipContent),
+            // The REST controller sends this value as application/zip. Keep
+            // the archive binary here; base64 would make the downloaded ZIP
+            // invalid while also making the advertised digest misleading.
+            'content' => $zipContent,
             'sha256' => hash('sha256', $zipContent),
         ];
     }

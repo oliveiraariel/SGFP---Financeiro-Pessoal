@@ -22,7 +22,7 @@ final class ThemeServiceTest extends TestCase
 
         $service = new ThemeService($preferences, $userContext);
 
-        $this->assertSame('light', $service->get());
+        $this->assertSame('dark', $service->get());
     }
 
     public function testReturnsStoredTheme(): void

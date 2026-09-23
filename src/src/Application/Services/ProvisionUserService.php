@@ -32,7 +32,7 @@ final class ProvisionUserService
         try {
             $this->categoryRepository->seedDefaults($userId);
         } catch (\Throwable $e) {
-            throw new \RuntimeException('Falha ao provisionar categorias: ' . $e->getMessage(), 0, $e);
+            throw new \RuntimeException('Falha ao provisionar categorias.', 0, $e);
         }
 
         return $account;

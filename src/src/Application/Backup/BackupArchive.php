@@ -88,6 +88,12 @@ final class BackupArchive
             }
             $isOpen = true;
 
+            if ($zip->numFiles !== 2
+                || $zip->getNameIndex(0) !== self::MANIFEST_NAME
+                || $zip->getNameIndex(1) !== self::PAYLOAD_NAME) {
+                throw new \InvalidArgumentException('Estrutura do backup ZIP inválida.');
+            }
+
             $manifestRaw = $zip->getFromName(self::MANIFEST_NAME);
             $payload = $zip->getFromName(self::PAYLOAD_NAME);
 

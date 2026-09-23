@@ -17,8 +17,8 @@ final class CategoryController
     ) {
     }
 
-    public function rename(\WP_REST_Request $request): \WP_REST_Response { try { $c=$this->renameService->execute((int)$request['id'],(string)$request['name']); return new \WP_REST_Response(['id'=>$c->id,'name'=>$c->name,'created_at'=>$c->createdAt->format('c')],200); } catch (\InvalidArgumentException $e) { return new \WP_REST_Response(['error'=>$e->getMessage()],400); } catch (\RuntimeException $e) { return new \WP_REST_Response(['error'=>$e->getMessage()],$e->getCode()?:500); } catch (\Throwable) { return new \WP_REST_Response(['error'=>'Erro interno.'],500); } }
-    public function delete(\WP_REST_Request $request): \WP_REST_Response { try { $this->deleteService->execute((int)$request['id']); return new \WP_REST_Response(null,204); } catch (\RuntimeException $e) { return new \WP_REST_Response(['error'=>$e->getMessage()],$e->getCode()?:500); } catch (\Throwable) { return new \WP_REST_Response(['error'=>'Erro interno.'],500); } }
+    public function rename(\WP_REST_Request $request): \WP_REST_Response { try { $c=$this->renameService->execute((int)$request['id'],(string)$request['name']); return new \WP_REST_Response(['id'=>$c->id,'name'=>$c->name,'created_at'=>$c->createdAt->format('c')],200); } catch (\InvalidArgumentException $e) { return \SGFP\REST\PublicError::response($e,400,'VALIDATION_ERROR'); } catch (\RuntimeException $e) { return \SGFP\REST\PublicError::response($e,$e->getCode()?:500); } catch (\Throwable $e) { return \SGFP\REST\PublicError::response($e,500); } }
+    public function delete(\WP_REST_Request $request): \WP_REST_Response { try { $this->deleteService->execute((int)$request['id']); return new \WP_REST_Response(null,204); } catch (\RuntimeException $e) { return \SGFP\REST\PublicError::response($e,$e->getCode()?:500); } catch (\Throwable $e) { return \SGFP\REST\PublicError::response($e,500); } }
 
     public function create(\WP_REST_Request $request): \WP_REST_Response
     {
@@ -33,11 +33,11 @@ final class CategoryController
                 'created_at' => $category->createdAt->format('c'),
             ], 201);
         } catch (\InvalidArgumentException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], 400);
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
         } catch (\Throwable $e) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
@@ -52,16 +52,24 @@ final class CategoryController
                 'created_at' => $category->createdAt->format('c'),
             ], $categories);
 
-            return new \WP_REST_Response($data, 200);
+            return new \WP_REST_Response([
+                'items' => $data,
+                'pagination' => [
+                    'page' => 1,
+                    'per_page' => count($data),
+                    'total' => count($data),
+                    'total_pages' => 1,
+                ],
+            ], 200);
         } catch (\RuntimeException $e) {
-            return new \WP_REST_Response(['error' => $e->getMessage()], $e->getCode() ?: 500);
+            return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
         } catch (\Throwable $e) {
-            return new \WP_REST_Response(['error' => 'Erro interno.'], 500);
+            return \SGFP\REST\PublicError::response($e, 500);
         }
     }
 
     public function permissionCheck(): bool
     {
-        return current_user_can('use_sgfp');
+        return \SGFP\Infrastructure\WordPress\WpUserContext::canAccessSgfp();
     }
 }

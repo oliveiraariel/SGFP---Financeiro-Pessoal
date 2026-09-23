@@ -243,9 +243,9 @@ Composer é ferramenta de construção e autoload, não requisito de execução 
 - cada rota possui `permission_callback`; operações financeiras exigem usuário autenticado, provisionamento confirmado e capability própria do SGFP, enquanto `onboarding` exige sessão e nonce válidos;
 - `CurrentUserContext` obtém `wp_users.ID`; `FK_ID_USUARIO` nunca é aceito do payload, query ou path como autoridade;
 - tema claro/escuro usa chave própria em `wp_usermeta`;
-- um hook de cadastro chama provisionamento idempotente da capability `sgfp_access` e das categorias iniciais;
+- um hook de cadastro chama provisionamento idempotente da capability `use_sgfp` e das categorias iniciais; `sgfp_access` é legado e não é aceito pelo runtime;
 - um marcador próprio em `usermeta` só confirma o provisionamento depois das categorias. Ele permite distinguir falha de provisionamento do estado legítimo em que o usuário excluiu todas as categorias;
-- usuários WordPress preexistentes ou incompletos usam `POST /onboarding`, que exige sessão/nonce, mas ainda não a capability SGFP; todas as demais rotas exigem `sgfp_access` e o marcador confirmado.
+- usuários WordPress preexistentes ou incompletos usam `POST /onboarding`, que exige sessão/nonce, mas ainda não a capability SGFP; todas as demais rotas exigem `use_sgfp` e o marcador confirmado. Usuários existentes que ainda possuam `sgfp_access` são migrados de forma idempotente durante o provisionamento acionado no login; novos usuários recebem somente `use_sgfp`.
 
 O cadastro WordPress e o provisionamento SGFP não formam uma única transação entre subsistemas. Falha no provisionamento não invalida silenciosamente o usuário: não concede acesso financeiro, é registrada e pode ser reparada pela repetição idempotente. `permission_callback` somente autoriza; não provisiona nem produz outros efeitos colaterais. A Etapa 10 deverá manter o handler de autenticação separado dos Services financeiros e verificar seu comportamento por interface pública, inclusive o erro uniforme e as condições da alteração de senha.
 
