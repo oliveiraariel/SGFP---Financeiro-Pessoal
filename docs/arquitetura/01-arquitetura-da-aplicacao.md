@@ -113,19 +113,19 @@ tests/
 
 A implementação e sua verificação utilizam ferramentas do ecossistema PHP e da plataforma WordPress. Python não integra a aplicação SGFP nem sua suíte de testes.
 
-| Tecnologia / Ferramenta | Finalidade | Papel no SGFP |
-| --- | --- | --- |
-| PHP 8.1+ | Linguagem principal | Implementa o plugin, regras de aplicação, domínio, adaptadores e endpoints REST. |
-| WordPress | Plataforma da aplicação | Fornece ciclo de vida do plugin, usuários, sessão, autenticação, capabilities, hooks e infraestrutura REST. |
-| WordPress REST API | Interface HTTP | Expõe a API própria no namespace `sgfp/v1` para a interface Web e futuros clientes. |
-| MySQL / MariaDB com InnoDB | Persistência relacional | Armazena os dados financeiros em tabelas próprias, com constraints, transações e integridade referencial. |
-| Composer | Dependências e build | Gerencia dependências PHP, separa runtime/desenvolvimento e gera o autoloader. |
-| PSR-4 | Autoload | Mapeia o namespace raiz `SGFP\` para o diretório interno de código-fonte. |
-| PHPUnit 10 | Testes automatizados | Executa a suíte de testes unitários do backend e apoia regressão dos Services e componentes internos. |
-| PHPStan | Análise estática | Detecta inconsistências de tipos e problemas de código sem executar a aplicação. |
-| PHP_CodeSniffer (PHPCS) | Padrões de código | Verifica convenções e qualidade estrutural do código PHP. |
-| Git / GitHub | Controle de versão e colaboração | Mantém histórico, branches, Pull Requests, revisão e rastreabilidade das alterações. |
-| Linux Mint + VS Code | Ambiente de desenvolvimento | Ambiente utilizado para implementação, execução local, terminal, Git e edição do projeto. |
+| Tecnologia / Ferramenta   | Finalidade                        | Papel no SGFP                                                                                                 |
+| ------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| PHP 8.1+                  | Linguagem principal               | Implementa o plugin, regras de aplicação, domínio, adaptadores e endpoints REST.                              |
+| WordPress                 | Plataforma da aplicação           | Fornece ciclo de vida do plugin, usuários, sessão, autenticação, capabilities, hooks e infraestrutura REST.   |
+| WordPress REST API        | Interface HTTP                    | Expõe a API própria no namespace `sgfp/v1` para a interface Web e futuros clientes.                           |
+| MySQL / MariaDB com InnoDB| Persistência relacional           | Armazena os dados financeiros em tabelas próprias, com constraints, transações e integridade referencial.     |
+| Composer                  | Dependências e build              | Gerencia dependências PHP, separa runtime/desenvolvimento e gera o autoloader.                                |
+| PSR-4                     | Autoload                          | Mapeia o namespace raiz `SGFP\` para o diretório interno de código-fonte.                                     |
+| PHPUnit 10                | Testes automatizados              | Executa a suíte de testes unitários do backend e apoia regressão dos Services e componentes internos.         |
+| PHPStan                   | Análise estática                  | Detecta inconsistências de tipos e problemas de código sem executar a aplicação.                              |
+| PHP_CodeSniffer (PHPCS)   | Padrões de código                 | Verifica convenções e qualidade estrutural do código PHP.                                                     |
+| Git / GitHub              | Controle de versão e colaboração  | Mantém histórico, branches, Pull Requests, revisão e rastreabilidade das alterações.                          |
+| Linux Mint + VS Code      | Ambiente de desenvolvimento       | Ambiente utilizado para implementação, execução local, terminal, Git e edição do projeto.                     |
 
 As ferramentas de análise e teste complementam, mas não substituem, os testes de integração em uma instalação WordPress real com MySQL/MariaDB.
 
@@ -173,32 +173,32 @@ O primeiro `src/` delimita o pacote instalável do plugin dentro do repositório
 
 Responsabilidades dos principais arquivos e diretórios:
 
-| Caminho | Papel no projeto |
-| --- | --- |
-| `README.md` | Apresentação sintética do projeto, estado atual, tecnologias e navegação principal. |
-| `AGENTS.md` | Orientações de trabalho para agentes que operam no repositório. |
-| `ORCHESTRATOR.md` | Regras e contexto para orquestração de trabalho e continuidade entre agentes. |
-| `HANDOFF.md` | Registro de passagem de contexto e continuidade operacional entre sessões. |
-| `project-manifest.yaml` | Índice das fontes canônicas, artefatos e governança do projeto. |
-| `docs/projeto/` | Documento de visão, planejamento e contexto geral do projeto acadêmico. |
-| `docs/requisitos/` | Levantamento, especificação, regras de negócio, critérios e rastreabilidade de requisitos. |
-| `docs/casos-de-uso/` | Catálogo, atores, fluxos e rastreabilidade dos casos de uso. |
-| `docs/dominio/` | Mapa do domínio e conceitos do problema. |
-| `docs/modelagem-dados/` | MER, DER/modelo relacional, modelo físico e artefatos associados. |
-| `docs/arquitetura/` | Decisões arquiteturais, componentes, dependências, segurança e integração. |
-| `docs/api/` | Contratos e documentação da API SGFP. |
-| `docs/interface-web/` | Documentação e decisões da interface Web da Etapa 11. |
-| `docs/testes/` | Estratégia, casos e evidências de testes. |
-| `docs/governanca/` | Baselines, continuidade, consolidação e controle documental. |
-| `src/` | Pacote do plugin WordPress dentro do repositório acadêmico. |
-| `src/sgfp.php` | Ponto de entrada reconhecido pelo WordPress; carrega o Composer e inicializa o plugin. |
-| `src/composer.json` | Declara dependências, requisitos de PHP, ferramentas de desenvolvimento e autoload PSR-4. |
-| `src/phpunit.xml.dist` | Configuração da suíte PHPUnit. |
-| `src/src/Application/` | Casos de uso, Services e portas de saída da aplicação. |
-| `src/src/Domain/` | Modelos, enums, políticas e regras de domínio justificadas. |
-| `src/src/Infrastructure/` | Persistência, schema, repositories e adaptadores WordPress/MySQL/filesystem. |
-| `src/src/REST/` | Registro de rotas, Controllers, DTOs e tradução entre HTTP e aplicação. |
-| `src/src/Tests/` | Testes automatizados do código PHP do plugin. |
+| Caminho                   | Papel no projeto                                                                          |
+| ------------------------- | ----------------------------------------------------------------------------------------- |
+| `README.md`               | Apresentação sintética do projeto, estado atual, tecnologias e navegação principal.       |
+| `AGENTS.md`               | Orientações de trabalho para agentes que operam no repositório.                           |
+| `ORCHESTRATOR.md`         | Regras e contexto para orquestração de trabalho e continuidade entre agentes.             |
+| `HANDOFF.md`              | Registro de passagem de contexto e continuidade operacional entre sessões.                |
+| `project-manifest.yaml`   | Índice das fontes canônicas, artefatos e governança do projeto.                           |
+| `docs/projeto/`           | Documento de visão, planejamento e contexto geral do projeto acadêmico.                   |
+| `docs/requisitos/`        | Levantamento, especificação, regras de negócio, critérios e rastreabilidade de requisitos.|
+| `docs/casos-de-uso/`      | Catálogo, atores, fluxos e rastreabilidade dos casos de uso.                              |
+| `docs/dominio/`           | Mapa do domínio e conceitos do problema.                                                  |
+| `docs/modelagem-dados/`   | MER, DER/modelo relacional, modelo físico e artefatos associados.                         |
+| `docs/arquitetura/`       | Decisões arquiteturais, componentes, dependências, segurança e integração.                |
+| `docs/api/`               | Contratos e documentação da API SGFP.                                                     |
+| `docs/interface-web/`     | Documentação e decisões da interface Web da Etapa 11.                                     |
+| `docs/testes/`            | Estratégia, casos e evidências de testes.                                                 |
+| `docs/governanca/`        | Baselines, continuidade, consolidação e controle documental.                              |
+| `src/`                    | Pacote do plugin WordPress dentro do repositório acadêmico.                               |
+| `src/sgfp.php`            | Ponto de entrada reconhecido pelo WordPress; carrega o Composer e inicializa o plugin.    |
+| `src/composer.json`       | Declara dependências, requisitos de PHP, ferramentas de desenvolvimento e autoload PSR-4. |
+| `src/phpunit.xml.dist`    | Configuração da suíte PHPUnit.                                                            |
+| `src/src/Application/`    | Casos de uso, Services e portas de saída da aplicação.                                    |
+| `src/src/Domain/`         | Modelos, enums, políticas e regras de domínio justificadas.                               |
+| `src/src/Infrastructure/` | Persistência, schema, repositories e adaptadores WordPress/MySQL/filesystem.              |
+| `src/src/REST/`           | Registro de rotas, Controllers, DTOs e tradução entre HTTP e aplicação.                   |
+| `src/src/Tests/`          | Testes automatizados do código PHP do plugin.                                             |
 
 O namespace raiz será `SGFP\`. Composer/PSR-4 será usado para autoload; o artefato instalável deverá incluir dependências de runtime. A estrutura é guia de responsabilidade, não autorização para gerar classes vazias.
 
@@ -215,20 +215,20 @@ Composer é ferramenta de construção e autoload, não requisito de execução 
 
 ## 5. Componentes e estado sob responsabilidade
 
-| Componente | Responsabilidade | Estado autoritativo |
-| --- | --- | --- |
-| `Bootstrap` | compor adaptadores, registrar hooks/rotas e verificar compatibilidade | nenhum estado financeiro |
-| `RouteRegistry` | métodos, schemas e `permission_callback` | contrato HTTP registrado |
-| Controller | request → comando/consulta; resultado → response | nenhum |
-| Application Service | caso de uso, autorização de recurso e unidade transacional | transição em curso |
-| Política/Value Object | período, dinheiro, estado e invariantes | valor imutável em memória |
-| Repository específico | persistência e projeções escopadas ao usuário | tabelas oficiais |
-| `TransactionManager` | conexão e `START TRANSACTION`/`COMMIT`/`ROLLBACK` | transação corrente |
-| `UserOperationLock` | serializar mutações, captura de backup e restauração por usuário | lock nomeado no banco |
-| `CurrentUserContext` | identidade autenticada do WordPress | `wp_users.ID` corrente |
-| `BackupCodec/Protector/Store` | serializar, proteger, verificar e preservar | arquivo e catálogo privados |
-| `Mailer` | solicitar envio pelo transporte WordPress | resultado de aceitação do transporte |
-| `EventLogger` | evento estruturado e redigido | log operacional |
+| Componente                    | Responsabilidade                                                      | Estado autoritativo                   |
+| ----------------------------- | --------------------------------------------------------------------- | ------------------------------------- |
+| `Bootstrap`                   | compor adaptadores, registrar hooks/rotas e verificar compatibilidade | nenhum estado financeiro              |
+| `RouteRegistry`               | métodos, schemas e `permission_callback`                              | contrato HTTP registrado              |
+| Controller                    | request → comando/consulta; resultado → response                      | nenhum                                |
+| Application Service           | caso de uso, autorização de recurso e unidade transacional            | transição em curso                    |
+| Política/Value Object         | período, dinheiro, estado e invariantes                               | valor imutável em memória             |
+| Repository específico         | persistência e projeções escopadas ao usuário                         | tabelas oficiais                      |
+| `TransactionManager`          | conexão e `START TRANSACTION`/`COMMIT`/`ROLLBACK`                     | transação corrente                    |
+| `UserOperationLock`           | serializar mutações, captura de backup e restauração por usuário      | lock nomeado no banco                 |
+| `CurrentUserContext`          | identidade autenticada do WordPress                                   | `wp_users.ID` corrente                |
+| `BackupCodec/Protector/Store` | serializar, proteger, verificar e preservar                           | arquivo e catálogo privados           |
+| `Mailer`                      | solicitar envio pelo transporte WordPress                             | resultado de aceitação do transporte  |
+| `EventLogger`                 | evento estruturado e redigido                                         | log operacional                       |
 
 ## 6. Integração com WordPress e autorização
 
@@ -284,36 +284,36 @@ Mapeamento: `400` formato inválido; `401` sem sessão; `403` capability insufic
 
 ### 7.2 Superfícies V1
 
-| Capacidade | Superfície relativa a `/sgfp/v1` | Regra |
-| --- | --- | --- |
-| Identidade/senha | fluxos WordPress + `POST /onboarding` quando necessário | login por e-mail/senha; provisionamento cria conta/categorias |
-| Conta | `GET /account`; `PATCH /account` | uma única conta; sem `POST` de conta adicional e sem `DELETE` isolado |
-| Saldo inicial | `POST /account/initial-balance` | cria lançamento `SALDO_INICIAL` na conta única |
-| Categorias | `GET/POST /categories`; `PATCH/DELETE /categories/{id}` | categoria opcional; exclusão desvincula compromissos |
-| Compromissos | `GET/POST /commitments`; `GET/PATCH/DELETE /commitments/{id}` | efetivado exige desfazimento para editar/excluir |
-| Efetivação | `POST /commitments/{id}/effectuation`; `POST .../undo-effectuation` | efeito somente via Lançamento |
-| Recorrências | rotas de ocorrência/série | periodicidade mensal; leitura não grava |
-| Consultas | `GET /movements`; `GET /dashboard` | saldo e projeções derivados; sem `/net-worth` |
-| Tema | `GET/PUT /preferences/theme` | `light|dark` |
-| Backup | `POST /backups` | retorna/download de ZIP local; sem e-mail |
-| Restauração | `POST /restore-validations`; `POST /restorations` | valida primeiro; substituição integral protegida |
-| Reset | `POST /profile-reset-validations`; `POST /profile-reset` | dupla confirmação + `RESETAR PERFIL` |
-| Excluir conta | `POST /account-deletion-validations`; `DELETE /account-access` | dupla confirmação + `EXCLUIR CONTA`; remove dados + login |
+| Capacidade        | Superfície relativa a `/sgfp/v1`                                      | Regra                                                                 |
+| ----------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Identidade/senha  | fluxos WordPress + `POST /onboarding` quando necessário               | login por e-mail/senha; provisionamento cria conta/categorias         |
+| Conta             | `GET /account`; `PATCH /account`                                      | uma única conta; sem `POST` de conta adicional e sem `DELETE` isolado |
+| Saldo inicial     | `POST /account/initial-balance`                                       | cria lançamento `SALDO_INICIAL` na conta única                        |
+| Categorias        | `GET/POST /categories`; `PATCH/DELETE /categories/{id}`               | categoria opcional; exclusão desvincula compromissos                  |
+| Compromissos      | `GET/POST /commitments`; `GET/PATCH/DELETE /commitments/{id}`         | efetivado exige desfazimento para editar/excluir                      |
+| Efetivação        | `POST /commitments/{id}/effectuation`; `POST .../undo-effectuation`   | efeito somente via Lançamento                                         |
+| Recorrências      | rotas de ocorrência/série                                             | periodicidade mensal; leitura não grava                               |
+| Consultas         | `GET /movements`; `GET /dashboard`                                    | saldo e projeções derivados; sem `/net-worth`                         |
+| Tema              | `GET/PUT /preferences/theme`                                          | `light|dark`                                                          |
+| Backup            | `POST /backups`                                                       | retorna/download de ZIP local; sem e-mail                             |
+| Restauração       | `POST /restore-validations`; `POST /restorations`                     | valida primeiro; substituição integral protegida                      |
+| Reset             | `POST /profile-reset-validations`; `POST /profile-reset`              | dupla confirmação + `RESETAR PERFIL`                                  |
+| Excluir conta     | `POST /account-deletion-validations`; `DELETE /account-access`        | dupla confirmação + `EXCLUIR CONTA`; remove dados + login             |
 
 RF-012 a RF-014 não possuem superfície V1. A implementação atual que ainda expõe transferências ou múltiplas contas deverá ser removida/migrada.
 
 ### 7.3 Representações mínimas
 
-| Recurso | Campos públicos estáveis |
-| --- | --- |
-| conta | `id`, `name`, `created_at`; `balance` somente projeção |
-| categoria | `id`, `name`, `created_at` |
-| compromisso | `id`, `name`, `amount`, `nature`, `month`, `status`, `category_id` anulável, recorrência anulável |
-| recorrência | `id`, `starts_in`, `months_count` anulável, `ended_in` anulável |
-| lançamento | `id`, `commitment_id` anulável, `account_id`, `origin`, `name`, `amount`, `effect`, `effective_at`, `description`, `state`, `undone_at` |
-| Dashboard | `month`, `opening_balance`, `expected_inflows`, `expected_outflows`, `expected_closing_balance`, compromissos |
-| backup | arquivo ZIP autenticado/versionado |
-| validação de restauração | token, expiração, origem/data e resumo; nunca chave/conteúdo interno |
+| Recurso                   | Campos públicos estáveis                                                                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| conta                     | `id`, `name`, `created_at`; `balance` somente projeção                                                                                    |
+| categoria                 | `id`, `name`, `created_at`                                                                                                                |
+| compromisso               | `id`, `name`, `amount`, `nature`, `month`, `status`, `category_id` anulável, recorrência anulável                                         |
+| recorrência               | `id`, `starts_in`, `months_count` anulável, `ended_in` anulável                                                                           |
+| lançamento                | `id`, `commitment_id` anulável, `account_id`, `origin`, `name`, `amount`, `effect`, `effective_at`, `description`, `state`, `undone_at`   |
+| Dashboard                 | `month`, `opening_balance`, `expected_inflows`, `expected_outflows`, `expected_closing_balance`, compromissos                             |
+| backup                    | arquivo ZIP autenticado/versionado                                                                                                        |
+| validação de restauração  | token, expiração, origem/data e resumo; nunca chave/conteúdo interno                                                                      |
 
 ### 7.4 Fronteira com clientes
 
@@ -473,18 +473,18 @@ Testes podem acompanhar a Etapa 10. A Etapa 12 consolida estratégia, evidência
 
 ### Revisão funcional desta proposta
 
-| Baseline ativa | Cobertura arquitetural |
-| --- | --- |
-| RF-001 a RF-003 | identidade WordPress, autenticação, senha e provisionamento |
-| RF-004, RF-005 | conta única, saldo inicial por lançamento e saldo derivado |
-| RF-006 a RF-011 | compromissos, recorrência, categorias, lançamentos e consultas |
-| RF-012 a RF-014 | **fora da V1** |
-| RF-015 a RF-018 | casos específicos, Dashboard e períodos |
-| RF-019 | **futuro** |
-| RF-020 | tema |
-| RF-021 | ZIP local + restauração integral protegida |
-| RF-022 | reset do perfil |
-| RF-023 | exclusão da conta de acesso |
+| Baseline ativa    | Cobertura arquitetural                                        |
+| ----------------- | ------------------------------------------------------------- |
+| RF-001 a RF-003   | identidade WordPress, autenticação, senha e provisionamento   |
+| RF-004, RF-005    | conta única, saldo inicial por lançamento e saldo derivado    |
+| RF-006 a RF-011   | compromissos, recorrência, categorias, lançamentos e consultas|
+| RF-012 a RF-014   | **fora da V1**                                                |
+| RF-015 a RF-018   | casos específicos, Dashboard e períodos                       | 
+| RF-019            | **futuro**                                                    |
+| RF-020            | tema                                                          |
+| RF-021            | ZIP local + restauração integral protegida                    |
+| RF-022            | reset do perfil                                               |
+| RF-023            | exclusão da conta de acesso                                   |
 
 A implementação antiga de múltiplas contas/transferências/net-worth/backup por e-mail é dívida de migração após esta revisão.
 
@@ -507,25 +507,27 @@ Não foi identificado bloqueador de segurança para validar o desenho. As decis�
 
 | ID | Decisão | Rastreabilidade principal |
 | --- | --- | --- |
-| `ARQ-001` | monólito modular em plugin próprio | `RE-016`, `RNF-015`, `RNF-020` |
-| `ARQ-002` | REST → Controller → Service → portas/Repository | `DEP-004`, `RNF-015` |
-| `ARQ-003` | identidade/sessão WordPress; login somente por e-mail e senha, falha uniforme e troca protegida por senha atual e confirmação; usuário financeiro só do contexto | `RF-001` a `RF-003`; `UC-002`, `UC-003`; `RNF-001` a `RNF-003` |
-| `ARQ-004` | capability + autorização escopada por recurso | `RNF-001`, `RNF-003`, `RNF-004` |
-| `ARQ-005` | cinco tabelas financeiras; conta única por `UNIQUE(FK_ID_USUARIO)` | Etapas 6–8, `DEP-002` |
-| `ARQ-006` | migrador versionado com verificação de capacidade | `RNF-005`, `RNF-020` |
-| `ARQ-007` | unidade transacional por caso de uso crítico | `RNF-005`, `RNF-006` |
-| `ARQ-008` | lançamento ativo/desfeito preserva histórico | `RF-007`, `RF-010`, `RNF-007` |
-| `ARQ-009` | recorrência por projeção de leitura e materialização por comando | `RF-008`, `RF-016`, `CA-011.4` |
-| `ARQ-010` | exatamente uma Conta Financeira por usuário | `RF-004`, `RE-005` |
-| `ARQ-011` | saldo e Dashboard derivados | `RF-005`, `RF-017`, `RE-010` |
-| `ARQ-012` | backup lógico protegido entregue em ZIP local | `RF-021`, `RNF-017`, `RNF-018` |
-| `ARQ-013` | storage privado recuperável antes da restauração | `CA-021.6`, `CA-021.9` a `CA-021.11` |
-| `ARQ-014` | lock por usuário e snapshot transacional impedem estado misto no backup e excluem mutações durante restauração | `RNF-005`, `RNF-006`; `CA-021.2`, `CA-021.5` a `CA-021.9` |
-| `ARQ-015` | erros estáveis e observabilidade redigida | `RNF-004`, `RNF-019` |
-| `ARQ-016` | provisionamento inicial idempotente de Minha Conta + categorias | `RF-001`, `RF-004`, `RF-009` |
-| `ARQ-017` | implantação V1 em WordPress single-site | `DEP-001`, `DEP-005`, `RNF-014` |
-| `ARQ-018` | reset e exclusão de acesso usam confirmação explícita e limpeza coordenada | `RF-022`, `RF-023` |
-| `ARQ-019` | navegador same-origin; REST como única fronteira SGFP | `DEP-004`, `RNF-001`, `RNF-020` |
+| `ARQ-001` | monólito modular em plugin próprio                                        | `RE-016`, `RNF-015`, `RNF-020`        |
+| `ARQ-002` | REST → Controller → Service → portas/Repository                           | `DEP-004`, `RNF-015`                  |
+| `ARQ-003` | identidade/sessão WordPress; login somente por e-mail e senha,falha uni
+forme e troca protegida por senha atual e confirmação; usuário financeiro só do contexto| `RF-001` a `RF-003`; `UC-002`, `UC-003`; `RNF-001` a `RNF-003` |
+| `ARQ-004` | capability + autorização escopada por recurso                             | `RNF-001`, `RNF-003`, `RNF-004`       |
+| `ARQ-005` | cinco tabelas financeiras; conta única por `UNIQUE(FK_ID_USUARIO)`        | Etapas 6–8, `DEP-002`                 |
+| `ARQ-006` | migrador versionado com verificação de capacidade                         | `RNF-005`, `RNF-020`                  |
+| `ARQ-007` | unidade transacional por caso de uso crítico                              | `RNF-005`, `RNF-006`                  |
+| `ARQ-008` | lançamento ativo/desfeito preserva histórico                              | `RF-007`, `RF-010`, `RNF-007`         |
+| `ARQ-009` | recorrência por projeção de leitura e materialização por comando          | `RF-008`, `RF-016`, `CA-011.4`        |
+| `ARQ-010` | exatamente uma Conta Financeira por usuário                               | `RF-004`, `RE-005`                    |
+| `ARQ-011` | saldo e Dashboard derivados                                               | `RF-005`, `RF-017`, `RE-010`          |
+| `ARQ-012` | backup lógico protegido entregue em ZIP local                             | `RF-021`, `RNF-017`, `RNF-018`        |
+| `ARQ-013` | storage privado recuperável antes da restauração                          | `CA-021.6`, `CA-021.9` a `CA-021.11`  |
+| `ARQ-014` | lock por usuário e snapshot transacional impedem estado misto no backup 
+e excluem mutações durante restauração                                                  | `RNF-005`, `RNF-006`; `CA-021.2`, `CA-021.5` a `CA-021.9` |
+| `ARQ-015` | erros estáveis e observabilidade redigida                                 | `RNF-004`, `RNF-019`                  |
+| `ARQ-016` | provisionamento inicial idempotente de Minha Conta + categorias           | `RF-001`, `RF-004`, `RF-009`          |
+| `ARQ-017` | implantação V1 em WordPress single-site                                   | `DEP-001`, `DEP-005`, `RNF-014`       |
+| `ARQ-018` | reset e exclusão de acesso usam confirmação explícita e limpeza coordenada| `RF-022`, `RF-023`                    |
+| `ARQ-019` | navegador same-origin; REST como única fronteira SGFP                     | `DEP-004`, `RNF-001`, `RNF-020`       |
 
 ## 17. Alternativas, riscos e decisões humanas registradas
 
@@ -535,27 +537,27 @@ As decisões abaixo foram tomadas em 11/09/2026 e incorporadas a esta baseline. 
 
 | ID | Tema | Decisão |
 | --- | --- | --- |
-| DEC-001 | Conta | exatamente uma conta, criada como `Minha Conta`; renomeável; sem papel principal/secundária |
-| DEC-002 | Operações destrutivas | reset preserva login; exclusão remove dados + login; ambas com dupla confirmação |
-| DEC-003 | Compatibilidade | mantém matriz técnica previamente aprovada |
-| DEC-004 | Backup | ZIP local; conteúdo protegido/versionado; pre_restore temporário recuperável; sem e-mail |
-| DEC-005 | Categorias iniciais | conjunto padrão permanece provisionado por usuário |
-| DEC-006 | Transferências/Patrimônio | ambos fora da V1 |
+| DEC-001 | Conta                       | exatamente uma conta, criada como `Minha Conta`; renomeável; sem papel principal/secundária   |
+| DEC-002 | Operações destrutivas       | reset preserva login; exclusão remove dados + login; ambas com dupla confirmação              |
+| DEC-003 | Compatibilidade             | mantém matriz técnica previamente aprovada                                                    |
+| DEC-004 | Backup                      | ZIP local; conteúdo protegido/versionado; pre_restore temporário recuperável; sem e-mail      |
+| DEC-005 | Categorias iniciais         | conjunto padrão permanece provisionado por usuário                                            |
+| DEC-006 | Transferências/Patrimônio   | ambos fora da V1                                                                              |
 
 ### 17.2 Alternativas não adotadas
 
-| Tema | Alternativa não adotada | Motivo |
-| --- | --- | --- |
-| persistência | posts/postmeta para finanças | diverge do Modelo Físico e enfraquece integridade |
-| acesso a dados | `$wpdb` em Controllers ou Repository genérico | espalha SQL e facilita perda de escopo do usuário |
-| recorrência | escrita em `GET`, cron ou horizonte fixo | viola leitura segura ou inventa horizonte não definido |
-| esquema | somente `dbDelta()` | não garante todas as construções validadas |
-| saldo | coluna/cache autoritativo | cria segunda fonte de verdade |
-| restauração | validar enquanto importa ou depender só do e-mail | viola atomicidade e recuperação prévia |
-| arquitetura | serviços distribuídos | complexidade operacional sem necessidade demonstrada |
-| múltiplas contas | manter Principal/Secundárias na V1 | complexidade removida pela decisão de conta única |
-| Exclusão de usuário | retenção/anonimização dos dados financeiros | exige política formal de privacidade fora do escopo V1 |
-| Backup | envio por e-mail | dependência desnecessária; V1 usa download local em ZIP |
+| Tema                  | Alternativa não adotada                                   | Motivo                                                    |
+| --------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
+| persistência          | posts/postmeta para finanças                              | diverge do Modelo Físico e enfraquece integridade         |
+| acesso a dados        | `$wpdb` em Controllers ou Repository genérico             | espalha SQL e facilita perda de escopo do usuário         |
+| recorrência           | escrita em `GET`, cron ou horizonte fixo                  | viola leitura segura ou inventa horizonte não definido    |
+| esquema               | somente `dbDelta()`                                       | não garante todas as construções validadas                |
+| saldo                 | coluna/cache autoritativo                                 | cria segunda fonte de verdade                             | 
+| restauração           | validar enquanto importa ou depender só do e-mail         | viola atomicidade e recuperação prévia                    |
+| arquitetura           | serviços distribuídos                                     | complexidade operacional sem necessidade demonstrada      |
+| múltiplas contas      | manter Principal/Secundárias na V1                        | complexidade removida pela decisão de conta única         |
+| Exclusão de usuário   | retenção/anonimização dos dados financeiros               | exige política formal de privacidade fora do escopo V1    |
+| Backup                | envio por e-mail                                          | dependência desnecessária; V1 usa download local em ZIP   |
 
 ## 18. Referências técnicas verificadas
 
