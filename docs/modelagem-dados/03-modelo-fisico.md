@@ -28,6 +28,6 @@ A tabela técnica `sgfp_token_restauracao` pode continuar existindo como suporte
 ## Artefato
 - [Modelo Físico MySQL/MariaDB](artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql)
 
-## Divergência de implementação
+## Reconciliação de implementação
 
-A API atual foi construída sobre a baseline anterior de seis tabelas e deverá ser migrada/reconciliada antes de ser considerada aderente a esta revisão.
+A API havia sido construída inicialmente sobre a baseline anterior de seis tabelas. A Etapa 10 foi posteriormente reconciliada e validada para a baseline simplificada da V1, conforme o estado de governança vigente do projeto. Este documento permanece como referência do Modelo Físico ativo da V1.
