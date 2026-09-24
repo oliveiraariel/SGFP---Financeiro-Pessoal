@@ -6,9 +6,9 @@
 
 **Documento:** Especificação de Requisitos de Software (ERS)
 
-**Versão:** 3.0
+**Versão:** 3.1
 
-**Baseline:** catálogo preservado com 21 requisitos funcionais; 20 requisitos ativos na V1 e RF-019 adiado para versão futura
+**Baseline:** catálogo RF-001 a RF-023; 19 requisitos ativos na V1; RF-012, RF-013, RF-014 e RF-019 preservados como futuros/inativos
 
 **Subetapa:** Etapa 3 — Especificação de Requisitos
 
@@ -201,7 +201,7 @@ Os critérios abaixo permanecem registrados para preservar a rastreabilidade do 
 - **CA-023.4:** Remove dados SGFP e identidade/login WordPress.
 - **CA-023.5:** Login excluído não acessa mais o portal.
 
-## 3.## 3. Critérios de Aceitação dos Requisitos Não Funcionais
+## 3. Critérios de Aceitação dos Requisitos Não Funcionais
 
 ### RNF-001 — Segurança
 
@@ -319,7 +319,7 @@ Os seguintes critérios permanecem deliberadamente sem valores quantitativos nes
 | Critérios quantitativos de escalabilidade | A definir |
 | Critérios técnicos detalhados de segurança | A definir |
 
-Esses itens dependem de decisões posteriores e não constituem novos requisitos funcionais. A preservação do estado imediatamente anterior à restauração já possui comportamento de negócio definido nos critérios de RF-021; apenas seu mecanismo técnico permanece para as etapas posteriores.
+Esses itens dependem de decisões posteriores e não constituem novos requisitos funcionais. A preservação do estado imediatamente anterior à restauração já possui comportamento de negócio e mecanismo técnico definidos nas etapas concluídas; a Etapa 12 deverá consolidar sua verificação formal.
 
 ## 6. Relação com Casos de Teste e Regras de Negócio
 
@@ -330,6 +330,10 @@ Cada caso de teste deverá referenciar, quando aplicável:
 Os critérios deverão respeitar as regras de negócio consolidadas no Levantamento de Requisitos. As regras não são duplicadas nesta seção.
 
 ## 7. Histórico de atualização
+
+### Versão 3.1 — 23/09/2026
+
+Corrigiu o cabeçalho da baseline para RF-001 a RF-023, 19 requisitos ativos e quatro requisitos futuros/inativos; corrigiu a duplicação do título da seção 3 e atualizou a referência ao mecanismo técnico de restauração já definido.
 
 ### Versão 3.0 — 14/09/2026
 
