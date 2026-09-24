@@ -97,8 +97,8 @@ degradação controlada**, para as regras completas.
 - A V1 inclui **Resetar perfil financeiro** (mantém login) e **Excluir conta de acesso** (remove dados SGFP + login WordPress), ambas com dupla confirmação por frase em caixa alta.
 - A associação de Categoria ao Compromisso Financeiro é opcional.
 - Plataforma: PHP sobre WordPress, plugin próprio, WordPress REST API e MySQL/MariaDB.
-- Etapa 10 está reconciliada e validada na branch `feat/stage-9-10-backend`, registrada no Draft PR #12.
-- Etapa 11 está em andamento na branch de interface e ainda deverá ser reconciliada com esta baseline e com o backend atualizado.
+- Etapa 10 está concluída, reconciliada e validada para a baseline simplificada da V1.
+- Etapa 11 está em andamento na branch de interface; a reconciliação funcional foi incorporada e permanecem as validações integradas/ambientais e o fechamento formal da etapa.
 - Fonte normativa da simplificação: `docs/governanca/baseline-v1-simplificada-2026-09-14.md`.
 
 As regras operacionais completas deste projeto estão em `ORCHESTRATOR.md`.
