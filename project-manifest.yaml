@@ -1,6 +1,6 @@
 schema_version: "1.0"
 manifest_version: "3.0"
-updated_at: "2026-09-14"
+updated_at: "2026-09-23"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -107,7 +107,7 @@ development_guidance:
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "stage_11_in_progress_backend_reconciled_frontend_reconciliation_required"
+  current_state: "stage_11_in_progress_functionally_reconciled_environmental_validation_pending"
   last_completed_stage:
     id: 10
     name: "Desenvolvimento da API"
@@ -116,7 +116,7 @@ workflow:
     name: "Desenvolvimento da Interface Web"
   current_stage_gate:
     status: "in_progress"
-    reason: "A Etapa 10 foi reconciliada e validada na branch feat/stage-9-10-backend (Draft PR #12). A Etapa 11 possui implementação em andamento e ainda precisa ser reconciliada com a baseline de conta única, backup local, reset e exclusão e com o backend atualizado."
+    reason: "A Etapa 10 foi reconciliada e validada para a baseline simplificada. A Etapa 11 incorporou a reconciliação funcional e segue em fechamento, com validações integradas/ambientais e de navegador ainda necessárias antes da conclusão formal."
     blockers: []
 
 stages:
@@ -197,10 +197,13 @@ canonical_sources:
   functional_requirements:
     path: "docs/requisitos/srs/03-requisitos-funcionais.md"
     authority: "canonical"
-    catalog_size: 21
-    v1_active_count: 20
-    active_v1: "RF-001..RF-018, RF-020, RF-021"
+    catalog_size: 23
+    v1_active_count: 19
+    active_v1: "RF-001..RF-011, RF-015..RF-018, RF-020..RF-023"
     deferred:
+      - "RF-012 — Gerenciar transferências entre contas"
+      - "RF-013 — Efetivar e desfazer transferências"
+      - "RF-014 — Gerenciar transferências recorrentes"
       - "RF-019 — Gerenciar proteção por PIN"
 
   nonfunctional_requirements:
@@ -483,7 +486,7 @@ known_issues:
       - "docs/arquitetura/"
       - "docs/api/"
       - "docs/interface-web/"
-    resolution: "Conta única Minha Conta; saldo derivado; Transferências e Patrimônio fora da V1; backup ZIP local; reset do perfil e exclusão do login com dupla confirmação. A Etapa 10 foi reconciliada e validada na branch feat/stage-9-10-backend / Draft PR #12; a Etapa 11 permanece em reconciliação."
+    resolution: "Conta única Minha Conta; saldo derivado; Transferências e Patrimônio fora da V1; backup ZIP local; reset do perfil e exclusão do login com dupla confirmação. A Etapa 10 foi reconciliada e validada; a Etapa 11 incorporou a reconciliação funcional e permanece em fechamento com validações integradas/ambientais pendentes."
 
 resolved_consolidation_notes:
   - topic: "use_cases_location"
