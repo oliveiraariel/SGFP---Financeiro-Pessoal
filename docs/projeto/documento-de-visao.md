@@ -2,9 +2,9 @@
 
 ## Sistema de Gestão Financeira Pessoal
 
-**Versão do documento:** 1.6
+**Versão do documento:** 1.7
 
-**Data da última atualização:** 05/09/2026
+**Data da última atualização:** 23/09/2026
 
 ### 1. Apresentação
 
@@ -38,7 +38,7 @@ Serão desenvolvidos:
 
 - cadastro de usuário;
 - autenticação por e-mail e senha;
-- gerenciamento de contas financeiras;
+- gerenciamento da Conta Financeira única;
 - gerenciamento de compromissos financeiros;
 - controle de receitas;
 - controle de despesas;
@@ -56,6 +56,8 @@ Serão desenvolvidos:
 - exclusão definitiva da conta de acesso com dupla confirmação;
 - API REST;
 - interface Web.
+
+Transferências entre contas e Patrimônio Total não integram o escopo ativo da V1.
 
 ### 5. Funcionalidades Previstas para Versões Futuras
 
@@ -107,24 +109,17 @@ Essa filosofia busca equilibrar praticidade, flexibilidade e consistência das i
 
 ### 8. Visão Geral do Funcionamento
 
-Cada usuário poderá possuir uma ou mais contas financeiras.
+Na V1, cada usuário possuirá exatamente uma Conta Financeira, provisionada automaticamente com o nome inicial **Minha Conta**. O usuário poderá renomeá-la, mas não poderá criar contas adicionais nem excluir isoladamente essa conta.
 
-Exemplos:
+O saldo será derivado dos Lançamentos Financeiros ativos da Conta Financeira. Não haverá saldo armazenado como atributo independente.
 
-- Conta Corrente;
-- Carteira;
-- Poupança;
-- Investimentos.
-
-Cada conta possuirá seu próprio saldo.
-
-A V1 possuirá exatamente uma Conta Financeira por usuário. O saldo será derivado dos Lançamentos Financeiros ativos dessa conta. Patrimônio Total e Transferências ficam fora do escopo ativo da V1.
+Patrimônio Total e Transferências ficam fora do escopo ativo da V1.
 
 Os compromissos financeiros representarão obrigações ou previsões financeiras.
 
 Quando um compromisso for efetivado, será registrado um lançamento financeiro correspondente à movimentação efetivamente realizada.
 
-As receitas efetivadas aumentarão o saldo da conta correspondente.
+As receitas efetivadas aumentarão o saldo da conta.
 
 As despesas somente reduzirão o saldo quando forem efetivadas e registradas como movimentações financeiras realizadas.
 
@@ -196,16 +191,17 @@ Verificações e testes poderão acompanhar a implementação sempre que forem �
 
 ### 12. Situação Atual do Projeto
 
-As etapas de levantamento e especificação de requisitos, Casos de Uso, Mapa do Domínio e modelagem de dados foram concluídas.
+As etapas de levantamento e especificação de requisitos, Casos de Uso, Mapa do Domínio, modelagem de dados e Arquitetura da Aplicação foram concluídas e validadas.
 
-As **Etapas 6 — Modelagem Conceitual (MER), 7 — Modelo Entidade-Relacionamento (DER) e 8 — Modelo Físico** estão concluídas e validadas. A próxima etapa autorizada é a **Etapa 9 — Arquitetura da Aplicação**.
+A **Etapa 10 — Desenvolvimento da API** está concluída, reconciliada e validada para a baseline simplificada da V1.
 
-A decisão de utilizar PHP sobre WordPress na Versão 1, com backend específico em plugin próprio, infraestrutura REST do WordPress e persistência relacional compatível com MySQL ou MariaDB, deverá orientar a definição da Arquitetura. A proteção opcional por PIN permanece adiada para uma versão futura.
+A **Etapa 11 — Desenvolvimento da Interface Web** está em andamento. A interface utiliza a API REST própria do SGFP e permanece sujeita às validações integradas e de navegador previstas para seu fechamento.
 
-A preservação do estado anterior durante uma restauração foi consolidada como cópia de segurança automática pré-restauração: após validação da cópia escolhida e confirmação do usuário, o estado atual deverá ser preservado em condição recuperável antes de qualquer substituição. O mecanismo técnico dessa preservação será definido na etapa apropriada.
+A baseline vigente da V1 possui exatamente uma Conta Financeira por usuário, saldo derivado de lançamentos ativos, Transferências e Patrimônio Total fora do escopo ativo, backup manual em ZIP para download local, restauração integral com cópia pré-restauração recuperável, reset do perfil financeiro e exclusão definitiva da conta de acesso.
+
+A proteção opcional por PIN permanece adiada para uma versão futura.
 
 A documentação continuará passível de revisão quando forem identificadas inconsistências ou impactos decorrentes das etapas posteriores.
-
 
 ### 13. Objetivo Acadêmico
 
