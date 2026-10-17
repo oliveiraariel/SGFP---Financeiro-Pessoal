@@ -73,6 +73,10 @@ Após cadastro válido:
 
 Não deve existir usuário SGFP ativo sem sua conta única provisionada.
 
+### Decisão complementar de identidade e acesso (16/09/2026)
+
+A [decisão documental reconciliada](decisao-identidade-acesso-v1-2026-09-16.md) explicita: WordPress como única identidade; `wp_users.ID` como referência financeira; cadastro via `user_register` e reparo via `wp_login`; autorização exigindo `use_sgfp` e `_sgfp_provisioned`; `sgfp_access` como referência legada. A exigência de login apenas por e-mail ainda não foi demonstrada sobre a tela nativa WordPress da versão 1.0.15, e `POST /onboarding` não é rota registrada nessa versão.
+
 ## 8. Efeito sobre a baseline anterior
 
 Esta decisão substitui explicitamente:
@@ -95,3 +99,6 @@ A Etapa 11/frontend continua em reconciliação. Qualquer código remanescente q
 A branch 9–10 permanece aberta para ajustes legítimos descobertos durante a integração da Etapa 11, desde que a alteração seja documentada, testada e reintegrada de forma controlada.
 
 **Data da decisão:** 14/09/2026
+
+**Nota de 17/10/2026:** referências acima à reconciliação de setembro são históricas. O estado de distribuição está em `docs/governanca/STATUS-RELEASE-1.0.15-2026-10-17.md`.
+

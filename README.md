@@ -1,5 +1,9 @@
 # SGFP — Sistema de Gestão Financeira Pessoal
 
+## Versão publicada — SGFP 1.0.15 (17/10/2026)
+
+A [Release v1.0.15](https://github.com/oliveiraariel/SGFP---Financeiro-Pessoal/releases/tag/v1.0.15) disponibiliza o plugin WordPress instalável e um ZIP do código-fonte. A tag aponta para `c76ee1d` (código da versão em `cac410f`, seguido pelo harness visual). A instalação foi considerada estável pelo responsável nos cenários manuais verificados, **sem afirmar homologação integral, conclusão da Etapa 12 ou validação E2E completa**. Consulte [o registro da versão](docs/governanca/STATUS-RELEASE-1.0.15-2026-10-17.md).
+
 [Português (Brasil)](README.md) | [English](README.en.md)
 
 O **SGFP — Sistema de Gestão Financeira Pessoal** é um projeto acadêmico voltado ao planejamento, organização e acompanhamento das finanças pessoais.
@@ -78,7 +82,7 @@ Os Casos de Uso também foram organizados individualmente para facilitar manuten
 
 As Etapas 5 — Mapa do Domínio, 6 — Modelagem Conceitual (MER), 7 — Modelo Entidade-Relacionamento (DER) e 8 — Modelo Físico foram concluídas e validadas.
 
-As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram concluídas originalmente sobre a baseline anterior. Em 14/09/2026, a documentação foi revisada para a baseline simplificada e o backend da Etapa 10 foi posteriormente reconciliado e validado na branch `feat/stage-9-10-backend`, documentado no Draft PR #12. A Etapa 11 — Interface Web está em andamento na branch `feat/stage-11-web-interface` e ainda requer reconciliação com a nova baseline e com o backend atualizado. A Etapa 12 permanece futura para consolidação formal dos testes.
+As Etapas 9 — Arquitetura da Aplicação e 10 — Desenvolvimento da API foram concluídas originalmente sobre a baseline anterior. Em 14/09/2026, a documentação foi revisada para a baseline simplificada e o backend da Etapa 10 foi posteriormente reconciliado e validado na branch `feat/stage-9-10-backend`, documentado no Draft PR #12. A Etapa 11 tem a entrega funcional estável 1.0.15 publicada em `main`. Validações integradas/ambientais completas e o encerramento formal da Etapa 12 não foram declarados concluídos. Branches e checkpoints anteriores descrevem histórico.
 
 ## Estrutura do Repositório
 

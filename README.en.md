@@ -1,5 +1,9 @@
 # SGFP — Personal Financial Management System
 
+## Published build — SGFP 1.0.15 (October 17, 2026)
+
+The [v1.0.15 release](https://github.com/oliveiraariel/SGFP---Financeiro-Pessoal/releases/tag/v1.0.15) contains an installable WordPress plugin and a development source archive. The maintainer reported stability in manually verified scenarios. This does **not** assert completion of full end-to-end testing or formal Stage 12 validation. See the [release status record](docs/governanca/STATUS-RELEASE-1.0.15-2026-10-17.md).
+
 [Português (Brasil)](README.md) | **English**
 
 **SGFP — Sistema de Gestão Financeira Pessoal** is an academic web application for personal financial organization and tracking.
@@ -55,7 +59,7 @@ The project follows these stages:
 11. Web Interface Development
 12. Tests
 
-Stages 9 and 10 have already been reconciled with the simplified V1 baseline. Stage 11 — Web Interface Development — is currently in progress and still needs final alignment with the reconciled backend.
+Stages 9 and 10 have already been reconciled with the simplified V1 baseline. Stage 11 has a published functional stable build, v1.0.15, on `main`. Full environmental validation and formal Stage 12 test closure have not been declared complete.
 
 ## Repository structure
 

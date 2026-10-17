@@ -1,8 +1,8 @@
 # Etapa 11 — Desenvolvimento da Interface Web
 
-**Status:** em andamento na branch `feat/stage-11-web-interface`.
+**Status:** entrega funcional estável 1.0.15 publicada na `main`; fechamento formal de testes não declarado completo.
 
-A interface existente foi iniciada sobre a baseline anterior e deverá ser reconciliada com a decisão de 14/09/2026.
+A interface foi iniciada sobre a baseline anterior. O checklist abaixo é histórico; a situação publicada é descrita em `docs/governanca/STATUS-RELEASE-1.0.15-2026-10-17.md`.
 
 ## Alvos obrigatórios da reconciliação
 
@@ -16,3 +16,13 @@ A interface existente foi iniciada sobre a baseline anterior e deverá ser recon
 - Excluir conta com dupla confirmação + `EXCLUIR CONTA`.
 
 A auditoria de usabilidade/defeitos deverá ser decomposta em Work Units após a reconciliação documental e de baseline.
+
+## Contrato de acesso implementado na versão 1.0.15
+
+- Login, cadastro quando habilitado e recuperação usam os fluxos WordPress, sem identidade paralela.
+- Visitante anônimo é direcionado à tela de login WordPress.
+- Apenas usuário autenticado com `_sgfp_provisioned = '1'` e `use_sgfp` recebe o gestor e seus assets.
+- Conta não provisionada/autorizada apresenta indisponibilidade em vez de carregar o gestor.
+- `sgfp_access` não é alternativa de autorização; `POST /onboarding` não está registrado.
+- A exigência normativa de login exclusivamente por e-mail ainda precisa ser conferida no fluxo nativo `wp-login.php`.
+

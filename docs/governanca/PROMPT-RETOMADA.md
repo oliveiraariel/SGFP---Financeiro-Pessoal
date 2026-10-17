@@ -11,7 +11,9 @@ Leia, nesta ordem:
 3. `ORCHESTRATOR.md`;
 4. `project-manifest.yaml`;
 5. `docs/governanca/baseline-v1-simplificada-2026-09-14.md`;
-6. `docs/governanca/status-implementacao-v1-2026-09-14.md`;
+6. `docs/governanca/decisao-identidade-acesso-v1-2026-09-16.md`;
+7. `docs/governanca/STATUS-RELEASE-1.0.15-2026-10-17.md`;
+8. `docs/governanca/status-implementacao-v1-2026-09-14.md`;
 7. `docs/governanca/continuidade-de-contexto.md`;
 8. `docs/requisitos/srs/03-requisitos-funcionais.md`;
 9. `docs/requisitos/srs/07-criterios-de-aceitacao.md`;
@@ -46,13 +48,17 @@ Se algum arquivo não existir no caminho esperado, informe o fato e não invente
 - Reset do perfil financeiro mantém o login e exige `RESETAR PERFIL`;
 - Exclusão da conta de acesso remove dados + login WordPress e exige `EXCLUIR CONTA`;
 - ambas as operações destrutivas exigem duas etapas de confirmação.
+- o WordPress é a fonte de identidade; `wp_users.ID` é a chave de usuário do SGFP; `use_sgfp` e `_sgfp_provisioned` controlam acesso ao gestor;
+- `sgfp_access` é legado, não substitui `use_sgfp`; a 1.0.15 não registra `POST /onboarding`;
+- login estritamente por e-mail é requisito cuja aplicação no fluxo WordPress nativo ainda não foi demonstrada.
 
 ## 3. Estado de desenvolvimento
 
 - Etapas 5–9 possuem documentação revisada para a baseline simplificada.
 - A Etapa 10 está concluída, reconciliada e validada.
-- A Etapa 11 está em andamento na branch `feat/stage-11-web-interface`.
-- A reconciliação funcional da Etapa 11 com conta única, backup local, reset/exclusão e backend atualizado foi incorporada; ainda devem ser confirmadas as validações integradas/ambientais e de navegador necessárias ao fechamento formal.
+- A entrega funcional estável **1.0.15** está publicada em `main`, tag `v1.0.15`, e no GitHub Releases.
+- O relato de estabilidade refere-se aos cenários manuais verificados; a homologação integral e o encerramento formal da Etapa 12 não foram comprovados.
+- A branch anterior `feat/stage-11-web-interface` e seus checkpoints devem ser tratados como históricos.
 - Resíduos de múltiplas contas, Transferências, Patrimônio ou backup por e-mail devem ser tratados como legado/histórico, nunca como fonte para reverter a baseline.
 - `ISSUE-008` de rastreabilidade permanece pendente antes do fechamento da Etapa 12.
 

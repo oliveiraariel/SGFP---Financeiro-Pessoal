@@ -1,5 +1,7 @@
 # Status real — Etapa 11 — Interface Web V1
 
+> **NOTA 17/10/2026:** este relatório preserva o estado histórico das validações anteriores à v1.0.15. A [situação da versão publicada](STATUS-RELEASE-1.0.15-2026-10-17.md) prevalece para identificação de release. Referências abaixo a v1.0.5, checkout e pendências anteriores não descrevem automaticamente o estado atual. A estabilidade manual declarada não equivale a testes E2E integrais ou fechamento formal da Etapa 12.
+
 **Auditado em:** 2026-09-16 — passe de fechamento local  
 **Checkout:** `feat/stage-11-web-interface` em `4ff7168832dff76a659bba9c886a9e19371b960a`, com WIP local autoritativo.  
 **Preservação:** `stash@{0}: backup-wip-antes-reconciliacao-stage11-2026-09-15` e `/home/ariel/backup-sgfp-frontend-2026-09-15` confirmados presentes.

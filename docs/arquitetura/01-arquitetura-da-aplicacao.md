@@ -234,18 +234,20 @@ Composer é ferramenta de construção e autoload, não requisito de execução 
 
 ### 6.1 Identidade, autenticação e sessão
 
-- cadastro, identidade, armazenamento de credenciais, sessão e recuperação reutilizam as APIs e os mecanismos do WordPress; o SGFP não cria repositório, hash ou credencial paralelos;
-- o formulário/handler de autenticação da V1 aceita **exclusivamente e-mail e senha**. Nome de usuário WordPress, PIN e provedores externos não são alternativas de login expostas ou aceitas pelo SGFP;
-- o adaptador de identidade valida o formato do e-mail, resolve a identidade WordPress pelo e-mail e delega a verificação da senha ao WordPress. Falha de formato, e-mail inexistente, senha incorreta ou conta não autenticável produz para o cliente a mesma mensagem e o mesmo resultado de acesso não autenticado, sem indicar qual credencial falhou;
-- a alteração de senha ocorre diretamente na aplicação para usuário autenticado e somente prossegue após o WordPress validar a **senha atual** e o usuário fornecer a **confirmação obrigatória da alteração**. Senha atual incorreta ou confirmação ausente não altera a credencial;
+**Reconciliação 17/10/2026:** as diferenças entre regra normativa e código publicado estão detalhadas em `docs/governanca/decisao-identidade-acesso-v1-2026-09-16.md`.
+
+- cadastro, identidade, armazenamento de credenciais, sessão e recuperação reutilizam o WordPress; o SGFP não mantém tabela, repositório, hash ou credencial próprios de usuário; `wp_users.ID` é a identidade usada nas tabelas financeiras;
+- **requisito V1:** login exclusivamente por e-mail e senha; **estado do código 1.0.15:** entrada nativa `wp-login.php`, sem filtro SGFP específico identificado que bloqueie autenticação por nome de usuário. A conformidade permanece pendente de comprovação ou correção futura;
+- autenticação e recuperação são delegadas aos mecanismos WordPress. A uniformidade das mensagens de falha de credenciais deve ser verificada no fluxo nativo efetivo; não confundir requisito previsto com teste realizado;
+- a exigência normativa de confirmar a senha atual antes de alterá-la permanece, mas seu cumprimento no fluxo de alteração de senha da versão 1.0.15 requer validação funcional específica; não declarar como comprovado sem evidência;
 - valores de senha existem apenas durante a chamada ao adaptador WordPress: não entram em DTOs de domínio financeiro, tabelas SGFP, logs, eventos, mensagens de erro ou respostas. Somente TLS pode transportar esses valores;
 - a interface Web usa cookie de sessão e nonce REST contra CSRF, sempre sobre HTTPS;
 - cada rota possui `permission_callback`; operações financeiras exigem usuário autenticado, provisionamento confirmado e capability própria do SGFP, enquanto `onboarding` exige sessão e nonce válidos;
 - `CurrentUserContext` obtém `wp_users.ID`; `FK_ID_USUARIO` nunca é aceito do payload, query ou path como autoridade;
 - tema claro/escuro usa chave própria em `wp_usermeta`;
-- um hook de cadastro chama provisionamento idempotente da capability `use_sgfp` e das categorias iniciais; `sgfp_access` é legado e não é aceito pelo runtime;
+- `user_register` aciona provisionamento idempotente da conta `Minha Conta`, categorias e `use_sgfp`; `wp_login` permite reparo. `sgfp_access` é legado, sem poder de autorização financeira isolada. O código também concede `use_sgfp` a determinados papéis WordPress, não apenas a migrados da capability legada;
 - um marcador próprio em `usermeta` só confirma o provisionamento depois das categorias. Ele permite distinguir falha de provisionamento do estado legítimo em que o usuário excluiu todas as categorias;
-- usuários WordPress preexistentes ou incompletos usam `POST /onboarding`, que exige sessão/nonce, mas ainda não a capability SGFP; todas as demais rotas exigem `use_sgfp` e o marcador confirmado. Usuários existentes que ainda possuam `sgfp_access` são migrados de forma idempotente durante o provisionamento acionado no login; novos usuários recebem somente `use_sgfp`.
+- a versão 1.0.15 **não registra** `POST /onboarding` em `Routes.php`. O reparo conhecido ocorre por `user_register` e `wp_login`. O gestor e rotas financeiras exigem `use_sgfp` e `_sgfp_provisioned` confirmados.
 
 O cadastro WordPress e o provisionamento SGFP não formam uma única transação entre subsistemas. Falha no provisionamento não invalida silenciosamente o usuário: não concede acesso financeiro, é registrada e pode ser reparada pela repetição idempotente. `permission_callback` somente autoriza; não provisiona nem produz outros efeitos colaterais. A Etapa 10 deverá manter o handler de autenticação separado dos Services financeiros e verificar seu comportamento por interface pública, inclusive o erro uniforme e as condições da alteração de senha.
 
