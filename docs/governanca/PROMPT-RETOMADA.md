@@ -14,17 +14,17 @@ Leia, nesta ordem:
 6. `docs/governanca/decisao-identidade-acesso-v1-2026-09-16.md`;
 7. `docs/governanca/STATUS-RELEASE-1.0.15-2026-10-17.md`;
 8. `docs/governanca/status-implementacao-v1-2026-09-14.md`;
-7. `docs/governanca/continuidade-de-contexto.md`;
-8. `docs/requisitos/srs/03-requisitos-funcionais.md`;
-9. `docs/requisitos/srs/07-criterios-de-aceitacao.md`;
-10. `docs/casos-de-uso/catalogo.csv`;
-11. `docs/dominio/01-mapa-de-dominio.md`;
-12. `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
-13. `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`;
-14. `docs/modelagem-dados/03-modelo-fisico.md`;
-15. `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
-16. `docs/api/README.md`;
-17. `docs/interface-web/README.md`.
+9. `docs/governanca/continuidade-de-contexto.md`;
+10. `docs/requisitos/srs/03-requisitos-funcionais.md`;
+11. `docs/requisitos/srs/07-criterios-de-aceitacao.md`;
+12. `docs/casos-de-uso/catalogo.csv`;
+13. `docs/dominio/01-mapa-de-dominio.md`;
+14. `docs/modelagem-dados/01-modelagem-conceitual-mer.md`;
+15. `docs/modelagem-dados/02-modelo-entidade-relacionamento-der.md`;
+16. `docs/modelagem-dados/03-modelo-fisico.md`;
+17. `docs/arquitetura/01-arquitetura-da-aplicacao.md`;
+18. `docs/api/README.md`;
+19. `docs/interface-web/README.md`.
 
 Se algum arquivo não existir no caminho esperado, informe o fato e não invente conteúdo substituto.
 
