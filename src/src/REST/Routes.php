@@ -17,6 +17,7 @@ use SGFP\Application\Services\ListAccountsService;
 use SGFP\Application\Services\ListCategoriesService;
 use SGFP\Application\Services\ListMovementsService;
 use SGFP\Application\Services\MaterializeRecurrenceOccurrenceService;
+use SGFP\Application\Services\EndRecurrenceFromOccurrenceService;
 use SGFP\Application\Services\SettleRecurrenceOccurrenceService;
 use SGFP\Application\Services\UndoRecurrenceOccurrenceSettlementService;
 use SGFP\Application\Services\SeedCategoriesService;
@@ -70,6 +71,12 @@ final class Routes
             $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
             return $date !== false && $date->format('Y-m-d') === $value;
         };
+        $validYear = static function ($value): bool {
+            $value = (string) $value;
+            return preg_match('/^\d{4}$/', $value) === 1
+                && (int) $value >= 1900
+                && (int) $value <= 2200;
+        };
         $userContext = new WpUserContext();
         $accountRepository = new WpAccountRepository();
         $categoryRepository = new WpCategoryRepository();
@@ -94,12 +101,13 @@ final class Routes
         $recurrenceRepository = new WpRecurrenceRepository();
 
         $commitmentController = new CommitmentController(
-            new CreateCommitmentService($commitmentRepository, $categoryRepository, $recurrenceRepository, $userContext),
+            new CreateCommitmentService($commitmentRepository, $categoryRepository, $recurrenceRepository, $userContext, $transactionManager),
             new ListCommitmentsService($commitmentRepository, $userContext),
             new SettleCommitmentService($commitmentRepository, $entryRepository, $accountRepository, $transactionManager, $userContext),
             new UndoCommitmentSettlementService($commitmentRepository, $entryRepository, $transactionManager, $userContext)
             , new \SGFP\Application\Services\UpdateCommitmentService($commitmentRepository, $categoryRepository, $userContext)
             , new DeleteCommitmentService($commitmentRepository, $userContext)
+            , $accountRepository, $entryRepository, $userContext
         );
 
 
@@ -118,12 +126,20 @@ final class Routes
                 $entryRepository,
                 $transactionManager,
                 $userContext
-            )
+            ),
+            new EndRecurrenceFromOccurrenceService(
+                new MaterializeRecurrenceOccurrenceService($recurrenceRepository, $commitmentRepository, $transactionManager, $userContext),
+                $recurrenceRepository,
+                $commitmentRepository,
+                $transactionManager,
+                $userContext
+            ),
+            new \SGFP\Application\Services\UpdateRecurrenceFromOccurrenceService($commitmentRepository, $categoryRepository, $transactionManager, $userContext)
         );
 
         $reportingController = new ReportingController(
             new ListMovementsService($entryRepository, $userContext),
-            new GetDashboardService($accountRepository, $entryRepository, $commitmentRepository, $userContext)
+            new GetDashboardService($accountRepository, $entryRepository, $commitmentRepository, $userContext, $recurrenceRepository)
         );
 
         $themeController = new ThemeController(
@@ -191,9 +207,16 @@ final class Routes
 
         register_rest_route(self::NAMESPACE, '/account', [
             'methods' => \WP_REST_Server::EDITABLE, 'callback' => function (\WP_REST_Request $request) use ($accountController, $accountRepository, $userContext): \WP_REST_Response {
-                $account = $accountRepository->findByUser($userContext->requireUserId());
-                if ($account === null) return PublicError::fromCode(404, 'NOT_FOUND');
-                $request['id'] = $account->id; return $accountController->rename($request);
+                try {
+                    $account = $accountRepository->findByUser($userContext->requireUserId());
+                    if ($account === null) return PublicError::fromCode(404, 'NOT_FOUND');
+                    $request['id'] = $account->id;
+                    return $accountController->rename($request);
+                } catch (\RuntimeException $e) {
+                    return PublicError::response($e, $e->getCode() ?: 500);
+                } catch (\Throwable $e) {
+                    return PublicError::response($e, 500);
+                }
             }, 'permission_callback' => [$accountController, 'permissionCheck'],
             'args' => ['name'=>['required'=>true,'type'=>'string','sanitize_callback'=>'sanitize_text_field']],
         ]);
@@ -201,17 +224,23 @@ final class Routes
         register_rest_route(self::NAMESPACE, '/account/initial-balance', [
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => function (\WP_REST_Request $request) use ($accountController, $accountRepository, $userContext): \WP_REST_Response {
-                $account = $accountRepository->findByUser($userContext->requireUserId());
-                if ($account === null) return PublicError::fromCode(404, 'NOT_FOUND');
-                $request['id'] = $account->id;
-                return $accountController->setInitialBalance($request);
+                try {
+                    $account = $accountRepository->findByUser($userContext->requireUserId());
+                    if ($account === null) return PublicError::fromCode(404, 'NOT_FOUND');
+                    $request['id'] = $account->id;
+                    return $accountController->setInitialBalance($request);
+                } catch (\RuntimeException $e) {
+                    return PublicError::response($e, $e->getCode() ?: 500);
+                } catch (\Throwable $e) {
+                    return PublicError::response($e, 500);
+                }
             },
             'permission_callback' => [$accountController, 'permissionCheck'],
             'args' => [
                 'amount' => ['required' => true, 'type' => 'string'],
                 'name' => ['required' => false, 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field'],
                 'description' => ['required' => false, 'type' => 'string', 'sanitize_callback' => 'sanitize_textarea_field'],
-                'effective_month' => ['required' => false, 'type' => 'string', 'pattern' => '^\\d{4}-\\d{2}-01$', 'validate_callback' => $validMonth],
+                'effective_month' => ['required' => false, 'type' => 'string', 'pattern' => '^\\d{4}-\\d{2}-\\d{2}$'],
             ],
         ]);
 
@@ -278,7 +307,7 @@ final class Routes
         register_rest_route(self::NAMESPACE, '/commitments', [
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => [$commitmentController, 'create'],
-            'permission_callback' => [$commitmentController, 'permissionCheck'],
+            'permission_callback' => [$commitmentController, 'financialPermissionCheck'],
             'args' => [
                 'category_id' => [
                     'required' => false,
@@ -317,7 +346,7 @@ final class Routes
         register_rest_route(self::NAMESPACE, '/commitments/(?P<id>\d+)/effectuation', [
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => [$commitmentController, 'settle'],
-            'permission_callback' => [$commitmentController, 'permissionCheck'],
+            'permission_callback' => [$commitmentController, 'financialPermissionCheck'],
             'args' => [
                 'id' => ['required' => true, 'type' => 'integer'],
                 'settled_at' => [
@@ -346,7 +375,7 @@ final class Routes
         register_rest_route(self::NAMESPACE, '/commitments/(?P<id>\d+)/undo-effectuation', [
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => [$commitmentController, 'undo'],
-            'permission_callback' => [$commitmentController, 'permissionCheck'],
+            'permission_callback' => [$commitmentController, 'financialPermissionCheck'],
             'args' => [
                 'id' => [
                     'required' => true,
@@ -372,6 +401,13 @@ final class Routes
                     'validate_callback' => $validMonth,
                 ],
             ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/recurrences/(?P<id>\d+)/occurrences/(?P<month>\d{4}-\d{2}-01)', [
+            'methods' => \WP_REST_Server::EDITABLE,
+            'callback' => [$recurrenceController, 'updateOccurrence'],
+            'permission_callback' => [$recurrenceController, 'permissionCheck'],
+            'args' => ['id'=>['required'=>true,'type'=>'integer'],'month'=>['required'=>true,'type'=>'string','validate_callback'=>$validMonth],'scope'=>['required'=>true,'type'=>'string','enum'=>['current','current_and_future']],'name'=>['required'=>true,'type'=>'string'],'amount'=>['required'=>true,'type'=>'string'],'category_id'=>['required'=>false,'type'=>['integer','null']],'commitment_date'=>['required'=>false,'type'=>'string']],
         ]);
 
         register_rest_route(self::NAMESPACE, '/recurrences/(?P<id>\d+)/occurrences/(?P<month>\d{4}-\d{2}-01)/effectuation', [
@@ -410,6 +446,16 @@ final class Routes
             ],
         ]);
 
+        register_rest_route(self::NAMESPACE, '/recurrences/(?P<id>\d+)/occurrences/(?P<month>\d{4}-\d{2}-01)/end', [
+            'methods' => \WP_REST_Server::DELETABLE,
+            'callback' => [$recurrenceController, 'endFromOccurrence'],
+            'permission_callback' => [$recurrenceController, 'permissionCheck'],
+            'args' => [
+                'id' => ['required' => true, 'type' => 'integer'],
+                'month' => ['required' => true, 'type' => 'string', 'pattern' => '^\d{4}-\d{2}-01$', 'validate_callback' => $validMonth],
+            ],
+        ]);
+
         register_rest_route(self::NAMESPACE, '/movements', [
             'methods' => \WP_REST_Server::READABLE,
             'callback' => [$reportingController, 'movements'],
@@ -435,6 +481,38 @@ final class Routes
                     'type' => 'string',
                     'pattern' => '^\d{4}-\d{2}-01$',
                     'validate_callback' => $validMonth,
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/dashboard/evolution', [
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => [$reportingController, 'evolution'],
+            'permission_callback' => [$reportingController, 'permissionCheck'],
+            'args' => [
+                'month' => ['required' => true, 'type' => 'string', 'pattern' => '^\\d{4}-\\d{2}-01$', 'validate_callback' => $validMonth],
+                'months' => ['required' => false, 'type' => 'integer', 'default' => 6, 'minimum' => 1, 'maximum' => 12],
+            ],
+        ]);
+        register_rest_route(self::NAMESPACE, '/dashboard/evolution/daily', [
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => [$reportingController, 'dailyEvolution'],
+            'permission_callback' => [$reportingController, 'permissionCheck'],
+            'args' => [
+                'month' => ['required' => true, 'type' => 'string', 'pattern' => '^\\d{4}-\\d{2}-01$', 'validate_callback' => $validMonth],
+                'months' => ['required' => false, 'type' => 'integer', 'default' => 3, 'minimum' => 1, 'maximum' => 12],
+            ],
+        ]);
+        register_rest_route(self::NAMESPACE, '/dashboard/evolution/annual', [
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => [$reportingController, 'annualEvolution'],
+            'permission_callback' => [$reportingController, 'permissionCheck'],
+            'args' => [
+                'year' => [
+                    'required' => true,
+                    'type' => 'string',
+                    'pattern' => '^\\d{4}$',
+                    'validate_callback' => $validYear,
                 ],
             ],
         ]);

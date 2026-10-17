@@ -61,8 +61,48 @@ final class ReportingController
             $result = $this->getDashboardService->execute($month);
 
             return new \WP_REST_Response($result, 200);
+        } catch (\InvalidArgumentException $e) {
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\RuntimeException $e) {
             return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
+        }
+    }
+
+    public function evolution(\WP_REST_Request $request): \WP_REST_Response
+    {
+        try {
+            $month = (string) $request['month'];
+            $months = isset($request['months']) ? (int) $request['months'] : 6;
+            return new \WP_REST_Response($this->getDashboardService->executeEvolution($month, $months), 200);
+        } catch (\InvalidArgumentException $e) {
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
+        }
+    }
+
+    public function dailyEvolution(\WP_REST_Request $request): \WP_REST_Response
+    {
+        try {
+            $month = (string) $request['month'];
+            $months = isset($request['months']) ? (int) $request['months'] : 3;
+            return new \WP_REST_Response($this->getDashboardService->executeDailyEvolution($month, $months), 200);
+        } catch (\InvalidArgumentException $e) {
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
+        } catch (\Throwable $e) {
+            return \SGFP\REST\PublicError::response($e, 500);
+        }
+    }
+
+    public function annualEvolution(\WP_REST_Request $request): \WP_REST_Response
+    {
+        try {
+            $year = (string) $request['year'];
+            return new \WP_REST_Response($this->getDashboardService->executeAnnualEvolution($year), 200);
+        } catch (\InvalidArgumentException $e) {
+            return \SGFP\REST\PublicError::response($e, 400, 'VALIDATION_ERROR');
         } catch (\Throwable $e) {
             return \SGFP\REST\PublicError::response($e, 500);
         }

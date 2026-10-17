@@ -30,10 +30,15 @@ O usuário solicita o desfazimento da efetivação.
 * O desfazimento de uma Entrada deverá retirar do saldo o valor anteriormente acrescentado.
 * O desfazimento de uma Saída deverá retirar do saldo o valor anteriormente diminuído.
 * O sistema deverá manter consistência entre o compromisso, o lançamento e o saldo.
+* O desfazimento deverá localizar o lançamento pelo vínculo com o compromisso ou ocorrência efetivada, e não pela data financeira ou pelo timestamp operacional isoladamente.
+* O desfazimento deverá ser idempotente: repetir a operação depois de o efeito já ter sido removido não poderá gerar novo ajuste nem alterar novamente o saldo.
+* A data financeira originalmente registrada deverá permanecer associada ao histórico do lançamento desfeito; o timestamp operacional do desfazimento será um metadado técnico distinto.
 
 **Pós-condições**
 
 A efetivação deixará de produzir efeito financeiro.
+
+O compromisso ou ocorrência ficará novamente disponível para alteração conforme as regras aplicáveis, sem perder a data financeira originalmente registrada nem o vínculo histórico com o lançamento desfeito.
 
 **Requisitos relacionados**
 

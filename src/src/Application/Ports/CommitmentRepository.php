@@ -16,6 +16,9 @@ interface CommitmentRepository
 
     public function findByRecurrenceIdAndMonth(int $recurrenceId, string $month, int $userId): ?Commitment;
 
+    /** @return Commitment[] */
+    public function findPendingByRecurrenceIdFromMonth(int $recurrenceId, string $startMonth, int $userId): array;
+
     public function findFirstByRecurrenceId(int $recurrenceId, int $userId): ?Commitment;
 
     /**

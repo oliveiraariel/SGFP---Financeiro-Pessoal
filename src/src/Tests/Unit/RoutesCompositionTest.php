@@ -52,6 +52,19 @@ namespace SGFP\Tests\Unit {
             self::assertSame('undoOccurrence', $routes[0][2]['callback'][1]);
         }
 
+        public function testRegisterComposesScopedRecurrenceEndRoute(): void
+        {
+            (new Routes())->register();
+            $routes = array_values(array_filter(
+                $GLOBALS['sgfp_registered_routes'],
+                static fn (array $route): bool => str_ends_with($route[1], '/occurrences/(?P<month>\\d{4}-\\d{2}-01)/end')
+            ));
+
+            self::assertCount(1, $routes);
+            self::assertSame(\WP_REST_Server::DELETABLE, $routes[0][2]['methods']);
+            self::assertSame('endFromOccurrence', $routes[0][2]['callback'][1]);
+        }
+
         public function testCreateCommitmentRouteAllowsExplicitNullForOptionalFields(): void
         {
             (new Routes())->register();
@@ -119,6 +132,8 @@ namespace SGFP\Tests\Unit {
 
             self::assertIsString($source);
             self::assertSame(2, substr_count($source, "PublicError::fromCode(404, 'NOT_FOUND')"));
+            self::assertSame(2, substr_count($source, 'catch (\\RuntimeException $e)'));
+            self::assertSame(2, substr_count($source, 'catch (\\Throwable $e)'));
             self::assertStringNotContainsString("['error'=>'Conta não encontrada.']", $source);
             self::assertStringNotContainsString("['error' => 'Conta não encontrada.']", $source);
         }
@@ -133,6 +148,26 @@ namespace SGFP\Tests\Unit {
             self::assertStringContainsString('$request->get_method() !== \'POST\'', $source);
             self::assertStringContainsString('echo $content;', $source);
             self::assertStringContainsString('return true;', $source);
+        }
+
+        public function testAnnualEvolutionRouteRequiresAValidYearAndUsesAnnualController(): void
+        {
+            (new Routes())->register();
+
+            $routes = array_values(array_filter(
+                $GLOBALS['sgfp_registered_routes'],
+                static fn (array $route): bool => $route[1] === '/dashboard/evolution/annual'
+            ));
+
+            self::assertCount(1, $routes);
+            self::assertSame(\WP_REST_Server::READABLE, $routes[0][2]['methods']);
+            self::assertSame('annualEvolution', $routes[0][2]['callback'][1]);
+            self::assertTrue(($routes[0][2]['args']['year']['validate_callback'])('2024'));
+            self::assertTrue(($routes[0][2]['args']['year']['validate_callback'])('1900'));
+            self::assertTrue(($routes[0][2]['args']['year']['validate_callback'])('2200'));
+            self::assertFalse(($routes[0][2]['args']['year']['validate_callback'])('2024-01'));
+            self::assertFalse(($routes[0][2]['args']['year']['validate_callback'])('1899'));
+            self::assertFalse(($routes[0][2]['args']['year']['validate_callback'])('2201'));
         }
     }
 }

@@ -55,7 +55,7 @@ final class WpCommitmentRepository implements CommitmentRepository
     {
         global $wpdb;
         $row = $wpdb->get_row($wpdb->prepare(
-            'SELECT * FROM ' . TableNames::commitment() . ' WHERE id_compromisso = %d AND fk_id_usuario = %d',
+            'SELECT * FROM ' . TableNames::commitment() . " WHERE id_compromisso = %d AND fk_id_usuario = %d AND status <> 'EXCLUIDO'",
             $id, $userId
         ), ARRAY_A);
         return is_array($row) ? $this->mapRow($row) : null;
@@ -66,7 +66,7 @@ final class WpCommitmentRepository implements CommitmentRepository
         global $wpdb;
         $rows = $wpdb->get_results($wpdb->prepare(
             'SELECT * FROM ' . TableNames::commitment()
-            . ' WHERE fk_id_usuario = %d ORDER BY mes_referencia DESC, criado_em DESC',
+            . " WHERE fk_id_usuario = %d AND status <> 'EXCLUIDO' ORDER BY mes_referencia DESC, criado_em DESC",
             $userId
         ), ARRAY_A);
         return array_map([$this, 'mapRow'], is_array($rows) ? $rows : []);
@@ -85,11 +85,27 @@ final class WpCommitmentRepository implements CommitmentRepository
         return is_array($row) ? $this->mapRow($row) : null;
     }
 
+    public function findPendingByRecurrenceIdFromMonth(int $recurrenceId, string $startMonth, int $userId): array
+    {
+        global $wpdb;
+        $rows = $wpdb->get_results($wpdb->prepare(
+            'SELECT * FROM ' . TableNames::commitment()
+            . " WHERE fk_id_recorrencia = %d AND fk_id_usuario = %d AND status = 'PENDENTE' AND mes_referencia >= %s ORDER BY mes_referencia ASC",
+            $recurrenceId,
+            $userId,
+            $startMonth
+        ), ARRAY_A);
+        return array_map([$this, 'mapRow'], is_array($rows) ? $rows : []);
+    }
+
     public function findFirstByRecurrenceId(int $recurrenceId, int $userId): ?Commitment
     {
         global $wpdb;
         $row = $wpdb->get_row($wpdb->prepare(
             'SELECT * FROM ' . TableNames::commitment()
+            // A ocorrência-base pode ser uma tombstone EXCLUIDO. Ela continua
+            // sendo necessária para materializar os meses seguintes sem
+            // reexibir nem recriar o mês pontualmente excluído.
             . ' WHERE fk_id_recorrencia = %d AND fk_id_usuario = %d ORDER BY mes_referencia ASC LIMIT 1',
             $recurrenceId, $userId
         ), ARRAY_A);

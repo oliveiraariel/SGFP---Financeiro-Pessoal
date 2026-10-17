@@ -72,7 +72,7 @@ final class ResetProfileServiceTest extends TestCase
         $service->execute('token', ResetProfileService::CONFIRMATION_PHRASE);
     }
 
-    public function testPurgesAndReprovisionsInsideLockAndTransaction(): void
+    public function testPurgesReprovisionsStructureAndLeavesProfileUninitializedInsideLockAndTransaction(): void
     {
         $purger = $this->createMock(UserDataPurger::class);
         $accounts = $this->createMock(AccountRepository::class);

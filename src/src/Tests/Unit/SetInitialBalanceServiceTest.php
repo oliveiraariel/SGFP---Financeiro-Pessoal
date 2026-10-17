@@ -39,6 +39,51 @@ final class SetInitialBalanceServiceTest extends TestCase
         $this->assertSame(10, $result->accountId);
     }
 
+    public function testPersistsExplicitZeroAsConfiguredInitialBalance(): void
+    {
+        $accounts = $this->createStub(AccountRepository::class);
+        $entries = $this->createMock(EntryRepository::class);
+        $context = $this->createStub(UserContext::class);
+        $context->method('requireUserId')->willReturn(1);
+        $account = new Account(10, 1, 'Minha Conta', new \DateTimeImmutable());
+        $accounts->method('findById')->willReturn($account);
+        $accounts->method('findByUser')->willReturn($account);
+        $entries->method('findActiveInitialBalanceByAccount')->willReturn(null);
+        $entries->expects($this->once())->method('save')->willReturnCallback(
+            function (Entry $entry): Entry {
+                self::assertSame('0.00', $entry->amount);
+                return $entry->withId(101);
+            }
+        );
+
+        $result = (new SetInitialBalanceService($accounts, $entries, $this->transactionManager(), $context))
+            ->execute(10, '0.00', null, null, null);
+
+        self::assertSame(101, $result->id);
+        self::assertSame('0.00', $result->amount);
+    }
+
+    public function testPreservesRetroactiveDayInsteadOfNormalizingToMonthStart(): void
+    {
+        $accounts = $this->createStub(AccountRepository::class);
+        $entries = $this->createMock(EntryRepository::class);
+        $context = $this->createStub(UserContext::class);
+        $context->method('requireUserId')->willReturn(1);
+        $account = new Account(10, 1, 'Minha Conta', new \DateTimeImmutable());
+        $accounts->method('findById')->willReturn($account);
+        $accounts->method('findByUser')->willReturn($account);
+        $entries->method('findActiveInitialBalanceByAccount')->willReturn(null);
+        $entries->expects($this->once())->method('save')->willReturnCallback(
+            function (Entry $entry): Entry {
+                self::assertSame('2024-02-29T00:00:00+00:00', $entry->settledAt->format('c'));
+                return $entry->withId(102);
+            }
+        );
+
+        (new SetInitialBalanceService($accounts, $entries, $this->transactionManager(), $context))
+            ->execute(10, '100.00', null, null, new \DateTimeImmutable('2024-02-29T14:30:00+00:00'));
+    }
+
     public function testReplacesExistingInitialBalance(): void
     {
         $accounts = $this->createMock(AccountRepository::class);

@@ -4,6 +4,15 @@
 **Checkout:** `feat/stage-11-web-interface` em `4ff7168832dff76a659bba9c886a9e19371b960a`, com WIP local autoritativo.  
 **Preservação:** `stash@{0}: backup-wip-antes-reconciliacao-stage11-2026-09-15` e `/home/ariel/backup-sgfp-frontend-2026-09-15` confirmados presentes.
 
+## Continuidade T08 — sincronização de release
+
+Em 2026-10-16, no mesmo checkout e preservando o WIP local, a identidade de
+versão foi sincronizada de `1.0.4` para `1.0.5` em `src/sgfp.php` (cabeçalho
+WordPress e `SGFP_VERSION`). Esta é uma decisão de continuidade para a
+entrega final de T08; não constitui aprovação de release nem validação
+ambiental. Permanecem dependentes da etapa final os gates de WordPress,
+REST/HTTP, banco, instalação/ativação, navegador e validação visual.
+
 Este documento descreve o código e os testes observados no checkout, não substitui a baseline V1 nem torna E2E não executado em evidência de aprovação.
 
 | Área | Estado | Evidência no código | Arquivos | Testes existentes | Falta fazer |

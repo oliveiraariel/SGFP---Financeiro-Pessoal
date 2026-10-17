@@ -31,7 +31,9 @@ final class ListMovementsService
         if ($start === false || ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0)) || $start->format('Y-m-d') !== $month) {
             throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM-01.');
         }
-        $end = $start->modify('last day of this month 23:59:59');
+        // Use a half-open interval so timestamps with fractional seconds on the
+        // last day are included without relying on a database precision.
+        $end = $start->modify('first day of next month');
 
         return $this->entryRepository->findActiveEntriesByUserAndPeriod($userId, $start, $end);
     }

@@ -11,6 +11,7 @@ use SGFP\Application\Ports\UserContext;
 use SGFP\Domain\Enums\EntryEffectType;
 use SGFP\Domain\Enums\EntryOrigin;
 use SGFP\Domain\Enums\EntryState;
+use SGFP\Domain\Models\Decimal;
 use SGFP\Domain\Models\Entry;
 
 final class SetInitialBalanceService
@@ -31,6 +32,7 @@ final class SetInitialBalanceService
     ): Entry {
         $this->userContext->requireCapability('use_sgfp');
         $userId = $this->userContext->requireUserId();
+        $amount = Decimal::normalize($amount, true);
 
         $account = $this->accountRepository->findById($accountId, $userId);
         if ($account === null) {
@@ -74,10 +76,6 @@ final class SetInitialBalanceService
 
     private function resolveSettledAt(\DateTimeImmutable $reference): \DateTimeImmutable
     {
-        return $reference->setDate(
-            (int) $reference->format('Y'),
-            (int) $reference->format('m'),
-            1
-        )->setTime(0, 0, 0);
+        return $reference->setTime(0, 0, 0);
     }
 }

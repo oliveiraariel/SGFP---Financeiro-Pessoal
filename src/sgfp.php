@@ -3,7 +3,7 @@
 /**
  * Plugin Name: SGFP — Sistema de Gestão Financeira Pessoal
  * Description: Backend financeiro pessoal sobre WordPress REST API.
- * Version: 1.0.0
+ * Version: 1.0.15
  * Author: SGFP
  * Requires PHP: 8.1
  * Requires at least: 6.4
@@ -21,7 +21,7 @@ use SGFP\Plugin;
 
 const SGFP_PLUGIN_FILE = __FILE__;
 const SGFP_PLUGIN_DIR = __DIR__;
-const SGFP_VERSION = '1.0.0';
+const SGFP_VERSION = '1.0.15';
 
 Plugin::boot();
 

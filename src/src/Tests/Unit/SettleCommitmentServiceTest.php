@@ -78,6 +78,44 @@ final class SettleCommitmentServiceTest extends TestCase
         (new SettleCommitmentService($commitments, $entries, $accounts, $tx, $context))->execute(10);
     }
 
+    /**
+     * @dataProvider commitmentDates
+     */
+    public function testSettlementDefaultsToCommitmentDate(string $commitmentDate): void
+    {
+        $commitments = $this->createMock(CommitmentRepository::class);
+        $entries = $this->createMock(EntryRepository::class);
+        $accounts = $this->createStub(AccountRepository::class);
+        $context = $this->createStub(UserContext::class);
+        $tx = $this->createStub(TransactionManager::class);
+
+        $context->method('requireUserId')->willReturn(1);
+        $tx->method('transactional')->willReturnCallback(fn (callable $action) => $action());
+        $accounts->method('findByUser')->willReturn(new Account(7, 1, 'Minha Conta', new \DateTimeImmutable()));
+        $commitment = Commitment::create(
+            1, null, 'Compromisso', '100.00', CommitmentNature::SAIDA,
+            new \DateTimeImmutable($commitmentDate), new \DateTimeImmutable()
+        )->withId(10);
+        $commitments->method('findById')->willReturn($commitment);
+        $commitments->method('save')->willReturnCallback(fn (Commitment $saved): Commitment => $saved);
+        $entries->method('findByCommitmentId')->willReturn(null);
+        $entries->expects($this->once())->method('save')->willReturnCallback(fn (Entry $saved): Entry => $saved);
+
+        $result = (new SettleCommitmentService($commitments, $entries, $accounts, $tx, $context))->execute(10);
+
+        self::assertSame($commitmentDate, $result->settledAt->format('Y-m-d'));
+        self::assertSame('00:00:00', $result->settledAt->format('H:i:s'));
+    }
+
+    public static function commitmentDates(): array
+    {
+        return [
+            'retroactive' => ['2026-08-15'],
+            'current' => ['2026-10-13'],
+            'future' => ['2026-12-20'],
+        ];
+    }
+
     public function testRepeatedSettleUndoCyclesReuseOneEntry(): void
     {
         $commitments = $this->createMock(CommitmentRepository::class);

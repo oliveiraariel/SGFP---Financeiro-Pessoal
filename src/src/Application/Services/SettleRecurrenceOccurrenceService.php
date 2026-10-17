@@ -29,20 +29,21 @@ final class SettleRecurrenceOccurrenceService
         $this->userContext->requireCapability('use_sgfp');
         $userId = $this->userContext->requireUserId();
 
-        $commitment = $this->materializeService->execute($recurrenceId, $month);
+        return $this->transactionManager->transactional(function () use ($recurrenceId, $month, $userId): Entry {
+            $commitment = $this->materializeService->executeWithinTransaction($recurrenceId, $month, $userId);
 
-        if ($commitment->status->value !== 'PENDENTE') {
-            throw new \RuntimeException('A ocorrência deve estar pendente para ser efetivada.', 409);
-        }
-
-        $settleService = new SettleCommitmentService(
-            $this->commitmentRepository,
-            $this->entryRepository,
-            $this->accountRepository,
-            $this->transactionManager,
-            $this->userContext,
-        );
-
-        return $settleService->execute((int) $commitment->id);
+            return (new SettleCommitmentService(
+                $this->commitmentRepository,
+                $this->entryRepository,
+                $this->accountRepository,
+                new class implements TransactionManager {
+                    public function begin(): void {}
+                    public function commit(): void {}
+                    public function rollback(): void {}
+                    public function transactional(callable $action): mixed { return $action(); }
+                },
+                $this->userContext,
+            ))->execute((int) $commitment->id);
+        });
     }
 }

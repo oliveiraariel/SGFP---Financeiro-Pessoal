@@ -7,6 +7,7 @@ namespace SGFP\Application\Services;
 use SGFP\Application\Ports\CategoryRepository;
 use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Application\Ports\RecurrenceRepository;
+use SGFP\Application\Ports\TransactionManager;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Domain\Enums\CommitmentNature;
 use SGFP\Domain\Models\Commitment;
@@ -19,6 +20,7 @@ final class CreateCommitmentService
         private readonly CategoryRepository $categoryRepository,
         private readonly RecurrenceRepository $recurrenceRepository,
         private readonly UserContext $userContext,
+        private readonly ?TransactionManager $transactionManager = null,
     ) {}
 
     public function execute(
@@ -61,28 +63,26 @@ final class CreateCommitmentService
             throw new \InvalidArgumentException('Categoria não encontrada.');
         }
 
-        $recurrenceId = null;
-        if ($recurrenceEnabled && $recurrenceMonthsCount !== null && $recurrenceMonthsCount <= 0) {
-            throw new \InvalidArgumentException('A quantidade de meses deve ser maior que zero ou omitida.');
-        }
-        if ($recurrenceEnabled) {
-            $recurrenceStartDate = $month->modify('first day of this month');
-            $recurrence = $this->recurrenceRepository->save(
-                Recurrence::create($userId, $recurrenceStartDate, $recurrenceMonthsCount, new \DateTimeImmutable())
-            );
-            $recurrenceId = $recurrence->id;
-        }
+        $persist = function () use ($recurrenceEnabled, $recurrenceMonthsCount, $month, $userId, $categoryId, $normalizedName, $amount, $commitmentNature): Commitment {
+            if ($recurrenceEnabled && $recurrenceMonthsCount !== null && $recurrenceMonthsCount <= 0) {
+                throw new \InvalidArgumentException('A quantidade de meses deve ser maior que zero ou omitida.');
+            }
 
-        return $this->repository->save(Commitment::create(
-            $userId,
-            $categoryId,
-            $normalizedName,
-            $amount,
-            $commitmentNature,
-            $month,
-            new \DateTimeImmutable(),
-            $recurrenceId,
-        ));
+            $recurrenceId = null;
+            if ($recurrenceEnabled) {
+                $recurrence = $this->recurrenceRepository->save(
+                    Recurrence::create($userId, $month->modify('first day of this month'), $recurrenceMonthsCount, new \DateTimeImmutable())
+                );
+                $recurrenceId = $recurrence->id;
+            }
+
+            return $this->repository->save(Commitment::create(
+                $userId, $categoryId, $normalizedName, $amount, $commitmentNature, $month,
+                new \DateTimeImmutable(), $recurrenceId,
+            ));
+        };
+
+        return $this->transactionManager?->transactional($persist) ?? $persist();
     }
 
     private function stringLength(string $value): int

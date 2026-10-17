@@ -8,7 +8,9 @@ use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Application\Ports\RecurrenceRepository;
 use SGFP\Application\Ports\TransactionManager;
 use SGFP\Application\Ports\UserContext;
+use SGFP\Domain\Enums\CommitmentStatus;
 use SGFP\Domain\Models\Commitment;
+use SGFP\Domain\Models\Recurrence;
 
 final class MaterializeRecurrenceOccurrenceService
 {
@@ -23,6 +25,26 @@ final class MaterializeRecurrenceOccurrenceService
     {
         $this->userContext->requireCapability('use_sgfp');
         $userId = $this->userContext->requireUserId();
+        $this->assertValidMonth($month);
+        $recurrence = $this->recurrenceRepository->findById($recurrenceId, $userId);
+        if ($recurrence === null) {
+            throw new \RuntimeException('Recorrência não encontrada.', 404);
+        }
+
+        return $this->transactionManager->transactional(
+            fn (): Commitment => $this->executeWithinTransaction($recurrenceId, $month, $userId, $recurrence)
+        );
+    }
+
+    /**
+     * Materializes an occurrence inside a transaction owned by the caller.
+     *
+     * The caller must already have performed authorization and opened the
+     * transaction. This lets compound actions (such as ending a recurrence)
+     * include materialization and their later persistence in one atomic unit.
+     */
+    public function executeWithinTransaction(int $recurrenceId, string $month, int $userId, ?Recurrence $recurrence = null): Commitment
+    {
 
         $format = preg_match('/^\d{4}-\d{2}-01$/', $month) === 1 ? '!Y-m-d' : null;
         $monthDate = $format === null ? false : \DateTimeImmutable::createFromFormat($format, $month);
@@ -31,7 +53,7 @@ final class MaterializeRecurrenceOccurrenceService
         }
 
         $monthFormatted = $monthDate->format('Y-m-d');
-        $recurrence = $this->recurrenceRepository->findById($recurrenceId, $userId);
+        $recurrence ??= $this->recurrenceRepository->findById($recurrenceId, $userId);
         if ($recurrence === null) {
             throw new \RuntimeException('Recorrência não encontrada.', 404);
         }
@@ -56,6 +78,12 @@ final class MaterializeRecurrenceOccurrenceService
 
         $existing = $this->commitmentRepository->findByRecurrenceIdAndMonth($recurrenceId, $monthFormatted, $userId);
         if ($existing !== null) {
+            if ($existing->status === CommitmentStatus::EXCLUIDO) {
+                // A soft-deleted occurrence is a tombstone for this month. It
+                // must not be surfaced as an actionable occurrence or silently
+                // recreated by a later materialization request.
+                throw new \RuntimeException('Ocorrência não encontrada.', 404);
+            }
             return $existing;
         }
 
@@ -67,17 +95,25 @@ final class MaterializeRecurrenceOccurrenceService
             min($day, $lastDay),
         );
 
-        return $this->transactionManager->transactional(function () use ($userId, $base, $recurrenceId, $occurrenceDate) {
-            return $this->commitmentRepository->save(Commitment::create(
-                $userId,
-                $base->categoryId,
-                $base->name,
-                $base->amount,
-                $base->nature,
-                $occurrenceDate,
-                new \DateTimeImmutable(),
-                $recurrenceId,
-            ));
-        });
+        return $this->commitmentRepository->save(Commitment::create(
+            $userId,
+            $base->categoryId,
+            $base->name,
+            $base->amount,
+            $base->nature,
+            $occurrenceDate,
+            new \DateTimeImmutable(),
+            $recurrenceId,
+        ));
+    }
+
+    private function assertValidMonth(string $month): void
+    {
+        $parsed = preg_match('/^\d{4}-\d{2}-01$/', $month) === 1
+            ? \DateTimeImmutable::createFromFormat('!Y-m-d', $month)
+            : false;
+        if ($parsed === false || $parsed->format('Y-m-d') !== $month) {
+            throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM-01.');
+        }
     }
 }

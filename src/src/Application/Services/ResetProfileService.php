@@ -54,6 +54,9 @@ final class ResetProfileService
             $this->consume($userId, $token);
             return $this->transactions->transactional(function () use ($userId): Account {
                 $this->purger->purgeSgfpData($userId);
+                // Recreate the structural account and default categories, but do
+                // not create an initial-balance entry. The account therefore
+                // remains financially uninitialized until explicit setup.
                 return $this->provisioner->execute($userId);
             });
         } finally {

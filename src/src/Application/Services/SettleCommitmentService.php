@@ -47,7 +47,9 @@ final class SettleCommitmentService
             }
 
             try {
-                $settledDate = $settledAt === null ? new \DateTimeImmutable() : new \DateTimeImmutable($settledAt);
+                $settledDate = $settledAt === null
+                    ? new \DateTimeImmutable($commitment->referenceMonth->format('Y-m-d'))
+                    : new \DateTimeImmutable($settledAt);
             } catch (\Exception $e) {
                 throw new \InvalidArgumentException('A data de efetivação deve ser um timestamp ISO-8601 válido.', 0, $e);
             }

@@ -18,6 +18,32 @@ final class CommitmentRowActionsTest extends TestCase
         self::assertStringContainsString("data-action=\"' + esc(p) + '\"", $source);
     }
 
+    public function testEffectuationIsAuthoritativeAndRefreshesDependentSummaries(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($source);
+        self::assertStringContainsString("if (action.disabled) return;", $source);
+        self::assertStringContainsString('const settled = result && result.status ? result.status === \'EFETIVADO\' : !undoing;', $source);
+        self::assertStringContainsString('updateCommitmentRow(action, result); await refreshOverviewSummaries();', $source);
+        self::assertStringContainsString('const refreshOverviewSummaries = async () => {', $source);
+        self::assertStringContainsString('showActionError(action, e);', $source);
+        self::assertStringContainsString("else await load('overview');", $source);
+    }
+
+    public function testEntriesRenderEffectiveDateSelectedPeriodAndFinancialOrdering(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($source);
+        self::assertStringContainsString("api('/movements?month=' + encodeURIComponent(mo))", $source);
+        self::assertStringContainsString("const movements = list(d).slice().sort((a, b) => String(a.effective_at || '').localeCompare(String(b.effective_at || '')) || String(a.id || '').localeCompare(String(b.id || '')));", $source);
+        self::assertStringContainsString("dateLabel(String(x.effective_at || '').slice(0, 10))", $source);
+        self::assertStringContainsString("'Data de efetivação', 'Nome', 'Descrição', 'Categoria', 'Valor', 'Tipo', 'Status'", $source);
+        self::assertStringContainsString("Nenhum lançamento efetivado em ' + esc(monthName)", $source);
+        self::assertStringContainsString("Exibindo somente lançamentos efetivados deste mês.", $source);
+    }
+
     public function testAgendaKeepsCommitmentAndOccurrenceActionPathsDistinct(): void
     {
         $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
@@ -26,6 +52,31 @@ final class CommitmentRowActionsTest extends TestCase
         self::assertStringContainsString("const commitmentActionPath = (item) => '/commitments/' + encodeURIComponent(item.id)", $source);
         self::assertStringContainsString("const recurrenceActionPath = (item, selectedMonth) => '/recurrences/' + encodeURIComponent(item.recurrence_id) + '/occurrences/' + encodeURIComponent(selectedMonth)", $source);
         self::assertStringContainsString("const actionPathFor = (item, selectedMonth) => item.recurrence_id ? recurrenceActionPath(item, selectedMonth) : commitmentActionPath(item);", $source);
+        self::assertStringContainsString("const endRecurrencePath = (item, selectedMonth) => '/recurrences/' + encodeURIComponent(item.recurrence_id) + '/occurrences/' + encodeURIComponent(selectedMonth) + '/end';", $source);
+        self::assertStringContainsString("'Excluir somente este mês'", $source);
+        self::assertStringContainsString("'Excluir este mês e os seguintes'", $source);
+    }
+
+    public function testActionErrorsAreMappedToSafeUserMessagesAndKeepTechnicalCodesLocal(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($source);
+        self::assertStringContainsString("UNAUTHORIZED: 'Sua sessão expirou.", $source);
+        self::assertStringContainsString("FORBIDDEN: 'Você não tem permissão", $source);
+        self::assertStringContainsString("VALIDATION_ERROR: 'Confira os dados informados", $source);
+        self::assertStringContainsString("CONFLICT: 'A operação entrou em conflito", $source);
+        self::assertStringContainsString("error.correlationId", $source);
+    }
+
+    public function testLoadFailureRemainsRecoverableAndIsMarkedAsAnAlert(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($source);
+        self::assertStringContainsString('role="alert"', $source);
+        self::assertStringContainsString('return false;', $source);
+        self::assertStringContainsString('data-retry="\' + view + \'"', $source);
     }
 
     public function testMaterializedRecurringRowsKeepOccurrenceRoute(): void
@@ -44,8 +95,8 @@ final class CommitmentRowActionsTest extends TestCase
         self::assertIsString($source);
         self::assertStringContainsString("const commitmentMonth = (item) => {", $source);
         self::assertStringContainsString("String(item && item.commitment_date || '').match(/^(\\d{4}-\\d{2})-\\d{2}$/)", $source);
-        self::assertStringContainsString("list(commitments).filter((x) => commitmentMonth(x) === selectedMonth)", $source);
-        self::assertStringContainsString("encodeURIComponent(mo))));", $source);
+        self::assertStringContainsString("const direct = operational.filter((x) => commitmentMonth(x) === selectedMonth);", $source);
+        self::assertStringContainsString("const recurrenceActionPath = (item, selectedMonth) => '/recurrences/' + encodeURIComponent(item.recurrence_id) + '/occurrences/' + encodeURIComponent(selectedMonth) + (item.status === 'EFETIVADO' ? '/undo-effectuation' : '/effectuation');", $source);
     }
 
     public function testAgendaSortsChronologicallyWithDeterministicFallbacks(): void
@@ -57,7 +108,7 @@ final class CommitmentRowActionsTest extends TestCase
         self::assertStringContainsString("return /^\\d{4}-\\d{2}-\\d{2}$/.test(value) ? value : '9999-99-99';", $source);
         self::assertStringContainsString("const compareAgendaItems = (a, b) => agendaDateKey(a).localeCompare(agendaDateKey(b))", $source);
         self::assertStringContainsString("|| String(a && a.id || '').localeCompare(String(b && b.id || ''));", $source);
-        self::assertStringContainsString("uniqueCommitments(items).sort(compareAgendaItems)", $source);
+        self::assertStringContainsString("uniqueCommitments(items).filter(isOperationalCommitment).sort(compareAgendaItems)", $source);
     }
 
     public function testAgendaRendersTheCanonicalDueDateColumnWithAccessibleTableHeaders(): void
@@ -88,6 +139,89 @@ final class CommitmentRowActionsTest extends TestCase
         self::assertStringContainsString('.sgfp-dashboard-section .sgfp-metric{padding:9px 16px;gap:5px}', $source);
     }
 
+    public function testDashboardUsesAvailableWidthAndKeepsTheChartResponsiveAcrossTheFullRange(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.css');
+
+        self::assertIsString($source);
+        self::assertStringContainsString('.sgfp-content{width:100%;max-width:none}', $source);
+        self::assertStringContainsString('.sgfp-dashboard{grid-template-columns:minmax(0,1.12fr) minmax(0,1fr)', $source);
+        self::assertStringContainsString('.sgfp-chart-wrap{width:100%;overflow:visible}', $source);
+        self::assertStringContainsString('.sgfp-chart{display:block;width:100%;height:auto;', $source);
+        self::assertStringNotContainsString('.sgfp-chart{display:block;width:100%;min-width:520px;', $source);
+        self::assertStringContainsString('.sgfp-chart-wrap{flex:1 1 auto;min-height:260px;', $source);
+        self::assertMatchesRegularExpression('/\.sgfp-chart\{width:max\(100%,\d+px\);height:auto;max-width:none;aspect-ratio:4 \/ 1\}/', $source);
+        self::assertMatchesRegularExpression('/\.sgfp-chart-expanded \.sgfp-chart\{width:max\(100%,\d+px\);height:auto;aspect-ratio:4 \/ 1\}/', $source);
+        self::assertStringContainsString('@media(max-width:480px){.sgfp-chart-label:nth-of-type(even){display:none}}', $source);
+    }
+
+    public function testEvolutionChartCentersTheZeroReferenceForAnAllZeroSeries(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($source);
+        self::assertStringContainsString('const observedMin = Math.min(...finite), observedMax = Math.max(...finite);', $source);
+        self::assertStringContainsString('const margin = observedSpan > 0', $source);
+        self::assertStringContainsString('const min = scale.min, max = scale.max;', $source);
+        self::assertStringContainsString('class="sgfp-chart-label"', $source);
+    }
+
+    public function testMonthlyChartRendersOnlyTheSelectedMonthAndKeepsYearNavigation(): void
+    {
+        $javascript = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+        $stylesheet = file_get_contents(dirname(__DIR__, 3) . '/assets/app.css');
+
+        self::assertIsString($javascript);
+        self::assertIsString($stylesheet);
+        self::assertStringContainsString('EVOLUÇÃO MENSAL', $javascript);
+        self::assertStringContainsString("const chartMonth = String(year) + '-' + selectedMonth.slice(5, 7);", $javascript);
+        self::assertStringContainsString("history.items = list(history).filter((item) => String(item.date || '').slice(0, 7) === chartMonth);", $javascript);
+        self::assertStringContainsString('data-chart-year-shift', $javascript);
+        self::assertStringNotContainsString('arraste para ver janeiro a dezembro', $javascript);
+    }
+
+    public function testMonthlyChartFitsItsPanelWithoutScrollAndKeepsSelectableTooltipPoints(): void
+    {
+        $javascript = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+        $stylesheet = file_get_contents(dirname(__DIR__, 3) . '/assets/app.css');
+
+        self::assertIsString($javascript);
+        self::assertIsString($stylesheet);
+        self::assertStringContainsString('.sgfp-chart-wrap{overflow:hidden;overflow-x:hidden;overflow-y:hidden;touch-action:auto}', $stylesheet);
+        self::assertStringContainsString('.sgfp-chart{width:100%;max-width:100%;aspect-ratio:2 / 1}', $stylesheet);
+        self::assertStringContainsString('data-chart-point', $javascript);
+        self::assertStringContainsString('<title>', $javascript);
+        self::assertStringContainsString('data-daily-details', $javascript);
+        self::assertStringNotContainsString('sgfp-chart-scroll-hint', $javascript);
+        self::assertStringNotContainsString('Selecione um ponto para ver os movimentos do dia', $javascript);
+        self::assertStringNotContainsString('wrap.scrollLeft', $javascript);
+    }
+
+    public function testMonthlyChartRemovesOnlyTheVerticalAxisTitle(): void
+    {
+        $javascript = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($javascript);
+        self::assertStringNotContainsString('Saldo (R$)</text>', $javascript);
+        self::assertStringNotContainsString('sgfp-chart-axis-title', $javascript);
+        self::assertStringContainsString('class="sgfp-chart-axis-label"', $javascript);
+        self::assertStringContainsString('class="sgfp-chart-grid"', $javascript);
+        self::assertStringContainsString('data-chart-point', $javascript);
+        self::assertStringNotContainsString('Marcações do eixo', $javascript);
+        self::assertStringNotContainsString('data-chart-tick-frequency', $javascript);
+    }
+
+    public function testMonthlyChartKeepsDailyPointsInteractiveAndTooltipBacked(): void
+    {
+        $javascript = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($javascript);
+        self::assertSame(1, substr_count($javascript, 'data-chart-point data-date='));
+        self::assertSame(1, substr_count($javascript, '<title>'));
+        self::assertStringContainsString('tabindex="0" role="button" data-chart-point', $javascript);
+        self::assertStringContainsString('Enter para abrir detalhes.', $javascript);
+    }
+
     public function testAgendaDisablesEditingForSettledCommitments(): void
     {
         $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
@@ -103,8 +237,19 @@ final class CommitmentRowActionsTest extends TestCase
         $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
 
         self::assertIsString($source);
-        self::assertStringContainsString("(!effective ? act('Excluir', '/commitments/' + encodeURIComponent(item.id), 'DELETE') : '<span class=\"sgfp-muted\">Desfaça para editar</span>')", $source);
+        self::assertStringContainsString("(!effective ? deletion : '<span class=\"sgfp-muted\">Desfaça para editar</span>')", $source);
         self::assertStringContainsString("['Vencimento', 'Descrição', 'Categoria', 'Valor', 'Status', 'Ações']", $source);
+    }
+
+    public function testExcludedCommitmentsAreDefensivelyHiddenFromOperationalViews(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($source);
+        self::assertStringContainsString("const isOperationalCommitment = (item) => item && item.status !== 'EXCLUIDO';", $source);
+        self::assertStringContainsString('uniqueCommitments(items).filter(isOperationalCommitment)', $source);
+        self::assertStringContainsString('const operational = list(commitments).filter(isOperationalCommitment);', $source);
+        self::assertStringContainsString('x.recurrence_id && isOperationalCommitment(x)', $source);
     }
 
     public function testProfileResetObtainsAndSubmitsTheConfirmationToken(): void
@@ -230,14 +375,13 @@ final class CommitmentRowActionsTest extends TestCase
         $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
 
         self::assertIsString($source);
-        self::assertStringContainsString("const initialBalancePromptKey = (id) => 'sgfp-initial-balance-prompt:' + String(id);", $source);
         self::assertStringContainsString("account.initial_balance_configured === true", $source);
-        self::assertStringContainsString("window.localStorage.getItem(promptKey) === 'shown'", $source);
-        self::assertStringContainsString("window.localStorage.setItem(promptKey, 'shown');", $source);
-        self::assertStringContainsString('data-initial-balance-prompt', $source);
-        self::assertStringContainsString('Definir saldo inicial', $source);
-        self::assertStringContainsString("const initialMonth = setup ? disabled : 'value=\"' + esc(currentMonth()) + '\" required readonly';", $source);
-        self::assertStringContainsString("f.querySelector('[name=\"effective_month\"]')?.required && d.effective_month !== currentMonth()", $source);
+        self::assertStringNotContainsString("window.localStorage.getItem(promptKey) === 'shown'", $source);
+        self::assertStringNotContainsString("window.localStorage.setItem(promptKey, 'shown');", $source);
+        self::assertStringContainsString('data-initial-balance-modal', $source);
+        self::assertStringContainsString('Defina seu saldo inicial', $source);
+        self::assertStringContainsString("field('Data do saldo inicial', 'effective_month', 'date', initialDate)", $source);
+        self::assertStringContainsString("!/^\\d{4}-\\d{2}-\\d{2}$/.test(d.effective_month)", $source);
         self::assertStringContainsString('bootstrapTheme().finally(async () => { await load(); await promptInitialBalanceForNewProfile(); });', $source);
     }
 
@@ -246,7 +390,8 @@ final class CommitmentRowActionsTest extends TestCase
         $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
 
         self::assertIsString($source);
-        self::assertStringContainsString('const rows = list(d).map((x) => {', $source);
+        self::assertStringContainsString('const movements = list(d).slice().sort(', $source);
+        self::assertStringContainsString('const rows = movements.map((x) => {', $source);
         self::assertStringNotContainsString('const rows = d.map((x) => {', $source);
     }
 
@@ -255,7 +400,12 @@ final class CommitmentRowActionsTest extends TestCase
         $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
 
         self::assertIsString($source);
-        self::assertStringContainsString('content.innerHTML = dashboard(d) + agenda(items, categoryMap, selectedMonth);', $source);
+        self::assertStringContainsString('content.innerHTML = dashboard(d, history.items, selectedMonth, year, chartError) + agenda(items, categoryMap, selectedMonth);', $source);
+        self::assertStringContainsString("api('/dashboard/evolution/annual?year=' + year)", $source);
+        self::assertStringNotContainsString('chartMonths', $source);
+        self::assertStringContainsString("d.is_before_financial_start === true ? [] : uniqueRecurrences(operational.filter", $source);
+        self::assertStringContainsString('Período anterior ao início do controle', $source);
+        self::assertStringContainsString('Evolução do saldo', $source);
         self::assertStringContainsString("dashboardMetric('Mês anterior', d.opening_balance", $source);
         self::assertStringContainsString("dashboardMetric('Saldo previsto', d.expected_closing_balance", $source);
         self::assertStringContainsString("dashboardMetric('Saldo final', d.current_balance", $source);
@@ -265,12 +415,59 @@ final class CommitmentRowActionsTest extends TestCase
         );
     }
 
+    public function testDashboardKeepsEmptyStatesAsStableHiddenOrLocalSlots(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+        $styles = file_get_contents(dirname(__DIR__, 3) . '/assets/app.css');
+
+        self::assertIsString($source);
+        self::assertIsString($styles);
+        self::assertStringContainsString('sgfp-dashboard-slot sgfp-dashboard-before-start', $source);
+        self::assertStringNotContainsString('sgfp-dashboard-slot sgfp-dashboard-no-activity', $source);
+        self::assertStringNotContainsString('Criar compromisso', $source);
+        self::assertStringContainsString('aria-hidden="true" hidden', $source);
+        self::assertStringContainsString('.sgfp-dashboard .sgfp-dashboard-slot{grid-column:1/-1;grid-row:4}', $styles);
+        self::assertStringContainsString('.sgfp-dashboard .sgfp-dashboard-slot[hidden]{display:none}', $styles);
+    }
+
+    public function testDashboardPinsDesktopRegionsAcrossEmptyAndPopulatedStates(): void
+    {
+        $styles = file_get_contents(dirname(__DIR__, 3) . '/assets/app.css');
+
+        self::assertIsString($styles);
+        self::assertStringContainsString('.sgfp-dashboard .sgfp-balance-hero{grid-row:1}', $styles);
+        self::assertStringContainsString('.sgfp-dashboard-section[aria-labelledby="sgfp-expected-title"]{grid-row:2}', $styles);
+        self::assertStringContainsString('.sgfp-dashboard-section[aria-labelledby="sgfp-realized-title"]{grid-row:3}', $styles);
+        self::assertStringContainsString('.sgfp-dashboard .sgfp-dashboard-actions{grid-column:1/-1;grid-row:5}', $styles);
+    }
+
+    public function testOnlyTheMostRecentMonthLoadCanReplaceItsContentOrBusyState(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($source);
+        self::assertStringContainsString("if (sequence !== loadSequence) return;", $source);
+        self::assertStringContainsString("catch (e) { if (sequence === loadSequence) content.innerHTML = panel('Não foi possível carregar'", $source);
+        self::assertStringContainsString("finally { if (sequence === loadSequence) content.setAttribute('aria-busy', 'false'); }", $source);
+    }
+
     public function testRecurringOccurrenceErrorsAreNotSilentlyDiscarded(): void
     {
         $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
 
         self::assertIsString($source);
         self::assertStringNotContainsString("catch (_) { return null; }", $source);
+        self::assertStringContainsString("const occurrences = await Promise.all(recurring.map((x) => api('/recurrences/'", $source);
+        self::assertStringContainsString("d.is_before_financial_start === true ? [] : uniqueRecurrences(operational.filter", $source);
+    }
+
+    public function testOverviewMaterializesEachRecurrenceOnlyOncePerSelectedMonth(): void
+    {
+        $source = file_get_contents(dirname(__DIR__, 3) . '/assets/app.js');
+
+        self::assertIsString($source);
+        self::assertStringContainsString("const uniqueRecurrences = (items) => Array.from(new Map(items.filter((item) => item && item.recurrence_id).map((item) => [String(item.recurrence_id), item])).values());", $source);
+        self::assertStringContainsString("uniqueRecurrences(operational.filter((x) => x.recurrence_id && commitmentMonth(x) !== selectedMonth))", $source);
         self::assertStringContainsString("const occurrences = await Promise.all(recurring.map((x) => api('/recurrences/'", $source);
     }
 }

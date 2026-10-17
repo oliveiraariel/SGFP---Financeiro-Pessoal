@@ -43,4 +43,15 @@ final class Recurrence
             $this->createdAt,
         );
     }
+
+    public function endIn(\DateTimeImmutable $month): self
+    {
+        $endedIn = $month->modify('first day of this month');
+
+        if ($this->endedIn !== null && $this->endedIn <= $endedIn) {
+            return $this;
+        }
+
+        return new self($this->id, $this->userId, $this->startsIn, $this->monthsCount, $endedIn, $this->createdAt);
+    }
 }

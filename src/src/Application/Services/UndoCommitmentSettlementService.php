@@ -10,6 +10,7 @@ use SGFP\Application\Ports\TransactionManager;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Domain\Enums\CommitmentStatus;
 use SGFP\Domain\Enums\EntryState;
+use SGFP\Domain\Models\Commitment;
 
 final class UndoCommitmentSettlementService
 {
@@ -21,7 +22,7 @@ final class UndoCommitmentSettlementService
     ) {
     }
 
-    public function execute(int $commitmentId): void
+    public function execute(int $commitmentId): ?Commitment
     {
         $this->userContext->requireCapability('use_sgfp');
         $userId = $this->userContext->requireUserId();
@@ -32,21 +33,22 @@ final class UndoCommitmentSettlementService
         }
 
         if ($commitment->status !== CommitmentStatus::EFETIVADO) {
-            return;
+            return $commitment;
         }
 
         $entry = $this->entryRepository->findByCommitmentId($commitmentId, $userId);
         if ($entry === null || $entry->state !== EntryState::ATIVO) {
-            return;
+            return $commitment;
         }
 
         $now = new \DateTimeImmutable();
 
-        $this->transactionManager->transactional(function () use ($commitment, $entry, $now) {
+        return $this->transactionManager->transactional(function () use ($commitment, $entry, $now) {
             $this->entryRepository->save($entry->withUndone($now));
-            $this->commitmentRepository->save($commitment->undoSettlement());
+            $undone = $commitment->undoSettlement();
+            $this->commitmentRepository->save($undone);
 
-            return null;
+            return $undone;
         });
     }
 }

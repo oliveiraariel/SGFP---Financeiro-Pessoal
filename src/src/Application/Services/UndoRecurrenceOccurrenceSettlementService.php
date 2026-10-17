@@ -29,20 +29,27 @@ final class UndoRecurrenceOccurrenceSettlementService
         if ($monthDate === false || $monthDate->format('Y-m' . ($format === '!Y-m-d' ? '-d' : '')) !== $month) {
             throw new \InvalidArgumentException('O mês deve estar no formato YYYY-MM-01.');
         }
-        $commitment = $this->commitmentRepository->findByRecurrenceIdAndMonth(
-            $recurrenceId, $monthDate->format('Y-m-d'), $userId
-        );
-        if ($commitment === null) {
-            throw new \RuntimeException('Ocorrência não encontrada.', 404);
-        }
+        $this->transactionManager->transactional(function () use ($recurrenceId, $monthDate, $userId): void {
+            $commitment = $this->commitmentRepository->findByRecurrenceIdAndMonth(
+                $recurrenceId, $monthDate->format('Y-m-d'), $userId
+            );
+            if ($commitment === null) {
+                throw new \RuntimeException('Ocorrência não encontrada.', 404);
+            }
 
-        $undoService = new UndoCommitmentSettlementService(
-            $this->commitmentRepository,
-            $this->entryRepository,
-            $this->transactionManager,
-            $this->userContext,
-        );
-
-        $undoService->execute((int) $commitment->id);
+            // The caller owns the transaction; prevent the generic service from
+            // opening a nested transaction while preserving its idempotency.
+            (new UndoCommitmentSettlementService(
+                $this->commitmentRepository,
+                $this->entryRepository,
+                new class implements TransactionManager {
+                    public function begin(): void {}
+                    public function commit(): void {}
+                    public function rollback(): void {}
+                    public function transactional(callable $action): mixed { return $action(); }
+                },
+                $this->userContext,
+            ))->execute((int) $commitment->id);
+        });
     }
 }

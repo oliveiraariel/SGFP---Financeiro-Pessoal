@@ -11,6 +11,7 @@ use SGFP\Application\Ports\TransactionManager;
 use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Services\MaterializeRecurrenceOccurrenceService;
 use SGFP\Domain\Enums\CommitmentNature;
+use SGFP\Domain\Enums\CommitmentStatus;
 use SGFP\Domain\Models\Commitment;
 use SGFP\Domain\Models\Recurrence;
 
@@ -83,6 +84,40 @@ final class MaterializeRecurrenceOccurrenceServiceTest extends TestCase
         self::assertSame('2026-09-01', $result->referenceMonth->format('Y-m-d'));
     }
 
+    public function testDoesNotReturnOrRecreateSoftDeletedOccurrenceForTheSameMonth(): void
+    {
+        $deleted = Commitment::create(3, null, 'Mensalidade', '100.00', CommitmentNature::SAIDA, new \DateTimeImmutable('2026-10-15'), new \DateTimeImmutable(), 7)
+            ->withId(22)
+            ->delete();
+        [$service, $commitments] = $this->serviceFor($this->recurrence(null, null), null, $deleted);
+        $commitments->expects(self::never())->method('save');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(404);
+        $service->execute(7, '2026-10-01');
+    }
+
+    public function testMaterializesTheFollowingMonthFromAnExcludedBaseOccurrence(): void
+    {
+        $base = Commitment::create(
+            3,
+            null,
+            'Mensalidade',
+            '100.00',
+            CommitmentNature::SAIDA,
+            new \DateTimeImmutable('2026-09-15'),
+            new \DateTimeImmutable('2026-09-01'),
+            7,
+        )->withId(20)->delete();
+        [$service, $commitments] = $this->serviceFor($this->recurrence(null, null), null, null, $base);
+
+        $result = $service->execute(7, '2026-10-01');
+
+        self::assertSame(21, $result->id);
+        self::assertSame('2026-10-15', $result->referenceMonth->format('Y-m-d'));
+        self::assertSame(CommitmentStatus::PENDENTE, $result->status);
+    }
+
     /** @dataProvider endOfMonthDates */
     public function testClampsCommitmentDayToTheLastDayOfShorterMonth(string $baseDate, string $month, string $expected): void
     {
@@ -113,7 +148,12 @@ final class MaterializeRecurrenceOccurrenceServiceTest extends TestCase
     }
 
     /** @return array{MaterializeRecurrenceOccurrenceService, CommitmentRepository&\PHPUnit\Framework\MockObject\MockObject} */
-    private function serviceFor(Recurrence $recurrence, ?\DateTimeImmutable $baseMonth = null): array
+    private function serviceFor(
+        Recurrence $recurrence,
+        ?\DateTimeImmutable $baseMonth = null,
+        ?Commitment $existing = null,
+        ?Commitment $base = null,
+    ): array
     {
         $recurrences = $this->createMock(RecurrenceRepository::class);
         $commitments = $this->createMock(CommitmentRepository::class);
@@ -122,8 +162,8 @@ final class MaterializeRecurrenceOccurrenceServiceTest extends TestCase
 
         $context->method('requireUserId')->willReturn(3);
         $recurrences->method('findById')->willReturn($recurrence);
-        $commitments->method('findByRecurrenceIdAndMonth')->willReturn(null);
-        $commitments->method('findFirstByRecurrenceId')->willReturn(
+        $commitments->method('findByRecurrenceIdAndMonth')->willReturn($existing);
+        $commitments->method('findFirstByRecurrenceId')->willReturn($base ??
             Commitment::create(
                 3,
                 null,

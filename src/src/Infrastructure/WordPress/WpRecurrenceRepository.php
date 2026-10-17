@@ -33,13 +33,17 @@ final class WpRecurrenceRepository implements RecurrenceRepository
             return $recurrence->withId((int) $wpdb->insert_id);
         }
 
-        $wpdb->update(
+        $result = $wpdb->update(
             TableNames::recurrence(),
             $data,
-            ['id_recorrencia' => $recurrence->id],
+            ['id_recorrencia' => $recurrence->id, 'fk_id_usuario' => $recurrence->userId],
             $format,
-            ['%d']
+            ['%d', '%d']
         );
+
+        if ($result === false) {
+            throw new \RuntimeException('Falha ao atualizar recorrência: ' . $wpdb->last_error);
+        }
 
         return $recurrence;
     }

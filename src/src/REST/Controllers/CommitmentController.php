@@ -12,6 +12,9 @@ use SGFP\Application\Services\UpdateCommitmentService;
 use SGFP\Application\Services\DeleteCommitmentService;
 use SGFP\REST\DTOs\CreateCommitmentRequest;
 use SGFP\REST\DTOs\UpdateCommitmentRequest;
+use SGFP\Application\Ports\AccountRepository;
+use SGFP\Application\Ports\EntryRepository;
+use SGFP\Infrastructure\WordPress\WpUserContext;
 
 final class CommitmentController
 {
@@ -22,6 +25,9 @@ final class CommitmentController
         private readonly UndoCommitmentSettlementService $undoService,
         private readonly UpdateCommitmentService $updateService,
         private readonly DeleteCommitmentService $deleteService,
+        private readonly ?AccountRepository $accountRepository = null,
+        private readonly ?EntryRepository $entryRepository = null,
+        private readonly ?WpUserContext $userContext = null,
     ) {}
 
     public function list(\WP_REST_Request $request): \WP_REST_Response
@@ -119,6 +125,7 @@ final class CommitmentController
             return new \WP_REST_Response([
                 'entry_id' => $entry->id,
                 'commitment_id' => $entry->commitmentId,
+                'status' => 'EFETIVADO',
                 'account_id' => $entry->accountId,
                 'origin' => $entry->origin->value,
                 'name' => $entry->name,
@@ -139,8 +146,11 @@ final class CommitmentController
     public function undo(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $this->undoService->execute((int) $request['id']);
-            return new \WP_REST_Response(['status' => 'desfeito'], 200);
+            $commitment = $this->undoService->execute((int) $request['id']);
+            return new \WP_REST_Response([
+                'commitment_id' => (int) $request['id'],
+                'status' => $commitment?->status->value ?? 'PENDENTE',
+            ], 200);
         } catch (\RuntimeException $e) {
             return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
         } catch (\Throwable $e) {
@@ -151,6 +161,16 @@ final class CommitmentController
     public function permissionCheck(): bool
     {
         return \SGFP\Infrastructure\WordPress\WpUserContext::canAccessSgfp();
+    }
+
+    public function financialPermissionCheck(): bool
+    {
+        if (!$this->permissionCheck() || $this->accountRepository === null || $this->entryRepository === null || $this->userContext === null) {
+            return false;
+        }
+        $userId = $this->userContext->requireUserId();
+        $account = $this->accountRepository->findByUser($userId);
+        return $account !== null && $this->entryRepository->findActiveInitialBalanceByAccount($account->id, $userId) !== null;
     }
 
     private function error(\Throwable $error, int $status, string $code): \WP_REST_Response

@@ -7,6 +7,7 @@ namespace SGFP\REST\Controllers;
 use SGFP\Application\Services\SetInitialBalanceService;
 use SGFP\REST\DTOs\SetInitialBalanceRequest;
 use SGFP\Application\Ports\EntryRepository;
+use SGFP\Domain\Models\Decimal;
 
 final class AccountController
 {
@@ -38,6 +39,7 @@ final class AccountController
             }
             $account = $accounts[0];
             $initialBalance = $this->entryRepository->findActiveInitialBalanceByAccount($account->id, $account->userId);
+            $user = wp_get_current_user();
             $balance = 0;
             foreach ($this->entryRepository->findActiveEntriesByUser($account->userId) as $entry) {
                 $balance += ($entry->effectType->value === 'ENTRADA' ? 1 : -1) * \SGFP\Domain\Models\Decimal::cents($entry->amount);
@@ -46,8 +48,12 @@ final class AccountController
                 'id' => $account->id,
                 'name' => $account->name,
                 'created_at' => $account->createdAt->format('c'),
+                'user_name' => $user instanceof \WP_User ? (string) $user->display_name : '',
+                'user_email' => $user instanceof \WP_User ? (string) $user->user_email : '',
                 'balance' => \SGFP\Domain\Models\Decimal::formatCents($balance),
                 'initial_balance_configured' => $initialBalance !== null,
+                'initial_balance' => $initialBalance?->amount,
+                'financial_start_date' => $initialBalance?->settledAt->format('Y-m-d'),
             ], 200);
         } catch (\RuntimeException $e) {
             return \SGFP\REST\PublicError::response($e, $e->getCode() ?: 500);
@@ -78,15 +84,26 @@ final class AccountController
     public function setInitialBalance(\WP_REST_Request $request): \WP_REST_Response
     {
         try {
-            $dto = SetInitialBalanceRequest::fromRequest($request);
-            $dto->validate();
+            $amount = isset($request['amount']) ? (string) $request['amount'] : '';
+            if (trim($amount) === '') {
+                throw new \InvalidArgumentException('O campo amount é obrigatório.');
+            }
+            $amount = Decimal::normalize($amount, true);
+            $effective = isset($request['effective_month']) ? (string) $request['effective_month'] : null;
+            $effectiveDate = null;
+            if ($effective !== null && $effective !== '') {
+                $effectiveDate = \DateTimeImmutable::createFromFormat('!Y-m-d', $effective);
+                if ($effectiveDate === false || $effectiveDate->format('Y-m-d') !== $effective) {
+                    throw new \InvalidArgumentException('O campo effective_month deve ser uma data válida no formato YYYY-MM-DD.');
+                }
+            }
 
             $entry = $this->setInitialBalanceService->execute(
                 (int) $request['id'],
-                $dto->toDecimal(),
-                $dto->name,
-                $dto->description,
-                $dto->toEffectiveMonth(),
+                $amount,
+                isset($request['name']) ? (string) $request['name'] : null,
+                isset($request['description']) ? (string) $request['description'] : null,
+                $effectiveDate,
             );
 
             return new \WP_REST_Response([

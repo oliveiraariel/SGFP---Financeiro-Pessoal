@@ -14,6 +14,7 @@ use SGFP\Application\Ports\UserContext;
 use SGFP\Application\Services\DeleteCategoryService;
 use SGFP\Application\Services\DeleteCommitmentService;
 use SGFP\Application\Services\MaterializeRecurrenceOccurrenceService;
+use SGFP\Application\Services\EndRecurrenceFromOccurrenceService;
 use SGFP\Application\Services\RenameCategoryService;
 use SGFP\Application\Services\SetInitialBalanceService;
 use SGFP\Application\Services\UpdateCommitmentService;
@@ -81,6 +82,21 @@ final class OwnershipBoundaryTest extends TestCase
 
         $this->expectExceptionCode(404);
         (new MaterializeRecurrenceOccurrenceService(
+            $repository,
+            $this->createMock(CommitmentRepository::class),
+            $this->createMock(TransactionManager::class),
+            $this->context(2)
+        ))->execute(13, '2026-09-01');
+    }
+
+    public function testUserCannotEndAnotherUsersRecurrence(): void
+    {
+        $repository = $this->createMock(RecurrenceRepository::class);
+        $repository->expects($this->once())->method('findById')->with(13, 2)->willReturn(null);
+
+        $this->expectExceptionCode(404);
+        (new EndRecurrenceFromOccurrenceService(
+            new MaterializeRecurrenceOccurrenceService($repository, $this->createMock(CommitmentRepository::class), $this->createMock(TransactionManager::class), $this->context(2)),
             $repository,
             $this->createMock(CommitmentRepository::class),
             $this->createMock(TransactionManager::class),

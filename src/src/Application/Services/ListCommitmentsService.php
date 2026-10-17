@@ -6,6 +6,7 @@ namespace SGFP\Application\Services;
 
 use SGFP\Application\Ports\CommitmentRepository;
 use SGFP\Application\Ports\UserContext;
+use SGFP\Domain\Enums\CommitmentStatus;
 
 final class ListCommitmentsService
 {
@@ -19,7 +20,13 @@ final class ListCommitmentsService
     {
         $userId = $this->userContext->requireUserId();
         $this->userContext->requireCapability('use_sgfp');
-        $items = $this->repository->findAllByUser($userId);
+        // The repository enforces this boundary in production. Keep the service
+        // defensive so alternate adapters cannot expose soft-deleted records in
+        // operational lists.
+        $items = array_values(array_filter(
+            $this->repository->findAllByUser($userId),
+            static fn (object $item): bool => $item->status !== CommitmentStatus::EXCLUIDO,
+        ));
 
         if ($month !== null) {
             $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $month);

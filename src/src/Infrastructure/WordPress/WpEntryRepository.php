@@ -136,7 +136,7 @@ final class WpEntryRepository implements EntryRepository
 
         $rows = $wpdb->get_results($wpdb->prepare(
             "SELECT * FROM " . TableNames::entry()
-            . " WHERE fk_id_usuario = %d AND estado = 'ATIVO' AND data_efetivacao >= %s AND data_efetivacao <= %s ORDER BY data_efetivacao DESC, id_lancamento DESC",
+            . " WHERE fk_id_usuario = %d AND estado = 'ATIVO' AND data_efetivacao >= %s AND data_efetivacao < %s ORDER BY data_efetivacao DESC, id_lancamento DESC",
             $userId,
             $start->format('Y-m-d H:i:s'),
             $end->format('Y-m-d H:i:s')
