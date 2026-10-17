@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SGFP — Harness visual do gráfico anual</title>
+  <link rel="stylesheet" href="../../../src/assets/app.css">
+  <style>
+    body{margin:0;background:#071012;color:#e9eeee;font:16px system-ui,sans-serif}
+    .harness-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:14px 20px;background:#172a2a;border-bottom:1px solid #526462;position:sticky;top:0;z-index:5}
+    .harness-bar a,.harness-bar strong{color:#f4c62e}.harness-bar a{padding:6px 9px;border:1px solid #526462;border-radius:6px;text-decoration:none}.harness-bar a[aria-current=page]{background:#f4c62e;color:#071012}
+    .sgfp-app{min-height:calc(100vh - 61px)}
+  </style>
+</head>
+<body>
+  <div class="harness-bar"><strong>Harness visual real · gráfico anual</strong><span>Cenário:</span><nav id="scenario-nav" aria-label="Cenários"></nav></div>
+  <main class="sgfp-app" data-sgfp-app data-sgfp-shell data-sgfp-access-state="authorized" data-theme="dark">
+    <aside class="sgfp-sidebar" aria-label="Navegação principal"><div class="sgfp-brand"><strong>SGFP</strong><small>Harness</small></div><nav class="sgfp-nav"><button class="is-active" type="button" data-view="overview" aria-current="page">Visão Geral</button></nav></aside>
+    <section class="sgfp-main" aria-labelledby="sgfp-page-title"><header class="sgfp-header"><div><p class="sgfp-eyebrow">VALIDAÇÃO VISUAL</p><h1 id="sgfp-page-title" data-title>Visão Geral</h1></div><div class="sgfp-header-actions"><div class="sgfp-month-navigation" data-month-navigation><label class="sgfp-month-label" for="sgfp-month">Mês</label><input id="sgfp-month" class="sgfp-month" type="month" data-month value="2026-06"></div></div></header><div class="sgfp-content" data-content aria-live="polite" aria-busy="true"><p role="status">Carregando…</p></div></section>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search), scenario = params.get('scenario') || 'mixed';
+    const names = {constant:'Série constante',entry7200:'Entrada R$ 7.200',mixed:'Entradas/saídas mistas',negative:'Saldo negativo',gap:'Grande diferença realizado/projetado',scroll:'Expansão e rolagem'};
+    const nav = document.querySelector('#scenario-nav'); Object.keys(names).forEach((key) => { const a=document.createElement('a'); a.href='?scenario='+key; a.textContent=names[key]; if(key===scenario)a.setAttribute('aria-current','page'); nav.append(a); });
+    const days = (count, start='2026-01-01') => { const base=new Date(start+'T00:00:00Z'); return Array.from({length:count},(_,i)=>{const d=new Date(base);d.setUTCDate(d.getUTCDate()+i);return d.toISOString().slice(0,10);}); };
+    const series = () => { const count=scenario==='scroll'?365:scenario==='constant'?31:scenario==='entry7200'?31:scenario==='gap'?90:scenario==='negative'?45:60; return days(count).map((date,i)=>{let realized=1200, projected=1200; if(scenario==='entry7200'){realized=7200;projected=7200} if(scenario==='mixed'){realized=5000 + (i%4)*450 - i*70; projected=realized+700} if(scenario==='negative'){realized=200-i*120;projected=400-i*85} if(scenario==='gap'){realized=3000+(i%5)*40;projected=12500-i*35} if(scenario==='scroll'){realized=9000-i*18+(i%13)*160;projected=realized+500} return {date,realized_closing_balance:realized,projected_closing_balance:projected,opening_balance:realized-100,realized_inflows:scenario==='entry7200'&&i===0?7200:0,realized_outflows:0};}); };
+    const payload = {items:series()};
+    window.sgfpConfig={restUrl:'/mock',nonce:'',month:'2026-06'};
+    window.fetch=async (url)=>{const path=String(url); let body={}; if(path.includes('/dashboard/evolution/annual')) body=payload; else if(path.includes('/dashboard?')) body={current_balance:payload.items[0]?.realized_closing_balance||0,opening_balance:0,expected_inflows:0,expected_outflows:0,expected_closing_balance:payload.items[0]?.projected_closing_balance||0,realized_inflows:payload.items[0]?.realized_inflows||0,realized_outflows:0,is_before_financial_start:false}; else if(path.includes('/commitments')) body={items:[]}; else if(path.includes('/categories')) body={items:[]}; else body={items:[]}; return {ok:true,status:200,json:async()=>body};};
+  </script>
+  <script src="../../../src/assets/app.js"></script>
+  <script>
+    if (scenario === 'scroll') setTimeout(() => { const expand=document.querySelector('[data-chart-expand]'); if (expand) expand.click(); const wrap=document.querySelector('.sgfp-chart-wrap'); if (wrap) { wrap.scrollLeft=wrap.scrollWidth; wrap.dataset.scrollEvidence='end-reached'; } }, 900);
+  </script>
+</body>
+</html>
