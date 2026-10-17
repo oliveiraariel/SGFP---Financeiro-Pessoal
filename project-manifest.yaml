@@ -1,6 +1,6 @@
 schema_version: "1.0"
 manifest_version: "3.0"
-updated_at: "2026-09-23"
+updated_at: "2026-10-17"
 
 project:
   name: "Sistema de Gestão Financeira Pessoal"
@@ -46,7 +46,12 @@ product_constraints:
     web_platform: "WordPress"
     backend_extension_model: "custom_plugin"
     architecture_direction: "WordPress REST API + SGFP custom REST endpoints"
-    identity_and_authentication: "WordPress users; email + password"
+    identity_and_authentication: "WordPress-native flows; email-only login specified but not demonstrated as enforced in v1.0.15"
+    user_identity_source: "wp_users.ID"
+    own_user_table: false
+    sgfp_runtime_capability: "use_sgfp"
+    sgfp_provisioning_marker: "_sgfp_provisioned"
+    legacy_capability: "sgfp_access (not runtime-authoritative)"
     database_family: "relational"
     database_implementation: "MySQL_or_MariaDB"
     financial_data_entry: "manual"
@@ -107,7 +112,7 @@ development_guidance:
 
 workflow:
   lifecycle_model: "stage_gated_incremental"
-  current_state: "stage_11_in_progress_functionally_reconciled_environmental_validation_pending"
+  current_state: "release_1_0_15_functionally_stable_formal_stage12_and_environmental_validation_not_asserted"
   last_completed_stage:
     id: 10
     name: "Desenvolvimento da API"
@@ -248,6 +253,13 @@ canonical_sources:
     path: "docs/modelagem-dados/03-modelo-fisico.md"
     authority: "validated_data_model"
     sql_artifact: "docs/modelagem-dados/artefatos/modelo-fisico/sgfp-modelo-fisico-mysql.sql"
+
+  identity_access_decision:
+    path: "docs/governanca/decisao-identidade-acesso-v1-2026-09-16.md"
+    authority: "reconciled_identity_contract"
+  published_release_status:
+    path: "docs/governanca/STATUS-RELEASE-1.0.15-2026-10-17.md"
+    authority: "verified_publication_and_validation_limits"
 
   application_architecture:
     path: "docs/arquitetura/01-arquitetura-da-aplicacao.md"

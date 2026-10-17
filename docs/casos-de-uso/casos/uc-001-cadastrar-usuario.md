@@ -10,21 +10,21 @@ Usuário.
 Nenhuma autenticação é necessária.
 
 **Fluxo principal**
-1. O usuário acessa o cadastro.
-2. Informa os dados solicitados.
-3. O sistema valida as informações.
-4. WordPress cria a identidade/login.
-5. O SGFP cria automaticamente a Conta Financeira única com nome **Minha Conta**.
-6. O SGFP cria as categorias padrão vinculadas ao usuário.
-7. O sistema conclui o provisionamento e disponibiliza o acesso.
+1. O usuário acessa o cadastro nativo WordPress, quando habilitado.
+2. Informa os dados pedidos pelo WordPress.
+3. O WordPress valida e cria a identidade em `wp_users`.
+4. O hook `user_register` aciona o provisionamento SGFP.
+5. O SGFP garante a conta única **Minha Conta** e as categorias padrão, sem duplicação.
+6. Após provisionamento bem-sucedido, registra `_sgfp_provisioned` e concede `use_sgfp`.
+7. O gestor fica acessível somente ao usuário provisionado e autorizado.
 
 **Exceções**
 - Dados inválidos devem ser corrigidos.
 - E-mail já cadastrado impede duplicação.
-- Se o provisionamento da conta/categorias falhar, o cadastro não deverá ser apresentado como concluído.
+- Se o provisionamento financeiro falhar, a identidade WordPress pode já existir, mas o acesso ao gestor não deve ser liberado. O hook `wp_login` permite reparo idempotente posterior.
 
 **Pós-condições**  
-O usuário possui identidade WordPress, exatamente uma Conta Financeira e categorias padrão.
+Usuário autorizado tem `wp_users.ID`, conta financeira única, categorias padrão e marcador de provisionamento. Não existe tabela própria de usuários SGFP.
 
 **Requisitos relacionados**  
 RF-001.
